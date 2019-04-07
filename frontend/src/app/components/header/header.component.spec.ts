@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {HeaderComponent} from './header.component';
+import {Globals} from '../../global/globals';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -8,7 +10,15 @@ describe('HeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
+      declarations: [
+        HeaderComponent,
+      ],
+      imports: [
+        HttpClientTestingModule,
+      ],
+      providers: [
+        Globals,
+      ],
     })
     .compileComponents();
   }));

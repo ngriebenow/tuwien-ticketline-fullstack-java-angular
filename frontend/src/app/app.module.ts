@@ -29,7 +29,7 @@ import {Globals} from './global/globals';
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [httpInterceptorProviders, Globals],
   bootstrap: [AppComponent]
