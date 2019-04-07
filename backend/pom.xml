@@ -26,6 +26,7 @@
         <jjwt.version>0.9.1</jjwt.version>
         <javafaker.version>0.16</javafaker.version>
         <rest-assured.version>3.2.0</rest-assured.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -41,6 +42,11 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>at.ac.tuwien.sepm.groupphase</groupId>
+            <artifactId>frontend</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -126,6 +132,29 @@
                         <goals>
                             <goal>repackage</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy static files from frontend</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../frontend/dist/sepm-group-phase</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

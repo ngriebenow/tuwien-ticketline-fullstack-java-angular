@@ -1,3 +1,15 @@
+#### Build ###
+.project
+.settings/
+
+### Log-Files ###
+log/
+
+#### Database-Files ###
+/database/
+/server/database/
+*.mv.db
+
 #### Linux ###
 *~
 

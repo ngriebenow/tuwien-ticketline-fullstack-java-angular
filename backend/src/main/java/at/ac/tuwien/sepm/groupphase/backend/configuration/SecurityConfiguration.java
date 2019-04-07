@@ -102,6 +102,16 @@ public class SecurityConfiguration {
                     "/webjars/springfox-swagger-ui/**",
                     "/swagger-ui.html")
                 .permitAll()
+                // The following are needed for angular in the presentation build
+                .antMatchers(HttpMethod.GET,
+                    "/favicon.ico",
+                    "/runtime*.js",
+                    "/main*.js",
+                    "/polyfills*.js",
+                    "/styles*.css",
+                    "/",
+                    "/login")
+                .permitAll()
             ;
             if (h2ConsolePath != null && h2AccessMatcher != null) {
                 http
