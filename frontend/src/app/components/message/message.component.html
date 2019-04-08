@@ -1,6 +1,6 @@
 <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
   <strong>Error! </strong> {{ errorMessage }}
-  <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
+  <button (click)="vanishError()" aria-label="Close" class="close" data-dismiss="alert" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -9,9 +9,12 @@
 <div class="mt-4 container">
 
   <div class="row p-2 mb-4">
-    <button *ngIf="isAdmin()" type="button" class="btn btn-secondary btn-sm mr-4" data-toggle="modal" data-target=".create-message-modal">Add message</button>
+    <button *ngIf="isAdmin()" type="button" class="btn btn-secondary btn-sm mr-4" data-toggle="modal"
+            data-target=".create-message-modal">Add message
+    </button>
 
-    <div class="modal fade create-message-modal" tabindex="-1" role="dialog" aria-labelledby="Create message modal" aria-hidden="true">
+    <div class="modal fade create-message-modal" tabindex="-1" role="dialog" aria-labelledby="Create message modal"
+         aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -37,9 +40,10 @@
               <div class="form-group">
                 <label for="inputSummary">Summary</label>
                 <textarea rows="3" name="summary" formControlName="summary" class="form-control" id="inputSummary"
-                       aria-describedby="summaryHelp" placeholder="Enter summary"></textarea>
+                          aria-describedby="summaryHelp" placeholder="Enter summary"></textarea>
                 <div *ngIf="submitted && messageForm.controls.summary.errors" class="error">
-                  <small class="form-text text-warning" *ngIf="messageForm.controls.summary.errors.required">Your summary is
+                  <small class="form-text text-warning" *ngIf="messageForm.controls.summary.errors.required">Your
+                    summary is
                     required!
                   </small>
                 </div>
@@ -48,14 +52,14 @@
               <div class="form-group">
                 <label for="inputText">Text</label>
                 <textarea rows="6" name="text" formControlName="text" class="form-control" id="inputText"
-                       aria-describedby="textHelp" placeholder="Enter text"></textarea>
+                          aria-describedby="textHelp" placeholder="Enter text"></textarea>
                 <div *ngIf="submitted && messageForm.controls.text.errors" class="error">
                   <small class="form-text text-warning" *ngIf="messageForm.controls.text.errors.required">Your text is
                     required!
                   </small>
                 </div>
               </div>
-              
+
               <button type="button" (click)="addMessage()" class="btn btn-success float-right">Add message</button>
 
             </form>

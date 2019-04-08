@@ -1,6 +1,6 @@
 <div *ngIf="error" class="alert alert-warning alert-dismissible fade show" role="alert">
   <strong>Authentication problems!</strong> {{ errorMessage }}
-  <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
+  <button (click)="vanishError()" aria-label="Close" class="close" data-dismiss="alert" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -23,7 +23,8 @@
               <input type="text" name="username" formControlName="username" class="form-control" id="inputUsername"
                      aria-describedby="usernameHelp" placeholder="Enter username">
               <div *ngIf="submitted && loginForm.controls.username.errors" class="error">
-                <small class="form-text text-warning" *ngIf="loginForm.controls.username.errors.required">Your username is
+                <small class="form-text text-warning" *ngIf="loginForm.controls.username.errors.required">Your username
+                  is
                   required!
                 </small>
               </div>

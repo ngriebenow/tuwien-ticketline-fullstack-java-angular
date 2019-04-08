@@ -24,7 +24,7 @@ describe('LoginComponent', () => {
         Globals,
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -22,7 +22,7 @@ describe('MessageComponent', () => {
         Globals,
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

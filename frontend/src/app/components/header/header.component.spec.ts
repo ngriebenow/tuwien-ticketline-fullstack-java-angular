@@ -20,7 +20,7 @@ describe('HeaderComponent', () => {
         Globals,
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

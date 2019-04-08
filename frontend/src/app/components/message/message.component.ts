@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MessageService} from '../../services/message.service';
 import {Message} from '../../dtos/message';
 import {NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';

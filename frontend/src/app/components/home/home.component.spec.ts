@@ -20,7 +20,7 @@ describe('HomeComponent', () => {
         Globals,
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
