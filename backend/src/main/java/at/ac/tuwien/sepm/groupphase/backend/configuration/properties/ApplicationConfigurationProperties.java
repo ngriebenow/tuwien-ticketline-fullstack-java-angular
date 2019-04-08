@@ -9,13 +9,13 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties("spring.application")
 public class ApplicationConfigurationProperties {
 
-    private String version;
+  private String version;
 
-    public String getVersion() {
-        return version;
-    }
+  public String getVersion() {
+    return version;
+  }
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
+  public void setVersion(String version) {
+    this.version = version;
+  }
 }

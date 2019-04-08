@@ -1,35 +1,27 @@
-package at.ac.tuwien.sepm.groupphase.backend.entity;
+package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.message;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.Size;
 
-@Entity
-public class Message {
+@ApiModel(value = "DetailedMessageDto", description = "A detailed DTO for message entries via rest")
+public class DetailedMessageDto {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_message_id")
-  @SequenceGenerator(name = "seq_message_id", sequenceName = "seq_message_id")
+  @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
   private Long id;
 
-  @Column(nullable = false, name = "published_at")
+  @ApiModelProperty(readOnly = true, name = "The date and time when the message was published")
   private LocalDateTime publishedAt;
 
-  @Column(nullable = false)
-  @Size(max = 100)
+  @ApiModelProperty(required = true, name = "The title of the message")
   private String title;
 
-  @Column(nullable = false, length = 10_000)
+  @ApiModelProperty(required = true, name = "The text content of the message")
   private String text;
 
-  public static MessageBuilder builder() {
-    return new MessageBuilder();
+  public static MessageDtoBuilder builder() {
+    return new MessageDtoBuilder();
   }
 
   public Long getId() {
@@ -66,7 +58,7 @@ public class Message {
 
   @Override
   public String toString() {
-    return "Message{"
+    return "DetailedMessageDto{"
         + "id="
         + id
         + ", publishedAt="
@@ -88,11 +80,11 @@ public class Message {
     if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
-    Message message = (Message) obj;
-    return Objects.equals(id, message.id)
-        && Objects.equals(publishedAt, message.publishedAt)
-        && Objects.equals(title, message.title)
-        && Objects.equals(text, message.text);
+    DetailedMessageDto that = (DetailedMessageDto) obj;
+    return Objects.equals(id, that.id)
+        && Objects.equals(publishedAt, that.publishedAt)
+        && Objects.equals(title, that.title)
+        && Objects.equals(text, that.text);
   }
 
   @Override
@@ -100,41 +92,40 @@ public class Message {
     return Objects.hash(id, publishedAt, title, text);
   }
 
-  public static final class MessageBuilder {
+  public static final class MessageDtoBuilder {
+
     private Long id;
     private LocalDateTime publishedAt;
     private String title;
     private String text;
 
-    private MessageBuilder() {}
-
-    public MessageBuilder id(Long id) {
+    public MessageDtoBuilder id(Long id) {
       this.id = id;
       return this;
     }
 
-    public MessageBuilder publishedAt(LocalDateTime publishedAt) {
+    public MessageDtoBuilder publishedAt(LocalDateTime publishedAt) {
       this.publishedAt = publishedAt;
       return this;
     }
 
-    public MessageBuilder title(String title) {
+    public MessageDtoBuilder title(String title) {
       this.title = title;
       return this;
     }
 
-    public MessageBuilder text(String text) {
+    public MessageDtoBuilder text(String text) {
       this.text = text;
       return this;
     }
 
-    public Message build() {
-      Message message = new Message();
-      message.setId(id);
-      message.setPublishedAt(publishedAt);
-      message.setTitle(title);
-      message.setText(text);
-      return message;
+    public DetailedMessageDto build() {
+      DetailedMessageDto messageDto = new DetailedMessageDto();
+      messageDto.setId(id);
+      messageDto.setPublishedAt(publishedAt);
+      messageDto.setTitle(title);
+      messageDto.setText(text);
+      return messageDto;
     }
   }
 }

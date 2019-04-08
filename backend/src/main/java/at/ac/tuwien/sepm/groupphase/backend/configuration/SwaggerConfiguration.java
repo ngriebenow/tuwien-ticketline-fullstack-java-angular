@@ -1,6 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.configuration;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import at.ac.tuwien.sepm.groupphase.backend.configuration.properties.ApplicationConfigurationProperties;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -17,30 +22,26 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-
-import static com.google.common.collect.Lists.newArrayList;
-
 @Configuration
 @EnableSwagger2
 public class SwaggerConfiguration {
 
-    private final ApplicationConfigurationProperties acp;
+  private final ApplicationConfigurationProperties acp;
 
-    public SwaggerConfiguration(ApplicationConfigurationProperties applicationConfigurationProperties) {
-        acp = applicationConfigurationProperties;
-    }
+  public SwaggerConfiguration(
+      ApplicationConfigurationProperties applicationConfigurationProperties) {
+    acp = applicationConfigurationProperties;
+  }
 
-    @Bean
-    public Docket backendApiDocket() {
-        return new Docket(DocumentationType.SWAGGER_2)
-            .select()
-            .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
-            .paths(PathSelectors.any())
-            .build()
-            .apiInfo(new ApiInfo(
+  @Bean
+  public Docket backendApiDocket() {
+    return new Docket(DocumentationType.SWAGGER_2)
+        .select()
+        .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+        .paths(PathSelectors.any())
+        .build()
+        .apiInfo(
+            new ApiInfo(
                 "Backend",
                 "Interactive API documentation for the backend",
                 acp.getVersion(),
@@ -48,38 +49,32 @@ public class SwaggerConfiguration {
                 null,
                 null,
                 null,
-                Collections.emptyList()
-            ))
-            .genericModelSubstitutes(ResponseEntity.class)
-            .securitySchemes(Arrays.asList(apiKey()))
-            .useDefaultResponseMessages(false)
-            .globalResponseMessage(RequestMethod.GET,
-                newArrayList(
-                    new ResponseMessageBuilder()
-                        .code(HttpStatus.OK.value())
-                        .message("Success")
-                        .build(),
-                    new ResponseMessageBuilder()
-                        .code(HttpStatus.UNAUTHORIZED.value())
-                        .message("Unauthorized request, login first")
-                        .build()))
-            .globalResponseMessage(RequestMethod.POST,
-                newArrayList(
-                    new ResponseMessageBuilder()
-                        .code(HttpStatus.OK.value())
-                        .message("Success")
-                        .build(),
-                    new ResponseMessageBuilder()
-                        .code(HttpStatus.UNAUTHORIZED.value())
-                        .message("Unauthorized request, login first")
-                        .build()))
-            .consumes(new HashSet<>(Collections.singletonList(MediaType.APPLICATION_JSON_VALUE)))
-            .produces(new HashSet<>(Collections.singletonList(MediaType.APPLICATION_JSON_VALUE)))
-            ;
-    }
+                Collections.emptyList()))
+        .genericModelSubstitutes(ResponseEntity.class)
+        .securitySchemes(Arrays.asList(apiKey()))
+        .useDefaultResponseMessages(false)
+        .globalResponseMessage(
+            RequestMethod.GET,
+            newArrayList(
+                new ResponseMessageBuilder().code(HttpStatus.OK.value()).message("Success").build(),
+                new ResponseMessageBuilder()
+                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .message("Unauthorized request, login first")
+                    .build()))
+        .globalResponseMessage(
+            RequestMethod.POST,
+            newArrayList(
+                new ResponseMessageBuilder().code(HttpStatus.OK.value()).message("Success").build(),
+                new ResponseMessageBuilder()
+                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .message("Unauthorized request, login first")
+                    .build()))
+        .consumes(new HashSet<>(Collections.singletonList(MediaType.APPLICATION_JSON_VALUE)))
+        .produces(new HashSet<>(Collections.singletonList(MediaType.APPLICATION_JSON_VALUE)));
+  }
 
-    private ApiKey apiKey() {
-        return new ApiKey("apiKey", "Authorization", "header"); //`apiKey` is the name of the APIKey, `Authorization` is the key in the request header
-    }
-
+  private ApiKey apiKey() {
+    // `apiKey` is the name of the APIKey, `Authorization` is the key in the request header
+    return new ApiKey("apiKey", "Authorization", "header");
+  }
 }
