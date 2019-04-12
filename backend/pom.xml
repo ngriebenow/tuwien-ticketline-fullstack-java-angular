@@ -28,6 +28,7 @@
     <rest-assured.version>3.2.0</rest-assured.version>
     <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
     <fmt-maven-plugin.version>2.8</fmt-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -135,6 +136,26 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${jacoco-maven-plugin.version}</version>
+          <executions>
+              <execution>
+                  <goals>
+                      <goal>prepare-agent</goal>
+                  </goals>
+              </execution>
+              <execution>
+                  <id>report</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                      <goal>report</goal>
+                  </goals>
+              </execution>
+          </executions>
       </plugin>
 
       <plugin>
