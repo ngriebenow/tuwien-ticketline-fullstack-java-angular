@@ -13,11 +13,11 @@ import {AuthService} from '../../services/auth.service';
 })
 export class MessageComponent implements OnInit {
 
-  error: boolean = false;
-  errorMessage: string = '';
+  error = false;
+  errorMessage = '';
   messageForm: FormGroup;
   // After first submission attempt, form validation will start
-  submitted: boolean = false;
+  submitted = false;
   private message: Message[];
 
   constructor(private messageService: MessageService, private ngbPaginationConfig: NgbPaginationConfig, private formBuilder: FormBuilder,

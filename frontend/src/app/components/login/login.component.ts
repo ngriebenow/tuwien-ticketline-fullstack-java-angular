@@ -14,10 +14,10 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   // After first submission attempt, form validation will start
-  submitted: boolean = false;
+  submitted = false;
   // Error flag
-  error: boolean = false;
-  errorMessage: string = '';
+  error = false;
+  errorMessage = '';
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.formBuilder.group({
