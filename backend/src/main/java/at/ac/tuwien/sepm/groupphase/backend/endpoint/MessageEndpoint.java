@@ -45,6 +45,7 @@ public class MessageEndpoint {
     return messageMapper.messageToDetailedMessageDto(messageService.findOne(id));
   }
 
+  /** TODO: Add JavaDoc. */
   @RequestMapping(method = RequestMethod.POST)
   @PreAuthorize("hasRole('ADMIN')")
   @ApiOperation(

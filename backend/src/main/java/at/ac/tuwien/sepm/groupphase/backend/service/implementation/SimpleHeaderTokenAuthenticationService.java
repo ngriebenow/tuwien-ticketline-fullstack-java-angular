@@ -50,6 +50,7 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
   private final Duration validityDuration;
   private final Duration overlapDuration;
 
+  /** TODO: Add JavaDoc. */
   public SimpleHeaderTokenAuthenticationService(
       @Lazy AuthenticationManager authenticationManager,
       AuthenticationConfigurationProperties authenticationConfigurationProperties,

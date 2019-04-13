@@ -128,6 +128,7 @@ public class Message {
       return this;
     }
 
+    /** TODO: Add JavaDoc. */
     public Message build() {
       Message message = new Message();
       message.setId(id);

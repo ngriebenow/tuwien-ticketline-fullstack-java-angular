@@ -175,6 +175,7 @@ public class AuthenticationTokenInfo {
       return this;
     }
 
+    /** TODO: Add JavaDoc. */
     public AuthenticationTokenInfo build() {
       AuthenticationTokenInfo authenticationTokenInfo = new AuthenticationTokenInfo();
       authenticationTokenInfo.setUsername(username);

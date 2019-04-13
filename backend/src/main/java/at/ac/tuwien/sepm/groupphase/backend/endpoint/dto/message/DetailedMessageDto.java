@@ -119,6 +119,7 @@ public class DetailedMessageDto {
       return this;
     }
 
+    /** TODO: Add JavaDoc. */
     public DetailedMessageDto build() {
       DetailedMessageDto messageDto = new DetailedMessageDto();
       messageDto.setId(id);

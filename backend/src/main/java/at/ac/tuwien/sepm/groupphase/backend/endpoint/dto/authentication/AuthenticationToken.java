@@ -80,6 +80,7 @@ public class AuthenticationToken {
       return this;
     }
 
+    /** TODO: Add JavaDoc. */
     public AuthenticationToken build() {
       AuthenticationToken authenticationToken = new AuthenticationToken();
       authenticationToken.setCurrentToken(currentToken);

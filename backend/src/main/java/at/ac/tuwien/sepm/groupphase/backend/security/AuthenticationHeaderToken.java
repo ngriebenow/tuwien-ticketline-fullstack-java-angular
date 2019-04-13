@@ -11,6 +11,7 @@ public class AuthenticationHeaderToken extends AbstractAuthenticationToken {
   private final String token;
   private final Object principal;
 
+  /** TODO: Add JavaDoc. */
   public AuthenticationHeaderToken(String token) {
     super(null);
     this.token = token;
@@ -18,6 +19,7 @@ public class AuthenticationHeaderToken extends AbstractAuthenticationToken {
     setAuthenticated(false);
   }
 
+  /** TODO: Add JavaDoc. */
   public AuthenticationHeaderToken(
       Object principal, String token, Collection<? extends GrantedAuthority> authorities) {
     super(authorities);

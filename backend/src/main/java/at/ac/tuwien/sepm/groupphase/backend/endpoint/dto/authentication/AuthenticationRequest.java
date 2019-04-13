@@ -79,6 +79,7 @@ public class AuthenticationRequest {
       return this;
     }
 
+    /** TODO: Add JavaDoc. */
     public AuthenticationRequest build() {
       AuthenticationRequest authenticationRequest = new AuthenticationRequest();
       authenticationRequest.setUsername(username);
