@@ -144,8 +144,9 @@ public class SecurityConfiguration {
               "/main*.js",
               "/polyfills*.js",
               "/styles*.css",
-              "/",
-              "/login")
+              "/styles*.js",
+              "/vendor*.js",
+              "/")
           .permitAll();
       if (h2ConsolePath != null && h2AccessMatcher != null) {
         http.authorizeRequests().antMatchers(h2ConsolePath + "/**").access(h2AccessMatcher);
