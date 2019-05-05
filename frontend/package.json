@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --aot",
+    "build": "ng build --aot",
+    "cibuild": "ng build --prod --aot",
     "test": "ng test --code-coverage",
     "citest": "ng test --karma-config src/karma.conf.ci.js --code-coverage",
     "lint": "ng lint",

@@ -26,6 +26,24 @@
     <!-- dependencies -->
   </properties>
 
+  <profiles>
+    <profile>
+      <id>local</id>
+      <properties>
+        <npm.build.arguments>run build</npm.build.arguments>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+
+    <profile>
+      <id>prod</id>
+      <properties>
+        <npm.build.arguments>run cibuild</npm.build.arguments>
+      </properties>
+    </profile>
+  </profiles>
 
   <build>
     <plugins>
@@ -118,7 +136,7 @@
             </goals>
             <configuration>
               <arguments>
-                run build
+                ${npm.build.arguments}
               </arguments>
             </configuration>
           </execution>
