@@ -143,3 +143,11 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+### IDEs ###
+# Intellij
+.idea/
+.idea_modules/
+*.iws
+*.iml
+out/
