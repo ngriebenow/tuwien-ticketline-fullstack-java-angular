@@ -4,45 +4,53 @@ import java.time.Duration;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Event {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_event_id")
+  @SequenceGenerator(name = "seq_event_id", sequenceName = "seq_event_id")
   private long id;
 
   @Column(nullable = false)
   private String name;
 
-  //private EventCategory category;
+  @Enumerated(EnumType.ORDINAL)
+  private EventCategory category;
 
   @Column(nullable = false)
   private String content;
 
-  //@Column(nullable = false)
-  //private Duration duration;
+  @Column(nullable = false)
+  private Duration duration;
 
 
-  //private Hall hall;
+  @ManyToOne(optional = false)
+  private Hall hall;
 
 
-  //@ManyToMany
-  //@JoinTable
-  //private List<Artist> artists;
+  @ManyToMany
+  @JoinTable
+  private List<Artist> artists;
 
 
-
-
-  /*public List<Artist> getArtists() {
+  public List<Artist> getArtists() {
     return artists;
   }
 
   public void setArtists(List<Artist> artists) {
     this.artists = artists;
-  }*/
+  }
 
   public long getId() {
     return id;
@@ -60,14 +68,14 @@ public class Event {
     this.name = name;
   }
 
-  /*
+
   public EventCategory getCategory() {
     return category;
   }
 
   public void setCategory(EventCategory category) {
     this.category = category;
-  }*/
+  }
 
   public String getContent() {
     return content;
@@ -78,7 +86,7 @@ public class Event {
   }
 
 
-  /*public Duration getDuration() {
+  public Duration getDuration() {
     return duration;
   }
 
@@ -86,19 +94,22 @@ public class Event {
     this.duration = duration;
   }
 
+
   public Hall getHall() {
     return hall;
   }
 
   public void setHall(Hall hall) {
     this.hall = hall;
-  }*/
+  }
 
   public Event build() {
     Event event = new Event();
     event.setId(id);
     event.setContent(content);
     event.setName(name);
+    event.setCategory(category);
+    event.setDuration(duration);
     return event;
   }
 

@@ -1,5 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Point {
 
   private int coordinateX;

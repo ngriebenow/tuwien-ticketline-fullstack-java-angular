@@ -7,20 +7,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 
-//@Entity
+@Entity
 public class Artist {
 
-  //@Id
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_artist_id")
+  @SequenceGenerator(name = "seq_artist_id", sequenceName = "seq_artist_id")
   private long id;
 
-  //@Column(nullable = false)
+  @Column(nullable = false)
   private String surname;
 
-  //@Column(nullable = false)
+  @Column(nullable = false)
   private String name;
 
-  //@ManyToMany(mappedBy = "artists")
+  @ManyToMany(mappedBy = "artists")
   private List<Event> events;
 
 
@@ -54,5 +57,16 @@ public class Artist {
 
   public void setEvents(List<Event> events) {
     this.events = events;
+  }
+
+  public Artist build() {
+    Artist artist = new Artist();
+
+    artist.setId(id);
+    artist.setName(name);
+    artist.setSurname(surname);
+    artist.setEvents(events);
+
+    return artist;
   }
 }
