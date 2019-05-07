@@ -7,14 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-  /**
-   * Find a single event entry by id.
-   *
-   * @param id the is of the event entry
-   * @return Optional containing the event entry
-   */
-  Optional<Event> findOneById(Long id);
-
 
   /**
    * Find all event entries ordered by published at name (ascending).
