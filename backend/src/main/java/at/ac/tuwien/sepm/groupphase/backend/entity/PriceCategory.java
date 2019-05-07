@@ -43,4 +43,14 @@ public class PriceCategory {
   public void setEvent(Event event) {
     this.event = event;
   }
+
+  /** Build the PriceCategory */
+  public PriceCategory build() {
+    PriceCategory priceCategory = new PriceCategory();
+    priceCategory.setColor(color);
+    priceCategory.setEvent(event);
+    priceCategory.setId(id);
+    priceCategory.setPriceInCents(priceInCents);
+    return priceCategory;
+  }
 }

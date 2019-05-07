@@ -24,4 +24,12 @@ public class Point {
   public void setCoordinateY(int coordinateY) {
     this.coordinateY = coordinateY;
   }
+
+  /** Build the point */
+  public Point build() {
+    Point point = new Point();
+    point.setCoordinateX(coordinateX);
+    point.setCoordinateY(coordinateY);
+    return point;
+  }
 }

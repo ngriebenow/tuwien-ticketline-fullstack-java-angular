@@ -19,7 +19,7 @@ public class Performance {
   private long id;
 
   @Column(nullable = false)
-  private LocalDateTime time;
+  private LocalDateTime startAt;
 
   @Column(nullable = false)
   private String name;
@@ -29,9 +29,9 @@ public class Performance {
   private Event event;
 
   /** Construct the event. */
-  public Performance(long id, LocalDateTime time, String name, Event event) {
+  public Performance(long id, LocalDateTime startAt, String name, Event event) {
     this.id = id;
-    this.time = time;
+    this.startAt = startAt;
     this.name = name;
     this.event = event;
   }
@@ -46,12 +46,12 @@ public class Performance {
     this.id = id;
   }
 
-  public LocalDateTime getTime() {
-    return time;
+  public LocalDateTime getStartAt() {
+    return startAt;
   }
 
-  public void setTime(LocalDateTime time) {
-    this.time = time;
+  public void setStartAt(LocalDateTime startAt) {
+    this.startAt = startAt;
   }
 
   public String getName() {
@@ -70,13 +70,13 @@ public class Performance {
     this.event = event;
   }
 
-  /** Build the performance. */
+  /** Build the performance */
   public Performance build() {
     Performance performance = new Performance();
     performance.setId(id);
     performance.setEvent(event);
     performance.setName(name);
-    performance.setTime(time);
+    performance.setStartAt(startAt);
     return performance;
   }
 }

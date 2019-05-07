@@ -2,7 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 public class DefinedUnitDto {
 
-  private long id;
+  private Long id;
 
   private int free;
 
@@ -10,15 +10,15 @@ public class DefinedUnitDto {
 
   private PointDto upperBoundary;
 
-  private long priceCategoryId;
+  private Long priceCategoryId;
 
   private PriceCategoryDto priceCategoryDto;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -46,11 +46,11 @@ public class DefinedUnitDto {
     this.upperBoundary = upperBoundary;
   }
 
-  public long getPriceCategoryId() {
+  public Long getPriceCategoryId() {
     return priceCategoryId;
   }
 
-  public void setPriceCategoryId(long priceCategoryId) {
+  public void setPriceCategoryId(Long priceCategoryId) {
     this.priceCategoryId = priceCategoryId;
   }
 
