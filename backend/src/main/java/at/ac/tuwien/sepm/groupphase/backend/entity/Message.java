@@ -21,6 +21,7 @@ public class Message {
   @Column(nullable = false, name = "published_at")
   private LocalDateTime publishedAt;
 
+
   @Column(nullable = false)
   @Size(max = 100)
   private String title;
@@ -59,6 +60,7 @@ public class Message {
   public String getText() {
     return text;
   }
+
 
   public void setText(String text) {
     this.text = text;
