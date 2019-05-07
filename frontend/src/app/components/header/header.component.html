@@ -1,5 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-  <a class="navbar-brand ml-lg-5" href="">SEPM Group Phase</a>
+  <a class="navbar-brand" style="margin:0px; width: 25px;">
+    <img src="../../../assets/logo1.png" alt="Logo" style="color: whitesmoke; width: 100%; margin:0px">
+  </a>
+  <a class="navbar-brand ml-lg-5" href="" style="margin: 0px !important; margin-right: 10px !important;" >TicketLine</a>
   <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler ml-5"
           data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
     <span class="navbar-toggler-icon"></span>
@@ -10,9 +13,27 @@
       <li class="nav-item">
         <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
       </li>
+      <li class="nav-item">
+        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+      </li>
+      <li class="nav-item">
+        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+      </li>
+      <li class="nav-item">
+        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+      </li>
+      <li class="nav-item">
+        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+      </li>
+      <li class="nav-item">
+        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+      </li>
     </ul>
     <ul class="navbar-nav mr-5">
       <a *ngIf="!authService.isLoggedIn()" class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+      <li class="nav-item">
+        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+      </li>
       <a (click)="authService.logoutUser()" *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/">Logout</a>
     </ul>
   </div>

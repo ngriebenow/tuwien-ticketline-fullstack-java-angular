@@ -1,0 +1,46 @@
+
+font {
+  font-family: Roboto !important;
+}
+
+$theme-colors:(
+  "primary": #8FBEFF,
+  "secondary": #FF9824,
+  "danger": #D11C04,
+  "success": #43C62A,
+
+  "lightgray": #EAEAEA,
+  "mediumGray": #C4C4C4,
+  "darkGray": #585858,
+  "lightOrange": #FFB426,
+  "mediumBlue": #565DEF,
+  "darkBlue": #1400AE
+);
+
+
+.btn-primary{
+  color: whitesmoke !important;
+}
+
+.btn-secondary{
+  color: whitesmoke !important;
+  width: 16% !important;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 10vw;
+  object-fit: cover;
+}
+
+.img {
+  width:100%;
+  z-index: 0;  }
+
+.text-over-img {
+  z-index:1;
+  font-size: 2em;
+  margin-top: -65px;
+  color: #585858;
+  text-align: center;
+}
