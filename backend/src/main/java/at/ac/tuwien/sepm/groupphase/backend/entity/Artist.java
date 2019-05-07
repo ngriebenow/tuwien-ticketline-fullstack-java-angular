@@ -26,6 +26,15 @@ public class Artist {
   @ManyToMany(mappedBy = "artists")
   private List<Event> events;
 
+  public Artist(String surname, String name,
+      List<Event> events) {
+    this.surname = surname;
+    this.name = name;
+    this.events = events;
+  }
+
+  public Artist() {
+  }
 
   public long getId() {
     return id;
