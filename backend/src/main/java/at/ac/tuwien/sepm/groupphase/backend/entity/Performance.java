@@ -28,16 +28,15 @@ public class Performance {
   @JoinColumn(nullable = false)
   private Event event;
 
-  public Performance(long id, LocalDateTime time, String name,
-      Event event) {
+  /** Construct the event. */
+  public Performance(long id, LocalDateTime time, String name, Event event) {
     this.id = id;
     this.time = time;
     this.name = name;
     this.event = event;
   }
 
-  public Performance() {
-  }
+  public Performance() {}
 
   public long getId() {
     return id;

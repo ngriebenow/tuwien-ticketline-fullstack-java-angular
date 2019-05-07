@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,24 +24,21 @@ public class Hall {
   @Column(nullable = false)
   private String name;
 
-  @Embedded
-  private Point boundaryPoint;
+  @Embedded private Point boundaryPoint;
 
   @ManyToOne
   @JoinColumn(nullable = false)
   private Location location;
 
-
   public Hall() {}
 
-  public Hall(long id, int version, String name,
-      Point boundaryPoint, Location location) {
+  /** Construct the event. */
+  public Hall(long id, int version, String name, Point boundaryPoint, Location location) {
     this.id = id;
     this.version = version;
     this.name = name;
     this.boundaryPoint = boundaryPoint;
   }
-
 
   public long getId() {
     return id;
@@ -75,7 +71,6 @@ public class Hall {
   public void setBoundaryPoint(Point boundaryPoint) {
     this.boundaryPoint = boundaryPoint;
   }
-
 
   public Location getLocation() {
     return location;

@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Message;
 import java.util.List;
 
 public interface EventService {
@@ -13,7 +12,6 @@ public interface EventService {
    */
   List<Event> findAll();
 
-
   /**
    * Find a single event entry by id.
    *
@@ -21,5 +19,4 @@ public interface EventService {
    * @return the event entry
    */
   Event findOne(Long id);
-
 }

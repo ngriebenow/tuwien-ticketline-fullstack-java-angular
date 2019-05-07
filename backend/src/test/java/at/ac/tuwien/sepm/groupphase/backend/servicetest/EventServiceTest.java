@@ -14,16 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles(profiles = "test")
 public class EventServiceTest {
 
-  @Autowired
-  EventService eventService;
+  @Autowired EventService eventService;
 
-  public EventServiceTest() {
-  }
+  public EventServiceTest() {}
 
   @Test
-  public void test()
-  {
+  public void test() {
     Assert.fail();
   }
-
 }

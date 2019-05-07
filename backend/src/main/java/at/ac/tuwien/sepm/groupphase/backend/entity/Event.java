@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import java.time.Duration;
 import java.util.List;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,7 +14,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -38,20 +36,24 @@ public class Event {
   @Column(nullable = false)
   private Duration duration;
 
-
   @ManyToOne(optional = false)
   @JoinColumn(nullable = false)
   private Hall hall;
-
 
   @ManyToMany
   @JoinTable
   @Size(min = 1)
   private List<Artist> artists;
 
-
-  public Event(long id, String name, EventCategory category, String content, Duration duration,
-      Hall hall, List<Artist> artists) {
+  /** Construct the event. */
+  public Event(
+      long id,
+      String name,
+      EventCategory category,
+      String content,
+      Duration duration,
+      Hall hall,
+      List<Artist> artists) {
     this.id = id;
     this.name = name;
     this.category = category;
@@ -61,8 +63,7 @@ public class Event {
     this.artists = artists;
   }
 
-  public Event() {
-  }
+  public Event() {}
 
   public List<Artist> getArtists() {
     return artists;
@@ -104,7 +105,6 @@ public class Event {
     this.content = content;
   }
 
-
   public Duration getDuration() {
     return duration;
   }
@@ -112,7 +112,6 @@ public class Event {
   public void setDuration(Duration duration) {
     this.duration = duration;
   }
-
 
   public Hall getHall() {
     return hall;
@@ -132,5 +131,4 @@ public class Event {
     event.setDuration(duration);
     return event;
   }
-
 }

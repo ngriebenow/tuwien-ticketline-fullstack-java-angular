@@ -6,9 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -28,16 +26,15 @@ public class Artist {
   @ManyToMany(mappedBy = "artists")
   private List<Event> events;
 
-  public Artist(long id, String surname, String name,
-      List<Event> events) {
+  /** Construct the artist. */
+  public Artist(long id, String surname, String name, List<Event> events) {
     this.id = id;
     this.surname = surname;
     this.name = name;
     this.events = events;
   }
 
-  public Artist() {
-  }
+  public Artist() {}
 
   public long getId() {
     return id;

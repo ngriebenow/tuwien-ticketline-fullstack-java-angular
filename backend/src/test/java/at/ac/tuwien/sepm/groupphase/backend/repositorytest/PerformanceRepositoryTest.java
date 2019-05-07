@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.repositorytest;
 
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -20,11 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class PerformanceRepositoryTest {
 
-  @Autowired
-  PerformanceRepository performanceRepository;
+  @Autowired PerformanceRepository performanceRepository;
 
-  private Performance P1 = new Performance(0, LocalDateTime.now(),"Performance 1", null);
-
+  private Performance P1 = new Performance(0, LocalDateTime.now(), "Performance 1", null);
 
   @Before
   public void initialization() {
@@ -33,15 +30,13 @@ public class PerformanceRepositoryTest {
 
   @Test
   public void givenPerformanceSaved_whenFindPerformanceById_thenReturnEvent() {
-    Performance retP1 = performanceRepository.findById(P1.getId()).orElseThrow(NotFoundException::new);
-    assertThat(retP1,is(equalTo(P1)));
+    Performance retP1 =
+        performanceRepository.findById(P1.getId()).orElseThrow(NotFoundException::new);
+    assertThat(retP1, is(equalTo(P1)));
   }
 
   @Test(expected = NotFoundException.class)
   public void givenPerformanceSaved_whenFindUnknownPerformanceById_thenThrowNotFoundException() {
     performanceRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
-
 }
-
-

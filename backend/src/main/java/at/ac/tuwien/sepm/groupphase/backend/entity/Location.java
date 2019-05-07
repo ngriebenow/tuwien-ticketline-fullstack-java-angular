@@ -30,8 +30,9 @@ public class Location {
   @Column(nullable = false)
   private String country;
 
-  public Location(long id, String name, String street, String postalCode, String place,
-      String country) {
+  /** Construct the event. */
+  public Location(
+      long id, String name, String street, String postalCode, String place, String country) {
     this.id = id;
     this.name = name;
     this.street = street;
@@ -40,8 +41,7 @@ public class Location {
     this.country = country;
   }
 
-  public Location() {
-  }
+  public Location() {}
 
   public long getId() {
     return id;

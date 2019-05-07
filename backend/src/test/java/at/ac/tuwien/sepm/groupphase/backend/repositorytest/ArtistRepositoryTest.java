@@ -1,17 +1,12 @@
 package at.ac.tuwien.sepm.groupphase.backend.repositorytest;
 
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
-import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
-import java.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,11 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class ArtistRepositoryTest {
 
-  @Autowired
-  ArtistRepository artistRepository;
+  @Autowired ArtistRepository artistRepository;
 
-  private Artist A1 = new Artist(0L,"A1 name", "A1 surname",null);
-
+  private Artist A1 = new Artist(0L, "A1 name", "A1 surname", null);
 
   @Before
   public void initialization() {
@@ -37,14 +30,11 @@ public class ArtistRepositoryTest {
   @Test
   public void givenArtistSaved_whenFindArtistById_thenReturnEvent() {
     Artist retA1 = artistRepository.findById(A1.getId()).orElseThrow(NotFoundException::new);
-    assertThat(retA1,is(equalTo(A1)));
+    assertThat(retA1, is(equalTo(A1)));
   }
 
   @Test(expected = NotFoundException.class)
   public void givenArtistSaved_whenFindUnknownArtistById_thenThrowNotFoundException() {
     artistRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
-
 }
-
-

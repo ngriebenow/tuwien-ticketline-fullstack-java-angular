@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.repositorytest;
 
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -19,11 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class LocationRepositoryTest {
 
-  @Autowired
-  LocationRepository locationRepository;
+  @Autowired LocationRepository locationRepository;
 
-  private Location L1 = new Location(0,"Location 1","Street 1", "1000","Place 1", "Austria");
-
+  private Location L1 = new Location(0, "Location 1", "Street 1", "1000", "Place 1", "Austria");
 
   @Before
   public void initialization() {
@@ -33,14 +30,11 @@ public class LocationRepositoryTest {
   @Test
   public void givenLocationSaved_whenFindLocationById_thenReturnEvent() {
     Location retL1 = locationRepository.findById(L1.getId()).orElseThrow(NotFoundException::new);
-    assertThat(retL1,is(equalTo(L1)));
+    assertThat(retL1, is(equalTo(L1)));
   }
 
   @Test(expected = NotFoundException.class)
   public void givenLocationSaved_whenFindUnknownLocationById_thenThrowNotFoundException() {
     locationRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
-
 }
-
-
