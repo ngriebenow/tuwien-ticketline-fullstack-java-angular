@@ -80,7 +80,7 @@ public class Hall {
     this.location = location;
   }
 
-  /** Build the hall */
+  /** Build the hall. */
   public Hall build() {
     Hall hall = new Hall();
     hall.setId(id);

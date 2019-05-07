@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -64,7 +63,7 @@ public class HallDto {
     this.boundaryPoint = boundaryPoint;
   }
 
-  /** Build the hall dto */
+  /** Build the hall dto. */
   public HallDto build() {
     HallDto hallDto = new HallDto();
     hallDto.setId(id);

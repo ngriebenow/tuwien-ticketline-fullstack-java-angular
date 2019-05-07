@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.awt.Color;
@@ -52,7 +51,7 @@ public class PriceCategoryDto {
     this.color = color;
   }
 
-  /** Build the PriceCategory dto*/
+  /** Build the PriceCategory dto. */
   public PriceCategoryDto build() {
     PriceCategoryDto priceCategoryDto = new PriceCategoryDto();
     priceCategoryDto.setColor(color);

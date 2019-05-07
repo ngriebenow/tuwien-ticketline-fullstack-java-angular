@@ -1,13 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.message.SimpleMessageDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.util.Locale;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @ApiModel(value = "ArtistDto", description = "A DTO for an artist via rest")
 public class ArtistDto {
@@ -45,7 +39,7 @@ public class ArtistDto {
     this.surname = surname;
   }
 
-  /** Build the artist dto */
+  /** Build the artist dto. */
   public ArtistDto build() {
     ArtistDto artistDto = new ArtistDto();
     artistDto.setId(id);
@@ -53,5 +47,4 @@ public class ArtistDto {
     artistDto.setSurname(surname);
     return artistDto;
   }
-
 }

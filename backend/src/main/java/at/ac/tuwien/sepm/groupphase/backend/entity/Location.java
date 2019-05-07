@@ -91,7 +91,7 @@ public class Location {
     this.country = country;
   }
 
-  /** Build the location */
+  /** Build the location. */
   public Location build() {
     Location location = new Location();
     location.setCountry(country);

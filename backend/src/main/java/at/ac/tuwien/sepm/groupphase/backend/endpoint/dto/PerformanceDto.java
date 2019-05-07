@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDateTime;
@@ -52,7 +51,7 @@ public class PerformanceDto {
     this.name = name;
   }
 
-  /** Build the performance dto */
+  /** Build the performance dto. */
   public PerformanceDto build() {
     PerformanceDto performanceDto = new PerformanceDto();
     performanceDto.setId(id);

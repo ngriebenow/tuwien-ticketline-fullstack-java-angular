@@ -70,7 +70,7 @@ public class Performance {
     this.event = event;
   }
 
-  /** Build the performance */
+  /** Build the performance. */
   public Performance build() {
     Performance performance = new Performance();
     performance.setId(id);

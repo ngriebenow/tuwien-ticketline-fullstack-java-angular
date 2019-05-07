@@ -44,7 +44,7 @@ public class PriceCategory {
     this.event = event;
   }
 
-  /** Build the PriceCategory */
+  /** Build the PriceCategory. */
   public PriceCategory build() {
     PriceCategory priceCategory = new PriceCategory();
     priceCategory.setColor(color);

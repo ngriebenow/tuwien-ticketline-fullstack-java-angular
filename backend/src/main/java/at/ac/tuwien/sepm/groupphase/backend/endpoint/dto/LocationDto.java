@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -73,7 +72,7 @@ public class LocationDto {
     this.country = country;
   }
 
-  /** Build the location dto */
+  /** Build the location dto. */
   public LocationDto build() {
     LocationDto locationDto = new LocationDto();
     locationDto.setCountry(country);
