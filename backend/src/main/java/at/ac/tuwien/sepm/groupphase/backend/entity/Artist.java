@@ -68,6 +68,7 @@ public class Artist {
     this.events = events;
   }
 
+  /** Build the artist. */
   public Artist build() {
     Artist artist = new Artist();
 

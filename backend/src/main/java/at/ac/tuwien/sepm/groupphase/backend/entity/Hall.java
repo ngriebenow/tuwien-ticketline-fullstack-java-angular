@@ -13,8 +13,8 @@ import javax.persistence.SequenceGenerator;
 public class Hall {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_event_id")
-  @SequenceGenerator(name = "seq_event_id", sequenceName = "seq_event_id")
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_hall_id")
+  @SequenceGenerator(name = "seq_hall_id", sequenceName = "seq_hall_id")
   private long id;
 
   @Column(nullable = false)
@@ -25,6 +25,15 @@ public class Hall {
 
   @Embedded
   private Point boundaryPoint;
+
+  public Hall() {}
+
+  public Hall(int version, String name,
+      Point boundaryPoint) {
+    this.version = version;
+    this.name = name;
+    this.boundaryPoint = boundaryPoint;
+  }
 
   //private Location location;
 
@@ -68,4 +77,14 @@ public class Hall {
   public void setLocation(Location location) {
     this.location = location;
   }*/
+
+  /** Build the hall. */
+  public Hall build() {
+    Hall hall = new Hall();
+    hall.setId(id);
+    hall.setBoundaryPoint(boundaryPoint);
+    hall.setName(name);
+    hall.setVersion(version);
+    return hall;
+  }
 }

@@ -116,6 +116,7 @@ public class Event {
     this.hall = hall;
   }
 
+  /** Build the event. */
   public Event build() {
     Event event = new Event();
     event.setId(id);
