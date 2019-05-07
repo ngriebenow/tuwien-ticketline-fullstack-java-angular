@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -26,16 +28,21 @@ public class Hall {
   @Embedded
   private Point boundaryPoint;
 
+  @ManyToOne
+  @JoinColumn(nullable = false)
+  private Location location;
+
+
   public Hall() {}
 
-  public Hall(int version, String name,
-      Point boundaryPoint) {
+  public Hall(long id, int version, String name,
+      Point boundaryPoint, Location location) {
+    this.id = id;
     this.version = version;
     this.name = name;
     this.boundaryPoint = boundaryPoint;
   }
 
-  //private Location location;
 
   public long getId() {
     return id;
@@ -69,14 +76,14 @@ public class Hall {
     this.boundaryPoint = boundaryPoint;
   }
 
-  /*
+
   public Location getLocation() {
     return location;
   }
 
   public void setLocation(Location location) {
     this.location = location;
-  }*/
+  }
 
   /** Build the hall. */
   public Hall build() {

@@ -23,7 +23,7 @@ public class HallRepositoryTest {
   @Autowired
   HallRepository hallRepository;
 
-  private Hall H1 = new Hall(0,"Hall 1",new Point());
+  private Hall H1 = new Hall(0,1,"Hall 1",new Point(),null);
 
 
   @Before

@@ -22,7 +22,7 @@ public class LocationRepositoryTest {
   @Autowired
   LocationRepository locationRepository;
 
-  private Location L1 = new Location("Location 1","Street 1", "1000","Place 1", "Austria");
+  private Location L1 = new Location(0,"Location 1","Street 1", "1000","Place 1", "Austria");
 
 
   @Before

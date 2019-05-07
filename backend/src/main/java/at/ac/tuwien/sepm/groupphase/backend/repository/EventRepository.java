@@ -8,11 +8,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
 
-  /**
-   * Find all event entries ordered by published at name (ascending).
-   *
-   * @return ordered list of all event entries
-   */
-  List<Event> findAllByOrderByNameAsc();
-
 }

@@ -30,8 +30,9 @@ public class Location {
   @Column(nullable = false)
   private String country;
 
-  public Location(String name, String street, String postalCode, String place,
+  public Location(long id, String name, String street, String postalCode, String place,
       String country) {
+    this.id = id;
     this.name = name;
     this.street = street;
     this.postalCode = postalCode;

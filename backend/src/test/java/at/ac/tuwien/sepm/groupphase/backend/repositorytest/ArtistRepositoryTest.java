@@ -26,7 +26,7 @@ public class ArtistRepositoryTest {
   @Autowired
   ArtistRepository artistRepository;
 
-  private Artist A1 = new Artist("A1 name", "A1 surname",null);
+  private Artist A1 = new Artist(0L,"A1 name", "A1 surname",null);
 
 
   @Before
