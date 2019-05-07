@@ -10,7 +10,6 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -18,9 +17,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class SimpleEventService implements EventService {
 
-  @Autowired EventRepository eventRepository;
+  private EventRepository eventRepository;
 
-  @Autowired EventMapper eventMapper;
+  private EventMapper eventMapper;
+
+  public SimpleEventService(EventRepository eventRepository, EventMapper eventMapper) {
+    this.eventRepository = eventRepository;
+    this.eventMapper = eventMapper;
+  }
 
   @Override
   public EventDto getOneById(Long id) throws NotFoundException {

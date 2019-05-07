@@ -9,6 +9,13 @@ public class Point {
 
   private int coordinateY;
 
+  public Point() {}
+
+  public Point(int coordinateX, int coordinateY) {
+    this.coordinateX = coordinateX;
+    this.coordinateY = coordinateY;
+  }
+
   public int getCoordinateX() {
     return coordinateX;
   }
