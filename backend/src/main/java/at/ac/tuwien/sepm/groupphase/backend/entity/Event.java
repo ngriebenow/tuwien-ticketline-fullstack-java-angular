@@ -44,6 +44,20 @@ public class Event {
   private List<Artist> artists;
 
 
+  public Event(long id, String name, EventCategory category, String content, Duration duration,
+      Hall hall, List<Artist> artists) {
+    this.id = id;
+    this.name = name;
+    this.category = category;
+    this.content = content;
+    this.duration = duration;
+    this.hall = hall;
+    this.artists = artists;
+  }
+
+  public Event() {
+  }
+
   public List<Artist> getArtists() {
     return artists;
   }
@@ -67,7 +81,6 @@ public class Event {
   public void setName(String name) {
     this.name = name;
   }
-
 
   public EventCategory getCategory() {
     return category;

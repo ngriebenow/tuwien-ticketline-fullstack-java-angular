@@ -1,12 +1,17 @@
 package at.ac.tuwien.sepm.groupphase.backend.repositorytest;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
+
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,38 +25,24 @@ public class EventRepositoryTest {
   @Autowired
   EventRepository eventRepository;
 
+  private Event E1 = new Event(0,"Event1",EventCategory.CINEMA,"Event1 Content",Duration.ofHours(2),null,null);
+
+
+  @Before
+  public void initialization() {
+    E1 = eventRepository.save(E1);
+  }
 
   @Test
-  public void test() {
-    Event e = new Event();
+  public void givenEventSaved_whenFindEventById_thenReturnEvent() {
+    Event retE1 = eventRepository.findById(E1.getId()).orElseThrow(NotFoundException::new);
+    assertThat(retE1,is(equalTo(E1)));
+  }
 
-    e.setName("name");
-    e.setContent("content");
-    e.setDuration(Duration.ofHours(2));
-    e.setCategory(EventCategory.CINEMA);
-
-    List<Artist> artists = new ArrayList<>();
-    Artist a = new Artist();
-    a.setName("a1");
-    a.setSurname("a2");
-    artists.add(a);
-    e.setArtists(artists);
-
-    eventRepository.save(e);
-
-    Event e2 = new Event();
-
-    e2.setName("name");
-    e2.setContent("content");
-    e2.setDuration(Duration.ofHours(4));
-    e2.setCategory(EventCategory.CINEMA);
-
-    eventRepository.save(e2);
-
-    List<Event> l = eventRepository.findAll();
-
-    System.out.println(l);
-    }
+  @Test(expected = NotFoundException.class)
+  public void givenEventSaved_whenFindUnknownEventById_thenThrowNotFoundException() {
+    eventRepository.findById(-1L).orElseThrow(NotFoundException::new);
+  }
 
 }
 
