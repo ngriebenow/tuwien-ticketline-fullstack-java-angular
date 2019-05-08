@@ -1,7 +1,55 @@
-
-font {
+font{
   font-family: Roboto !important;
 }
+body{
+  font-family: Roboto !important;
+}
+input{
+  font-family: Roboto !important;
+}
+
+/*
+  Only Header!
+  No resizing!
+  Can be repositioned (up or down)
+*/
+h1{
+  font-size: 2.7rem !important;
+  padding: 30px;
+  text-align: center;
+  color: #8FBEFF;
+}
+
+/*
+  "Small headers"
+  Might be resized according to mock-ups
+*/
+h2{
+  color: #8FBEFF;
+  margin-bottom: 0 !important;
+}
+
+/*
+  h3 is ONLY for the text on the home-screen! do not use it anywhere else!
+*/
+
+/*
+  Text inside writable text-fields
+  might be resized when needed
+  changes to #FFFFFF when input is there
+*/
+h4{
+  color: #CFCFCF;
+}
+
+/*
+  Text for NOT writable text-fields
+  might be resized when needed
+*/
+h5{
+  color: #585858;
+}
+
 
 $theme-colors:(
   "primary": #8FBEFF,
@@ -10,31 +58,225 @@ $theme-colors:(
   "success": #43C62A,
 
   "lightgray": #EAEAEA,
-  "mediumGray": #C4C4C4,
+  "mediumGray": #CFCFCF,
   "darkGray": #585858,
   "lightOrange": #FFB426,
   "mediumBlue": #565DEF,
   "darkBlue": #1400AE
 );
 
-
+/*
+  primary button - light-blue
+  size can be changed accordingly
+*/
 .btn-primary{
   color: whitesmoke !important;
 }
 
+/*
+  secondary button - dark-orange
+  size can be changed accordingly
+*/
 .btn-secondary{
   color: whitesmoke !important;
-  //width: 16% !important;
 }
 
+/*
+  should only be used for the home-screen
+*/
 .card-img {
   height: 20vh;
   object-fit: cover;
 }
 
+/*
+  alignment for the "Zurück"-button
+  or alignment for the button in the right bottom corner
+*/
 .bottom-right {
   position: absolute;
   bottom: 50px;
   right: 70px;
 }
 
+/*
+  alignment for the second button above .bottom-right
+*/
+.bottom-right-above-1 {
+  position: absolute;
+  bottom: 120px;
+  right: 70px;
+}
+
+/*
+  alignment for the third button above .bottom-right-above-1
+*/
+.bottom-right-above-2 {
+  position: absolute;
+  bottom: 190px;
+  right: 70px;
+}
+
+/*
+  must be used for all buttons on the right!
+*/
+.btn-lg{
+  width: 100px !important;
+  height: 50px !important;
+}
+
+/*
+  if the text in a button is too large, apply this!
+*/
+.btn-font-size-reduced{
+  font-style: normal;
+  font-size: 14px !important;
+}
+
+/*
+  TEXT-FIELDS:
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1 align-self-center">
+        <h2>Hello</h2>
+      </div>
+      <div class="col-md-3">
+        <div class="text-field-norm"><h4 class="text-field-font">World</h4></div>
+      </div>
+    </div>
+  </div>
+*/
+
+
+
+/*
+  normal sized writable text-field
+  might be adjusted
+*/
+.text-field-norm{
+  width: 180px;
+  height: 38px;
+  background-color: #EAEAEA;
+  border-radius: 10px;
+}
+
+/*
+  add this to the h4/h5 as class in a text-field
+*/
+.text-field-font{
+  padding-top: 5px;
+  padding-left: 7px;
+}
+
+/*
+  large sized writable text-field
+  might be adjusted
+*/
+.text-field-lg{
+  margin-left: 20px;
+  width: 270px;
+  height: 38px;
+  background-color: #EAEAEA;
+  border-radius: 10px;
+}
+
+/*
+  small sized writable text-field
+  might be adjusted
+*/
+.text-field-sm{
+  margin-left: 20px;
+  width: 90px;
+  height: 38px;
+  background-color: #EAEAEA;
+  border-radius: 10px;
+}
+
+/*
+  normal sized NOT writable text-field
+  might be adjusted
+*/
+.text-field-nt-norm{
+  margin-left: 20px;
+  width: 180px;
+  height: 38px;
+  background-color: #EAEAEA;
+}
+
+/*
+  large sized NOT writable text-field
+  might be adjusted
+*/
+.text-field-nt-lg{
+  margin-left: 20px;
+  width: 270px;
+  height: 38px;
+  background-color: #EAEAEA;
+}
+
+/*
+  small sized NOT writable text-field
+  might be adjusted
+*/
+.text-field-nt-sm{
+  margin-left: 20px;
+  width: 90px;
+  height: 38px;
+  background-color: #EAEAEA;
+}
+
+/*
+  CHECKBOX:
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+*/
+
+/*
+  Checkbox Text:
+  Might be adjusted when needed
+*/
+.form-check-label{
+  font-family: Roboto !important;
+  color: #8FBEFF !important;
+  font-size: xx-large;
+  margin-left: 0;
+}
+
+/*
+  Checkbox:
+  Need to adjust "margin-left: 22% !important;"
+  when needed in the special scss-class
+*/
+.form-check-input{
+  height: 38px !important;
+  width: 38px !important;
+  border-radius: 10px !important;
+  background-color: #EAEAEA;
+}
+
+/*
+  DROPDOWN:
+  <div class="dropdown">
+    <button class="btn dropdown-toggle" style="background-color:#EAEAEA; color: #CFCFCF" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Dropdown button</button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href="#">Action</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+    </div>
+  </div>
+*/
+
+
+/*
+  TABLE:
+  use class="table table-striped"
+*/
+.table{
+  color:#585858 !important;
+}
+.table-striped tbody tr:nth-of-type(odd){
+  background-color: #EAEAEA !important;
+}
