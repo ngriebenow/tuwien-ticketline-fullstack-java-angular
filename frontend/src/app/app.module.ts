@@ -13,6 +13,9 @@ import {MessageComponent} from './components/message/message.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {httpInterceptorProviders} from './interceptors';
 import {Globals} from './global/globals';
+import { HallCreationComponent } from './components/hall-creation/hall-creation.component';
+import { HallCreationMenuComponent } from './components/hall-creation-menu/hall-creation-menu.component';
+import { HallCreationPlanComponent } from './components/hall-creation-plan/hall-creation-plan.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import {Globals} from './global/globals';
     HomeComponent,
     LoginComponent,
     MessageComponent,
+    HallCreationComponent,
+    HallCreationMenuComponent,
+    HallCreationPlanComponent,
   ],
   imports: [
     BrowserModule,
