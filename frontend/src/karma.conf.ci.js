@@ -28,6 +28,7 @@ module.exports = function (config) {
     browsers: [
       'ChromeCi',
     ],
+    browserDisconnectTimeout: 6000, // our ci server is too weak for lower values :(
     client: {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
