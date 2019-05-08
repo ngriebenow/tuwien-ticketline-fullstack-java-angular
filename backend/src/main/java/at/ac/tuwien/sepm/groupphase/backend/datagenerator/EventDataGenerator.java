@@ -64,6 +64,8 @@ public class EventDataGenerator {
               .country("Austria")
               .build();
 
+      location = locationRepository.save(location);
+
       Hall hall =
           new Hall.Builder()
               .boundaryPoint(new Point(1, 1))
@@ -72,7 +74,6 @@ public class EventDataGenerator {
               .version(1)
               .build();
 
-      location = locationRepository.save(location);
       hall = hallRepository.save(hall);
 
       for (int i = 0; i < NUMBER_OF_EVENTS_TO_GENERATE; i++) {
