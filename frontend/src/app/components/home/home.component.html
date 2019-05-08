@@ -4,44 +4,113 @@
     <h1 class="display-4">Willkommen bei TicketLine!</h1>
     <hr class="my-4">
   </div>
-  <a *ngIf="!authService.isLoggedIn()" class="btn btn-primary btn-lg" role="button" routerLink="/login">Login</a>
+    <a *ngIf="!authService.isLoggedIn()" class="btn btn-primary btn-lg" role="button" routerLink="/login">Login</a>
   </div>
+
   <div *ngIf="authService.isLoggedIn()">
-    <div *ngIf="authService.isLoggedIn()">
-      <div class="card-deck rounded-0" style="margin: 40px !important;">
-        <div class="card rounded-0">
-            <img class="card-img-top" src="../../../assets/veranstaltungen_gradient.png" alt="Veranstaltungen">
-          <a class="text-over-img" role="button" routerLink="/home" style="color: whitesmoke !important;">Veranstaltungen</a>
+    <div *ngIf="isAdmin()">
+      <div class="row" style="margin: 30px">
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/veranstaltungen_gradient.png" alt="Veranstaltungen">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">Veranstaltungen</h3>
+            </div>
+          </div>
         </div>
-        <div class="card rounded-0">
-          <img class="card-img-top" src="../../../assets/kunden_gradient.png" alt="Kundenverwaltung">
-          <a class="text-over-img" role="button" routerLink="/home" style="color: whitesmoke !important;">Kundenverwaltung</a>
-        </div>
-      </div>
-
-
-      <div class="card-deck rounded-0" style="margin: 40px !important;">
-        <div class="card rounded-0">
-          <img class="card-img-top" src="../../../assets/reservierung_gradient.png" alt="Card image cap">
-          <a class="text-over-img" role="button" routerLink="/home" style="color: whitesmoke !important;">Reservierungen/Rechnungen</a>
-        </div>
-        <div class="card rounded-0">
-          <img class="card-img-top" src="../../../assets/news_gradient.png" alt="News">
-          <a class="text-over-img" role="button" routerLink="/home" style="color: whitesmoke !important;">News</a>
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/kunden_gradient.png" alt="Kundenverwaltung">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">Kundenverwaltung</h3>
+            </div>
+          </div>
         </div>
       </div>
 
-
-      <div class="card-deck rounded-0" style="margin: 40px !important;">
-        <div class="card rounded-0">
-          <img class="card-img-top" src="../../../assets/orte_gradient.png" alt="Card image cap">
-          <a class="text-over-img" role="button" routerLink="/home" style="color: whitesmoke !important;">Orte/Säle</a>
+      <div class="row" style="margin: 30px">
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/reservierung_gradient.png" alt="Reservierungen">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">Reservierungen/Rechnungen</h3>
+            </div>
+          </div>
         </div>
-        <div class="card rounded-0">
-          <img class="card-img-top" src="../../../assets/nutzer_gradient.png" alt="Card image cap">
-          <a class="text-over-img" role="button" routerLink="/home" style="color: whitesmoke !important;">Nutzerverwaltung</a>
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/news_gradient.png" alt="News">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">News</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin: 30px">
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/orte_gradient.png" alt="Ort/Säle">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">Ort/Säle</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/nutzer_gradient.png" alt="Nutzerverwaltung">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">Nutzerverwaltung</h3>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+
+
+
+
+
+  <div *ngIf="authService.isLoggedIn()">
+    <div *ngIf="!isAdmin()">
+      <div class="row" style="margin: 30px">
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/veranstaltungen_gradient.png" alt="Veranstaltungen">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 180px; color: whitesmoke" class="text-center">Veranstaltungen</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/kunden_gradient.png" alt="Kundenverwaltung">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 180px; color: whitesmoke" class="text-center">Kundenverwaltung</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="row" style="margin: 30px">
+          <div class="col-md-6">
+            <div class="card" role="button" routerLink="/home">
+              <img class="card-img" src="../../../assets/reservierung_gradient.png" alt="Reservierungen">
+              <div class="card-img-overlay">
+                <h3 style="font-family: Roboto; margin-top: 180px; color: whitesmoke" class="text-center">Reservierungen/Rechnungen</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card" role="button" routerLink="/home">
+              <img class="card-img" src="../../../assets/news_gradient.png" alt="News">
+              <div class="card-img-overlay">
+                <h3 style="font-family: Roboto; margin-top: 180px; color: whitesmoke" class="text-center">News</h3>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
   </div>
 </div>

@@ -9,30 +9,30 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav mr-auto" *ngIf="authService.isLoggedIn()">
       <li class="nav-item">
-        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+        <a class="nav-link" routerLink="/message" routerLinkActive="active">Veranstlatunge</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+        <a class="nav-link" routerLink="/message" routerLinkActive="active">Reservierungen</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+        <a class="nav-link" routerLink="/message" routerLinkActive="active">Kundenverwatlung</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+        <a class="nav-link" routerLink="/message" routerLinkActive="active">News</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+        <a *ngIf="isAdmin()" class="nav-link"  routerLink="/message" routerLinkActive="active">Orte/Säle</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+        <a *ngIf="isAdmin()" class="nav-link"  routerLink="/message" routerLinkActive="active">Nutzerverwaltung</a>
       </li>
     </ul>
     <ul class="navbar-nav mr-5">
       <a *ngIf="!authService.isLoggedIn()" class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
       <li class="nav-item">
-        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Message</a>
+        <a *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/message" routerLinkActive="active">Userprofil</a>
       </li>
       <a (click)="authService.logoutUser()" *ngIf="authService.isLoggedIn()" class="nav-link" routerLink="/">Logout</a>
     </ul>
