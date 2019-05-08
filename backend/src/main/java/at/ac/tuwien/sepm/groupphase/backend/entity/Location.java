@@ -52,12 +52,12 @@ public class Location {
       return false;
     }
     Location location = (Location) o;
-    return Objects.equals(id, location.id) &&
-        Objects.equals(name, location.name) &&
-        Objects.equals(street, location.street) &&
-        Objects.equals(postalCode, location.postalCode) &&
-        Objects.equals(place, location.place) &&
-        Objects.equals(country, location.country);
+    return Objects.equals(id, location.id)
+        && Objects.equals(name, location.name)
+        && Objects.equals(street, location.street)
+        && Objects.equals(postalCode, location.postalCode)
+        && Objects.equals(place, location.place)
+        && Objects.equals(country, location.country);
   }
 
   @Override

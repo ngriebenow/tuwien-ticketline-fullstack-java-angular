@@ -39,9 +39,9 @@ public class Artist {
       return false;
     }
     Artist artist = (Artist) o;
-    return Objects.equals(id, artist.id) &&
-        Objects.equals(surname, artist.surname) &&
-        Objects.equals(name, artist.name);
+    return Objects.equals(id, artist.id)
+        && Objects.equals(surname, artist.surname)
+        && Objects.equals(name, artist.name);
   }
 
   @Override

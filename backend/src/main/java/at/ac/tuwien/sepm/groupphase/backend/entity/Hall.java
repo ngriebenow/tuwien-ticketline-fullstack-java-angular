@@ -51,11 +51,11 @@ public class Hall {
       return false;
     }
     Hall hall = (Hall) o;
-    return version == hall.version &&
-        Objects.equals(id, hall.id) &&
-        Objects.equals(name, hall.name) &&
-        Objects.equals(boundaryPoint, hall.boundaryPoint) &&
-        Objects.equals(location, hall.location);
+    return version == hall.version
+        && Objects.equals(id, hall.id)
+        && Objects.equals(name, hall.name)
+        && Objects.equals(boundaryPoint, hall.boundaryPoint)
+        && Objects.equals(location, hall.location);
   }
 
   @Override

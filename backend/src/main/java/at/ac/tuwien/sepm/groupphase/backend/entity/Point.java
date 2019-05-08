@@ -17,6 +17,11 @@ public class Point {
     setCoordinateY(builder.coordinateY);
   }
 
+  public Point(int coordinateX, int coordinateY) {
+    this.coordinateX = coordinateX;
+    this.coordinateY = coordinateY;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

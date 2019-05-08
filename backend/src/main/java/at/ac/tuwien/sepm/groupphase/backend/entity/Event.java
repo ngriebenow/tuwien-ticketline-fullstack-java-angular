@@ -31,7 +31,7 @@ public class Event {
   @Enumerated(EnumType.ORDINAL)
   private EventCategory category;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "TEXT")
   private String content;
 
   @Column(nullable = false)
@@ -68,13 +68,13 @@ public class Event {
       return false;
     }
     Event event = (Event) o;
-    return Objects.equals(id, event.id) &&
-        Objects.equals(name, event.name) &&
-        category == event.category &&
-        Objects.equals(content, event.content) &&
-        Objects.equals(duration, event.duration) &&
-        Objects.equals(hall, event.hall) &&
-        Objects.equals(artists, event.artists);
+    return Objects.equals(id, event.id)
+        && Objects.equals(name, event.name)
+        && category == event.category
+        && Objects.equals(content, event.content)
+        && Objects.equals(duration, event.duration)
+        && Objects.equals(hall, event.hall)
+        && Objects.equals(artists, event.artists);
   }
 
   @Override

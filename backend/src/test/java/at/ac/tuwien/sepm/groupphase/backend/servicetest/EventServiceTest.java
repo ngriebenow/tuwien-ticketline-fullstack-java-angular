@@ -84,5 +84,4 @@ public class EventServiceTest {
   public void givenNoEvent_whenFindEventById_thenThrowNotFoundException() {
     BDDMockito.given(eventRepository.findById(-1L)).willThrow(new NotFoundException());
   }
-
 }

@@ -48,10 +48,10 @@ public class Performance {
       return false;
     }
     Performance that = (Performance) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(startAt, that.startAt) &&
-        Objects.equals(name, that.name) &&
-        Objects.equals(event, that.event);
+    return Objects.equals(id, that.id)
+        && Objects.equals(startAt, that.startAt)
+        && Objects.equals(name, that.name)
+        && Objects.equals(event, that.event);
   }
 
   @Override

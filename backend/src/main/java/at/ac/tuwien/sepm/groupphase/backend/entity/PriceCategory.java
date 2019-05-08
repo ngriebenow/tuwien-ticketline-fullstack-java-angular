@@ -50,11 +50,11 @@ public class PriceCategory {
       return false;
     }
     PriceCategory that = (PriceCategory) o;
-    return priceInCents == that.priceInCents &&
-        Objects.equals(id, that.id) &&
-        Objects.equals(color, that.color) &&
-        Objects.equals(name, that.name) &&
-        Objects.equals(event, that.event);
+    return priceInCents == that.priceInCents
+        && Objects.equals(id, that.id)
+        && Objects.equals(color, that.color)
+        && Objects.equals(name, that.name)
+        && Objects.equals(event, that.event);
   }
 
   @Override
