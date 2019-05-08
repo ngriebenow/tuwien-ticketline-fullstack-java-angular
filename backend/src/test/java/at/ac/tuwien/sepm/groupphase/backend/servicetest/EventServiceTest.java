@@ -10,6 +10,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.time.Duration;
@@ -73,10 +74,15 @@ public class EventServiceTest {
   }
 
   @Test
-  public void whenFindEventById_thenReturnEvent() {
+  public void givenEvent_whenFindEventById_thenReturnEvent() {
     BDDMockito.given(eventRepository.findById(100L)).willReturn(Optional.of(E1));
     Event retE1 = eventMapper.eventDtoToEvent(eventService.getOneById(100L));
     Assert.assertThat(retE1, is(equalTo(E1)));
+  }
+
+  @Test(expected = NotFoundException.class)
+  public void givenNoEvent_whenFindEventById_thenThrowNotFoundException() {
+    BDDMockito.given(eventRepository.findById(-1L)).willThrow(new NotFoundException());
   }
 
 }
