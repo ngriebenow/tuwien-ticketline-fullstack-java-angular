@@ -1,3 +1,5 @@
+import {Artist} from './artist';
+
 export class Event {
   constructor(
     public id: number,
@@ -5,7 +7,7 @@ export class Event {
     public category: string,
     public content: string,
     public duration: string,
-    public artists: Event[]
+    public artists: Artist[]
     ) {
   }
 }
