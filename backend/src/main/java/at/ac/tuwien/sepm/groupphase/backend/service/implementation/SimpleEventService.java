@@ -28,7 +28,8 @@ public class SimpleEventService implements EventService {
 
   @Override
   public EventDto getOneById(Long id) throws NotFoundException {
-    return null;
+    return eventMapper.eventToEventDto(
+        eventRepository.findById(id).orElseThrow(NotFoundException::new));
   }
 
   @Override

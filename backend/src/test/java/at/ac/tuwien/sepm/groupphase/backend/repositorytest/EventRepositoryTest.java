@@ -23,8 +23,11 @@ public class EventRepositoryTest {
   @Autowired EventRepository eventRepository;
 
   private Event E1 =
-      new Event(
-          0, "Event1", EventCategory.CINEMA, "Event1 Content", Duration.ofHours(2), null, null);
+      new Event.Builder()
+          .name("Event1")
+          .category(EventCategory.CINEMA)
+          .duration(Duration.ofHours(2))
+          .build();
 
   @Before
   public void initialization() {

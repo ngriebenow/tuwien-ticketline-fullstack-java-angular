@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ public class Hall {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_hall_id")
   @SequenceGenerator(name = "seq_hall_id", sequenceName = "seq_hall_id")
-  private long id;
+  private Long id;
 
   @Column(nullable = false)
   private int version;
@@ -33,18 +34,40 @@ public class Hall {
   public Hall() {}
 
   /** Construct the event. */
-  public Hall(long id, int version, String name, Point boundaryPoint, Location location) {
-    this.id = id;
-    this.version = version;
-    this.name = name;
-    this.boundaryPoint = boundaryPoint;
+  private Hall(Builder builder) {
+    setId(builder.id);
+    setVersion(builder.version);
+    setName(builder.name);
+    setBoundaryPoint(builder.boundaryPoint);
+    setLocation(builder.location);
   }
 
-  public long getId() {
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Hall hall = (Hall) o;
+    return version == hall.version &&
+        Objects.equals(id, hall.id) &&
+        Objects.equals(name, hall.name) &&
+        Objects.equals(boundaryPoint, hall.boundaryPoint) &&
+        Objects.equals(location, hall.location);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, version, name, boundaryPoint, location);
+  }
+
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -80,13 +103,43 @@ public class Hall {
     this.location = location;
   }
 
-  /** Build the hall. */
-  public Hall build() {
-    Hall hall = new Hall();
-    hall.setId(id);
-    hall.setBoundaryPoint(boundaryPoint);
-    hall.setName(name);
-    hall.setVersion(version);
-    return hall;
+  public static final class Builder {
+
+    private Long id;
+    private int version;
+    private String name;
+    private Point boundaryPoint;
+    private Location location;
+
+    public Builder() {}
+
+    public Builder id(Long val) {
+      id = val;
+      return this;
+    }
+
+    public Builder version(int val) {
+      version = val;
+      return this;
+    }
+
+    public Builder name(String val) {
+      name = val;
+      return this;
+    }
+
+    public Builder boundaryPoint(Point val) {
+      boundaryPoint = val;
+      return this;
+    }
+
+    public Builder location(Location val) {
+      location = val;
+      return this;
+    }
+
+    public Hall build() {
+      return new Hall(this);
+    }
   }
 }

@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ public class Performance {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_hall_id")
   @SequenceGenerator(name = "seq_hall_id", sequenceName = "seq_hall_id")
-  private long id;
+  private Long id;
 
   @Column(nullable = false)
   private LocalDateTime startAt;
@@ -29,20 +30,40 @@ public class Performance {
   private Event event;
 
   /** Construct the event. */
-  public Performance(long id, LocalDateTime startAt, String name, Event event) {
-    this.id = id;
-    this.startAt = startAt;
-    this.name = name;
-    this.event = event;
-  }
-
   public Performance() {}
 
-  public long getId() {
+  private Performance(Builder builder) {
+    setId(builder.id);
+    setStartAt(builder.startAt);
+    setName(builder.name);
+    setEvent(builder.event);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Performance that = (Performance) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(startAt, that.startAt) &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(event, that.event);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, startAt, name, event);
+  }
+
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -70,13 +91,37 @@ public class Performance {
     this.event = event;
   }
 
-  /** Build the performance. */
-  public Performance build() {
-    Performance performance = new Performance();
-    performance.setId(id);
-    performance.setEvent(event);
-    performance.setName(name);
-    performance.setStartAt(startAt);
-    return performance;
+  public static final class Builder {
+
+    private Long id;
+    private LocalDateTime startAt;
+    private String name;
+    private Event event;
+
+    public Builder() {}
+
+    public Builder id(Long val) {
+      id = val;
+      return this;
+    }
+
+    public Builder startAt(LocalDateTime val) {
+      startAt = val;
+      return this;
+    }
+
+    public Builder name(String val) {
+      name = val;
+      return this;
+    }
+
+    public Builder event(Event val) {
+      event = val;
+      return this;
+    }
+
+    public Performance build() {
+      return new Performance(this);
+    }
   }
 }
