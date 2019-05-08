@@ -1,0 +1,15 @@
+<div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error! </strong> {{ errorMessage }}
+  <button (click)="vanishError()" aria-label="Close" class="close" data-dismiss="alert" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<div *ngIf="event">
+  <h1>{{event.name}}</h1>
+  <h2>{{event.content}}</h2>
+  <h2>{{event.artists}}</h2>
+  <h2>{{event.duration}}</h2>
+  <h2>{{event.category}}</h2>
+</div>
