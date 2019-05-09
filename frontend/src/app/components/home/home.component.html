@@ -1,11 +1,116 @@
-<div class="jumbotron mt-5">
-  <h1 class="display-4">Welcome to the SEPM group phase!</h1>
-  <hr class="my-4">
-  <a *ngIf="!authService.isLoggedIn()" class="btn btn-primary btn-lg" role="button" routerLink="/login">Login</a>
+<div class="jumbotron mt-md-0">
+  <div class="text-center">
+  <div *ngIf="!authService.isLoggedIn()" class="text-center">
+    <h1 class="display-4">Willkommen bei TicketLine!</h1>
+    <hr class="my-4">
+  </div>
+    <a *ngIf="!authService.isLoggedIn()" class="btn btn-primary btn-lg" role="button" routerLink="/login">Login</a>
+  </div>
+
   <div *ngIf="authService.isLoggedIn()">
-    <p>Check out the latest message from the SEPM group phase.</p>
-    <p class="lead">
-      <a class="btn btn-primary btn-lg" role="button" routerLink="/message">Message</a>
-    </p>
+    <div *ngIf="isAdmin()">
+      <div class="row" style="margin: 30px">
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/veranstaltungen_gradient.png" alt="Veranstaltungen">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">Veranstaltungen</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/kunden_gradient.png" alt="Kundenverwaltung">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">Kundenverwaltung</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin: 30px">
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/reservierung_gradient.png" alt="Reservierungen">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">Reservierungen/Rechnungen</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/news_gradient.png" alt="News">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">News</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin: 30px">
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/orte_gradient.png" alt="Ort/Säle">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">Ort/Säle</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" src="../../../assets/nutzer_gradient.png" alt="Nutzerverwaltung">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 100px; color: whitesmoke" class="text-center">Nutzerverwaltung</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div *ngIf="authService.isLoggedIn()">
+    <div *ngIf="!isAdmin()">
+      <div class="row" style="margin: 30px">
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" style="height: 30vh" src="../../../assets/veranstaltungen_gradient.png" alt="Veranstaltungen">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 180px; color: whitesmoke" class="text-center">Veranstaltungen</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card" role="button" routerLink="/home">
+            <img class="card-img" style="height: 30vh" src="../../../assets/kunden_gradient.png" alt="Kundenverwaltung">
+            <div class="card-img-overlay">
+              <h3 style="font-family: Roboto; margin-top: 180px; color: whitesmoke" class="text-center">Kundenverwaltung</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="row" style="margin: 30px">
+          <div class="col-md-6">
+            <div class="card" role="button" routerLink="/home">
+              <img class="card-img" style="height: 30vh" src="../../../assets/reservierung_gradient.png" alt="Reservierungen">
+              <div class="card-img-overlay">
+                <h3 style="font-family: Roboto; margin-top: 180px; color: whitesmoke" class="text-center">Reservierungen/Rechnungen</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card" role="button" routerLink="/home">
+              <img class="card-img" style="height: 30vh" src="../../../assets/news_gradient.png" alt="News">
+              <div class="card-img-overlay">
+                <h3 style="font-family: Roboto; margin-top: 180px; color: whitesmoke" class="text-center">News</h3>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
   </div>
 </div>

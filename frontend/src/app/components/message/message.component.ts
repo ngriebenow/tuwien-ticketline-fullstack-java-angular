@@ -142,5 +142,4 @@ export class MessageComponent implements OnInit {
     this.messageForm.reset();
     this.submitted = false;
   }
-
 }
