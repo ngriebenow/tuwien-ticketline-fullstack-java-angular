@@ -2,17 +2,17 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 public class Picture {
 
-  private long id;
+  private Long id;
 
   private byte[] data;
 
   private News news;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
