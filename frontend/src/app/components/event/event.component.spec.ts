@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule} from '@angular/common/http/testing';
 import { EventComponent } from './event.component';
+import { Globals} from '../../global/globals';
 
 describe('EventComponent', () => {
   let component: EventComponent;
@@ -8,7 +9,15 @@ describe('EventComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EventComponent ]
+      declarations: [
+        EventComponent,
+      ],
+      imports: [
+        HttpClientTestingModule,
+      ],
+      providers: [
+        Globals,
+      ]
     })
     .compileComponents();
   }));
@@ -23,3 +32,5 @@ describe('EventComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+
