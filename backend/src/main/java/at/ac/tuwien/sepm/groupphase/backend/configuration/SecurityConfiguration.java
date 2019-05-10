@@ -172,7 +172,7 @@ public class SecurityConfiguration {
               "/styles*.js",
               "/vendor*.js",
               "/")
-          .permitAll().antMatchers(HttpMethod.POST,"/users").permitAll();
+          .permitAll();
       if (h2ConsolePath != null && h2AccessMatcher != null) {
         http.authorizeRequests().antMatchers(h2ConsolePath + "/**").access(h2AccessMatcher);
       }
