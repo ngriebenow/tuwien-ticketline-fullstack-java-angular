@@ -6,9 +6,11 @@ public class UserDto {
 
   private String password;
 
-  private boolean isLocked;
+  private int failedLoginCounter;
 
-  private boolean isAdmin;
+  private boolean enabled;
+
+  private String authority;
 
   public String getUsername() {
     return username;
@@ -26,19 +28,27 @@ public class UserDto {
     this.password = password;
   }
 
-  public boolean isLocked() {
-    return isLocked;
+  public int getFailedLoginCounter() {
+    return failedLoginCounter;
   }
 
-  public void setLocked(boolean locked) {
-    isLocked = locked;
+  public void setFailedLoginCounter(int failedLoginCounter) {
+    this.failedLoginCounter = failedLoginCounter;
   }
 
-  public boolean isAdmin() {
-    return isAdmin;
+  public boolean isEnabled() {
+    return enabled;
   }
 
-  public void setAdmin(boolean admin) {
-    isAdmin = admin;
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public String getAuthority() {
+    return authority;
+  }
+
+  public void setAuthority(String authority) {
+    this.authority = authority;
   }
 }

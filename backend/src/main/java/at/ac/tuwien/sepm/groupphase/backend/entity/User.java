@@ -1,28 +1,35 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class User {
 
-  private int username;
+  @Id
+  private String username;
 
-  private byte[] password;
+  private String password;
 
   private int failedLoginCounter;
 
-  private boolean isLocked;
+  private boolean enabled;
 
-  public int getUsername() {
+  private String authority;
+
+  public String getUsername() {
     return username;
   }
 
-  public void setUsername(int username) {
+  public void setUsername(String username) {
     this.username = username;
   }
 
-  public byte[] getPassword() {
+  public String getPassword() {
     return password;
   }
 
-  public void setPassword(byte[] password) {
+  public void setPassword(String password) {
     this.password = password;
   }
 
@@ -34,11 +41,19 @@ public class User {
     this.failedLoginCounter = failedLoginCounter;
   }
 
-  public boolean isLocked() {
-    return isLocked;
+  public boolean isEnabled() {
+    return enabled;
   }
 
-  public void setLocked(boolean locked) {
-    isLocked = locked;
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public String getAuthority() {
+    return authority;
+  }
+
+  public void setAuthority(String authority) {
+    this.authority = authority;
   }
 }
