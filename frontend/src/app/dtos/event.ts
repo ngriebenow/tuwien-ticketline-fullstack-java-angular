@@ -1,5 +1,6 @@
 import {Artist} from './artist';
 import {Hall} from './hall';
+import {PriceCategory} from './price-category';
 
 export class Event {
   constructor(
@@ -9,7 +10,8 @@ export class Event {
     public content: string,
     public duration: string,
     public hall: Hall,
-    public artists: Artist[]
+    public artists: Artist[],
+    public priceCategories: PriceCategory[]
     ) {
   }
 }
