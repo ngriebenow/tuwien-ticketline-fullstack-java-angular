@@ -29,6 +29,10 @@ public class News {
   @Column(nullable = false)
   private String text;
 
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /** Construct the news entry. */
   public News() {}
 
