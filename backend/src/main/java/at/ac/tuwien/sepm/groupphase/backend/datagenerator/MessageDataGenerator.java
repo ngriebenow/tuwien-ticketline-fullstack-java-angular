@@ -6,14 +6,11 @@ import com.github.javafaker.Faker;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 
-@Profile("generateData")
-@Component
+// @Profile("generateData")
+// @Component
 public class MessageDataGenerator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(MessageDataGenerator.class);
@@ -27,9 +24,9 @@ public class MessageDataGenerator {
     faker = new Faker();
   }
 
-  @PostConstruct
+  // @PostConstruct
   private void generateMessage() {
-    if (messageRepository.count() > 0) {
+    if (messageRepository.count() > 0 && false) {
       LOGGER.info("message already generated");
     } else {
       LOGGER.info("generating {} message entries", NUMBER_OF_NEWS_TO_GENERATE);

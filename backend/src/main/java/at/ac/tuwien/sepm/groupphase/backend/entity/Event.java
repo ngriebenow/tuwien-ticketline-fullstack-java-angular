@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -22,7 +23,7 @@ public class Event {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_event_id")
   @SequenceGenerator(name = "seq_event_id", sequenceName = "seq_event_id")
-  private long id;
+  private Long id;
 
   @Column(nullable = false)
   private String name;
@@ -30,7 +31,7 @@ public class Event {
   @Enumerated(EnumType.ORDINAL)
   private EventCategory category;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "TEXT")
   private String content;
 
   @Column(nullable = false)
@@ -46,24 +47,40 @@ public class Event {
   private List<Artist> artists;
 
   /** Construct the event. */
-  public Event(
-      long id,
-      String name,
-      EventCategory category,
-      String content,
-      Duration duration,
-      Hall hall,
-      List<Artist> artists) {
-    this.id = id;
-    this.name = name;
-    this.category = category;
-    this.content = content;
-    this.duration = duration;
-    this.hall = hall;
-    this.artists = artists;
+  public Event() {}
+
+  private Event(Builder builder) {
+    setId(builder.id);
+    setName(builder.name);
+    setCategory(builder.category);
+    setContent(builder.content);
+    setDuration(builder.duration);
+    setHall(builder.hall);
+    setArtists(builder.artists);
   }
 
-  public Event() {}
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Event event = (Event) o;
+    return Objects.equals(id, event.id)
+        && Objects.equals(name, event.name)
+        && category == event.category
+        && Objects.equals(content, event.content)
+        && Objects.equals(duration, event.duration)
+        && Objects.equals(hall, event.hall)
+        && Objects.equals(artists, event.artists);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, name, category, content, duration, hall, artists);
+  }
 
   public List<Artist> getArtists() {
     return artists;
@@ -73,11 +90,11 @@ public class Event {
     this.artists = artists;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -121,14 +138,55 @@ public class Event {
     this.hall = hall;
   }
 
-  /** Build the event. */
-  public Event build() {
-    Event event = new Event();
-    event.setId(id);
-    event.setContent(content);
-    event.setName(name);
-    event.setCategory(category);
-    event.setDuration(duration);
-    return event;
+  public static final class Builder {
+
+    private Long id;
+    private String name;
+    private EventCategory category;
+    private String content;
+    private Duration duration;
+    private Hall hall;
+    private @Size(min = 1) List<Artist> artists;
+
+    public Builder() {}
+
+    public Builder id(Long val) {
+      id = val;
+      return this;
+    }
+
+    public Builder name(String val) {
+      name = val;
+      return this;
+    }
+
+    public Builder category(EventCategory val) {
+      category = val;
+      return this;
+    }
+
+    public Builder content(String val) {
+      content = val;
+      return this;
+    }
+
+    public Builder duration(Duration val) {
+      duration = val;
+      return this;
+    }
+
+    public Builder hall(Hall val) {
+      hall = val;
+      return this;
+    }
+
+    public Builder artists(@Size(min = 1) List<Artist> val) {
+      artists = val;
+      return this;
+    }
+
+    public Event build() {
+      return new Event(this);
+    }
   }
 }

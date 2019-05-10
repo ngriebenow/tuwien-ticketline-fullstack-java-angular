@@ -20,7 +20,14 @@ public class LocationRepositoryTest {
 
   @Autowired LocationRepository locationRepository;
 
-  private Location L1 = new Location(0, "Location 1", "Street 1", "1000", "Place 1", "Austria");
+  private Location L1 =
+      new Location.Builder()
+          .name("Location 1")
+          .street("Street 1")
+          .postalCode("1000")
+          .place("Place 1")
+          .country("Austria")
+          .build();
 
   @Before
   public void initialization() {

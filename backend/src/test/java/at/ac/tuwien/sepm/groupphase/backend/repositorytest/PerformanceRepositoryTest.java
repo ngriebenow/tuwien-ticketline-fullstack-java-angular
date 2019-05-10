@@ -21,7 +21,8 @@ public class PerformanceRepositoryTest {
 
   @Autowired PerformanceRepository performanceRepository;
 
-  private Performance P1 = new Performance(0, LocalDateTime.now(), "Performance 1", null);
+  private Performance P1 =
+      new Performance.Builder().startAt(LocalDateTime.now()).name("Performance 1").build();
 
   @Before
   public void initialization() {

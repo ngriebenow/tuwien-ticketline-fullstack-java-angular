@@ -1,32 +1,43 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.time.Duration;
 import java.util.List;
 
+@ApiModel(value = "EventDto", description = "A DTO for an event via rest")
 public class EventDto {
 
-  private long id;
+  @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
+  private Long id;
 
+  @ApiModelProperty(required = true, name = "The name of the event")
   private String name;
 
+  @ApiModelProperty(required = true, name = "The category of the event")
   private EventCategory category;
 
+  @ApiModelProperty(name = "The content description of the event")
   private String content;
 
+  @ApiModelProperty(required = true, name = "The duration of the event")
   private Duration duration;
 
+  @ApiModelProperty(required = true, name = "The artists who feature the event")
   private List<ArtistDto> artists;
 
+  @ApiModelProperty(required = true, name = "The hall in which the event takes place")
   private HallDto hall;
 
+  @ApiModelProperty(required = true, name = "The price categories of the event")
   private List<PriceCategoryDto> priceCategories;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -84,5 +95,16 @@ public class EventDto {
 
   public void setPriceCategories(List<PriceCategoryDto> priceCategories) {
     this.priceCategories = priceCategories;
+  }
+
+  /** Build the event dto. */
+  public EventDto build() {
+    EventDto eventDto = new EventDto();
+    eventDto.setId(id);
+    eventDto.setContent(content);
+    eventDto.setName(name);
+    eventDto.setCategory(category);
+    eventDto.setDuration(duration);
+    return eventDto;
   }
 }
