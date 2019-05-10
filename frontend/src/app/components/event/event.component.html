@@ -1,0 +1,73 @@
+<div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error! </strong> {{ errorMessage }}
+  <button (click)="vanishError()" aria-label="Close" class="close" data-dismiss="alert" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+
+
+<div class="container" *ngIf="event">
+  <div class="row-12">
+    <h1 align="center">{{event.name}}</h1>
+  </div>
+  <div class="row">
+    <div class="col-1">
+      <div class="row">
+        <h2>Ort</h2>
+      </div>
+      <div class="row"></div>
+      <div class="row"></div>
+      <div class="row">
+        <h2>Künstler</h2>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="row">
+        <label class="gen_label">{{event.hall.location.name}}</label>
+      </div>
+      <div class="row">
+        <label class="gen_label">{{event.hall.location.place}}</label>
+      </div>
+      <div class="row"></div>
+      <div class="row">
+        <label class="gen_label">{{event.artists[0].name}}</label>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="row">
+        <label class="gen_label">{{event.hall.location.street}}</label>
+      </div>
+      <div class="row">
+        <label class="gen_label">{{event.hall.location.country}}</label>
+      </div>
+      <div class="row"></div>
+      <div class="row">
+        <label class="gen_label">{{event.artists[0].surname}}</label>
+      </div>
+    </div>
+    <div class="col-1">
+      <div class="row">
+        <label class="gen_label">{{event.hall.location.postalCode}}</label>
+      </div>
+      <div class="row"></div>
+      <div class="row"></div>
+      <div class="row">
+        <button>Mehr</button>
+      </div>
+    </div>
+    <div class="col-1">
+      <div class="row">
+        <h2>Inhalt</h2>
+      </div>
+      <div class="row"></div>
+      <div class="row"></div>
+      <div class="row"></div>
+    </div>
+
+    <div class="col-5">
+      <label class="gen_label">{{event.content}}</label>
+    </div>
+  </div>
+</div>

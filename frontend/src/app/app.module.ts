@@ -16,6 +16,7 @@ import {Globals} from './global/globals';
 import { HallCreationComponent } from './components/hall-creation/hall-creation.component';
 import { HallCreationMenuComponent } from './components/hall-creation-menu/hall-creation-menu.component';
 import { HallCreationPlanComponent } from './components/hall-creation-plan/hall-creation-plan.component';
+import { EventComponent } from './components/event/event.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { HallCreationPlanComponent } from './components/hall-creation-plan/hall-
     HallCreationComponent,
     HallCreationMenuComponent,
     HallCreationPlanComponent,
+    EventComponent,
   ],
   imports: [
     BrowserModule,
