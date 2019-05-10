@@ -63,7 +63,7 @@ public class SimpleEventService implements EventService {
   public List<PerformanceDto> getPerformancesOfEvent(Long id, Pageable pageable)
           throws NotFoundException {
 
-    Event event = eventRepository.getOne(id);
+    Event event = eventRepository.findById(id).orElseThrow(NotFoundException::new);
     List<PerformanceDto> performanceDtos = new ArrayList<>();
     performanceRepository
             .findAllByEvent(event,pageable)

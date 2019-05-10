@@ -5,13 +5,16 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.HallRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import com.github.javafaker.Faker;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -30,6 +33,7 @@ public class EventDataGenerator {
   private final ArtistRepository artistRepository;
   private final HallRepository hallRepository;
   private final LocationRepository locationRepository;
+  private final PerformanceRepository performanceRepository;
 
   private final Faker faker;
 
@@ -38,11 +42,13 @@ public class EventDataGenerator {
       EventRepository eventRepository,
       ArtistRepository artistRepository,
       HallRepository hallRepository,
-      LocationRepository locationRepository) {
+      LocationRepository locationRepository,
+      PerformanceRepository performanceRepository) {
     this.eventRepository = eventRepository;
     this.artistRepository = artistRepository;
     this.hallRepository = hallRepository;
     this.locationRepository = locationRepository;
+    this.performanceRepository = performanceRepository;
 
     faker = new Faker();
   }
@@ -93,8 +99,27 @@ public class EventDataGenerator {
                 .build();
         LOGGER.debug("saving event {}", event);
 
+
+
         eventRepository.save(event);
+
+        Performance perf1 = new Performance.Builder()
+                .name("Perf 1")
+                .startAt(LocalDateTime.now())
+                .event(event)
+                .build();
+
+        Performance perf2 = new Performance.Builder()
+                .name("Perf 2")
+                .startAt(LocalDateTime.now())
+                .event(event)
+                .build();
+
+        performanceRepository.save(perf1);
+        performanceRepository.save(perf2);
       }
+
+
     }
   }
 }

@@ -1,5 +1,6 @@
 import {Component, OnInit, Output} from '@angular/core';
 import {EventService} from '../../services/event.service';
+import {Message} from "../../dtos/message";
 
 @Component({
   selector: 'app-event',
@@ -11,13 +12,12 @@ export class EventComponent implements OnInit {
   constructor(private eventService: EventService) {}
 
   @Output() event: Event;
+  @Output() performances: Performance[] = [];
 
-  getEvent(): Event {
-    return this.event;
-  }
 
   ngOnInit() {
     this.loadEvent(3);
+    this.loadPerformances(3);
   }
 
 
@@ -29,5 +29,15 @@ export class EventComponent implements OnInit {
     this.eventService.getEventById(id).subscribe(
       event => this.event = event);
   }
+
+  /**
+   * Loads the performances of a given event id
+   * @param id the id of the event whose performances should be loaded
+   */
+  loadPerformances(id: number) {
+    this.eventService.getPerformancesById(id).subscribe(
+      performances => this.performances = performances as Performance[]);
+  }
+
 
 }
