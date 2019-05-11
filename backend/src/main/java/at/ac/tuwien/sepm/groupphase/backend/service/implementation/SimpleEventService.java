@@ -77,13 +77,12 @@ public class SimpleEventService implements EventService {
         UserSpecification.belongsTo("eventCategory",eventFilterDto.getEventCategory())
     );*/
 
-    Specification<Event> specification = likeHallLocation(eventFilterDto.getHall());
+    Specification<Event> specification = likeHallLocation(eventFilterDto);
 
 
-    List<Event> events = eventRepository.findAllByNameContainsAndCategoryEqualsAndArtistsContainingAndContentContains(
+    List<Event> events = eventRepository.findAllByNameContainsAndCategoryEqualsAndContentContains(
         eventFilterDto.getName(),
         eventFilterDto.getEventCategory(),
-        artistMapper.artistDtoToArtist(eventFilterDto.getArtist()),
         eventFilterDto.getContent(),
         specification,
         pageable);
@@ -109,19 +108,32 @@ public class SimpleEventService implements EventService {
 
 
   /** Javadoc. */
-  public static Specification<Event> likeHallLocation(HallDto hallDto) {
+  public static Specification<Event> likeHallLocation(EventFilterDto eventFilterDto) {
     return new Specification<Event>() {
       @Override
       public Predicate toPredicate(
           Root<Event> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
-        return criteriaBuilder.equal(root.get("hall").get("name"),hallDto.getName());
+        Predicate hallName = criteriaBuilder.equal(root.get("hall").get("name"),
+            eventFilterDto.getHallName());
+        Predicate hallId = criteriaBuilder.equal(root.get("hall").get("id"),
+            eventFilterDto.getHallId());
+        Predicate locationId = criteriaBuilder.equal(root.get("hall").get("location").get("id"),
+            eventFilterDto.getLocationId());
+        Predicate locationName = criteriaBuilder.equal(root.get("hall").get("location").get("name"),
+            eventFilterDto.getLocationId());
+        Predicate locationPlace = criteriaBuilder.equal(root.get("hall").get("location").get("place"),
+            eventFilterDto.getLocationId());
+        Predicate locationCountry = criteriaBuilder.equal(root.get("hall").get("location").get("country"),
+            eventFilterDto.getLocationId());
+        Predicate locationStreet = criteriaBuilder.equal(root.get("hall").get("location").get("street"),
+            eventFilterDto.getLocationId());
+        Predicate locationPostalCode = criteriaBuilder.equal(root.get("hall").get("location").get("postalCode"),
+            eventFilterDto.getLocationId());
 
+        return criteriaBuilder.and(hallName,hallId,locationId,locationName,
+            locationPlace,locationCountry,locationStreet,locationPostalCode);
       }
     };
   }
-
-
-
-
 }

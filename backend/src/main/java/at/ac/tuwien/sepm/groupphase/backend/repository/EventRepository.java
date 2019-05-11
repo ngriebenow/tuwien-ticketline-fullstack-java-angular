@@ -15,8 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface EventRepository
     extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
 
-  List<Event> findAllByNameContainsAndCategoryEqualsAndArtistsContainingAndContentContains(
-      String name, EventCategory eventCategory, Artist artist, String content,
+  List<Event> findAllByNameContainsAndCategoryEqualsAndContentContains(
+      String name, EventCategory eventCategory, String content,
       Specification<Event> specification, Pageable pageable);
 
 
