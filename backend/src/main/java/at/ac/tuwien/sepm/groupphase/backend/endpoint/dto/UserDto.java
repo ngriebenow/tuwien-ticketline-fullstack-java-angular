@@ -10,7 +10,7 @@ public class UserDto {
 
   private boolean enabled;
 
-  private String authority;
+  private boolean isAdmin;
 
   public String getUsername() {
     return username;
@@ -44,11 +44,11 @@ public class UserDto {
     this.enabled = enabled;
   }
 
-  public String getAuthority() {
-    return authority;
+  public boolean isAdmin() {
+    return isAdmin;
   }
 
-  public void setAuthority(String authority) {
-    this.authority = authority;
+  public void setAdmin(boolean admin) {
+    isAdmin = admin;
   }
 }
