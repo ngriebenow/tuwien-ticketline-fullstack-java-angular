@@ -6,7 +6,7 @@ public class TicketRequestDto {
 
   private List<Long> definedUnitIds;
 
-  private long clientId;
+  private Long clientId;
 
   private boolean reserveAndSell;
 
@@ -18,11 +18,11 @@ public class TicketRequestDto {
     this.definedUnitIds = definedUnitIds;
   }
 
-  public long getClientId() {
+  public Long getClientId() {
     return clientId;
   }
 
-  public void setClientId(long clientId) {
+  public void setClientId(Long clientId) {
     this.clientId = clientId;
   }
 

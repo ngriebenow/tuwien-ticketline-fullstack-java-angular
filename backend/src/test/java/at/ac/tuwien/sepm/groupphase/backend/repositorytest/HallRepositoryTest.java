@@ -5,7 +5,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.HallRepository;
 import org.junit.Before;
@@ -21,7 +20,7 @@ public class HallRepositoryTest {
 
   @Autowired HallRepository hallRepository;
 
-  private Hall H1 = new Hall(0, 1, "Hall 1", new Point(), null);
+  private Hall H1 = new Hall.Builder().name("Hall 1").build();
 
   @Before
   public void initialization() {

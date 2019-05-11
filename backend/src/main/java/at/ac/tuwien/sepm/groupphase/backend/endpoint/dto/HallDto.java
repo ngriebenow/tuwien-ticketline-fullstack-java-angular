@@ -1,22 +1,33 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "HallDto", description = "A DTO for a hall via rest")
 public class HallDto {
 
-  private long id;
+  @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
+  private Long id;
 
+  @ApiModelProperty(required = true, name = "The version of the hall")
   private int version;
 
+  @ApiModelProperty(required = true, name = "The name of the hall")
   private String name;
 
+  @ApiModelProperty(required = true, name = "The location of the hall")
   private LocationDto location;
 
+  @ApiModelProperty(
+      required = true,
+      name = "The boundaryPoint which defines the maximum size of the hall")
   private PointDto boundaryPoint;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -50,5 +61,15 @@ public class HallDto {
 
   public void setBoundaryPoint(PointDto boundaryPoint) {
     this.boundaryPoint = boundaryPoint;
+  }
+
+  /** Build the hall dto. */
+  public HallDto build() {
+    HallDto hallDto = new HallDto();
+    hallDto.setId(id);
+    hallDto.setBoundaryPoint(boundaryPoint);
+    hallDto.setName(name);
+    hallDto.setVersion(version);
+    return hallDto;
   }
 }

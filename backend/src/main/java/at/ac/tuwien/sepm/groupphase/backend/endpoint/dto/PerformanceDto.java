@@ -1,22 +1,29 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDateTime;
 
+@ApiModel(value = "PerformanceDto", description = "A DTO for a performance via rest")
 public class PerformanceDto {
 
-  private long id;
+  @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
+  private Long id;
 
+  @ApiModelProperty(required = true, name = "The name of the performance")
   private LocalDateTime startAt;
 
+  @ApiModelProperty(required = true, name = "The corresponding event of the performance")
   private EventDto event;
 
-  private String name = "[eventName] [Location] [Time]";
+  @ApiModelProperty(required = true, name = "The name of the performance")
+  private String name;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -42,5 +49,15 @@ public class PerformanceDto {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  /** Build the performance dto. */
+  public PerformanceDto build() {
+    PerformanceDto performanceDto = new PerformanceDto();
+    performanceDto.setId(id);
+    performanceDto.setEvent(event);
+    performanceDto.setName(name);
+    performanceDto.setStartAt(startAt);
+    return performanceDto;
   }
 }

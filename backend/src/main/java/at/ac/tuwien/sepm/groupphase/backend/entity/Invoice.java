@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Invoice {
 
-  private long id;
+  private Long id;
 
   private boolean isPaid;
 
@@ -26,11 +26,11 @@ public class Invoice {
     this.tickets = tickets;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
