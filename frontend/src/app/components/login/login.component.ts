@@ -32,6 +32,9 @@ export class LoginComponent implements OnInit {
   loginUser() {
     this.submitted = true;
     if (this.loginForm.valid) {
+      this.authService.setUsername(this.loginForm.controls.username.value);
+      // setting new item
+      localStorage.setItem('username', this.loginForm.controls.username.value);
       const authRequest: AuthRequest = new AuthRequest(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
       this.authenticateUser(authRequest);
     } else {

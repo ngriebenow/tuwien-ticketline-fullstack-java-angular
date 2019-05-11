@@ -8,6 +8,8 @@ import {AuthService} from '../../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
+  username: string;
+
   constructor(public authService: AuthService) {
   }
 
@@ -19,5 +21,9 @@ export class HeaderComponent implements OnInit {
    */
   isAdmin(): boolean {
     return this.authService.getUserRole() === 'ADMIN';
+  }
+
+  getUsername(): string {
+    return localStorage.getItem('username');
   }
 }
