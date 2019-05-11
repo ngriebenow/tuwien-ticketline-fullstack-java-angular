@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import { Observable, of } from 'rxjs';
 import {Hall} from '../dtos/hall';
 import {Point} from '../dtos/Point';
@@ -17,7 +17,7 @@ export class HallCreationService {
   hallName = 'xy';
   hallSize: Point;
 
-  seats: Point[] = [];
+  seats: Point[];
   aisles: Unit[] = [];
   sectors: Unit[] = [];
   point1: Point = new Point(1, 1);
@@ -25,13 +25,14 @@ export class HallCreationService {
   unit1: Unit = new Unit(-1, -1, '', this.point1, this.point1, 1);
 
   constructor() {
+    this.hallSize = new Point(10, 10);
     this.completeInitializing();
   }
 
   // ends initialization process and sets initialized to true
   completeInitializing(): void {
     this.hallName = 'hall_1';
-    this.hallSize = new Point(10, 10);
+    this.seats = [];
     for (let i = 1; i < this.hallSize.coordinateX + 1; i++) {
       for (let j = 1; j < this.hallSize.coordinateY + 1; j++) {
         this.seats.push(new Point(i, j));
@@ -53,11 +54,23 @@ export class HallCreationService {
   saveHall(): void {
   }
 
+  updateSeats(): void {
+    // for (let i = 0; i < this.seats.length; i++) {
+      // this.seats.pop();
+    // }
+    this.seats.length = 0;
+    for (let i = 1; i < this.hallSize.coordinateX / 1 + 1; i++) {
+      for (let j = 1; j < this.hallSize.coordinateY / 1 + 1; j++) {
+        this.seats.push(new Point(i, j));
+      }
+    }
+  }
+
   getHallSize(): Point {
     return this.hallSize;
   }
 
-  getSeats(): Point[] {
-    return this.seats;
+  getSeats(): Observable<Point[]> {
+    return of (this.seats);
   }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {HallCreationService} from '../../services/hall-creation.service';
+import {Point} from '../../dtos/Point';
 
 @Component({
   selector: 'app-hall-creation-menu',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HallCreationMenuComponent implements OnInit {
 
-  constructor() { }
+  hallSize: Point;
+
+  constructor(private hallCreationService: HallCreationService) { }
 
   ngOnInit() {
+    this.hallSize = this.hallCreationService.getHallSize();
+  }
+
+  updatePlan(): void {
+    this.hallCreationService.updateSeats();
   }
 
 }
