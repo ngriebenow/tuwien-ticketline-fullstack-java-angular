@@ -3,13 +3,18 @@ package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
+import at.ac.tuwien.sepm.groupphase.backend.specification.UserSpecification;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +50,14 @@ public class SimpleEventService implements EventService {
   }
 
   @Override
-  public List<EventDto> getEventsFiltered(Specification<Event> specification, Pageable pageable) {
+  public List<EventDto> getEventsFiltered(EventFilterDto eventFilterDto, Pageable pageable) {
+
+    Specification<Event> specification = UserSpecification
+        .contains("name",eventFilterDto.getName());
+    specification = specification.and(
+        UserSpecification.endures("duration",eventFilterDto.getDuration(), Duration.ofMinutes(30))
+    );
+
     List<EventDto> eventDtos = new ArrayList<>();
     eventRepository
         .findAll(specification, pageable)
@@ -60,12 +72,9 @@ public class SimpleEventService implements EventService {
     Event event = eventRepository.findById(id).orElseThrow(NotFoundException::new);
     List<PerformanceDto> performanceDtos = new ArrayList<>();
 
-    performanceRepository.findAll(SimplePerformanceService.perfName("Perf 2"),pageable)
+    performanceRepository.findAllByEvent(event,pageable)
         .forEach(p -> performanceDtos.add(performanceMapper.performanceToPerformanceDto(p)));
 
-    /*performanceRepository
-        .findAllByEvent(event, pageable)
-        .forEach(p -> performanceDtos.add(performanceMapper.performanceToPerformanceDto(p)));*/
     return performanceDtos;
   }
 }

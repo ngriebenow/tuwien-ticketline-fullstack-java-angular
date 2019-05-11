@@ -6,6 +6,9 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.Performanc
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
+import at.ac.tuwien.sepm.groupphase.backend.specification.UserSpecification;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -46,6 +49,7 @@ public class SimplePerformanceService implements PerformanceService {
       Specification<Performance> specification, Pageable pageable) {
 
     Specification<Performance> spec = perfName("Perf 2");
+    spec = UserSpecification.startsAt("startsAt", LocalDateTime.now(), Duration.ofDays(1));
 
     List<PerformanceDto> performanceDtos = new ArrayList<>();
     performanceRepository

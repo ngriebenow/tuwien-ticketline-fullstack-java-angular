@@ -1,27 +1,62 @@
 package at.ac.tuwien.sepm.groupphase.backend.specification;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
-public class UserSpecification<T> implements Specification<T>  {
+public class UserSpecification<T> implements Specification<T> {
 
   /** Javadoc. */
-  public static <T> Specification<T> byKeyContainsName(String name, String key) {
+  public static <T> Specification<T> contains(String name, String key) {
     return new Specification<T>() {
       @Override
-      public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
-          CriteriaBuilder criteriaBuilder) {
-        return criteriaBuilder.like(root.get("name"), "%" + name + "%");
+      public Predicate toPredicate(
+          Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        return criteriaBuilder.like(root.get(name), "%" + name + "%");
+      }
+    };
+  }
+
+  /** Javadoc. */
+  public static <T> Specification<T> startsAt(
+      String name, LocalDateTime dateTime, Duration tolerance) {
+    return new Specification<T>() {
+      @Override
+      public Predicate toPredicate(
+          Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+
+        Predicate leq = criteriaBuilder.lessThanOrEqualTo(root.get(name), dateTime.plus(tolerance));
+        Predicate geq =
+            criteriaBuilder.greaterThanOrEqualTo(root.get(name), dateTime.minus(tolerance));
+
+        return criteriaBuilder.and(leq, geq);
+      }
+    };
+  }
+
+  /** Javadoc. */
+  public static <T> Specification<T> endures(String name, Duration duration, Duration tolerance) {
+    return new Specification<T>() {
+      @Override
+      public Predicate toPredicate(
+          Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+
+        Predicate leq = criteriaBuilder.lessThanOrEqualTo(root.get(name), duration.plus(tolerance));
+        Predicate geq =
+            criteriaBuilder.greaterThanOrEqualTo(root.get(name), duration.minus(tolerance));
+
+        return criteriaBuilder.and(leq, geq);
       }
     };
   }
 
   @Override
-  public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query,
-      CriteriaBuilder criteriaBuilder) {
+  public Predicate toPredicate(
+      Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
     return null;
   }
 }
