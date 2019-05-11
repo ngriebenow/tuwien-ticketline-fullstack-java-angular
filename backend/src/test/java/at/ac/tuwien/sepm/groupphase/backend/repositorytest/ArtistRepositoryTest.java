@@ -20,7 +20,7 @@ public class ArtistRepositoryTest {
 
   @Autowired ArtistRepository artistRepository;
 
-  private Artist A1 = new Artist(0L, "A1 name", "A1 surname", null);
+  private Artist A1 = new Artist.Builder().id(0L).surname("A1 surname").build();
 
   @Before
   public void initialization() {

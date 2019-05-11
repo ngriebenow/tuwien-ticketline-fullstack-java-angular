@@ -14,6 +14,7 @@ export class AuthService {
 
   private authBaseUri: string = this.globals.backendUri + '/authentication';
   private authScheduler: Observable<any> = interval(1000);
+  private username: string;
 
   constructor(private httpClient: HttpClient, private globals: Globals) {
     this.scheduleReAuthentication();
@@ -121,4 +122,11 @@ export class AuthService {
     return date;
   }
 
+  setUsername(username : string): void {
+    this.username = username;
+  }
+
+  getUsername(): string {
+    return this.username;
+  }
 }

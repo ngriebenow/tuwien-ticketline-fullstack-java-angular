@@ -2,7 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 public class Ticket {
 
-  private long id;
+  private Long id;
 
   private byte[] salt;
 
@@ -18,11 +18,11 @@ public class Ticket {
     this.invoice = invoice;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

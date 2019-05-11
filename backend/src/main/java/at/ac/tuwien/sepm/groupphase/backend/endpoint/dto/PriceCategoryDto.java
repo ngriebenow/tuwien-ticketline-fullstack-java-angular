@@ -1,31 +1,38 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.awt.Color;
 
+@ApiModel(value = "PriceCategoryDto", description = "A DTO for a price category via rest")
 public class PriceCategoryDto {
 
-  private long id;
+  @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
+  private Long id;
 
-  private int priceInCent;
+  @ApiModelProperty(required = true, name = "The price in cents of the price category")
+  private int priceInCents;
 
+  @ApiModelProperty(required = true, name = "The name of the category")
   private String name;
 
+  @ApiModelProperty(readOnly = true, name = "The color of the category")
   private Color color;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
-  public int getPriceInCent() {
-    return priceInCent;
+  public int getPriceInCents() {
+    return priceInCents;
   }
 
-  public void setPriceInCent(int priceInCent) {
-    this.priceInCent = priceInCent;
+  public void setPriceInCents(int priceInCents) {
+    this.priceInCents = priceInCents;
   }
 
   public String getName() {
@@ -42,5 +49,14 @@ public class PriceCategoryDto {
 
   public void setColor(Color color) {
     this.color = color;
+  }
+
+  /** Build the PriceCategory dto. */
+  public PriceCategoryDto build() {
+    PriceCategoryDto priceCategoryDto = new PriceCategoryDto();
+    priceCategoryDto.setColor(color);
+    priceCategoryDto.setId(id);
+    priceCategoryDto.setPriceInCents(priceInCents);
+    return priceCategoryDto;
   }
 }

@@ -6,13 +6,13 @@ public class TicketDto {
 
   private String salt;
 
-  private long invoiceId;
+  private Long invoiceId;
 
   private String clientName;
 
   private String clientSurname;
 
-  private long id;
+  private Long id;
 
   private int priceInCents;
 
@@ -34,11 +34,11 @@ public class TicketDto {
     this.salt = salt;
   }
 
-  public long getInvoiceId() {
+  public Long getInvoiceId() {
     return invoiceId;
   }
 
-  public void setInvoiceId(long invoiceId) {
+  public void setInvoiceId(Long invoiceId) {
     this.invoiceId = invoiceId;
   }
 
@@ -58,11 +58,11 @@ public class TicketDto {
     this.clientSurname = clientSurname;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
