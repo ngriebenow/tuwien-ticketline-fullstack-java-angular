@@ -1,3 +1,79 @@
-<p>
-  event-filter works!
-</p>
+  <div class="row">
+    <h1 align="center">Veranstaltungen</h1>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <div class="row">
+        <h2>Ort</h2>
+      </div>
+      <div class="row">
+        <div class="dropdown">
+          <button class="btn dropdown-toggle" style="background-color:#EAEAEA; color: #CFCFCF" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown button</button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Österreich</a>
+            <a class="dropdown-item" href="#">Deutschland</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="row">
+        <input placeholder="Name" type="text"/>
+      </div>
+      <div class="row">
+        <input placeholder="Ortsname, PLZ" type="text"/>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="row">
+        <input placeholder="Saalname" type="text"/>
+      </div>
+      <div class="row">
+        <input placeholder="Straße" type="text"/>
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div class="row">
+        <h2>Datum/Preis</h2>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="row">
+        <input placeholder="Datum" type="text">
+      </div>
+      <div class="row">
+        <input placeholder="Dauer" type="text">
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div class="row">
+        <input placeholder="Uhrzeit" type="text"/>
+      </div>
+      <div class="row">
+        <input placeholder="Preis" type="text"/>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <td>Event</td>
+        <td>Ort</td>
+        <td>Saal</td>
+        <td>Dauer</td>
+        <td>Preis</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let x of events">
+        <td>{{ x.name }}</td>
+        <td>{{ x.location.name | date:'dd.mm.yyyy'}}</td>
+        <td>{{ x.hall.name}}</td>
+        <td>{{ x.duration | date:'HH\'MM\'\''  }}</td>
+        <td>TODO</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>

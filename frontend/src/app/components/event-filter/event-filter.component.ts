@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-event-filter',
@@ -9,7 +9,19 @@ export class EventFilterComponent implements OnInit {
 
   constructor() { }
 
+  @Output() events: Event[] = [];
+
   ngOnInit() {
+    this.loadEvents();
+  }
+
+  /**
+   * Loads the events
+   * @param id the id of the event whose performances should be search for
+   */
+  loadEvents() {
+    this.eventService.getPerformancesById(id).subscribe(
+      performances => this.performances = performances as Performance[]);
   }
 
 }
