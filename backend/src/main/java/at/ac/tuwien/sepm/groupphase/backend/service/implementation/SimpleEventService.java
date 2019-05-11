@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
@@ -13,7 +12,6 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,17 +20,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class SimpleEventService implements EventService {
 
-  @Autowired
-  private EventRepository eventRepository;
+  @Autowired private EventRepository eventRepository;
 
-  @Autowired
-  private PerformanceRepository performanceRepository;
+  @Autowired private PerformanceRepository performanceRepository;
 
-  @Autowired
-  private EventMapper eventMapper;
+  @Autowired private EventMapper eventMapper;
 
-  @Autowired
-  private PerformanceMapper performanceMapper;
+  @Autowired private PerformanceMapper performanceMapper;
 
   /*public SimpleEventService(EventRepository eventRepository, EventMapper eventMapper) {
     this.eventRepository = eventRepository;
@@ -61,16 +55,17 @@ public class SimpleEventService implements EventService {
 
   @Override
   public List<PerformanceDto> getPerformancesOfEvent(Long id, Pageable pageable)
-          throws NotFoundException {
+      throws NotFoundException {
 
     Event event = eventRepository.findById(id).orElseThrow(NotFoundException::new);
     List<PerformanceDto> performanceDtos = new ArrayList<>();
-    performanceRepository
-            .findAllByEvent(event,pageable)
-            .forEach(p -> performanceDtos.add(
-                    performanceMapper.performanceToPerformanceDto(p)));
+
+    performanceRepository.findAll(SimplePerformanceService.perfName("Perf 2"),pageable)
+        .forEach(p -> performanceDtos.add(performanceMapper.performanceToPerformanceDto(p)));
+
+    /*performanceRepository
+        .findAllByEvent(event, pageable)
+        .forEach(p -> performanceDtos.add(performanceMapper.performanceToPerformanceDto(p)));*/
     return performanceDtos;
-
   }
-
 }

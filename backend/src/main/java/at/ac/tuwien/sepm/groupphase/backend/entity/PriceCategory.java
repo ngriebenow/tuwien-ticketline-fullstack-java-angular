@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory.Builder;
 import java.awt.Color;
 import java.util.Objects;
 import javax.persistence.Column;

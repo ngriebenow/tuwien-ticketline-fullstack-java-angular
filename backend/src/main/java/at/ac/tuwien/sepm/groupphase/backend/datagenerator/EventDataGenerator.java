@@ -99,17 +99,17 @@ public class EventDataGenerator {
                 .build();
         LOGGER.debug("saving event {}", event);
 
-
-
         eventRepository.save(event);
 
-        Performance perf1 = new Performance.Builder()
+        Performance perf1 =
+            new Performance.Builder()
                 .name("Perf 1")
                 .startAt(LocalDateTime.now())
                 .event(event)
                 .build();
 
-        Performance perf2 = new Performance.Builder()
+        Performance perf2 =
+            new Performance.Builder()
                 .name("Perf 2")
                 .startAt(LocalDateTime.now())
                 .event(event)
@@ -118,8 +118,6 @@ public class EventDataGenerator {
         performanceRepository.save(perf1);
         performanceRepository.save(perf2);
       }
-
-
     }
   }
 }

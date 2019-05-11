@@ -16,7 +16,7 @@ export class EventService {
   getPerformancesById(id: number): Observable<Performance[]> {
     console.log('Load performances for event ' + id);
     /**TODO pageable*/
-    return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances?page=0&count=2');
+    return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances?page=0&count=100');
   }
 
   /**
