@@ -1,6 +1,6 @@
 import {Component, OnInit, Output} from '@angular/core';
 import {EventService} from '../../services/event.service';
-import {Message} from "../../dtos/message";
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-event',
@@ -9,17 +9,24 @@ import {Message} from "../../dtos/message";
 })
 export class EventComponent implements OnInit {
 
-  constructor(private eventService: EventService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private eventService: EventService) {}
 
   @Output() event: Event;
   @Output() performances: Performance[] = [];
 
 
   ngOnInit() {
-    this.loadEvent(3);
-    this.loadPerformances(3);
+    this.getEvent();
   }
 
+
+  getEvent(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.loadEvent(id);
+    this.loadPerformances(id);
+  }
 
   /**
    * Loads the text of message and update the existing array of message

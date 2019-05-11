@@ -15,7 +15,7 @@
     </div>
     <div class="col-2">
       <div class="row">
-        <label class="gen_label">{{event.hall.location.name}}</label>
+        <div class="text-field-norm"><h4 class="text-field-font">{{event.hall.location.name}}</h4></div>
       </div>
       <div class="row">
         <label class="gen_label">{{event.hall.location.place}}</label>
@@ -62,11 +62,22 @@
   </div>
   <div class="row">
 
-    <ul>
-      <li *ngFor="let perf of performances">
-        <span class="badge">{{perf.name}}</span> {{perf.name}}
-      </li>
-    </ul>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td>Name</td>
+          <td>Datum</td>
+          <td>Uhrzeit</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of performances">
+         <td>{{ x.name }}</td>
+         <td>{{ x.startAt | date:'dd.mm.yyyy'  }}</td>
+         <td>{{ x.startAt | date:'HH:MM'  }}</td>
+        </tr>
+      </tbody>
+    </table>
 
   </div>
 </div>
