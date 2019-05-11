@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.specification;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -50,6 +51,19 @@ public class UserSpecification<T> implements Specification<T> {
             criteriaBuilder.greaterThanOrEqualTo(root.get(name), duration.minus(tolerance));
 
         return criteriaBuilder.and(leq, geq);
+      }
+    };
+  }
+
+  /** Javadoc. */
+  public static <T> Specification<T> belongsTo(String name, EventCategory eventCategory) {
+    return new Specification<T>() {
+      @Override
+      public Predicate toPredicate(
+          Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+
+        return criteriaBuilder.equal(root.get(name),eventCategory);
+
       }
     };
   }

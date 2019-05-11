@@ -2,10 +2,13 @@ package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.artist.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
@@ -17,6 +20,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,6 +39,8 @@ public class SimpleEventService implements EventService {
   @Autowired private EventMapper eventMapper;
 
   @Autowired private PerformanceMapper performanceMapper;
+
+  @Autowired private ArtistMapper artistMapper;
 
   /*public SimpleEventService(EventRepository eventRepository, EventMapper eventMapper) {
     this.eventRepository = eventRepository;
@@ -52,16 +61,36 @@ public class SimpleEventService implements EventService {
   @Override
   public List<EventDto> getEventsFiltered(EventFilterDto eventFilterDto, Pageable pageable) {
 
+    /*
     Specification<Event> specification = UserSpecification
         .contains("name",eventFilterDto.getName());
     specification = specification.and(
         UserSpecification.endures("duration",eventFilterDto.getDuration(), Duration.ofMinutes(30))
     );
+    specification = specification.and(
+        UserSpecification.contains("content",eventFilterDto.getName())
+    );
+    specification = specification.and(
+        UserSpecification.contains("content",eventFilterDto.getName())
+    );
+    specification = specification.and(
+        UserSpecification.belongsTo("eventCategory",eventFilterDto.getEventCategory())
+    );*/
+
+    Specification<Event> specification = likeHallLocation(eventFilterDto.getHall());
+
+
+    List<Event> events = eventRepository.findAllByNameContainsAndCategoryEqualsAndArtistsContainingAndContentContains(
+        eventFilterDto.getName(),
+        eventFilterDto.getEventCategory(),
+        artistMapper.artistDtoToArtist(eventFilterDto.getArtist()),
+        eventFilterDto.getContent(),
+        specification,
+        pageable);
+
 
     List<EventDto> eventDtos = new ArrayList<>();
-    eventRepository
-        .findAll(specification, pageable)
-        .forEach(e -> eventDtos.add(eventMapper.eventToEventDto(e)));
+    events.forEach(e -> eventDtos.add(eventMapper.eventToEventDto(e)));
     return eventDtos;
   }
 
@@ -77,4 +106,22 @@ public class SimpleEventService implements EventService {
 
     return performanceDtos;
   }
+
+
+  /** Javadoc. */
+  public static Specification<Event> likeHallLocation(HallDto hallDto) {
+    return new Specification<Event>() {
+      @Override
+      public Predicate toPredicate(
+          Root<Event> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+
+        return criteriaBuilder.equal(root.get("hall").get("name"),hallDto.getName());
+
+      }
+    };
+  }
+
+
+
+
 }
