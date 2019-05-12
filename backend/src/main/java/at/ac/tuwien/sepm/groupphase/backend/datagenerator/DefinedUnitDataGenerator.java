@@ -21,18 +21,18 @@ import java.util.Locale;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
 @Profile("generateData")
 public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
 
+  private static final Faker FAKER = new Faker(new Locale("de-at"));
   private final Set<Class<?>> dependencies =
       new HashSet<>(
           Arrays.asList(
               Event.class, Performance.class, PriceCategory.class, Hall.class, Unit.class));
-  private static final Faker FAKER = new Faker(new Locale("de-at"));
-
   private PerformanceRepository performanceRepository;
   private PriceCategoryRepository priceCategoryRepository;
   private EventRepository eventRepository;
@@ -67,7 +67,8 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
       int maxY = hall.getBoundaryPoint().getCoordinateY();
       int step = maxY / priceCategories.size();
 
-      for (Performance performance : performanceRepository.findAllByEvent(event)) {
+      for (Performance performance :
+          performanceRepository.findAllByEvent(event, Pageable.unpaged())) {
         generatedDefinedUnits.clear();
         for (Unit unit : units) {
           int categoryIdx = unit.getLowerBoundary().getCoordinateY() / step;
