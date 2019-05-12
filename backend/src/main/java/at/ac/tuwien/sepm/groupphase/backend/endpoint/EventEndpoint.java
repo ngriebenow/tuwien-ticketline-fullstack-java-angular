@@ -60,7 +60,7 @@ public class EventEndpoint {
   public List<EventDto> get(
       @RequestParam(required = false) String name,
       @RequestParam(required = false) String content,
-      @RequestParam(required = false) String duration,
+      @RequestParam(required = false) Integer duration,
       @RequestParam(required = false) EventCategory eventCategory,
       @RequestParam(required = false) String artistName,
       @RequestParam(required = false) Integer priceInCents,
@@ -74,13 +74,14 @@ public class EventEndpoint {
       @RequestParam(required = false, defaultValue = "0") Integer page,
       @RequestParam(required = false, defaultValue = "1000") Integer count) {
 
+    //TODO: pageable default values
     Pageable p = PageRequest.of(page, count);
 
     EventFilterDto eventFilterDto = new EventFilterDto.Builder()
         .eventCategory(eventCategory)
         .artistName(artistName)
         .content(content)
-        .duration(null)
+        .duration(Duration.ofMinutes(duration))
         .name(name)
         .priceInCents(priceInCents)
         .hallId(hallId)
