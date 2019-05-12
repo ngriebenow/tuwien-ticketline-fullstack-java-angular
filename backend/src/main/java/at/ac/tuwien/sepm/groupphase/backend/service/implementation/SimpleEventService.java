@@ -50,7 +50,8 @@ public class SimpleEventService implements EventService {
 
         if (eventFilterDto.getHallName() != null) {
           Predicate hallName =
-              criteriaBuilder.like(root.get("hall").get("name"), "%" + eventFilterDto.getHallName() + "%");
+              criteriaBuilder.like(
+                  root.get("hall").get("name"), "%" + eventFilterDto.getHallName() + "%");
           expressions.add(hallName);
         }
         if (eventFilterDto.getHallId() != null) {
@@ -67,34 +68,38 @@ public class SimpleEventService implements EventService {
         if (eventFilterDto.getLocationName() != null) {
           Predicate locationName =
               criteriaBuilder.like(
-                  root.get("hall").get("location").get("name"), "%" + eventFilterDto.getLocationName() + "%");
+                  root.get("hall").get("location").get("name"),
+                  "%" + eventFilterDto.getLocationName() + "%");
           expressions.add(locationName);
         }
 
         if (eventFilterDto.getLocationPlace() != null) {
           Predicate locationPlace =
               criteriaBuilder.like(
-                  root.get("hall").get("location").get("place"), "%" + eventFilterDto.getLocationPlace() + "%");
+                  root.get("hall").get("location").get("place"),
+                  "%" + eventFilterDto.getLocationPlace() + "%");
           expressions.add(locationPlace);
         }
         if (eventFilterDto.getLocationCountry() != null) {
           Predicate locationCountry =
               criteriaBuilder.like(
-                  root.get("hall").get("location").get("country"), "%" + eventFilterDto.getLocationCountry() + "%");
+                  root.get("hall").get("location").get("country"),
+                  "%" + eventFilterDto.getLocationCountry() + "%");
           expressions.add(locationCountry);
         }
         if (eventFilterDto.getLocationStreet() != null) {
           Predicate locationStreet =
               criteriaBuilder.like(
-                  root.get("hall").get("location").get("street"), "%" + eventFilterDto.getLocationStreet() + "%");
+                  root.get("hall").get("location").get("street"),
+                  "%" + eventFilterDto.getLocationStreet() + "%");
           expressions.add(locationStreet);
         }
         if (eventFilterDto.getLocationPostalCode() != null) {
           Predicate locationPostalCode =
               criteriaBuilder.like(
-                  root.get("hall").get("location").get("postalCode"), "%" + eventFilterDto.getLocationId() + "%");
+                  root.get("hall").get("location").get("postalCode"),
+                  "%" + eventFilterDto.getLocationId() + "%");
           expressions.add(locationPostalCode);
-
         }
 
         Predicate[] predicates = expressions.toArray(new Predicate[expressions.size()]);
@@ -115,7 +120,8 @@ public class SimpleEventService implements EventService {
 
         if (eventFilterDto.getArtistName() != null) {
           Predicate hallName =
-              criteriaBuilder.like(root.get("artists").get("name"), "%" + eventFilterDto.getHallName() + "%");
+              criteriaBuilder.like(
+                  root.get("artists").get("name"), "%" + eventFilterDto.getHallName() + "%");
           expressions.add(hallName);
         }
         Predicate[] predicates = expressions.toArray(new Predicate[expressions.size()]);
@@ -142,31 +148,28 @@ public class SimpleEventService implements EventService {
     Specification<Event> specification = UserSpecification.alwaysTrue();
 
     if (eventFilterDto.getName() != null) {
-      specification = specification.and(UserSpecification.contains("name",eventFilterDto.getName()));
+      specification =
+          specification.and(UserSpecification.contains("name", eventFilterDto.getName()));
     }
     if (eventFilterDto.getDuration() != null) {
-      specification = specification.and(
-          UserSpecification.endures("duration",eventFilterDto.getDuration(), Duration.ofMinutes(30))
-      );
+      specification =
+          specification.and(
+              UserSpecification.endures(
+                  "duration", eventFilterDto.getDuration(), Duration.ofMinutes(30)));
     }
     if (eventFilterDto.getContent() != null) {
-      specification = specification.and(
-          UserSpecification.contains("content",eventFilterDto.getName())
-      );
+      specification =
+          specification.and(UserSpecification.contains("content", eventFilterDto.getName()));
     }
     if (eventFilterDto.getEventCategory() != null) {
-      specification = specification.and(
-          UserSpecification.belongsTo("category",eventFilterDto.getEventCategory())
-      );
+      specification =
+          specification.and(
+              UserSpecification.belongsTo("category", eventFilterDto.getEventCategory()));
     }
 
     specification = specification.and(likeHallLocation(eventFilterDto));
 
-
-    Page<Event> events =
-        eventRepository.findAll(
-            specification,
-            pageable);
+    Page<Event> events = eventRepository.findAll(specification, pageable);
 
     List<EventDto> eventDtos = new ArrayList<>();
     events.forEach(e -> eventDtos.add(eventMapper.eventToEventDto(e)));
