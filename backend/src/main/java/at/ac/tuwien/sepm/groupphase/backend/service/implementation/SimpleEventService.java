@@ -39,11 +39,6 @@ public class SimpleEventService implements EventService {
 
   @Autowired private ArtistMapper artistMapper;
 
-  /*public SimpleEventService(EventRepository eventRepository, EventMapper eventMapper) {
-    this.eventRepository = eventRepository;
-    this.eventMapper = eventMapper;
-  }*/
-
   /** Javadoc. */
   private static Specification<Event> likeHallLocation(EventFilterDto eventFilterDto) {
     return new Specification<Event>() {
@@ -109,6 +104,27 @@ public class SimpleEventService implements EventService {
     };
   }
 
+  /** Javadoc. */
+  private static Specification<Event> likeArtist(EventFilterDto eventFilterDto) {
+    return new Specification<Event>() {
+      @Override
+      public Predicate toPredicate(
+          Root<Event> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+
+        List<Predicate> expressions = new ArrayList<>();
+
+        if (eventFilterDto.getArtistName() != null) {
+          Predicate hallName =
+              criteriaBuilder.like(root.get("artists").get("name"), "%" + eventFilterDto.getHallName() + "%");
+          expressions.add(hallName);
+        }
+        Predicate[] predicates = expressions.toArray(new Predicate[expressions.size()]);
+
+        return criteriaBuilder.and(predicates);
+      }
+    };
+  }
+
   @Override
   public EventDto getOneById(Long id) throws NotFoundException {
     return eventMapper.eventToEventDto(
@@ -123,13 +139,12 @@ public class SimpleEventService implements EventService {
   @Override
   public List<EventDto> getEventsFiltered(EventFilterDto eventFilterDto, Pageable pageable) {
 
-
     Specification<Event> specification = UserSpecification.alwaysTrue();
 
     if (eventFilterDto.getName() != null) {
       specification = specification.and(UserSpecification.contains("name",eventFilterDto.getName()));
     }
-    if (eventFilterDto.getDuration() != null && false) {
+    if (eventFilterDto.getDuration() != null) {
       specification = specification.and(
           UserSpecification.endures("duration",eventFilterDto.getDuration(), Duration.ofMinutes(30))
       );

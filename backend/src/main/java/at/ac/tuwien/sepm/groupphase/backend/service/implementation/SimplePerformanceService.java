@@ -48,7 +48,7 @@ public class SimplePerformanceService implements PerformanceService {
   public List<PerformanceDto> getPerformancesFiltered(
       Specification<Performance> specification, Pageable pageable) {
 
-    Specification<Performance> spec = perfName("Perf 2");
+    Specification<Performance> spec;
     spec = UserSpecification.startsAt("startsAt", LocalDateTime.now(), Duration.ofDays(1));
 
     List<PerformanceDto> performanceDtos = new ArrayList<>();
