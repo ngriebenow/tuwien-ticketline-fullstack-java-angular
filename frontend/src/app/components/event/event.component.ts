@@ -1,11 +1,21 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, NgModule, OnInit, Output} from '@angular/core';
 import {EventService} from '../../services/event.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterModule} from '@angular/router';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterTestingModule} from '@angular/router/testing';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.scss']
+})
+@NgModule({
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    RouterTestingModule
+  ]
 })
 export class EventComponent implements OnInit {
 

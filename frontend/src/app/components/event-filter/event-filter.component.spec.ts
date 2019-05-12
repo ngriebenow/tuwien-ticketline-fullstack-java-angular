@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule} from '@angular/common/http/testing';
 import { EventFilterComponent } from './event-filter.component';
+import { Globals} from '../../global/globals';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 describe('EventFilterComponent', () => {
   let component: EventFilterComponent;
@@ -8,7 +10,17 @@ describe('EventFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EventFilterComponent ]
+      declarations: [
+        EventFilterComponent
+      ],
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        FormsModule
+      ],
+      providers: [
+        Globals,
+      ]
     })
     .compileComponents();
   }));
@@ -23,3 +35,4 @@ describe('EventFilterComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

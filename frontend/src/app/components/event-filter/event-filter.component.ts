@@ -1,13 +1,21 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, NgModule, OnInit, Output} from '@angular/core';
 import {EventFilter} from '../../dtos/event-filter';
 import {EventService} from '../../services/event.service';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-event-filter',
   templateUrl: './event-filter.component.html',
   styleUrls: ['./event-filter.component.scss']
 })
+@NgModule({
+  imports: [
+    FormsModule,
+    ReactiveFormsModule
+  ]
+})
 export class EventFilterComponent implements OnInit {
+
 
   constructor(private eventService: EventService) { }
 
