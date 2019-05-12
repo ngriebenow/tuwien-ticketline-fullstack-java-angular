@@ -35,16 +35,20 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 
+
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @PropertySource("classpath:db.properties")
 public class SecurityConfiguration {
 
-  @Autowired
-  private Environment env;
+  @Autowired private Environment env;
 
-
+  /**
+   * Creates new h2 datasource with properties read from db.properties
+   * @return DataSource
+   */
   public DataSource getDataSource() {
     BasicDataSource dataSource = new BasicDataSource();
     dataSource.setDriverClassName(env.getProperty("h2.driver"));
@@ -65,9 +69,6 @@ public class SecurityConfiguration {
     return new BCryptPasswordEncoder();
   }
 
-
-
-
   /** TODO: Add JavaDoc. */
   @Bean
   public ErrorAttributes errorAttributes() {
@@ -84,24 +85,25 @@ public class SecurityConfiguration {
 
   /** TODO: Add JavaDoc. */
   @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder auth, List<AuthenticationProvider> providerList) throws Exception {
+  public void configureGlobal(
+      AuthenticationManagerBuilder auth, List<AuthenticationProvider> providerList)
+      throws Exception {
     /*new InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder>()
-        .withUser("user")
-        .password(passwordEncoder.encode("password"))
-        .authorities("USER")
-        .and()
-        .withUser("admin")
-        .password(passwordEncoder.encode("password"))
-        .authorities("ADMIN", "USER")
-        .and()
-        .passwordEncoder(passwordEncoder)
-        .configure(auth);*/
-    auth.jdbcAuthentication().dataSource(getDataSource())
-            .usersByUsernameQuery("select username, password, enabled"
-                    + " from user where username=?")
-            .authoritiesByUsernameQuery("select username, authority "
-                    + "from user where username=?")
-            .passwordEncoder(new BCryptPasswordEncoder());
+    .withUser("user")
+    .password(passwordEncoder.encode("password"))
+    .authorities("USER")
+    .and()
+    .withUser("admin")
+    .password(passwordEncoder.encode("password"))
+    .authorities("ADMIN", "USER")
+    .and()
+    .passwordEncoder(passwordEncoder)
+    .configure(auth);*/
+    auth.jdbcAuthentication()
+        .dataSource(getDataSource())
+        .usersByUsernameQuery("select username, password, enabled" + " from user where username=?")
+        .authoritiesByUsernameQuery("select username, authority " + "from user where username=?")
+        .passwordEncoder(new BCryptPasswordEncoder());
     providerList.forEach(auth::authenticationProvider);
   }
 
@@ -126,10 +128,10 @@ public class SecurityConfiguration {
     private final String h2ConsolePath;
     private final String h2AccessMatcher;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    @Autowired private AuthenticationManager authenticationManager;
 
-    public WebSecurityConfiguration(H2ConsoleConfigurationProperties h2ConsoleConfigurationProperties) {
+    public WebSecurityConfiguration(
+        H2ConsoleConfigurationProperties h2ConsoleConfigurationProperties) {
       h2ConsolePath = h2ConsoleConfigurationProperties.getPath();
       h2AccessMatcher = h2ConsoleConfigurationProperties.getAccessMatcher();
     }

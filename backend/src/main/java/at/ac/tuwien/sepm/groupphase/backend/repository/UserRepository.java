@@ -6,12 +6,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    /**
-     * Find a single user entry by id.
-     *
-     * @param username the id of the user entry
-     * @return Optional containing the user entry
-     */
-    User findOneByUsername(String username);
-
+  /**
+   * Find a single user entry by id.
+   *
+   * @param username the id of the user entry
+   * @return Optional containing the user entry
+   */
+  User findOneByUsername(String username);
 }

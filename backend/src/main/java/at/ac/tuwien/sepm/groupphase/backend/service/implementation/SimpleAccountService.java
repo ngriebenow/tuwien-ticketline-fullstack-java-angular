@@ -30,19 +30,19 @@ public class SimpleAccountService implements AccountService {
   @Override
   public User findOne(String id) {
     User u = userRepository.findOneByUsername(id);
-    if(u==null){
-      throw new NotFoundException("User "+id+" not found!");
+    if (u == null) {
+      throw new NotFoundException("User " + id + " not found!");
     }
     return u;
   }
 
   @Override
   public UserDto saveUser(UserDto user) {
-    try{
+    try {
       findOne(user.getUsername());
-      throw new DuplicateEntry("User "+user.getUsername()+" already in database.");
-    }catch(NotFoundException e){
-      //Everything fine
+      throw new DuplicateEntry("User " + user.getUsername() + " already in database.");
+    } catch (NotFoundException e) {
+      // Everything fine
     }
     User u = userMapper.userDtoToUser(user);
     userRepository.saveAndFlush(u);

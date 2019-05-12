@@ -40,8 +40,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+
 @Service
-public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthenticationService, ApplicationListener {
+public class SimpleHeaderTokenAuthenticationService
+    implements HeaderTokenAuthenticationService, ApplicationListener {
 
   private static final Logger LOGGER =
       LoggerFactory.getLogger(SimpleHeaderTokenAuthenticationService.class);
@@ -56,10 +59,10 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
 
   /** TODO: Add JavaDoc. */
   public SimpleHeaderTokenAuthenticationService(
-          @Lazy AuthenticationManager authenticationManager,
-          AuthenticationConfigurationProperties authenticationConfigurationProperties,
-          ObjectMapper objectMapper,
-          UserRepository userRepository) {
+      @Lazy AuthenticationManager authenticationManager,
+      AuthenticationConfigurationProperties authenticationConfigurationProperties,
+      ObjectMapper objectMapper,
+      UserRepository userRepository) {
     this.authenticationManager = authenticationManager;
     this.objectMapper = objectMapper;
     this.userRepository = userRepository;
@@ -73,7 +76,9 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
 
   @Override
   public AuthenticationToken authenticate(String username, CharSequence password) {
-    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+    Authentication authentication =
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(username, password));
     Instant now = Instant.now();
     String authorities = "";
     try {
@@ -95,9 +100,7 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
             .setExpiration(Date.from(now.plus(validityDuration)))
             .signWith(signatureAlgorithm, signingKey)
             .compact();
-    return AuthenticationToken.builder()
-        .currentToken(currentToken)
-        .build();
+    return AuthenticationToken.builder().currentToken(currentToken).build();
   }
 
   @Override
@@ -191,23 +194,26 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
       AuthenticationSuccessEvent event = (AuthenticationSuccessEvent) appEvent;
       UserDetails userDetails = (UserDetails) event.getAuthentication().getPrincipal();
       String userName = userDetails.getUsername();
-      at.ac.tuwien.sepm.groupphase.backend.entity.User u = userRepository.findOneByUsername(userName);
+      at.ac.tuwien.sepm.groupphase.backend.entity.User u =
+          userRepository.findOneByUsername(userName);
       u.setFailedLoginCounter(0);
       userRepository.saveAndFlush(u);
-    }else if(appEvent instanceof AuthenticationFailureBadCredentialsEvent){
-      AuthenticationFailureBadCredentialsEvent event = (AuthenticationFailureBadCredentialsEvent) appEvent;
+    } else if (appEvent instanceof AuthenticationFailureBadCredentialsEvent) {
+      AuthenticationFailureBadCredentialsEvent event =
+          (AuthenticationFailureBadCredentialsEvent) appEvent;
       String userName = event.getAuthentication().getPrincipal().toString();
-      at.ac.tuwien.sepm.groupphase.backend.entity.User u = userRepository.findOneByUsername(userName);
-      if(u==null){
-        //Nothing to do in that case
+      at.ac.tuwien.sepm.groupphase.backend.entity.User u =
+          userRepository.findOneByUsername(userName);
+      if (u == null) {
+        // Nothing to do in that case
         return;
       }
-      if(u.getAuthority().contains("ROLE_ADMIN")){
-        //Cant block an admin account
+      if (u.getAuthority().contains("ROLE_ADMIN")) {
+        // Cant block an admin account
         return;
       }
-      u.setFailedLoginCounter(u.getFailedLoginCounter()+1);
-      if(u.getFailedLoginCounter()>=5){
+      u.setFailedLoginCounter(u.getFailedLoginCounter() + 1);
+      if (u.getFailedLoginCounter() >= 5) {
         u.setEnabled(false);
       }
       userRepository.saveAndFlush(u);

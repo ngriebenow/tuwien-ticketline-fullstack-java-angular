@@ -16,7 +16,7 @@ public class AccountEndpoint {
   private AccountService accountService;
 
   public AccountEndpoint(AccountService accountService) {
-    this.accountService=accountService;
+    this.accountService = accountService;
   }
 
   @RequestMapping(method = RequestMethod.POST)
@@ -25,7 +25,7 @@ public class AccountEndpoint {
       authorizations = {@Authorization(value = "apiKey")})
   @ResponseStatus(code = HttpStatus.CREATED)
   @PreAuthorize("hasRole('ADMIN')")
-  public UserDto saveAccount(@RequestBody UserDto user){
+  public UserDto saveAccount(@RequestBody UserDto user) {
     return accountService.saveUser(user);
   }
 
