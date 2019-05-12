@@ -15,6 +15,9 @@ import {httpInterceptorProviders} from './interceptors';
 import {Globals} from './global/globals';
 import { EventComponent } from './components/event/event.component';
 import { EventFilterComponent } from './components/event-filter/event-filter.component';
+import { HallViewingComponent } from './components/hall-viewing/hall-viewing.component';
+import { MyDatePickerModule } from 'mydatepicker';
+import {IMyDpOptions} from 'mydatepicker';
 
 @NgModule({
   declarations: [
@@ -34,9 +37,19 @@ import { EventFilterComponent } from './components/event-filter/event-filter.com
     HttpClientModule,
     NgbModule,
     FormsModule,
+    MyDatePickerModule
   ],
   providers: [httpInterceptorProviders, Globals],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
+  public myDatePickerOptions: IMyDpOptions = {
+    sunHighlight: false,
+    dateFormat: 'dd.mm.yyyy',
+  };
+
+  public model: any = { date: { year: 2018, month: 10, day: 9 } };
+
+
 }

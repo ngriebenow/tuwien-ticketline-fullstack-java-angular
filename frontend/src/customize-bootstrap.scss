@@ -140,98 +140,6 @@ $theme-colors:(
 }
 
 /*
-  TEXT-FIELDS:
-  <div class="container">
-    <div class="row">
-      <div class="col-md-1 align-self-center">
-        <h2>Hello</h2>
-      </div>
-      <div class="col-md-3">
-        <div class="text-field-norm"><h4 class="text-field-font">World</h4></div>
-      </div>
-    </div>
-  </div>
-*/
-
-
-
-/*
-  normal sized writable text-field
-  might be adjusted
-*/
-.text-field-norm{
-  width: 180px;
-  height: 38px;
-  background-color: $light-gray;
-  border-radius: 10px;
-}
-
-/*
-  add this to the h4/h5 as class in a text-field
-*/
-.text-field-font{
-  padding-top: 5px;
-  padding-left: 7px;
-}
-
-/*
-  large sized writable text-field
-  might be adjusted
-*/
-.text-field-lg{
-  margin-left: 20px;
-  width: 270px;
-  height: 38px;
-  background-color: $light-gray;
-  border-radius: 10px;
-}
-
-/*
-  small sized writable text-field
-  might be adjusted
-*/
-.text-field-sm{
-  margin-left: 20px;
-  width: 90px;
-  height: 38px;
-  background-color: $light-gray;
-  border-radius: 10px;
-}
-
-/*
-  normal sized NOT writable text-field
-  might be adjusted
-*/
-.text-field-nt-norm{
-  margin-left: 20px;
-  width: 180px;
-  height: 38px;
-  background-color: $light-gray;
-}
-
-/*
-  large sized NOT writable text-field
-  might be adjusted
-*/
-.text-field-nt-lg{
-  margin-left: 20px;
-  width: 270px;
-  height: 38px;
-  background-color: $light-gray;
-}
-
-/*
-  small sized NOT writable text-field
-  might be adjusted
-*/
-.text-field-nt-sm{
-  margin-left: 20px;
-  width: 90px;
-  height: 38px;
-  background-color: $light-gray;
-}
-
-/*
   CHECKBOX:
   <div class="form-check">
     <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -264,15 +172,12 @@ $theme-colors:(
 
 /*
   DROPDOWN:
-  <div class="dropdown">
-    <button class="btn dropdown-toggle" style="background-color:#EAEAEA; color: #CFCFCF" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown button</button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" href="#">Action</a>
-      <a class="dropdown-item" href="#">Another action</a>
-      <a class="dropdown-item" href="#">Something else here</a>
-    </div>
-  </div>
+  <select>
+        <option>Placeholder</option>
+        <option>Mustard</option>
+        <option>Ketchup</option>
+        <option>Barbecue</option>
+      </select>
 */
 
 
@@ -304,5 +209,116 @@ $theme-colors:(
 
 thead {
   background-color:$dark-gray !important;
+  color: white !important;
+}
+
+/*
+  TEXT-FIELD:
+  <div class="mt-4 container">
+  <div class="row">
+    <div class="column md-1">
+      <input class="form-control" type="text" placeholder="Default input">
+    </div>
+  </div>
+  </div>
+
+  OR:
+
+  <div class="form-group row">
+    <h2 for="inputEmail3MD" class="col-sm-2 col-form-label text-right">Email</h2>
+    <div class="col-sm-2">
+      <div class="md-form mt-0">
+        <input type="email" class="form-control" id="inputEmail3MD" placeholder="Email">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <h2 for="inputPassword3MD" class="col-sm-2 col-form-label text-right">Password</h2>
+    <div class="col-sm-2">
+      <div class="md-form mt-0">
+        <input type="password" class="form-control" id="inputPassword3MD" placeholder="Password">
+      </div>
+    </div>
+  </div>
+*/
+
+/*
+  READ-ONLY TEXT-FIELD:
+  <div class="mt-4 container">
+    <div class="row">
+      <div class="column md-1">
+        <input readonly class="form-control" type="text" value="Hello" >
+      </div>
+    </div>
+  </div>
+*/
+
+
+.form-control{
+  background-color: $light-gray !important;
+  color: white !important;
+  border-color: $light-gray !important;
+  border-radius: 10px !important;
+}
+
+input:not(:placeholder-shown){
+  background-color: $main-blue !important;
+  color: white !important;
+}
+
+
+/*
+  for read-only (e.g. Reservirung)
+*/
+input[readonly]{
+  background-color: $light-gray !important;
+  border-radius: 0px !important;
+  color: $dark-gray !important;
+}
+
+::placeholder {
+  color: $medium-gray !important;
+  opacity: 1;
+}
+
+/*
+  BACK-BUTTON:
+  <div class="bottom-right">
+    <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+  </div>
+*/
+
+select{
+  height: 38px;
+  width: 120px;
+  color: white;
+  background-color: $main-blue;
+  border-color: $light-gray;
+  border-radius: 10px;
+}
+
+option{
+  color: $dark-gray;
+  background-color: white;
+  border-color: $medium-gray;
+}
+
+/*
+  DATEPICKER:
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2">
+        <form class="ngForm">
+          <my-date-picker placeholder="tt/mm/jjjj" name="mydate" [options]="myDatePickerOptions"
+                        [(ngModel)]="model" required></my-date-picker>
+        </form>
+      </div>
+    </div>
+  </div>
+*/
+
+.myDatePickerOptions{
+  background-color: aqua !important;
   color: white !important;
 }
