@@ -5,7 +5,7 @@
       <h2 class="float-right">Tiefe</h2>
     </div>
     <div class="col-6">
-      <input [(ngModel)]="hallSize.coordinateY">
+      <input type="number" min="1" step="1" [(ngModel)]="hallSize.coordinateY" (input)="updatePlan()">
     </div>
   </div>
 
@@ -14,7 +14,7 @@
       <h2 class="float-right">Breite</h2>
     </div>
     <div class="col-6">
-      <input [(ngModel)]="hallSize.coordinateX">
+      <input type="number" min="1" step="1" [(ngModel)]="hallSize.coordinateX" (input)="updatePlan()">
     </div>
   </div>
 

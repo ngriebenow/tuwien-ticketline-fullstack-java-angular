@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HallCreationService } from '../../services/hall-creation.service';
 import {Point} from '../../dtos/Point';
+import {Unit} from '../../dtos/unit';
 
 @Component({
   selector: 'app-hall-creation-plan',
@@ -26,30 +27,44 @@ export class HallCreationPlanComponent implements OnInit {
 
   getSeats(): void {
     this.hallCreationService.getSeats().subscribe(seats => this.seats = seats);
-    // this.seats = [];
-    // this.seats.push(new Point(4, 5));
-    // this.seats.push(new Point(1, 1));
   }
 
-  calcPositionLeft(n: number) {
-    let left: number = this.seats[n].coordinateX * this.unitSize() - this.unitSize() + 20;
+  /**
+   * calculate position from left of one unit for css
+   */
+  calcPositionLeft(p: Point) {
+    let left: number = p.coordinateX * this.getUnitSize() - this.getUnitSize() + 20;
     if (this.hallSize.coordinateY > this.hallSize.coordinateX) {
-      left = left + (this.hallSize.coordinateY - this.hallSize.coordinateX) * this.unitSize() / 2;
+      left += (this.hallSize.coordinateY - this.hallSize.coordinateX) * this.getUnitSize() / 2;
     }
     return left + 'px';
   }
 
-  calcPositionTop(n: number) {
-    return (this.seats[n].coordinateY * this.unitSize() - this.unitSize() + 80) + 'px';
+  /**
+   * calculate position from top of one unit for css
+   */
+  calcPositionTop(p: Point) {
+    return (p.coordinateY * this.getUnitSize() - this.getUnitSize() + 80) + 'px';
   }
 
-  calcSize() {
-    // this.getHallSize();
-    return (this.unitSize() - 20) + 'px';
+  /**
+   * calculate size of one seat for css
+   */
+  calcSeatSize() {
+    return (this.getUnitSize() - 20) + 'px';
   }
 
-  unitSize() {
-    // this.getHallSize();
+  /**
+   * calculates size of sector for css
+   */
+  calcSectorSize(sector: Unit) {
+    return null; // todo calc size + 'px'
+  }
+
+  /**
+   * returns size of one unit (seat + space to next seat)
+   */
+  getUnitSize(): number {
     return Math.min(780 / this.hallSize.coordinateX, 780 / this.hallSize.coordinateY);
   }
 }

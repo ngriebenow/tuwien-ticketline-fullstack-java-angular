@@ -18,7 +18,7 @@ export class HallCreationMenuComponent implements OnInit {
   }
 
   updatePlan(): void {
-    this.hallCreationService.updateSeats();
+    this.hallCreationService.fillWithSeats();
   }
 
 }

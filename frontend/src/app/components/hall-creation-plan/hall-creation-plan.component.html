@@ -1,12 +1,6 @@
-<div class="container custom-cont">
-
+<div class="container hall-plan">
   <button type="button" class="btn stage"></button>
   <ng-container *ngFor="let seat of seats; let i = index">
-    <!--button type="button" style="width: 50px;height: 50px;position: relative; left: calc(100px*({{seat.coordinateX}})); top: 100px">{{seat.coordinateX}}/{{seat.coordinateY}}</button-->
-    <!--button type="button" [ngStyle]="{'width':calcSize(),'height':calcSize(),'position':'relative','left':calcPositionLeft(i),'top':calcPositionTop(i)}">{{seats[i].coordinateX}}/{{seat.coordinateY}}</button-->
-    <button type="button" [ngStyle]="{'width':calcSize(),'height':calcSize(),'position':'absolute','left':calcPositionLeft(i),'top':calcPositionTop(i)}" class="btn btn-seat">{{seats[i].coordinateX}}/{{seat.coordinateY}}</button>
+    <button type="button" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(seat),'top':calcPositionTop(seat)}" class="btn btn-seat"></button>
   </ng-container>
-
-  <!--button type="button" (click)="calcPositionLeft(0)" style="height: 300px;position: relative; left: 100px; top: 100px" class="custom-button">Abbrechen</button-->
-
 </div>
