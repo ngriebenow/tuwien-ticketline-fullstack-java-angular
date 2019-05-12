@@ -30,7 +30,7 @@ public class NewsEndpoint {
   }
 
   /**
-   * Get all news entries
+   * Get all news entries.
    *
    * @return a list of news entries
    */
@@ -43,7 +43,7 @@ public class NewsEndpoint {
   }
 
   /**
-   * Get news entry with id
+   * Get news entry with id.
    *
    * @param id of the news entry
    * @return the detailed news entry with given id
@@ -57,7 +57,7 @@ public class NewsEndpoint {
   }
 
   /**
-   * Create a news entry
+   * Create a news entry.
    *
    * @param detailedNewsDto the new detailed news entry
    * @return the created detailed news entry
