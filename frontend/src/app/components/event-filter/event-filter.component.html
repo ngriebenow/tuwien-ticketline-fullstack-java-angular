@@ -1,0 +1,139 @@
+  <div class="row">
+    <h1 align="center">Veranstaltungen</h1>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <div class="row">
+        <h2>Ort</h2>
+      </div>
+      <div class="row">
+        <select (change)="loadEvents()" [(ngModel)]="eventFilter.locationCountry" >
+          <option value="">(alle)</option>
+          <option value="Österreich">Österreich</option>
+          <option value="Deutschland">Deutschland</option>
+          <option value="Asgardlandistan">Asgardlandistan</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="row">
+        <input placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.locationName" type="text"/>
+      </div>
+      <div class="row">
+        <input placeholder="Ortsname, PLZ" (change)="loadEvents()" [(ngModel)]="eventFilter.locationPlace" type="text"/>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="row">
+        <input placeholder="Saalname" (change)="loadEvents()" [(ngModel)]="eventFilter.hallName"  type="text"/>
+      </div>
+      <div class="row">
+        <input placeholder="Straße" (change)="loadEvents()" [(ngModel)]="eventFilter.locationStreet"  type="text"/>
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div class="row">
+        <h2>Datum/Preis</h2>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="row">
+        <input placeholder="Datum" type="text" value="TODO">
+      </div>
+      <div class="row">
+        <input placeholder="Dauer" type="text" value="TODO">
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div class="row">
+        <input placeholder="Uhrzeit" type="text" value="TODO"/>
+      </div>
+      <div class="row">
+        <input placeholder="Preis" type="text" value="TODO"/>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <div class="row">
+    <div class="col-md-2">
+      <div class="row">
+        <h2>Veranstaltung</h2>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="row">
+        <input placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.name" type="text"/>
+      </div>
+      <div class="row">
+        <input placeholder="Künstler" (change)="loadEvents()" [(ngModel)]="eventFilter.artistName" type="text"/>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="row">
+
+        <select (change)="loadEvents()" [(ngModel)]="eventFilter.eventCategory" >
+          <option value="">(alle)</option>
+          <option value="CINEMA">Cinema</option>
+          <option value="CONCERT">Concert</option>
+          <option value="OTHER">Other</option>
+        </select>
+
+      </div>
+      <div class="row">
+        <input placeholder="Inhalt" (change)="loadEvents()" [(ngModel)]="eventFilter.content" type="text"/>
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div class="row">
+        <h2>Top 10</h2>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="row">
+    </div>
+      <div class="row">
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div class="row">
+      </div>
+      <div class="row">
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <td>Event</td>
+        <td>Kategorie</td>
+        <td>Ort</td>
+        <td>Saal</td>
+        <td>Dauer</td>
+        <td>Preis</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let x of events">
+        <td>{{ x.name }}</td>
+        <td>{{ x.category}}</td>
+        <td>{{ x.hall.location.name}}</td>
+        <td>{{ x.hall.name }}</td>
+        <td>{{ x.duration}}</td>
+        <td>TODO</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>

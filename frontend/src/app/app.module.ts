@@ -14,6 +14,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {httpInterceptorProviders} from './interceptors';
 import {Globals} from './global/globals';
 import { EventComponent } from './components/event/event.component';
+import { EventFilterComponent } from './components/event-filter/event-filter.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { EventComponent } from './components/event/event.component';
     LoginComponent,
     MessageComponent,
     EventComponent,
+    EventFilterComponent,
   ],
   imports: [
     BrowserModule,

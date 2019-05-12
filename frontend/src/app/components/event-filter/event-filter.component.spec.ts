@@ -1,26 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule} from '@angular/common/http/testing';
-import { EventComponent } from './event.component';
+import { EventFilterComponent } from './event-filter.component';
 import { Globals} from '../../global/globals';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
-import {RouterTestingModule} from '@angular/router/testing';
 
-describe('EventComponent', () => {
-  let component: EventComponent;
-  let fixture: ComponentFixture<EventComponent>;
+describe('EventFilterComponent', () => {
+  let component: EventFilterComponent;
+  let fixture: ComponentFixture<EventFilterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        EventComponent,
+        EventFilterComponent
       ],
       imports: [
         HttpClientTestingModule,
         ReactiveFormsModule,
-        FormsModule,
-        RouterModule,
-        RouterTestingModule
+        FormsModule
       ],
       providers: [
         Globals,
@@ -30,7 +26,7 @@ describe('EventComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EventComponent);
+    fixture = TestBed.createComponent(EventFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -39,5 +35,4 @@ describe('EventComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
 
