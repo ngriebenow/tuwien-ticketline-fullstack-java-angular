@@ -24,11 +24,16 @@
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
     "@ng-bootstrap/ng-bootstrap": "^4.0.0",
+    "@syncfusion/ej2-angular-calendars": "^17.1.43",
+    "@types/bootstrap-datepicker": "0.0.13",
+    "@types/jquery": "^3.3.29",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
     "jwt-decode": "latest",
     "lodash": "^4.17.11",
+    "mydatepicker": "^2.6.6",
     "rxjs": "~6.3.3",
+    "tiny-date-picker": "^3.2.8",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
