@@ -12,13 +12,17 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
+import at.ac.tuwien.sepm.groupphase.backend.specification.UserSpecification;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -48,38 +52,60 @@ public class SimpleEventService implements EventService {
       public Predicate toPredicate(
           Root<Event> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
-        Predicate hallName =
-            criteriaBuilder.equal(root.get("hall").get("name"), eventFilterDto.getHallName());
-        Predicate hallId =
-            criteriaBuilder.equal(root.get("hall").get("id"), eventFilterDto.getHallId());
-        Predicate locationId =
-            criteriaBuilder.equal(
-                root.get("hall").get("location").get("id"), eventFilterDto.getLocationId());
-        Predicate locationName =
-            criteriaBuilder.equal(
-                root.get("hall").get("location").get("name"), eventFilterDto.getLocationId());
-        Predicate locationPlace =
-            criteriaBuilder.equal(
-                root.get("hall").get("location").get("place"), eventFilterDto.getLocationId());
-        Predicate locationCountry =
-            criteriaBuilder.equal(
-                root.get("hall").get("location").get("country"), eventFilterDto.getLocationId());
-        Predicate locationStreet =
-            criteriaBuilder.equal(
-                root.get("hall").get("location").get("street"), eventFilterDto.getLocationId());
-        Predicate locationPostalCode =
-            criteriaBuilder.equal(
-                root.get("hall").get("location").get("postalCode"), eventFilterDto.getLocationId());
+        List<Predicate> expressions = new ArrayList<>();
 
-        return criteriaBuilder.and(
-            hallName,
-            hallId,
-            locationId,
-            locationName,
-            locationPlace,
-            locationCountry,
-            locationStreet,
-            locationPostalCode);
+        if (eventFilterDto.getHallName() != null) {
+          Predicate hallName =
+              criteriaBuilder.like(root.get("hall").get("name"), "%" + eventFilterDto.getHallName() + "%");
+          expressions.add(hallName);
+        }
+        if (eventFilterDto.getHallId() != null) {
+          Predicate hallId =
+              criteriaBuilder.equal(root.get("hall").get("id"), eventFilterDto.getHallId());
+          expressions.add(hallId);
+        }
+        if (eventFilterDto.getLocationId() != null) {
+          Predicate locationId =
+              criteriaBuilder.equal(
+                  root.get("hall").get("location").get("id"), eventFilterDto.getLocationId());
+          expressions.add(locationId);
+        }
+        if (eventFilterDto.getLocationName() != null) {
+          Predicate locationName =
+              criteriaBuilder.like(
+                  root.get("hall").get("location").get("name"), "%" + eventFilterDto.getLocationName() + "%");
+          expressions.add(locationName);
+        }
+
+        if (eventFilterDto.getLocationPlace() != null) {
+          Predicate locationPlace =
+              criteriaBuilder.like(
+                  root.get("hall").get("location").get("place"), "%" + eventFilterDto.getLocationPlace() + "%");
+          expressions.add(locationPlace);
+        }
+        if (eventFilterDto.getLocationCountry() != null) {
+          Predicate locationCountry =
+              criteriaBuilder.like(
+                  root.get("hall").get("location").get("country"), "%" + eventFilterDto.getLocationCountry() + "%");
+          expressions.add(locationCountry);
+        }
+        if (eventFilterDto.getLocationStreet() != null) {
+          Predicate locationStreet =
+              criteriaBuilder.like(
+                  root.get("hall").get("location").get("street"), "%" + eventFilterDto.getLocationStreet() + "%");
+          expressions.add(locationStreet);
+        }
+        if (eventFilterDto.getLocationPostalCode() != null) {
+          Predicate locationPostalCode =
+              criteriaBuilder.like(
+                  root.get("hall").get("location").get("postalCode"), "%" + eventFilterDto.getLocationId() + "%");
+          expressions.add(locationPostalCode);
+
+        }
+
+        Predicate[] predicates = expressions.toArray(new Predicate[expressions.size()]);
+
+        return criteriaBuilder.and(predicates);
       }
     };
   }
@@ -98,29 +124,33 @@ public class SimpleEventService implements EventService {
   @Override
   public List<EventDto> getEventsFiltered(EventFilterDto eventFilterDto, Pageable pageable) {
 
-    /*
-    Specification<Event> specification = UserSpecification
-        .contains("name",eventFilterDto.getName());
-    specification = specification.and(
-        UserSpecification.endures("duration",eventFilterDto.getDuration(), Duration.ofMinutes(30))
-    );
-    specification = specification.and(
-        UserSpecification.contains("content",eventFilterDto.getName())
-    );
-    specification = specification.and(
-        UserSpecification.contains("content",eventFilterDto.getName())
-    );
-    specification = specification.and(
-        UserSpecification.belongsTo("eventCategory",eventFilterDto.getEventCategory())
-    );*/
 
-    Specification<Event> specification = likeHallLocation(eventFilterDto);
+    Specification<Event> specification = UserSpecification.alwaysTrue();
 
-    List<Event> events =
-        eventRepository.findAllByNameContainsAndCategoryEqualsAndContentContains(
-            eventFilterDto.getName(),
-            eventFilterDto.getEventCategory(),
-            eventFilterDto.getContent(),
+    if (eventFilterDto.getName() != null) {
+      specification = specification.and(UserSpecification.contains("name",eventFilterDto.getName()));
+    }
+    if (eventFilterDto.getDuration() != null && false) {
+      specification = specification.and(
+          UserSpecification.endures("duration",eventFilterDto.getDuration(), Duration.ofMinutes(30))
+      );
+    }
+    if (eventFilterDto.getContent() != null) {
+      specification = specification.and(
+          UserSpecification.contains("content",eventFilterDto.getName())
+      );
+    }
+    if (eventFilterDto.getEventCategory() != null) {
+      specification = specification.and(
+          UserSpecification.belongsTo("category",eventFilterDto.getEventCategory())
+      );
+    }
+
+    specification = specification.and(likeHallLocation(eventFilterDto));
+
+
+    Page<Event> events =
+        eventRepository.findAll(
             specification,
             pageable);
 

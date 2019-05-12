@@ -57,20 +57,22 @@ public class EventEndpoint {
   @ApiOperation(
       value = "Get filtered events",
       authorizations = {@Authorization(value = "apiKey")})
-  public List<PerformanceDto> get(
-      @RequestParam String name,
-      @RequestParam EventCategory eventCategory,
-      @RequestParam String artistName,
-      @RequestParam Integer priceInCents,
-      @RequestParam String hallName,
-      @RequestParam Long hallId,
-      @RequestParam Long locationId,
-      @RequestParam String locationName,
-      @RequestParam String locationCountry,
-      @RequestParam String locationStreet,
-      @RequestParam String locationPlace,
-      @RequestParam Integer page,
-      @RequestParam Integer count) {
+  public List<EventDto> get(
+      @RequestParam(required = false) String name,
+      @RequestParam(required = false) String content,
+      @RequestParam(required = false) String duration,
+      @RequestParam(required = false) EventCategory eventCategory,
+      @RequestParam(required = false) String artistName,
+      @RequestParam(required = false) Integer priceInCents,
+      @RequestParam(required = false) String hallName,
+      @RequestParam(required = false) Long hallId,
+      @RequestParam(required = false) Long locationId,
+      @RequestParam(required = false) String locationName,
+      @RequestParam(required = false) String locationCountry,
+      @RequestParam(required = false) String locationStreet,
+      @RequestParam(required = false) String locationPlace,
+      @RequestParam(required = false, defaultValue = "0") Integer page,
+      @RequestParam(required = false, defaultValue = "1000") Integer count) {
 
     Pageable p = PageRequest.of(page, count);
 
@@ -78,7 +80,7 @@ public class EventEndpoint {
         .eventCategory(eventCategory)
         .artistName(artistName)
         .content(content)
-        .duration(duration)
+        .duration(null)
         .name(name)
         .priceInCents(priceInCents)
         .hallId(hallId)
@@ -89,30 +91,9 @@ public class EventEndpoint {
         .locationPlace(locationPlace)
         .locationStreet(locationStreet).build();
 
-    eventService.getEventsFiltered(eventFilterDto,p);
+    return eventService.getEventsFiltered(eventFilterDto,p);
 
-    return null;
   }
 
 
-  @ApiModelProperty(required = false, name = "The name which the event should contain")
-  private String name;
-
-  @ApiModelProperty(required = false, name = "The category which the event should be")
-  private EventCategory eventCategory;
-
-  @ApiModelProperty(required = false, name = "The artist which should feature the event")
-  private ArtistDto artist;
-
-  @ApiModelProperty(required = false, name = "The price which one ticket should cost")
-  private Integer priceInCents;
-
-  @ApiModelProperty(required = false, name = "The hall in which the event should take place")
-  private HallDto hall;
-
-  @ApiModelProperty(required = false, name = "The content description which the event should have")
-  private String content;
-
-  @ApiModelProperty(required = false, name = "The duration how long the event should take")
-  private Duration duration;
 }

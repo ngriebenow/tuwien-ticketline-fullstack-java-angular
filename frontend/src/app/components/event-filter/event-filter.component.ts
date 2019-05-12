@@ -1,4 +1,6 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
+import {EventFilter} from '../../dtos/event-filter';
+import {EventService} from '../../services/event.service';
 
 @Component({
   selector: 'app-event-filter',
@@ -7,21 +9,26 @@ import {Component, OnInit, Output} from '@angular/core';
 })
 export class EventFilterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private eventService: EventService) { }
+
+  @Input() eventFilter: EventFilter = new EventFilter('', '', '', '', '', '', '', '', '', '', '', '', '', '')
 
   @Output() events: Event[] = [];
 
   ngOnInit() {
+    console.log('ngOnInit');
     this.loadEvents();
   }
+
 
   /**
    * Loads the events
    * @param id the id of the event whose performances should be search for
    */
-  loadEvents() {
-    this.eventService.getPerformancesById(id).subscribe(
-      performances => this.performances = performances as Performance[]);
+  loadEvents(): void {
+    console.log('loadEvents');
+    this.eventService.getEventsFiltered(this.eventFilter).subscribe(
+      (events: Event[]) => this.events = events);
   }
 
 }
