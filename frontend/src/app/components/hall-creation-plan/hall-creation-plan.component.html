@@ -1,0 +1,6 @@
+<div class="container hall-plan">
+  <button type="button" class="btn stage"></button>
+  <ng-container *ngFor="let seat of seats; let i = index">
+    <button type="button" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(seat),'top':calcPositionTop(seat)}" class="btn btn-seat"></button>
+  </ng-container>
+</div>
