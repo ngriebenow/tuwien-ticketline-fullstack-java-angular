@@ -4,8 +4,6 @@ public class TicketDto {
 
   private String unitName;
 
-  private String salt;
-
   private Long invoiceId;
 
   private String clientName;
@@ -24,14 +22,6 @@ public class TicketDto {
 
   public void setUnitName(String unitName) {
     this.unitName = unitName;
-  }
-
-  public String getSalt() {
-    return salt;
-  }
-
-  public void setSalt(String salt) {
-    this.salt = salt;
   }
 
   public Long getInvoiceId() {

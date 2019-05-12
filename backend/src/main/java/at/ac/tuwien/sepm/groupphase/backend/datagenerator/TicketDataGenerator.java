@@ -11,6 +11,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.TicketRepository;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -75,7 +76,7 @@ public class TicketDataGenerator implements DataGenerator<Ticket> {
         DefinedUnit definedUnit = definedUnits.get((definedUnitIdx + i) % definedUnits.size());
         generatedTickets.add(
             new Ticket.Builder()
-                .salt(salt)
+                .salt(Base64.getEncoder().encodeToString(salt))
                 .isCancelled(invoice.isCancelled())
                 .definedUnit(definedUnit)
                 .invoice(invoice)

@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TicketRepositoryTest {
 
   private Ticket TICKET_1 =
-      new Ticket.Builder().isCancelled(false).salt("RANDOMSTRING".getBytes()).build();
+      new Ticket.Builder().isCancelled(false).salt("RANDOMSTRING").build();
 
   @Autowired TicketRepository ticketRepository;
 
