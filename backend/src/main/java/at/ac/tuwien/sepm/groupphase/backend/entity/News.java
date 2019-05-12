@@ -26,7 +26,7 @@ public class News {
   @Column(nullable = false)
   private String summary;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 10_000)
   private String text;
 
   public static Builder builder() {
