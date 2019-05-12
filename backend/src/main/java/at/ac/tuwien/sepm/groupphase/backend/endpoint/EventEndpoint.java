@@ -81,7 +81,6 @@ public class EventEndpoint {
         .eventCategory(eventCategory)
         .artistName(artistName)
         .content(content)
-        .duration(Duration.ofMinutes(duration))
         .name(name)
         .priceInCents(priceInCents)
         .hallId(hallId)
@@ -91,6 +90,10 @@ public class EventEndpoint {
         .locationCountry(locationCountry)
         .locationPlace(locationPlace)
         .locationStreet(locationStreet).build();
+
+    if (duration != null) {
+      eventFilterDto.setDuration(Duration.ofMinutes(duration));
+    }
 
     return eventService.getEventsFiltered(eventFilterDto,p);
 
