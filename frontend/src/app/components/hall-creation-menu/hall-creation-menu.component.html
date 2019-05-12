@@ -5,7 +5,7 @@
       <h2 class="float-right">Tiefe</h2>
     </div>
     <div class="col-6">
-      <input type="number" min="1" step="1" [(ngModel)]="hallSize.coordinateY" (input)="updatePlan()">
+      <input type="number" min="1" step="1" [(ngModel)]="hallSize.coordinateY" (input)="updatePlan()" class="text-field-norm">
     </div>
   </div>
 
@@ -14,7 +14,7 @@
       <h2 class="float-right">Breite</h2>
     </div>
     <div class="col-6">
-      <input type="number" min="1" step="1" [(ngModel)]="hallSize.coordinateX" (input)="updatePlan()">
+      <input type="number" min="1" step="1" [(ngModel)]="hallSize.coordinateX" (input)="updatePlan()" class="text-field-norm">
     </div>
   </div>
 
@@ -71,10 +71,10 @@
 
   <div class="row row-padding">
     <div class="col-6 align-self-center">
-      <button type="button" (click)="click()" class="btn btn-primary float-right">Abbrechen</button>
+      <button type="button" (click)="click()" class="btn btn-primary float-right btn-lg btn-font-size-reduced">Abbrechen</button>
     </div>
     <div class="col-6">
-      <button type="button" (click)="updatePlan()" class="btn btn-secondary float-left">Weiter</button>
+      <button type="button" (click)="updatePlan()" class="btn btn-secondary float-left btn-lg">Weiter</button>
     </div>
   </div>
 </div>
