@@ -4,7 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UserDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = SimpleUserMapper.class)
+@Mapper(uses = SimpleUserMapper.class)
 public interface UserMapper {
 
   User userDtoToUser(UserDto user);
