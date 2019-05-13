@@ -13,6 +13,9 @@ import {MessageComponent} from './components/message/message.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {httpInterceptorProviders} from './interceptors';
 import {Globals} from './global/globals';
+import { HallCreationComponent } from './components/hall-creation/hall-creation.component';
+import { HallCreationMenuComponent } from './components/hall-creation-menu/hall-creation-menu.component';
+import { HallCreationPlanComponent } from './components/hall-creation-plan/hall-creation-plan.component';
 import { EventComponent } from './components/event/event.component';
 import { EventFilterComponent } from './components/event-filter/event-filter.component';
 import { MyDatePickerModule } from 'mydatepicker';
@@ -26,6 +29,9 @@ import {IMyDpOptions} from 'mydatepicker';
     HomeComponent,
     LoginComponent,
     MessageComponent,
+    HallCreationComponent,
+    HallCreationMenuComponent,
+    HallCreationPlanComponent,
     EventComponent,
     EventFilterComponent,
   ],

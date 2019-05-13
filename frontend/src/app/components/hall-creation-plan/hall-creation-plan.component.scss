@@ -1,0 +1,28 @@
+.hall-plan {
+  position: relative;
+  height: 860px;
+  width: 800px;
+  top: calc(50vh - 455px);
+  background-color: #ffc520;
+}
+
+.stage {
+  position: absolute;
+  height: 20px;
+  width: 500px;
+  top: 20px;
+  left: 150px;
+  background-color: #8f8f8f;
+  border-radius: 5px;
+}
+
+.btn-seat {
+  background-color: #8f8f8f;
+  border-radius: 5px;
+}
+
+.btn-seat:hover,
+.btn-seat:focus,
+.btn-seat:active{
+  background-color: #898989;
+}

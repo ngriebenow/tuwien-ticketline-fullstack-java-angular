@@ -1,0 +1,80 @@
+<div class="container">
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Tiefe</h2>
+    </div>
+    <div class="col-6">
+      <input type="number" min="1" step="1" [(ngModel)]="hallSize.coordinateY" (input)="updatePlan()" class="text-field-norm">
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Breite</h2>
+    </div>
+    <div class="col-6">
+      <input type="number" min="1" step="1" [(ngModel)]="hallSize.coordinateX" (input)="updatePlan()" class="text-field-norm">
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Erweitern</h2>
+    </div>
+    <div class="col-6">
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Löschen</h2>
+    </div>
+    <div class="col-6">
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Gang</h2>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="click()" class="btn btn-aisle float-left"></button>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Sitzplatz</h2>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="click()" class="btn btn-seat float-left"></button>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Sektor</h2>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="click()" class="btn btn-sector float-left"></button>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Kapazität</h2>
+    </div>
+    <div class="col-6">
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <button type="button" (click)="click()" class="btn btn-primary float-right btn-lg btn-font-size-reduced">Abbrechen</button>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="updatePlan()" class="btn btn-secondary float-left btn-lg">Weiter</button>
+    </div>
+  </div>
+</div>
