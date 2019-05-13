@@ -3,16 +3,32 @@ package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 import at.ac.tuwien.sepm.groupphase.backend.configuration.properties.AuthenticationConfigurationProperties;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.authentication.AuthenticationToken;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.authentication.AuthenticationTokenInfo;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthenticationConstants;
 import at.ac.tuwien.sepm.groupphase.backend.service.HeaderTokenAuthenticationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
@@ -23,22 +39,12 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.crypto.spec.SecretKeySpec;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.CredentialsExpiredException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Service;
+
+
 
 @Service
-public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthenticationService {
+public class SimpleHeaderTokenAuthenticationService
+    implements HeaderTokenAuthenticationService, ApplicationListener {
 
   private static final Logger LOGGER =
       LoggerFactory.getLogger(SimpleHeaderTokenAuthenticationService.class);
@@ -49,14 +55,17 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
   private final SignatureAlgorithm signatureAlgorithm;
   private final Duration validityDuration;
   private final Duration overlapDuration;
+  private UserRepository userRepository;
 
   /** TODO: Add JavaDoc. */
   public SimpleHeaderTokenAuthenticationService(
       @Lazy AuthenticationManager authenticationManager,
       AuthenticationConfigurationProperties authenticationConfigurationProperties,
-      ObjectMapper objectMapper) {
+      ObjectMapper objectMapper,
+      UserRepository userRepository) {
     this.authenticationManager = authenticationManager;
     this.objectMapper = objectMapper;
+    this.userRepository = userRepository;
     byte[] apiKeySecretBytes =
         Base64.getEncoder().encode(authenticationConfigurationProperties.getSecret().getBytes());
     signatureAlgorithm = authenticationConfigurationProperties.getSignatureAlgorithm();
@@ -91,21 +100,7 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
             .setExpiration(Date.from(now.plus(validityDuration)))
             .signWith(signatureAlgorithm, signingKey)
             .compact();
-    String futureToken =
-        Jwts.builder()
-            .claim(AuthenticationConstants.JWT_CLAIM_PRINCIPAL_ID, null)
-            .claim(AuthenticationConstants.JWT_CLAIM_PRINCIPAL, authentication.getName())
-            .claim(AuthenticationConstants.JWT_CLAIM_AUTHORITY, authorities)
-            .setIssuedAt(Date.from(now))
-            .setExpiration(
-                Date.from(now.plus(validityDuration.minus(overlapDuration).plus(validityDuration))))
-            .setNotBefore(Date.from(now.plus(validityDuration.minus(overlapDuration))))
-            .signWith(signatureAlgorithm, signingKey)
-            .compact();
-    return AuthenticationToken.builder()
-        .currentToken(currentToken)
-        .futureToken(futureToken)
-        .build();
+    return AuthenticationToken.builder().currentToken(currentToken).build();
   }
 
   @Override
@@ -191,5 +186,37 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
             .signWith(signatureAlgorithm, signingKey)
             .compact();
     return AuthenticationToken.builder().currentToken(headerToken).futureToken(futureToken).build();
+  }
+
+  @Override
+  public void onApplicationEvent(ApplicationEvent appEvent) {
+    if (appEvent instanceof AuthenticationSuccessEvent) {
+      AuthenticationSuccessEvent event = (AuthenticationSuccessEvent) appEvent;
+      UserDetails userDetails = (UserDetails) event.getAuthentication().getPrincipal();
+      String userName = userDetails.getUsername();
+      at.ac.tuwien.sepm.groupphase.backend.entity.User u =
+          userRepository.findOneByUsername(userName);
+      u.setFailedLoginCounter(0);
+      userRepository.saveAndFlush(u);
+    } else if (appEvent instanceof AuthenticationFailureBadCredentialsEvent) {
+      AuthenticationFailureBadCredentialsEvent event =
+          (AuthenticationFailureBadCredentialsEvent) appEvent;
+      String userName = event.getAuthentication().getPrincipal().toString();
+      at.ac.tuwien.sepm.groupphase.backend.entity.User u =
+          userRepository.findOneByUsername(userName);
+      if (u == null) {
+        // Nothing to do in that case
+        return;
+      }
+      if (u.getAuthority().contains("ROLE_ADMIN")) {
+        // Cant block an admin account
+        return;
+      }
+      u.setFailedLoginCounter(u.getFailedLoginCounter() + 1);
+      if (u.getFailedLoginCounter() >= 5) {
+        u.setEnabled(false);
+      }
+      userRepository.saveAndFlush(u);
+    }
   }
 }

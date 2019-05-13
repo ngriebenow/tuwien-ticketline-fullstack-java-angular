@@ -2,21 +2,20 @@ package at.ac.tuwien.sepm.groupphase.backend.configuration;
 
 import at.ac.tuwien.sepm.groupphase.backend.configuration.properties.H2ConsoleConfigurationProperties;
 import at.ac.tuwien.sepm.groupphase.backend.security.HeaderTokenAuthenticationFilter;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.provisioning.InMemoryUserDetailsManagerConfigurer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,10 +30,33 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.Map;
+
+
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@PropertySource("classpath:db.properties")
 public class SecurityConfiguration {
+
+  @Autowired private Environment env;
+
+  /**
+   * Creates new h2 datasource with properties read from db.properties
+   * @return DataSource
+   */
+  public DataSource getDataSource() {
+    BasicDataSource dataSource = new BasicDataSource();
+    dataSource.setDriverClassName(env.getProperty("h2.driver"));
+    dataSource.setUrl(env.getProperty("h2.jdbcUrl"));
+    dataSource.setUsername(env.getProperty("h2.username"));
+    dataSource.setPassword(env.getProperty("h2.password"));
+    return dataSource;
+  }
 
   private final PasswordEncoder passwordEncoder;
 
@@ -44,7 +66,7 @@ public class SecurityConfiguration {
 
   @Bean
   public static PasswordEncoder configureDefaultPasswordEncoder() {
-    return new BCryptPasswordEncoder(10);
+    return new BCryptPasswordEncoder();
   }
 
   /** TODO: Add JavaDoc. */
@@ -66,17 +88,22 @@ public class SecurityConfiguration {
   public void configureGlobal(
       AuthenticationManagerBuilder auth, List<AuthenticationProvider> providerList)
       throws Exception {
-    new InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder>()
-        .withUser("user")
-        .password(passwordEncoder.encode("password"))
-        .authorities("USER")
-        .and()
-        .withUser("admin")
-        .password(passwordEncoder.encode("password"))
-        .authorities("ADMIN", "USER")
-        .and()
-        .passwordEncoder(passwordEncoder)
-        .configure(auth);
+    /*new InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder>()
+    .withUser("user")
+    .password(passwordEncoder.encode("password"))
+    .authorities("USER")
+    .and()
+    .withUser("admin")
+    .password(passwordEncoder.encode("password"))
+    .authorities("ADMIN", "USER")
+    .and()
+    .passwordEncoder(passwordEncoder)
+    .configure(auth);*/
+    auth.jdbcAuthentication()
+        .dataSource(getDataSource())
+        .usersByUsernameQuery("select username, password, enabled" + " from user where username=?")
+        .authoritiesByUsernameQuery("select username, authority " + "from user where username=?")
+        .passwordEncoder(new BCryptPasswordEncoder());
     providerList.forEach(auth::authenticationProvider);
   }
 
