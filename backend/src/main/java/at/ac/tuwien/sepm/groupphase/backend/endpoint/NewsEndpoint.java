@@ -2,8 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleNewsDto;
-import at.ac.tuwien.sepm.groupphase.backend.entity.News;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.news.NewsMapper;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,11 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class NewsEndpoint {
 
   private final NewsService newsService;
-  private final NewsMapper newsMapper;
 
-  public NewsEndpoint(NewsService newsService, NewsMapper newsMapper) {
+  public NewsEndpoint(NewsService newsService) {
     this.newsService = newsService;
-    this.newsMapper = newsMapper;
   }
 
   /**
@@ -39,7 +35,7 @@ public class NewsEndpoint {
       value = "Get list of simple news entries",
       authorizations = {@Authorization(value = "apiKey")})
   public List<SimpleNewsDto> findAll() {
-    return newsMapper.newsToSimpleNewsDto(newsService.findAll());
+    return newsService.findAll();
   }
 
   /**
@@ -53,7 +49,7 @@ public class NewsEndpoint {
       value = "Get detailed information about a specific news entry",
       authorizations = {@Authorization(value = "apiKey")})
   public DetailedNewsDto find(@PathVariable Long id) {
-    return newsMapper.newsToDetailedNewsDto(newsService.findOne(id));
+    return newsService.findOne(id);
   }
 
   /**
@@ -68,8 +64,6 @@ public class NewsEndpoint {
       value = "Publish a news entry",
       authorizations = {@Authorization(value = "apiKey")})
   public DetailedNewsDto publishNews(@RequestBody DetailedNewsDto detailedNewsDto) {
-    News news = newsMapper.detailedNewsDtoToNews(detailedNewsDto);
-    news = newsService.create(news);
-    return newsMapper.newsToDetailedNewsDto(news);
+    return newsService.create(detailedNewsDto);
   }
 }

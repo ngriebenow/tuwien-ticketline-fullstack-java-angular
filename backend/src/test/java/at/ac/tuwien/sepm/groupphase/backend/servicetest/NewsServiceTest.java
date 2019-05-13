@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.servicetest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.news.NewsMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
@@ -25,6 +26,7 @@ public class NewsServiceTest {
   NewsRepository newsRepository;
 
   @Autowired private NewsService newsService;
+  @Autowired private NewsMapper newsMapper;
 
   private News N1 = new News.Builder().
       id(1L).
@@ -37,7 +39,7 @@ public class NewsServiceTest {
   @Test
   public void givenNews_whenFindNewsById_thenReturnNews() {
     BDDMockito.given(newsRepository.findById(1L)).willReturn(Optional.of(N1));
-    News retN1 = newsService.findOne(1L);
+    News retN1 = newsMapper.detailedNewsDtoToNews(newsService.findOne(1L));
     assertThat(retN1).isEqualTo(N1);
   }
 
