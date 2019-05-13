@@ -21,4 +21,8 @@ export class HallCreationMenuComponent implements OnInit {
     this.hallCreationService.fillWithSeats();
   }
 
+  getMaxHallSize(): Point {
+    return this.hallCreationService.getMaxHallSize();
+  }
+
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { HallCreationService } from '../../services/hall-creation.service';
+import {Component, OnInit} from '@angular/core';
+import {HallCreationService} from '../../services/hall-creation.service';
 import {Point} from '../../dtos/Point';
 import {Unit} from '../../dtos/unit';
 
@@ -12,6 +12,8 @@ export class HallCreationPlanComponent implements OnInit {
 
   hallSize: Point;
   seats: Point[];
+  sectors: Unit[];
+  aisles: Point[];
 
   constructor(private hallCreationService: HallCreationService) {
   }
@@ -19,14 +21,41 @@ export class HallCreationPlanComponent implements OnInit {
   ngOnInit() {
     this.getHallSize();
     this.getSeats();
+    this.getSectors();
+    this.getAisles();
   }
+
+  clickSeat(seat: Point): void {
+    this.hallCreationService.clickSeat(seat);
+  }
+
+  clickSector(sector: Unit): void {
+    this.hallCreationService.clickSector(sector);
+  }
+
+  clickAisle(aisle: Point): void {
+    this.hallCreationService.clickAisle(aisle);
+  }
+
 
   getHallSize(): void {
     this.hallSize = this.hallCreationService.getHallSize();
   }
 
+  getMaxHallSize(): Point {
+    return this.hallCreationService.getMaxHallSize();
+  }
+
   getSeats(): void {
     this.hallCreationService.getSeats().subscribe(seats => this.seats = seats);
+  }
+
+  getSectors(): void {
+    this.sectors = this.hallCreationService.sectors;
+  }
+
+  getAisles(): void {
+    this.aisles = this.hallCreationService.getAisles();
   }
 
   /**
@@ -66,5 +95,17 @@ export class HallCreationPlanComponent implements OnInit {
    */
   getUnitSize(): number {
     return Math.min(780 / this.hallSize.coordinateX, 780 / this.hallSize.coordinateY);
+  }
+
+  legalHallSize(): boolean {
+    if (this.hallSize.coordinateX <= this.getMaxHallSize().coordinateX &&
+      this.hallSize.coordinateY <= this.getMaxHallSize().coordinateY &&
+      this.hallSize.coordinateX > 0 &&
+      this.hallSize.coordinateY > 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

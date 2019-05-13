@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Hall} from '../dtos/hall';
 import {Point} from '../dtos/Point';
 import {Location} from '../dtos/location';
@@ -15,14 +15,20 @@ export class HallCreationService {
 
   hallName: string;
   hallSize: Point;
+  maxHallSize: Point = new Point(20, 20);
 
   seats: Point[];
-  aisles: Unit[];
   sectors: Unit[];
+  aisles: Point[];
+
+  selectedUnitType: UnitType;
+  selectedUnitPosition: Point;
 
   constructor() {
     this.hallSize = new Point(10, 10);
     this.seats = [];
+    this.sectors = [];
+    this.aisles = [];
     this.fillWithSeats();
   }
 
@@ -63,19 +69,55 @@ export class HallCreationService {
    * fills whole hall with seats
    */
   fillWithSeats(): void {
-    this.seats.length = 0;
-    for (let i = 0; i < this.hallSize.coordinateX; i++) {
-      for (let j = 0; j < this.hallSize.coordinateY; j++) {
-        this.seats.push(new Point(i + 1, j + 1));
+    if (this.hallSize.coordinateX <= this.maxHallSize.coordinateX && this.hallSize.coordinateY <= this.maxHallSize.coordinateY) {
+      this.seats.length = 0;
+      for (let i = 0; i < this.hallSize.coordinateX; i++) {
+        for (let j = 0; j < this.hallSize.coordinateY; j++) {
+          this.seats.push(new Point(i + 1, j + 1));
+        }
       }
     }
+  }
+
+  clickSeat(seat: Point): void {
+    this.aisles.push(seat);
+    this.seats.splice(this.seats.indexOf(seat), 1);
+  }
+
+  clickSector(sector: Unit): void {
+
+  }
+
+  clickAisle(aisle: Point): void {
+    this.seats.push(aisle);
+    this.aisles.splice(this.aisles.indexOf(aisle), 1);
+  }
+
+  selectSeat(): void {
+
+  }
+
+  selectSector(): void {
+
+  }
+
+  selectAisle(): void {
+
   }
 
   getHallSize(): Point {
     return this.hallSize;
   }
 
+  getMaxHallSize(): Point {
+    return this.maxHallSize;
+  }
+
   getSeats(): Observable<Point[]> {
-    return of (this.seats);
+    return of(this.seats);
+  }
+
+  getAisles(): Point[] {
+    return this.aisles;
   }
 }
