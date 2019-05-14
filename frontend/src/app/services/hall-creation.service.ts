@@ -9,12 +9,12 @@ import {UnitType} from '../enums/unit-type';
 })
 export class HallCreationService {
 
-  initialized = false;
-  edited = false;
+  initialized: boolean;
+  edited: boolean;
 
   hallName: string;
   hallSize: Point;
-  maxHallSize: Point = new Point(20, 20);
+  maxHallSize: Point;
 
   seats: Point[];
   sectors: Unit[];
@@ -24,7 +24,10 @@ export class HallCreationService {
   selectedUnitPosition: Point;
 
   constructor() {
+    this.initialized = false;
+    this.edited = false;
     this.hallSize = new Point(10, 10);
+    this.maxHallSize = new Point(25, 25);
     this.seats = [];
     this.sectors = [];
     this.aisles = [];

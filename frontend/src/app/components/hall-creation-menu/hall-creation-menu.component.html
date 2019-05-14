@@ -1,5 +1,4 @@
-<div class="container">
-
+<div *ngIf="initializationMode()" class="container">
   <div class="row row-padding">
     <div class="col-6 align-self-center">
       <h2 class="float-right">Tiefe</h2>
@@ -18,6 +17,17 @@
     </div>
   </div>
 
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <button type="button" (click)="cancelHallCreation()" class="btn btn-primary float-right btn-lg btn-font-size-reduced">Abbrechen</button>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="completeInitializing()" class="btn btn-secondary float-left btn-lg">Weiter</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="editingMode()" class="container">
   <div class="row row-padding">
     <div class="col-6 align-self-center">
       <h2 class="float-right">Erweitern</h2>
@@ -71,10 +81,21 @@
 
   <div class="row row-padding">
     <div class="col-6 align-self-center">
-      <button type="button" (click)="click()" class="btn btn-primary float-right btn-lg btn-font-size-reduced">Abbrechen</button>
+      <button type="button" (click)="cancelHallCreation()" class="btn btn-primary float-right btn-lg btn-font-size-reduced">Abbrechen</button>
     </div>
     <div class="col-6">
-      <button type="button" (click)="updatePlan()" class="btn btn-secondary float-left btn-lg">Weiter</button>
+      <button type="button" (click)="completeEditing()" class="btn btn-secondary float-left btn-lg">Weiter</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="sectorMode()" class="container">
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <button type="button" (click)="cancelHallCreation()" class="btn btn-primary float-right btn-lg btn-font-size-reduced">Abbrechen</button>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="completeSectors()" class="btn btn-secondary float-left btn-lg">Weiter</button>
     </div>
   </div>
 </div>

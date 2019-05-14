@@ -19,6 +19,42 @@ export class HallCreationMenuComponent implements OnInit {
     this.hallSize = this.hallCreationService.getHallSize();
   }
 
+  initializationMode(): boolean {
+    return (this.hallCreationService.initialized === false && this.hallCreationService.edited === false);
+  }
+
+  editingMode(): boolean {
+    return (this.hallCreationService.initialized === true && this.hallCreationService.edited === false);
+  }
+
+  sectorMode(): boolean {
+    return (this.hallCreationService.initialized === true && this.hallCreationService.edited === true);
+  }
+
+  /**
+   * checks and ends initialization process and sets initialized to true
+   */
+  completeInitializing(): void {
+    this.hallCreationService.completeInitializing();
+  }
+
+  /**
+   * checks and ends editing process and sets edited to true
+   */
+  completeEditing(): void {
+    this.hallCreationService.completeEditing();
+  }
+
+  /**
+   * checks and ends sector creation process and calls saveHall()
+   */
+  completeSectors(): void {
+    this.hallCreationService.completeSectors();
+  }
+
+  cancelHallCreation(): void {
+  }
+
   updatePlan(): void {
     this.hallCreationService.fillWithSeats();
   }
