@@ -18,7 +18,7 @@ public class Picture {
   @SequenceGenerator(name = "seq_picture_id", sequenceName = "seq_picture_id")
   private Long id;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "mediumblob")
   private byte[] data;
 
   @ManyToOne(optional = false)
