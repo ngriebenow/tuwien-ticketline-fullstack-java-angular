@@ -17,6 +17,9 @@ import { HallCreationComponent } from './components/hall-creation/hall-creation.
 import { HallCreationMenuComponent } from './components/hall-creation-menu/hall-creation-menu.component';
 import { HallCreationPlanComponent } from './components/hall-creation-plan/hall-creation-plan.component';
 import { EventComponent } from './components/event/event.component';
+import { EventFilterComponent } from './components/event-filter/event-filter.component';
+import { MyDatePickerModule } from 'mydatepicker';
+import {IMyDpOptions} from 'mydatepicker';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,7 @@ import { EventComponent } from './components/event/event.component';
     HallCreationMenuComponent,
     HallCreationPlanComponent,
     EventComponent,
+    EventFilterComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,9 +42,19 @@ import { EventComponent } from './components/event/event.component';
     HttpClientModule,
     NgbModule,
     FormsModule,
+    MyDatePickerModule
   ],
   providers: [httpInterceptorProviders, Globals],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
+  public myDatePickerOptions: IMyDpOptions = {
+    sunHighlight: false,
+    dateFormat: 'dd.mm.yyyy',
+  };
+
+  public model: any = { date: { year: 2018, month: 10, day: 9 } };
+
+
 }
