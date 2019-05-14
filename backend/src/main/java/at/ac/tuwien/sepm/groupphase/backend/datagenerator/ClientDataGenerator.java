@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Customer;
-import at.ac.tuwien.sepm.groupphase.backend.repository.CustomerRepository;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Client;
+import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,39 +14,39 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Profile("generateData")
-public class CustomerDataGenerator implements DataGenerator<Customer> {
+public class ClientDataGenerator implements DataGenerator<Client> {
 
   private static Set<Class<?>> dependencies = new HashSet<>();
   private static final Faker FAKER = new Faker(new Locale("de-at"));
 
-  private static final int MAX_CUSTOMER_COUNT = 103;
+  private static final int MAX_CLIENT_COUNT = 103;
 
-  private CustomerRepository customerRepository;
+  private ClientRepository clientRepository;
 
   @Autowired
-  public CustomerDataGenerator(CustomerRepository customerRepository) {
-    this.customerRepository = customerRepository;
+  public ClientDataGenerator(ClientRepository clientRepository) {
+    this.clientRepository = clientRepository;
   }
 
   @Override
   public void execute() {
-    List<Customer> generatedCustomers = new ArrayList<>(MAX_CUSTOMER_COUNT);
-    for (int i = 0; i < MAX_CUSTOMER_COUNT; i++) {
+    List<Client> generatedClients = new ArrayList<>(MAX_CLIENT_COUNT);
+    for (int i = 0; i < MAX_CLIENT_COUNT; i++) {
       String name = FAKER.name().firstName();
       String surName = FAKER.name().lastName();
       String email =
           String.format(
               "%s@%s.%s",
               name.toLowerCase(), surName.toLowerCase(), FAKER.internet().domainSuffix());
-      generatedCustomers.add(
-          new Customer.Builder().name(name).surname(surName).email(email).build());
+      generatedClients.add(
+          new Client.Builder().name(name).surname(surName).email(email).build());
     }
-    customerRepository.saveAll(generatedCustomers);
+    clientRepository.saveAll(generatedClients);
   }
 
   @Override
-  public Class<Customer> getGeneratedType() {
-    return Customer.class;
+  public Class<Client> getGeneratedType() {
+    return Client.class;
   }
 
   @Override
