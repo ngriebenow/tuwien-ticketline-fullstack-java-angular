@@ -3,9 +3,11 @@ package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Picture;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.news.NewsMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.PictureRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,10 +18,20 @@ import org.springframework.stereotype.Service;
 public class SimpleNewsService implements NewsService {
 
   private final NewsRepository newsRepository;
+  private final PictureRepository pictureRepository;
   private final NewsMapper newsMapper;
 
-  public SimpleNewsService(NewsRepository newsRepository, NewsMapper newsMapper) {
+  /**
+   * News service constructor.
+   *
+   * @param newsRepository to access news entries
+   * @param pictureRepository to get pictures belonging to news entry
+   * @param newsMapper to map between dto and entity
+   */
+  public SimpleNewsService(NewsRepository newsRepository, PictureRepository pictureRepository,
+      NewsMapper newsMapper) {
     this.newsRepository = newsRepository;
+    this.pictureRepository = pictureRepository;
     this.newsMapper = newsMapper;
   }
 
@@ -34,8 +46,17 @@ public class SimpleNewsService implements NewsService {
 
   @Override
   public DetailedNewsDto findOne(Long id) throws NotFoundException {
-    return newsMapper
-        .newsToDetailedNewsDto(newsRepository.findById(id).orElseThrow(NotFoundException::new));
+    News news = newsRepository.findById(id).orElseThrow(NotFoundException::new);
+    DetailedNewsDto retNewsDto = newsMapper.newsToDetailedNewsDto(news);
+
+    List<Picture> pictures = pictureRepository.findAllByNewsOrderByIdAsc(news);
+    List<Long> pictureIds = new ArrayList<>();
+
+    pictures.forEach(p -> pictureIds.add(p.getId()));
+
+    retNewsDto.setPictureIds(pictureIds);
+
+    return retNewsDto;
   }
 
   @Override

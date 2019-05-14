@@ -9,7 +9,7 @@ public class NewsRead {
   private String username;
 
   @Column(nullable = false)
-  private long newsId;
+  private Long newsId;
 
   /** Construct the newsRead instance. */
   public NewsRead() {}
@@ -46,18 +46,18 @@ public class NewsRead {
     this.username = username;
   }
 
-  public long getNewsId() {
+  public Long getNewsId() {
     return newsId;
   }
 
-  public void setNewsId(long newsId) {
+  public void setNewsId(Long newsId) {
     this.newsId = newsId;
   }
 
   public static final class Builder {
 
     private String username;
-    private long newsId;
+    private Long newsId;
 
     public Builder() {
     }
@@ -67,7 +67,7 @@ public class NewsRead {
       return this;
     }
 
-    public Builder newsId(long val) {
+    public Builder newsId(Long val) {
       newsId = val;
       return this;
     }

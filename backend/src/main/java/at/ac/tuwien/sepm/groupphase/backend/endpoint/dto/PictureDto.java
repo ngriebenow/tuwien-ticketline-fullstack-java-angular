@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class PictureDto {
 
   @ApiModelProperty(name = "The automatically generated database id")
-  private long id;
+  private Long id;
 
   @ApiModelProperty(required = true, name = "The picture content")
   private byte[] data;
