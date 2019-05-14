@@ -1,52 +1,22 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel
 public class TicketDto {
 
-  private String unitName;
-
-  private Long invoiceId;
-
-  private String clientName;
-
-  private String clientSurname;
-
+  @ApiModelProperty(readOnly = true, value = "The unique identifier of a specific ticket")
   private Long id;
 
+  @ApiModelProperty(value = "This price of the ticket in european cents")
   private int priceInCents;
 
-  private boolean isCancelled;
+  @ApiModelProperty(value = "The name of the seat or category the ticket is for")
+  private String unitName;
 
-  public String getUnitName() {
-    return unitName;
-  }
-
-  public void setUnitName(String unitName) {
-    this.unitName = unitName;
-  }
-
-  public Long getInvoiceId() {
-    return invoiceId;
-  }
-
-  public void setInvoiceId(Long invoiceId) {
-    this.invoiceId = invoiceId;
-  }
-
-  public String getClientName() {
-    return clientName;
-  }
-
-  public void setClientName(String clientName) {
-    this.clientName = clientName;
-  }
-
-  public String getClientSurname() {
-    return clientSurname;
-  }
-
-  public void setClientSurname(String clientSurname) {
-    this.clientSurname = clientSurname;
-  }
+  @ApiModelProperty(value = "The id of the invoice that bought or reserved this ticket")
+  private Long invoiceId;
 
   public Long getId() {
     return id;
@@ -64,11 +34,19 @@ public class TicketDto {
     this.priceInCents = priceInCents;
   }
 
-  public boolean isCancelled() {
-    return isCancelled;
+  public String getUnitName() {
+    return unitName;
   }
 
-  public void setCancelled(boolean cancelled) {
-    isCancelled = cancelled;
+  public void setUnitName(String unitName) {
+    this.unitName = unitName;
+  }
+
+  public Long getInvoiceId() {
+    return invoiceId;
+  }
+
+  public void setInvoiceId(Long invoiceId) {
+    this.invoiceId = invoiceId;
   }
 }

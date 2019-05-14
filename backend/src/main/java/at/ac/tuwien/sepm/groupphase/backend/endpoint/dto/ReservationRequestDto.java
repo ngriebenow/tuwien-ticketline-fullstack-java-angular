@@ -2,13 +2,11 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import java.util.List;
 
-public class TicketRequestDto {
+public class ReservationRequestDto {
 
   private List<Long> definedUnitIds;
 
   private Long clientId;
-
-  private boolean reserveAndSell;
 
   public List<Long> getDefinedUnitIds() {
     return definedUnitIds;
@@ -24,13 +22,5 @@ public class TicketRequestDto {
 
   public void setClientId(Long clientId) {
     this.clientId = clientId;
-  }
-
-  public boolean isReserveAndSell() {
-    return reserveAndSell;
-  }
-
-  public void setReserveAndSell(boolean reserveAndSell) {
-    this.reserveAndSell = reserveAndSell;
   }
 }
