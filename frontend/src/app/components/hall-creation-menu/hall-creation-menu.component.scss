@@ -1,9 +1,7 @@
-//div {
-//  background-color: #84c56f !important;
-//}
+@import '../../../colors';
 
 .btn-seat {
-  background-color: #8f8f8f;
+  background-color: $medium-gray;
   width: 50px;
   height: 50px;
   border-radius: 5px;
@@ -12,12 +10,12 @@
 .btn-seat:hover,
 .btn-seat:focus,
 .btn-seat:active{
-  background-color: #898989;
+  background-color: darken($medium-gray, 10);
 }
 
 
 .btn-aisle {
-  background-color: #ffffff;
+  background-color: white;
   width: 50px;
   height: 50px;
   border-radius: 5px;
@@ -26,12 +24,12 @@
 .btn-aisle:hover,
 .btn-aisle:focus,
 .btn-aisle:active{
-  background-color: #dbdbdb;
+  background-color: darken(white, 10);
 }
 
 
 .btn-sector {
-  background-color: #8FBEFF;
+  background-color: $main-blue;
   width: 50px;
   height: 50px;
   border-radius: 5px;
@@ -40,7 +38,7 @@
 .btn-sector:hover,
 .btn-sector:focus,
 .btn-sector:active{
-  background-color: #638dc0;
+  background-color: darken($main-blue, 10);
 }
 
 .row-padding {

@@ -1,5 +1,5 @@
 <div *ngIf="legalHallSize(); else notShow" class="container hall-plan">
-  <button type="button" class="btn stage"></button>
+  <div class="btn stage"></div>
   <ng-container *ngFor="let seat of seats">
     <button type="button" (click)="clickSeat(seat)" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(seat),'top':calcPositionTop(seat)}" class="btn btn-seat"></button>
   </ng-container>

@@ -1,3 +1,5 @@
+@import '../../../colors';
+
 .full-width {
   width: 100vw;
   position: relative;
@@ -22,12 +24,12 @@
 }
 
 .hall-bg {
-  height: 94.8vh;
-  background-color: #ffffff;
+  height: calc(100vh - 50px);
+  background-color: white;
 }
 
 .menu-bg {
-  height: 94.8vh;
-  background-color: #585858;
+  height: calc(100vh - 50px);
+  background-color: $dark-gray;
 }
 
