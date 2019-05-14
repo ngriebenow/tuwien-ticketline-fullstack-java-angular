@@ -63,7 +63,7 @@ export class HallCreationPlanComponent implements OnInit {
    * @param p != null
    */
   calcPositionLeft(p: Point) {
-    let left: number = p.coordinateX * this.getUnitSize() - this.getUnitSize() + 20;
+    let left: number = p.coordinateX * this.getUnitSize() - this.getUnitSize() + 20 + this.getSeatDistance() / 2;
     if (this.hallSize.coordinateY > this.hallSize.coordinateX) {
       left += (this.hallSize.coordinateY - this.hallSize.coordinateX) * this.getUnitSize() / 2;
     }
@@ -75,14 +75,14 @@ export class HallCreationPlanComponent implements OnInit {
    * @param p != null
    */
   calcPositionTop(p: Point) {
-    return (p.coordinateY * this.getUnitSize() - this.getUnitSize() + 80) + 'px';
+    return (p.coordinateY * this.getUnitSize() - this.getUnitSize() + 60 + this.getSeatDistance()) + 'px';
   }
 
   /**
    * calculate size of one seat for css
    */
   calcSeatSize() {
-    return (this.getUnitSize() - 20) + 'px';
+    return (this.getUnitSize() - this.getSeatDistance()) + 'px';
   }
 
   /**
@@ -90,7 +90,7 @@ export class HallCreationPlanComponent implements OnInit {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   calcSectorSizeX(sector: Unit) {
-    return ((sector.lowerBoundary.coordinateX - sector.upperBoundary.coordinateX + 1) * this.getUnitSize() - 20) + 'px';
+    return ((sector.lowerBoundary.coordinateX - sector.upperBoundary.coordinateX + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
   }
 
   /**
@@ -98,14 +98,21 @@ export class HallCreationPlanComponent implements OnInit {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   calcSectorSizeY(sector: Unit) {
-    return ((sector.lowerBoundary.coordinateY - sector.upperBoundary.coordinateY + 1) * this.getUnitSize() - 20) + 'px';
+    return ((sector.lowerBoundary.coordinateY - sector.upperBoundary.coordinateY + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
   }
 
   /**
-   * @return size of one unit (seat + space to next seat)
+   * @return size of one unit (seat + space to next seat) in pixel
    */
   getUnitSize(): number {
-    return Math.min(780 / this.hallSize.coordinateX, 780 / this.hallSize.coordinateY);
+    return Math.min(800 / this.hallSize.coordinateX, 800 / this.hallSize.coordinateY);
+  }
+
+  /**
+   * @return space between two seats in pixel
+   */
+  getSeatDistance(): number {
+    return this.getUnitSize() / 10;
   }
 
   /**

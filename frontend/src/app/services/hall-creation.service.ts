@@ -27,7 +27,7 @@ export class HallCreationService {
     this.initialized = false;
     this.edited = false;
     this.hallSize = new Point(10, 10);
-    this.maxHallSize = new Point(25, 25);
+    this.maxHallSize = new Point(27, 27); // set max hall size here
     this.seats = [];
     this.sectors = [];
     this.aisles = [];

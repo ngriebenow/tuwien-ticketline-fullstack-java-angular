@@ -4,7 +4,7 @@
       <h2 class="float-right">Tiefe</h2>
     </div>
     <div class="col-6">
-      <input type="number" min="1" step="1" [(ngModel)]="hallSize.coordinateY" (input)="updatePlan()" class="text-field-norm">
+      <input type="number" min="1" max="{{getMaxHallSize().coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateY" (input)="updatePlan()" class="text-field-norm">
     </div>
   </div>
 
@@ -13,7 +13,7 @@
       <h2 class="float-right">Breite</h2>
     </div>
     <div class="col-6">
-      <input type="number" min="1" step="1" [(ngModel)]="hallSize.coordinateX" (input)="updatePlan()" class="text-field-norm">
+      <input type="number" min="1" max="{{getMaxHallSize().coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateX" (input)="updatePlan()" class="text-field-norm">
     </div>
   </div>
 
