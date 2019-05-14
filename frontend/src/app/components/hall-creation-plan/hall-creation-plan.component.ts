@@ -51,7 +51,7 @@ export class HallCreationPlanComponent implements OnInit {
   }
 
   getSectors(): void {
-    this.sectors = this.hallCreationService.sectors;
+    this.sectors = this.hallCreationService.getSectors();
   }
 
   getAisles(): void {
@@ -60,6 +60,7 @@ export class HallCreationPlanComponent implements OnInit {
 
   /**
    * calculate position from left of one unit for css
+   * @param p != null
    */
   calcPositionLeft(p: Point) {
     let left: number = p.coordinateX * this.getUnitSize() - this.getUnitSize() + 20;
@@ -71,6 +72,7 @@ export class HallCreationPlanComponent implements OnInit {
 
   /**
    * calculate position from top of one unit for css
+   * @param p != null
    */
   calcPositionTop(p: Point) {
     return (p.coordinateY * this.getUnitSize() - this.getUnitSize() + 80) + 'px';
@@ -84,19 +86,31 @@ export class HallCreationPlanComponent implements OnInit {
   }
 
   /**
-   * calculates size of sector for css
+   * calculates X size of sector for css
+   * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
-  calcSectorSize(sector: Unit) {
-    return null; // todo calc size + 'px'
+  calcSectorSizeX(sector: Unit) {
+    return ((sector.lowerBoundary.coordinateX - sector.upperBoundary.coordinateX + 1) * this.getUnitSize() - 20) + 'px';
   }
 
   /**
-   * returns size of one unit (seat + space to next seat)
+   * calculates Y size of sector for css
+   * @param sector != null && lowerBoundary != null && upperBoundary != null
+   */
+  calcSectorSizeY(sector: Unit) {
+    return ((sector.lowerBoundary.coordinateY - sector.upperBoundary.coordinateY + 1) * this.getUnitSize() - 20) + 'px';
+  }
+
+  /**
+   * @return size of one unit (seat + space to next seat)
    */
   getUnitSize(): number {
     return Math.min(780 / this.hallSize.coordinateX, 780 / this.hallSize.coordinateY);
   }
 
+  /**
+   * @return true if hallSize is valid
+   */
   legalHallSize(): boolean {
     if (this.hallSize.coordinateX <= this.getMaxHallSize().coordinateX &&
       this.hallSize.coordinateY <= this.getMaxHallSize().coordinateY &&
