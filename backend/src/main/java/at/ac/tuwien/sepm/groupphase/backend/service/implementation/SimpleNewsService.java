@@ -27,7 +27,7 @@ public class SimpleNewsService implements NewsService {
   public List<SimpleNewsDto> findAll() {
     List<SimpleNewsDto> newsDtos = new ArrayList<>();
     List<News> news = new ArrayList<>();
-    news = newsRepository.findAll();
+    news = newsRepository.findAllByOrderByPublishedAtDesc();
     news.forEach(n -> newsDtos.add(newsMapper.newsToSimpleNewsDto(n)));
     return newsDtos;
   }
