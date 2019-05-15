@@ -60,16 +60,14 @@ public class PerformanceRepositoryTest {
   }
 
   @Test
-  public void givenPerformanceSaved_whenFindPerformanceById_thenReturnEvent()
-      throws NotFoundException {
+  public void givenPerformanceSaved_whenFindPerformanceById_thenReturnEvent() {
     Performance retP1 =
         performanceRepository.findById(P1.getId()).orElseThrow(NotFoundException::new);
     assertThat(retP1, is(equalTo(P1)));
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenPerformanceSaved_whenFindUnknownPerformanceById_thenThrowNotFoundException()
-      throws NotFoundException {
+  public void givenPerformanceSaved_whenFindUnknownPerformanceById_thenThrowNotFoundException() {
     performanceRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 
