@@ -4,97 +4,88 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.HallRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
 import com.github.javafaker.Faker;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Locale;
+import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Profile("generateData")
 @Component
-public class EventDataGenerator {
+@Profile("generateData")
+public class EventDataGenerator implements DataGenerator<Event> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(EventDataGenerator.class);
-  private static final int NUMBER_OF_EVENTS_TO_GENERATE = 25;
+  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Artist.class, Hall.class));
+  private static final Faker FAKER = new Faker(new Locale("de-at"));
 
-  private final EventRepository eventRepository;
-  private final ArtistRepository artistRepository;
-  private final HallRepository hallRepository;
-  private final LocationRepository locationRepository;
+  private static final int MAX_EVENT_COUNT = 25;
+  private static final int MIN_ARTISTS = 1;
+  private static final int MAX_ARTISTS = 4;
+  private static final int MIN_EVENT_DURATION = 1;
+  private static final int MAX_EVENT_DURATION = 3;
 
-  private final Faker faker;
+  private EventRepository eventRepository;
+  private ArtistRepository artistRepository;
+  private HallRepository hallRepository;
 
-  /** Generate demo event data. */
+  /** Create a new EventDataGenerator. */
+  @Autowired
   public EventDataGenerator(
       EventRepository eventRepository,
       ArtistRepository artistRepository,
-      HallRepository hallRepository,
-      LocationRepository locationRepository) {
+      HallRepository hallRepository) {
     this.eventRepository = eventRepository;
     this.artistRepository = artistRepository;
     this.hallRepository = hallRepository;
-    this.locationRepository = locationRepository;
-
-    faker = new Faker();
   }
 
-  /** Generate event demo data. */
-  @PostConstruct
-  private void generateEvent() {
-    if (eventRepository.count() > 0) {
-      LOGGER.info("events already generated");
-    } else {
-      LOGGER.info("generating {} event entries", NUMBER_OF_EVENTS_TO_GENERATE);
+  @Override
+  public void execute() {
+    List<Event> generatedEvents = new ArrayList<>(MAX_EVENT_COUNT);
 
-      Location location =
-          new Location.Builder()
-              .place("Vienna")
-              .postalCode("1160")
-              .street("Resselgasse")
-              .name("TU Bibliothek")
-              .country("Austria")
-              .build();
+    List<Hall> halls = hallRepository.findAll();
+    List<Artist> artists = artistRepository.findAll();
+    List<EventCategory> categories = Arrays.asList(EventCategory.values());
 
-      location = locationRepository.save(location);
+    for (int i = 0; i < MAX_EVENT_COUNT; i++) {
 
-      Hall hall =
-          new Hall.Builder()
-              .boundaryPoint(new Point(1, 1))
-              .location(location)
-              .name("Vortragssaal")
-              .version(1)
-              .build();
-
-      hall = hallRepository.save(hall);
-
-      for (int i = 0; i < NUMBER_OF_EVENTS_TO_GENERATE; i++) {
-
-        Artist artist = new Artist.Builder().name("Artist " + i).surname("Surname " + i).build();
-
-        artistRepository.save(artist);
-
-        Event event =
-            new Event.Builder()
-                .name(faker.lorem().characters(5, 10))
-                .category(EventCategory.OTHER)
-                .duration(Duration.ofHours(i))
-                .content(faker.lorem().sentence(50))
-                .artists(List.of(artist))
-                .hall(hall)
-                .build();
-        LOGGER.debug("saving event {}", event);
-
-        eventRepository.save(event);
+      List<Artist> participatingArtists = new ArrayList<>();
+      for (int j = 0; j < FAKER.random().nextInt(MIN_ARTISTS, MAX_ARTISTS); j++) {
+        Artist artist = artists.get(FAKER.random().nextInt(artists.size()));
+        if (!participatingArtists.contains(artist)) {
+          participatingArtists.add(artist);
+        }
       }
+
+      generatedEvents.add(
+          new Event.Builder()
+              .name(FAKER.lorem().characters(5, 10))
+              .category(categories.get(FAKER.random().nextInt(categories.size())))
+              .duration(
+                  Duration.ofHours(FAKER.random().nextInt(MIN_EVENT_DURATION, MAX_EVENT_DURATION)))
+              .content(FAKER.lorem().sentence(50))
+              .artists(participatingArtists)
+              .hall(halls.get(FAKER.random().nextInt(halls.size())))
+              .build());
     }
+    eventRepository.saveAll(generatedEvents);
+  }
+
+  @Override
+  public Class<Event> getGeneratedType() {
+    return Event.class;
+  }
+
+  @Override
+  public Set<Class<?>> getDependencies() {
+    return dependencies;
   }
 }

@@ -16,34 +16,45 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Unit {
 
+  private static final String ID_SEUQUECE_NAME = "seq_unit_id";
+
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_unit_id")
-  @SequenceGenerator(name = "seq_unit_id", sequenceName = "seq_unit_id")
-  private long id;
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEUQUECE_NAME)
+  @SequenceGenerator(name = ID_SEUQUECE_NAME)
+  private Long id;
 
   @Column(nullable = false)
   private String name;
 
-  @Embedded
   @AttributeOverrides({
-      @AttributeOverride(name = "coordinateX", column = @Column(name = "lower_coordinatex")),
-      @AttributeOverride(name = "coordinateY", column = @Column(name = "lower_coordinatey"))
+      @AttributeOverride(
+          name = "coordinateX",
+          column = @Column(name = "lower_coordinatex", nullable = false)),
+      @AttributeOverride(
+          name = "coordinateY",
+          column = @Column(name = "lower_coordinatey", nullable = false)),
   })
+  @Embedded
   private Point lowerBoundary;
 
   @AttributeOverrides({
-      @AttributeOverride(name = "coordinateX", column = @Column(name = "upper_coordinatex")),
-      @AttributeOverride(name = "coordinateY", column = @Column(name = "upper_coordinatey"))
+      @AttributeOverride(
+          name = "coordinateX",
+          column = @Column(name = "upper_coordinatex", nullable = false)),
+      @AttributeOverride(
+          name = "coordinateY",
+          column = @Column(name = "upper_coordinatey", nullable = false)),
   })
   private Point upperBoundary;
 
   @Column(nullable = false)
   private int capacity;
 
-  // TODO: Evaluate why/if nulls are still possible and write a test for it
-  @ManyToOne(optional = false)
+  @ManyToOne
   @JoinColumn(nullable = false)
   private Hall hall;
+
+  public Unit() {}
 
   private Unit(Builder builder) {
     setId(builder.id);
@@ -54,11 +65,11 @@ public class Unit {
     setHall(builder.hall);
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -103,16 +114,16 @@ public class Unit {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
-    Unit unit = (Unit) o;
-    return id == unit.id
-        && capacity == unit.capacity
+    Unit unit = (Unit) obj;
+    return capacity == unit.capacity
+        && Objects.equal(id, unit.id)
         && Objects.equal(name, unit.name)
         && Objects.equal(lowerBoundary, unit.lowerBoundary)
         && Objects.equal(upperBoundary, unit.upperBoundary)
@@ -145,16 +156,17 @@ public class Unit {
 
   public static final class Builder {
 
-    private long id;
+    private Long id;
     private String name;
     private Point lowerBoundary;
     private Point upperBoundary;
     private int capacity;
     private Hall hall;
 
-    public Builder() {}
+    public Builder() {
+    }
 
-    public Builder id(long val) {
+    public Builder id(Long val) {
       id = val;
       return this;
     }

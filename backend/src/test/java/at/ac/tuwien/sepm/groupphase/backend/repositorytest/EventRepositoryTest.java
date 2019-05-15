@@ -6,9 +6,12 @@ import static org.hamcrest.Matchers.is;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import java.time.Duration;
+import java.time.LocalDateTime;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +25,8 @@ public class EventRepositoryTest {
 
   @Autowired EventRepository eventRepository;
 
+
+
   private Event E1 =
       new Event.Builder()
           .name("Event1")
@@ -29,19 +34,23 @@ public class EventRepositoryTest {
           .duration(Duration.ofHours(2))
           .build();
 
+
+
   @Before
   public void initialization() {
     E1 = eventRepository.save(E1);
   }
 
   @Test
-  public void givenEventSaved_whenFindEventById_thenReturnEvent() {
+  public void givenEventSaved_whenFindEventById_thenReturnEvent() throws NotFoundException {
     Event retE1 = eventRepository.findById(E1.getId()).orElseThrow(NotFoundException::new);
     assertThat(retE1, is(equalTo(E1)));
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenEventSaved_whenFindUnknownEventById_thenThrowNotFoundException() {
+  public void givenEventSaved_whenFindUnknownEventById_thenThrowNotFoundException()
+      throws NotFoundException {
     eventRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
+
 }

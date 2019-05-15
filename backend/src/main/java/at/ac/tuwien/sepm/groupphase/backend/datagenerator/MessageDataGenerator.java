@@ -5,44 +5,57 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.MessageRepository;
 import com.github.javafaker.Faker;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
-// @Profile("generateData")
-// @Component
-public class MessageDataGenerator {
+@Component
+@Profile("generateData")
+public class MessageDataGenerator implements DataGenerator<Message> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(MessageDataGenerator.class);
-  private static final int NUMBER_OF_NEWS_TO_GENERATE = 25;
+  private final Set<Class<?>> dependencies = new HashSet<>();
+  private static final Faker FAKER = new Faker(new Locale("de-at"));
+
+  private static final int MAX_NEWS_COUNT = 25;
 
   private final MessageRepository messageRepository;
-  private final Faker faker;
 
+  @Autowired
   public MessageDataGenerator(MessageRepository messageRepository) {
     this.messageRepository = messageRepository;
-    faker = new Faker();
   }
 
-  // @PostConstruct
-  private void generateMessage() {
-    if (messageRepository.count() > 0 && false) {
-      LOGGER.info("message already generated");
-    } else {
-      LOGGER.info("generating {} message entries", NUMBER_OF_NEWS_TO_GENERATE);
-      for (int i = 0; i < NUMBER_OF_NEWS_TO_GENERATE; i++) {
-        Message message =
-            Message.builder()
-                .title(faker.lorem().characters(30, 40))
-                .text(faker.lorem().paragraph(faker.number().numberBetween(5, 10)))
-                .publishedAt(
-                    LocalDateTime.ofInstant(
-                        faker.date().past(365 * 3, TimeUnit.DAYS).toInstant(),
-                        ZoneId.systemDefault()))
-                .build();
-        LOGGER.debug("saving message {}", message);
-        messageRepository.save(message);
-      }
+  @Override
+  public void execute() {
+    List<Message> generatedMessages = new ArrayList<>(MAX_NEWS_COUNT);
+
+    for (int i = 0; i < MAX_NEWS_COUNT; i++) {
+      generatedMessages.add(
+          Message.builder()
+              .title(FAKER.lorem().characters(30, 40))
+              .text(FAKER.lorem().paragraph(FAKER.number().numberBetween(5, 10)))
+              .publishedAt(
+                  LocalDateTime.ofInstant(
+                      FAKER.date().past(365 * 3, TimeUnit.DAYS).toInstant(),
+                      ZoneId.systemDefault()))
+              .build());
     }
+    messageRepository.saveAll(generatedMessages);
+  }
+
+  @Override
+  public Class<Message> getGeneratedType() {
+    return Message.class;
+  }
+
+  @Override
+  public Set<Class<?>> getDependencies() {
+    return dependencies;
   }
 }
