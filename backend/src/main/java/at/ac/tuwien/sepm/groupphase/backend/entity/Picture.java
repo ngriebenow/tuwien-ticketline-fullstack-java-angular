@@ -21,8 +21,8 @@ public class Picture {
   @Column(nullable = false, columnDefinition = "mediumblob")
   private byte[] data;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(nullable = false)
+  @ManyToOne
+  @JoinColumn
   private News news;
 
   /** Construct the picture. */
