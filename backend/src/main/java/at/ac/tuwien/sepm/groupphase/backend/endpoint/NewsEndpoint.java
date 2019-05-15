@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.news.NewsMapper;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,7 +53,7 @@ public class NewsEndpoint {
   @ApiOperation(
       value = "Get detailed information about a specific news entry",
       authorizations = {@Authorization(value = "apiKey")})
-  public DetailedNewsDto find(@PathVariable Long id) {
+  public DetailedNewsDto find(@PathVariable Long id) throws NotFoundException {
     return newsMapper.newsToDetailedNewsDto(newsService.findOne(id));
   }
 

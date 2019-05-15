@@ -23,7 +23,7 @@ public class SimpleMessageService implements MessageService {
   }
 
   @Override
-  public Message findOne(Long id) {
+  public Message findOne(Long id) throws NotFoundException {
     return messageRepository.findOneById(id).orElseThrow(NotFoundException::new);
   }
 
