@@ -33,6 +33,12 @@
       <h2 class="float-right">Erweitern</h2>
     </div>
     <div class="col-6">
+      <div class="cross">
+        <button type="button" (click)="expandPlanTo(direction.top)" [ngStyle]="{'position':'absolute', 'top':'0%', 'left':'33.3%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="expandPlanTo(direction.left)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'0%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="expandPlanTo(direction.right)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'66.6%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="expandPlanTo(direction.bottom)" [ngStyle]="{'position':'absolute', 'top':'66.6%', 'left':'33.3%'}" class="btn btn-cross"></button>
+      </div>
     </div>
   </div>
 
@@ -41,6 +47,12 @@
       <h2 class="float-right">Löschen</h2>
     </div>
     <div class="col-6">
+      <div class="cross">
+        <button type="button" (click)="shrinkPlanFrom(direction.top)" [ngStyle]="{'position':'absolute', 'top':'0%', 'left':'33.3%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="shrinkPlanFrom(direction.left)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'0%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="shrinkPlanFrom(direction.right)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'66.6%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="shrinkPlanFrom(direction.bottom)" [ngStyle]="{'position':'absolute', 'top':'66.6%', 'left':'33.3%'}" class="btn btn-cross"></button>
+      </div>
     </div>
   </div>
 

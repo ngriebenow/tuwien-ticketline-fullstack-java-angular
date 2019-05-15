@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HallCreationService} from '../../services/hall-creation.service';
 import {Point} from '../../dtos/Point';
 import {UnitType} from '../../enums/unit-type';
+import {Direction} from '../../enums/direction';
 
 @Component({
   selector: 'app-hall-creation-menu',
@@ -12,6 +13,7 @@ export class HallCreationMenuComponent implements OnInit {
 
   hallSize: Point;
   unitType: typeof UnitType = UnitType;
+  direction: typeof Direction = Direction;
 
   constructor(private hallCreationService: HallCreationService) { }
 
@@ -57,6 +59,14 @@ export class HallCreationMenuComponent implements OnInit {
 
   updatePlan(): void {
     this.hallCreationService.fillWithSeats();
+  }
+
+  expandPlanTo(direction: Direction): void {
+    this.hallCreationService.expandPlanTo(direction);
+  }
+
+  shrinkPlanFrom(direction: Direction): void {
+    this.hallCreationService.shrinkPlanFrom(direction);
   }
 
   selectUnitType(unitType: UnitType): void {

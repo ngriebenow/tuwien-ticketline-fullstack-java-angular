@@ -45,3 +45,16 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+.cross {
+  width: 120px;
+  height: 120px;
+  position: relative;
+}
+
+.btn-cross {
+  background-color: $light-gray;
+  width: 33.3%;
+  height: 33.3%;
+  border-radius: 5px;
+}
