@@ -27,6 +27,7 @@
     "core-js": "^2.5.4",
     "jwt-decode": "latest",
     "lodash": "^4.17.11",
+    "mydatepicker": "^2.6.6",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
   },
