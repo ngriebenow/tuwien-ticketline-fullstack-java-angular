@@ -42,14 +42,13 @@ public class EventRepositoryTest {
   }
 
   @Test
-  public void givenEventSaved_whenFindEventById_thenReturnEvent() throws NotFoundException {
+  public void givenEventSaved_whenFindEventById_thenReturnEvent() {
     Event retE1 = eventRepository.findById(E1.getId()).orElseThrow(NotFoundException::new);
     assertThat(retE1, is(equalTo(E1)));
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenEventSaved_whenFindUnknownEventById_thenThrowNotFoundException()
-      throws NotFoundException {
+  public void givenEventSaved_whenFindUnknownEventById_thenThrowNotFoundException() {
     eventRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 

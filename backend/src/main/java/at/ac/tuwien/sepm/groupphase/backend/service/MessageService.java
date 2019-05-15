@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Message;
-import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import java.util.List;
 
 public interface MessageService {
@@ -19,7 +18,7 @@ public interface MessageService {
    * @param id the is of the message entry
    * @return the message entry
    */
-  Message findOne(Long id) throws NotFoundException;
+  Message findOne(Long id);
 
   /**
    * Publish a single message entry.

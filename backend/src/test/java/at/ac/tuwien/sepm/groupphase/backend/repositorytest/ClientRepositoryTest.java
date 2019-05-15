@@ -38,8 +38,7 @@ public class ClientRepositoryTest {
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenClientSaved_whenFindUnknownClientById_thenThrowNotFoundException()
-      throws NotFoundException {
+  public void givenClientSaved_whenFindUnknownClientById_thenThrowNotFoundException() {
     clientRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }
