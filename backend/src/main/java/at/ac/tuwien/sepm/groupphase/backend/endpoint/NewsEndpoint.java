@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
+import at.ac.tuwien.sepm.groupphase.backend.service.PictureService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class NewsEndpoint {
 
   private final NewsService newsService;
+  private final PictureService pictureService;
 
-  public NewsEndpoint(NewsService newsService) {
+  public NewsEndpoint(NewsService newsService, PictureService pictureService) {
     this.newsService = newsService;
+    this.pictureService = pictureService;
   }
 
   /**
@@ -56,7 +59,7 @@ public class NewsEndpoint {
   /**
    * Create a news entry.
    *
-   * @param detailedNewsDto the new detailed news entry
+   * @param newsDto the new detailed news entry
    * @return the created detailed news entry
    */
   @RequestMapping(method = RequestMethod.POST)
@@ -64,7 +67,10 @@ public class NewsEndpoint {
   @ApiOperation(
       value = "Publish a news entry",
       authorizations = {@Authorization(value = "apiKey")})
-  public DetailedNewsDto publishNews(@RequestBody DetailedNewsDto detailedNewsDto) {
-    return newsService.create(detailedNewsDto);
+  public DetailedNewsDto publishNews(@RequestBody DetailedNewsDto newsDto) {
+    DetailedNewsDto retNewsDto = newsService.create(newsDto);
+    pictureService.updateSetNews(retNewsDto, newsDto.getPictureIds());
+    retNewsDto.setPictureIds(newsDto.getPictureIds());
+    return retNewsDto;
   }
 }

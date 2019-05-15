@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SimpleNewsService implements NewsService {
@@ -59,6 +60,7 @@ public class SimpleNewsService implements NewsService {
     return retNewsDto;
   }
 
+  @Transactional
   @Override
   public DetailedNewsDto create(DetailedNewsDto news) {
     news.setPublishedAt(LocalDateTime.now());

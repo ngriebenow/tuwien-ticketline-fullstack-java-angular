@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-@Entity
+@Entity(name = "Picture")
 public class Picture {
 
   @Id
