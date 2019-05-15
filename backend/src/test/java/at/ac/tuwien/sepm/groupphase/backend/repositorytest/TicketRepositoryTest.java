@@ -33,7 +33,8 @@ public class TicketRepositoryTest {
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenTicketSaved_whenFindUnknownTicketById_thenThrowNotFoundException() {
+  public void givenTicketSaved_whenFindUnknownTicketById_thenThrowNotFoundException()
+      throws NotFoundException {
     ticketRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }

@@ -39,7 +39,8 @@ public class PriceCategoryRepositoryTest {
 
   @Test(expected = NotFoundException.class)
   public void
-      givenPriceCategorySaved_whenFindUnknownPriceCategoryById_thenThrowNotFoundException() {
+      givenPriceCategorySaved_whenFindUnknownPriceCategoryById_thenThrowNotFoundException()
+      throws NotFoundException {
     priceCategoryRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }

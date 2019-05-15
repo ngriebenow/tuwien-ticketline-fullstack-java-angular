@@ -35,13 +35,14 @@ public class LocationRepositoryTest {
   }
 
   @Test
-  public void givenLocationSaved_whenFindLocationById_thenReturnEvent() {
+  public void givenLocationSaved_whenFindLocationById_thenReturnEvent() throws NotFoundException {
     Location retL1 = locationRepository.findById(L1.getId()).orElseThrow(NotFoundException::new);
     assertThat(retL1, is(equalTo(L1)));
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenLocationSaved_whenFindUnknownLocationById_thenThrowNotFoundException() {
+  public void givenLocationSaved_whenFindUnknownLocationById_thenThrowNotFoundException()
+      throws NotFoundException {
     locationRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }

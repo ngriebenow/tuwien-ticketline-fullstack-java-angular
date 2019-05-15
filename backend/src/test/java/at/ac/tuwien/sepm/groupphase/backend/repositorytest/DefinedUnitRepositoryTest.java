@@ -32,7 +32,8 @@ public class DefinedUnitRepositoryTest {
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenDefinedUnitSaved_whenFindUnknownDefinedUnitById_thenThrowNotFoundException() {
+  public void givenDefinedUnitSaved_whenFindUnknownDefinedUnitById_thenThrowNotFoundException()
+      throws NotFoundException {
     definedUnitRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }
