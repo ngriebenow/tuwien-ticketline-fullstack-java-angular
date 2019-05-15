@@ -9,9 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-public class Customer {
+public class Client {
 
-  private static final String ID_SEQUENCE_NAME = "seq_customer_id";
+  private static final String ID_SEQUENCE_NAME = "seq_client_id";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQUENCE_NAME)
@@ -27,9 +27,9 @@ public class Customer {
   @Column(nullable = false)
   private String email;
 
-  public Customer() {}
+  public Client() {}
 
-  private Customer(Builder builder) {
+  private Client(Builder builder) {
     setId(builder.id);
     setSurname(builder.surname);
     setName(builder.name);
@@ -76,11 +76,11 @@ public class Customer {
     if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
-    Customer customer = (Customer) obj;
-    return Objects.equal(id, customer.id)
-        && Objects.equal(surname, customer.surname)
-        && Objects.equal(name, customer.name)
-        && Objects.equal(email, customer.email);
+    Client client = (Client) obj;
+    return Objects.equal(id, client.id)
+        && Objects.equal(surname, client.surname)
+        && Objects.equal(name, client.name)
+        && Objects.equal(email, client.email);
   }
 
   @Override
@@ -90,7 +90,7 @@ public class Customer {
 
   @Override
   public String toString() {
-    return "Customer{"
+    return "Client{"
         + "id="
         + id
         + ", surname='"
@@ -134,8 +134,8 @@ public class Customer {
       return this;
     }
 
-    public Customer build() {
-      return new Customer(this);
+    public Client build() {
+      return new Client(this);
     }
   }
 }

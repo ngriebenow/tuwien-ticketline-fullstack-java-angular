@@ -35,7 +35,7 @@ public class Invoice {
 
   @ManyToOne
   @JoinColumn(nullable = false)
-  private Customer customer;
+  private Client client;
 
   /// TODO: Implement as soon as michis user persistance part is done
   // private User soldBy;
@@ -50,7 +50,7 @@ public class Invoice {
     setPaid(builder.isPaid);
     setCancelled(builder.isCancelled);
     setReservationCode(builder.reservationCode);
-    setCustomer(builder.customer);
+    setClient(builder.client);
     setTickets(builder.tickets);
   }
 
@@ -94,12 +94,12 @@ public class Invoice {
     this.reservationCode = reservationCode;
   }
 
-  public Customer getCustomer() {
-    return customer;
+  public Client getClient() {
+    return client;
   }
 
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
+  public void setClient(Client client) {
+    this.client = client;
   }
 
   @Override
@@ -115,13 +115,13 @@ public class Invoice {
         && isCancelled == invoice.isCancelled
         && Objects.equal(id, invoice.id)
         && Objects.equal(reservationCode, invoice.reservationCode)
-        && Objects.equal(customer, invoice.customer)
+        && Objects.equal(client, invoice.client)
         && Objects.equal(tickets, invoice.tickets);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, customer, tickets);
+    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, client, tickets);
   }
 
   @Override
@@ -136,8 +136,8 @@ public class Invoice {
         + ", reservationCode='"
         + reservationCode
         + '\''
-        + ", customer="
-        + customer
+        + ", client="
+        + client
         + ", tickets="
         + tickets
         + '}';
@@ -149,7 +149,7 @@ public class Invoice {
     private boolean isPaid;
     private boolean isCancelled;
     private String reservationCode;
-    private Customer customer;
+    private Client client;
     private List<Ticket> tickets;
 
     public Builder() {}
@@ -174,8 +174,8 @@ public class Invoice {
       return this;
     }
 
-    public Builder customer(Customer val) {
-      customer = val;
+    public Builder customer(Client val) {
+      client = val;
       return this;
     }
 

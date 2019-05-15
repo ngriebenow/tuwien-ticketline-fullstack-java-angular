@@ -1,8 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Customer;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Client;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Invoice;
-import at.ac.tuwien.sepm.groupphase.backend.repository.CustomerRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
@@ -19,34 +19,34 @@ import org.springframework.stereotype.Component;
 @Profile("generateData")
 public class InvoiceGenerator implements DataGenerator<Invoice> {
 
-  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Customer.class));
+  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Client.class));
   private static final Faker FAKER = new Faker(new Locale("de-at"));
 
-  private static final int MAX_INVOICE_COUNT_PER_CUSTOMER = 13;
+  private static final int MAX_INVOICE_COUNT_PER_CLIENT = 13;
 
-  private CustomerRepository customerRepository;
+  private ClientRepository clientRepository;
   private InvoiceRepository invoiceRepository;
 
   @Autowired
   public InvoiceGenerator(
-      CustomerRepository customerRepository, InvoiceRepository invoiceRepository) {
-    this.customerRepository = customerRepository;
+      ClientRepository clientRepository, InvoiceRepository invoiceRepository) {
+    this.clientRepository = clientRepository;
     this.invoiceRepository = invoiceRepository;
   }
 
   @Override
   public void execute() {
-    List<Invoice> generatedInvoices = new ArrayList<>(MAX_INVOICE_COUNT_PER_CUSTOMER);
+    List<Invoice> generatedInvoices = new ArrayList<>(MAX_INVOICE_COUNT_PER_CLIENT);
 
-    for (Customer customer : customerRepository.findAll()) {
+    for (Client client : clientRepository.findAll()) {
       generatedInvoices.clear();
-      for (int i = 0; i < FAKER.random().nextInt(MAX_INVOICE_COUNT_PER_CUSTOMER); i++) {
+      for (int i = 0; i < FAKER.random().nextInt(MAX_INVOICE_COUNT_PER_CLIENT); i++) {
         generatedInvoices.add(
             new Invoice.Builder()
                 .reservationCode(FAKER.numerify("####"))
                 .isPaid(FAKER.random().nextBoolean())
                 .isCancelled(FAKER.random().nextBoolean())
-                .customer(customer)
+                .customer(client)
                 .build());
       }
       invoiceRepository.saveAll(generatedInvoices);

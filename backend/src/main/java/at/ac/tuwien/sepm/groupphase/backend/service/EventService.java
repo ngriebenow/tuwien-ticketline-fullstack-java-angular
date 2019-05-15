@@ -4,11 +4,9 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 public interface EventService {
 
@@ -45,5 +43,5 @@ public interface EventService {
    * @param pageable the pageable for determing the page
    * @return the list of performances which belong to the event
    */
-  List<PerformanceDto> getPerformancesOfEvent(Long id, Pageable pageable);
+  List<PerformanceDto> getPerformancesOfEvent(Long id, Pageable pageable) throws NotFoundException;
 }

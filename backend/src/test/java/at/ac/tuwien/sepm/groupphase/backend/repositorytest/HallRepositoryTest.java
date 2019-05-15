@@ -28,13 +28,14 @@ public class HallRepositoryTest {
   }
 
   @Test
-  public void givenHallSaved_whenFindHallById_thenReturnHall() {
+  public void givenHallSaved_whenFindHallById_thenReturnHall() throws NotFoundException {
     Hall retE1 = hallRepository.findById(H1.getId()).orElseThrow(NotFoundException::new);
     assertThat(retE1, is(equalTo(H1)));
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenHallSaved_whenFindUnknownHallById_thenThrowNotFoundException() {
+  public void givenHallSaved_whenFindUnknownHallById_thenThrowNotFoundException()
+      throws NotFoundException {
     hallRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }

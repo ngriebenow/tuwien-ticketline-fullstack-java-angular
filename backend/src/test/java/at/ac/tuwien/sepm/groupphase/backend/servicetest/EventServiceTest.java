@@ -91,15 +91,15 @@ public class EventServiceTest {
   }
 
   @Test
-  public void givenEvent_whenFindEventById_thenReturnEvent() {
+  public void givenEvent_whenFindEventById_thenReturnEvent() throws NotFoundException {
     BDDMockito.given(eventRepository.findById(100L)).willReturn(Optional.of(E1));
     Event retE1 = eventMapper.eventDtoToEvent(eventService.getOneById(100L));
     Assert.assertThat(retE1, is(equalTo(E1)));
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenNoEvent_whenFindEventById_thenThrowNotFoundException() {
-    BDDMockito.given(eventRepository.findById(-1L)).willThrow(new NotFoundException());
+  public void givenNoEvent_whenFindEventById_thenThrowNotFoundException() throws NotFoundException {
+    BDDMockito.given(eventRepository.findById(-1L)).willReturn(Optional.empty());
     eventService.getOneById(-1L);
   }
 

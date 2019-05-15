@@ -30,14 +30,14 @@ public class PictureRepositoryTest {
   }
 
   @Test
-  public void givenPictureSaved_whenFindPictureById_thenReturnPicture() {
+  public void givenPictureSaved_whenFindPictureById_thenReturnPicture() throws NotFoundException {
     Picture retP1 = pictureRepository.findById(P1.getId()).orElseThrow(NotFoundException::new);
     assertThat(retP1).isEqualTo(P1);
   }
 
 
   @Test(expected = NotFoundException.class)
-  public void givenPictureSaved_whenFindUnknownPictureById_thenThrowNotFoundException() {
+  public void givenPictureSaved_whenFindUnknownPictureById_thenThrowNotFoundException() throws NotFoundException {
     pictureRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 

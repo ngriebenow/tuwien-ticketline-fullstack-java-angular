@@ -28,13 +28,14 @@ public class ArtistRepositoryTest {
   }
 
   @Test
-  public void givenArtistSaved_whenFindArtistById_thenReturnEvent() {
+  public void givenArtistSaved_whenFindArtistById_thenReturnEvent() throws NotFoundException {
     Artist retA1 = artistRepository.findById(A1.getId()).orElseThrow(NotFoundException::new);
     assertThat(retA1, is(equalTo(A1)));
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenArtistSaved_whenFindUnknownArtistById_thenThrowNotFoundException() {
+  public void givenArtistSaved_whenFindUnknownArtistById_thenThrowNotFoundException()
+      throws NotFoundException {
     artistRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }

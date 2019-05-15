@@ -2,9 +2,9 @@ package at.ac.tuwien.sepm.groupphase.backend.repositorytest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Customer;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Client;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
-import at.ac.tuwien.sepm.groupphase.backend.repository.CustomerRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,30 +14,32 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
-public class CustomerRepositoryTest {
+public class ClientRepositoryTest {
 
-  private Customer CUSTOMER_1 =
-      new Customer.Builder()
+  private Client Client_1 =
+      new Client.Builder()
           .name("Harald")
           .surname("Tester")
           .email("haral.tester@gmail.com")
           .build();
 
-  @Autowired CustomerRepository customerRepository;
+  @Autowired
+  ClientRepository clientRepository;
 
   @Before
   public void setUp() {
-    customerRepository.save(CUSTOMER_1);
+    clientRepository.save(Client_1);
   }
 
   @Test
-  public void givenCustomerSaved_whenFindCustomerById_thenReturnCustomer() {
-    Customer customer = customerRepository.findById(CUSTOMER_1.getId()).get();
-    assertThat(customer).isEqualTo(CUSTOMER_1);
+  public void givenClientSaved_whenFindClientById_thenReturnClient() {
+    Client client = clientRepository.findById(Client_1.getId()).get();
+    assertThat(client).isEqualTo(Client_1);
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenCustomerSaved_whenFindUnknownCustomerById_thenThrowNotFoundException() {
-    customerRepository.findById(-1L).orElseThrow(NotFoundException::new);
+  public void givenClientSaved_whenFindUnknownClientById_thenThrowNotFoundException()
+      throws NotFoundException {
+    clientRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }
