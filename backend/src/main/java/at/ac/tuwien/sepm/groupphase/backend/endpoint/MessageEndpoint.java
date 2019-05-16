@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.message.DetailedMessage
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.message.SimpleMessageDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Message;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.message.MessageMapper;
-import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.MessageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +41,7 @@ public class MessageEndpoint {
   @ApiOperation(
       value = "Get detailed information about a specific message entry",
       authorizations = {@Authorization(value = "apiKey")})
-  public DetailedMessageDto find(@PathVariable Long id) throws NotFoundException {
+  public DetailedMessageDto find(@PathVariable Long id) {
     return messageMapper.messageToDetailedMessageDto(messageService.findOne(id));
   }
 

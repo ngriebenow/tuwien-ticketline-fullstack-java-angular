@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleNewsDto;
-import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import at.ac.tuwien.sepm.groupphase.backend.service.PictureService;
 import io.swagger.annotations.Api;
@@ -52,7 +51,7 @@ public class NewsEndpoint {
   @ApiOperation(
       value = "Get detailed information about a specific news entry",
       authorizations = {@Authorization(value = "apiKey")})
-  public DetailedNewsDto find(@PathVariable Long id) throws NotFoundException {
+  public DetailedNewsDto find(@PathVariable Long id) {
     return newsService.findOne(id);
   }
 

@@ -37,15 +37,15 @@ public class NewsServiceTest {
 
 
   @Test
-  public void givenNews_whenFindNewsById_thenReturnNews() throws NotFoundException {
+  public void givenNews_whenFindNewsById_thenReturnNews() {
     BDDMockito.given(newsRepository.findById(1L)).willReturn(Optional.of(N1));
     News retN1 = newsMapper.detailedNewsDtoToNews(newsService.findOne(1L));
     assertThat(retN1).isEqualTo(N1);
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenNoNews_whenFindNewsById_thenThrowNotFoundException() throws NotFoundException {
-    BDDMockito.given(newsRepository.findById(-1L)).willReturn(Optional.empty());
+  public void givenNoNews_whenFindNewsById_thenThrowNotFoundException() {
+    BDDMockito.given(newsRepository.findById(-1L)).willThrow(new NotFoundException());
     newsService.findOne(-1L);
   }
 }
