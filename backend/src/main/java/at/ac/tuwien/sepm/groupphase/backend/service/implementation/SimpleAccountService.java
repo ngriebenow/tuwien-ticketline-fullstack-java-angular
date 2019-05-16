@@ -52,4 +52,9 @@ public class SimpleAccountService implements AccountService {
   public UserDto editUser(UserDto user) {
     return null;
   }
+
+  @Override
+  public UserDto getOneById(String id) {
+    return userMapper.userToUserDto(findOne(id));
+  }
 }

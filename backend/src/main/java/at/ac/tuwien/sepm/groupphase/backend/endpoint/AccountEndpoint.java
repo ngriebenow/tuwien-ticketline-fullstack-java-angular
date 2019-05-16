@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,5 +32,13 @@ public class AccountEndpoint {
   @PreAuthorize("hasRole('ADMIN')")
   public UserDto saveAccount(@RequestBody UserDto user) {
     return accountService.saveUser(user);
+  }
+
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @ApiOperation(
+      value = "Get user by id",
+      authorizations = {@Authorization(value = "apiKey")})
+  public UserDto get(@PathVariable String id) {
+    return accountService.getOneById(id);
   }
 }
