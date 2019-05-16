@@ -2,6 +2,10 @@ package at.ac.tuwien.sepm.groupphase.backend.configuration;
 
 import at.ac.tuwien.sepm.groupphase.backend.configuration.properties.H2ConsoleConfigurationProperties;
 import at.ac.tuwien.sepm.groupphase.backend.security.HeaderTokenAuthenticationFilter;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -30,13 +34,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
-import java.util.List;
-import java.util.Map;
-
-
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -47,6 +44,7 @@ public class SecurityConfiguration {
 
   /**
    * Creates new h2 datasource with properties read from db.properties
+   *
    * @return DataSource
    */
   public DataSource getDataSource() {

@@ -7,9 +7,8 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.DuplicateEntry;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.AccountService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleAccountService implements AccountService {
