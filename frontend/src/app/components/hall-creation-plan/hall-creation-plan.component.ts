@@ -11,6 +11,7 @@ import {Unit} from '../../dtos/unit';
 export class HallCreationPlanComponent implements OnInit {
 
   hallSize: Point;
+  maxHallSize: Point;
   seats: Point[];
   sectors: Unit[];
   aisles: Point[];
@@ -20,6 +21,7 @@ export class HallCreationPlanComponent implements OnInit {
 
   ngOnInit() {
     this.getHallSize();
+    this.getMaxHallSize();
     this.getSeats();
     this.getSectors();
     this.getAisles();
@@ -42,12 +44,12 @@ export class HallCreationPlanComponent implements OnInit {
     this.hallSize = this.hallCreationService.getHallSize();
   }
 
-  getMaxHallSize(): Point {
-    return this.hallCreationService.getMaxHallSize();
+  getMaxHallSize(): void {
+    this.maxHallSize = this.hallCreationService.getMaxHallSize();
   }
 
   getSeats(): void {
-    this.hallCreationService.getSeats().subscribe(seats => this.seats = seats);
+    this.seats = this.hallCreationService.getSeats();
   }
 
   getSectors(): void {
@@ -119,8 +121,8 @@ export class HallCreationPlanComponent implements OnInit {
    * @return true if hallSize is valid
    */
   legalHallSize(): boolean {
-    if (this.hallSize.coordinateX <= this.getMaxHallSize().coordinateX &&
-      this.hallSize.coordinateY <= this.getMaxHallSize().coordinateY &&
+    if (this.hallSize.coordinateX <= this.maxHallSize.coordinateX &&
+      this.hallSize.coordinateY <= this.maxHallSize.coordinateY &&
       this.hallSize.coordinateX > 0 &&
       this.hallSize.coordinateY > 0
     ) {

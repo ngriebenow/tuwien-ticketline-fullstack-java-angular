@@ -1,10 +1,19 @@
 <div *ngIf="initializationMode()" class="container">
   <div class="row row-padding">
     <div class="col-6 align-self-center">
+      <h2 class="float-right">Saalname</h2>
+    </div>
+    <div class="col-6">
+      <input type="text" [(ngModel)]="hall.name" class="form-control" required placeholder="Saal">
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
       <h2 class="float-right">Tiefe</h2>
     </div>
     <div class="col-6">
-      <input type="number" min="1" max="{{getMaxHallSize().coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateY" (input)="updatePlan()" class="text-field-norm">
+      <input type="number" min="1" max="{{maxHallSize.coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateY" (input)="updatePlan()" class="form-control" required>
     </div>
   </div>
 
@@ -13,7 +22,7 @@
       <h2 class="float-right">Breite</h2>
     </div>
     <div class="col-6">
-      <input type="number" min="1" max="{{getMaxHallSize().coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateX" (input)="updatePlan()" class="text-field-norm">
+      <input type="number" min="1" max="{{maxHallSize.coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateX" (input)="updatePlan()" class="form-control" required>
     </div>
   </div>
 
@@ -34,16 +43,16 @@
     </div>
     <div class="col-6">
       <div class="cross">
-        <button type="button" (click)="expandPlanTo(direction.top)" [ngStyle]="{'position':'absolute', 'top':'0%', 'left':'33.3%'}" [disabled]="hallSize.coordinateY === getMaxHallSize().coordinateY" class="btn btn-cross">
+        <button type="button" (click)="expandPlanTo(direction.top)" [ngStyle]="{'position':'absolute', 'top':'0%', 'left':'33.3%'}" [disabled]="hallSize.coordinateY === maxHallSize.coordinateY" class="btn btn-cross">
           <i class="fa fa-angle-up cross-icon"></i>
         </button>
-        <button type="button" (click)="expandPlanTo(direction.left)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'0%'}" [disabled]="hallSize.coordinateX === getMaxHallSize().coordinateX" class="btn btn-cross">
+        <button type="button" (click)="expandPlanTo(direction.left)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'0%'}" [disabled]="hallSize.coordinateX === maxHallSize.coordinateX" class="btn btn-cross">
           <i class="fa fa-angle-left cross-icon"></i>
         </button>
-        <button type="button" (click)="expandPlanTo(direction.right)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'66.6%'}" [disabled]="hallSize.coordinateX === getMaxHallSize().coordinateX" class="btn btn-cross">
+        <button type="button" (click)="expandPlanTo(direction.right)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'66.6%'}" [disabled]="hallSize.coordinateX === maxHallSize.coordinateX" class="btn btn-cross">
           <i class="fa fa-angle-right cross-icon"></i>
         </button>
-        <button type="button" (click)="expandPlanTo(direction.bottom)" [ngStyle]="{'position':'absolute', 'top':'66.6%', 'left':'33.3%'}" [disabled]="hallSize.coordinateY === getMaxHallSize().coordinateY" class="btn btn-cross">
+        <button type="button" (click)="expandPlanTo(direction.bottom)" [ngStyle]="{'position':'absolute', 'top':'66.6%', 'left':'33.3%'}" [disabled]="hallSize.coordinateY === maxHallSize.coordinateY" class="btn btn-cross">
           <i class="fa fa-angle-down cross-icon"></i>
         </button>
       </div>

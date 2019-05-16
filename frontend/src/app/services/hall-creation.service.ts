@@ -1,34 +1,35 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
 import {Point} from '../dtos/Point';
 import {Unit} from '../dtos/unit';
 import {UnitType} from '../enums/unit-type';
 import {Direction} from '../enums/direction';
+import {Hall} from '../dtos/hall';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HallCreationService {
 
-  initialized: boolean;
-  edited: boolean;
+  private initialized: boolean;
+  private edited: boolean;
 
-  hallName: string;
-  hallSize: Point;
-  maxHallSize: Point;
+  private readonly  hall: Hall;
+  private readonly  hallSize: Point;
+  private readonly  maxHallSize: Point;
 
-  seats: Point[];
-  sectors: Unit[];
-  aisles: Point[];
+  private readonly seats: Point[];
+  private readonly  sectors: Unit[];
+  private readonly  aisles: Point[];
 
-  selectedUnitType: UnitType;
-  selectedUnitPosition: Point;
+  private selectedUnitType: UnitType;
+  private selectedUnitPosition: Point;
 
   constructor() {
     this.initialized = false;
     this.edited = false;
     this.hallSize = new Point(10, 10);
     this.maxHallSize = new Point(27, 27); // set max hall size here
+    this.hall = new Hall(null, null, null, null, this.hallSize);
     this.seats = [];
     this.sectors = [];
     this.aisles = [];
@@ -53,19 +54,16 @@ export class HallCreationService {
       this.hallSize.coordinateX <= this.maxHallSize.coordinateX &&
       this.hallSize.coordinateY <= this.hallSize.coordinateY
     ) {
-      this.hallName = 'bla';
-      if (this.hallName !== null && this.hallName !== '') {
+      if (this.hall.name !== undefined && this.hall.name != null && this.hall.name !== '' && this.hall.name !== ' ') {
         this.initialized = true;
       }
     }
-    // todo create name field
   }
 
   /**
    * checks and ends editing process and sets edited to true
    */
   completeEditing(): void {
-    // todo add arrows to resize buttons
     // todo keep highlight on selector buttons
     if (this.seats.length > 0 || this.sectors.length > 0) {
       this.edited = true;
@@ -76,7 +74,17 @@ export class HallCreationService {
    * checks and ends sector creation process and calls saveHall()
    */
   completeSectors(): void {
+    this.validateSectors();
+    this.saveHall();
+  }
+
+  /**
+   * validates all sectors name and capacity
+   * @return true if validation is successful
+   */
+  validateSectors(): boolean {
     // todo validate sectors (name, capacity)
+    return false;
   }
 
   /**
@@ -429,6 +437,14 @@ export class HallCreationService {
     }
   }
 
+  getInitialized(): boolean {
+    return this.initialized;
+  }
+
+  getEdited(): boolean {
+    return this.edited;
+  }
+
   getHallSize(): Point {
     return this.hallSize;
   }
@@ -437,8 +453,12 @@ export class HallCreationService {
     return this.maxHallSize;
   }
 
-  getSeats(): Observable<Point[]> { // todo change this back to non observable?
-    return of(this.seats);
+  getHall(): Hall {
+    return this.hall;
+  }
+
+  getSeats(): Point[] {
+    return this.seats;
   }
 
   getAisles(): Point[] {

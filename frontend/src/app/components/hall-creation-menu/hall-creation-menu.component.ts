@@ -3,6 +3,7 @@ import {HallCreationService} from '../../services/hall-creation.service';
 import {Point} from '../../dtos/Point';
 import {UnitType} from '../../enums/unit-type';
 import {Direction} from '../../enums/direction';
+import {Hall} from '../../dtos/hall';
 
 @Component({
   selector: 'app-hall-creation-menu',
@@ -12,6 +13,8 @@ import {Direction} from '../../enums/direction';
 export class HallCreationMenuComponent implements OnInit {
 
   hallSize: Point;
+  maxHallSize: Point;
+  hall: Hall;
   unitType: typeof UnitType = UnitType;
   direction: typeof Direction = Direction;
 
@@ -19,18 +22,20 @@ export class HallCreationMenuComponent implements OnInit {
 
   ngOnInit() {
     this.hallSize = this.hallCreationService.getHallSize();
+    this.getHall();
+    this.getMaxHallSize();
   }
 
   initializationMode(): boolean {
-    return (this.hallCreationService.initialized === false && this.hallCreationService.edited === false);
+    return (this.hallCreationService.getInitialized() === false && this.hallCreationService.getEdited() === false);
   }
 
   editingMode(): boolean {
-    return (this.hallCreationService.initialized === true && this.hallCreationService.edited === false);
+    return (this.hallCreationService.getInitialized() === true && this.hallCreationService.getEdited() === false);
   }
 
   sectorMode(): boolean {
-    return (this.hallCreationService.initialized === true && this.hallCreationService.edited === true);
+    return (this.hallCreationService.getInitialized() === true && this.hallCreationService.getEdited() === true);
   }
 
   /**
@@ -73,7 +78,11 @@ export class HallCreationMenuComponent implements OnInit {
     this.hallCreationService.selectUnitType(unitType);
   }
 
-  getMaxHallSize(): Point {
-    return this.hallCreationService.getMaxHallSize();
+  getMaxHallSize(): void {
+    this.maxHallSize = this.hallCreationService.getMaxHallSize();
+  }
+
+  getHall(): void {
+    this.hall =  this.hallCreationService.getHall();
   }
 }
