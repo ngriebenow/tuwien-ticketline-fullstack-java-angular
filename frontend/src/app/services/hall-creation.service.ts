@@ -33,7 +33,6 @@ export class HallCreationService {
     this.sectors = [];
     this.aisles = [];
     this.fillWithSeats();
-    this.completeInitializing();
   }
 
   /**
@@ -48,19 +47,29 @@ export class HallCreationService {
    * checks and ends initialization process and sets initialized to true
    */
   completeInitializing(): void {
-    // todo validate hallSize (0 < hallSize <= maxHallSize)
+    if (
+      0 < this.hallSize.coordinateX &&
+      0 < this.hallSize.coordinateY &&
+      this.hallSize.coordinateX <= this.maxHallSize.coordinateX &&
+      this.hallSize.coordinateY <= this.hallSize.coordinateY
+    ) {
+      this.hallName = 'bla';
+      if (this.hallName !== null && this.hallName !== '') {
+        this.initialized = true;
+      }
+    }
     // todo create name field
-    // todo validate name field
-    this.initialized = true;
   }
 
   /**
    * checks and ends editing process and sets edited to true
    */
   completeEditing(): void {
-    // todo disable resize buttons before hall gets to big/small
-    // todo validate (seats && sectors != null)
-    this.edited = true;
+    // todo add arrows to resize buttons
+    // todo keep highlight on selector buttons
+    if (this.seats.length > 0 || this.sectors.length > 0) {
+      this.edited = true;
+    }
   }
 
   /**
@@ -93,54 +102,66 @@ export class HallCreationService {
   }
 
   /**
+   * if hallSize in direction < maxHallSize:
    * adds a row or column of seats to plan at given direction
    * @param direction must be valid
    */
   expandPlanTo(direction: Direction): void {
-    if (direction === Direction.top) {
-      this.shiftVertical(1);
-      this.hallSize.coordinateY++;
-      for (let i = 0; i < this.hallSize.coordinateX; i++) {
-        this.createSeat(new Point(i + 1, 1));
+    if (this.hallSize.coordinateX < this.maxHallSize.coordinateX) {
+      if (direction === Direction.left) {
+        this.shiftHorizontal(1);
+        this.hallSize.coordinateX++;
+        for (let i = 0; i < this.hallSize.coordinateY; i++) {
+          this.createSeat(new Point(1, i + 1));
+        }
+      } else if (direction === Direction.right) {
+        this.hallSize.coordinateX++;
+        for (let i = 0; i < this.hallSize.coordinateY; i++) {
+          this.createSeat(new Point(this.hallSize.coordinateX, i + 1));
+        }
       }
-    } else if (direction === Direction.left) {
-      this.shiftHorizontal(1);
-      this.hallSize.coordinateX++;
-      for (let i = 0; i < this.hallSize.coordinateY; i++) {
-        this.createSeat(new Point(1, i + 1));
-      }
-    } else if (direction === Direction.right) {
-      this.hallSize.coordinateX++;
-      for (let i = 0; i < this.hallSize.coordinateY; i++) {
-        this.createSeat(new Point(this.hallSize.coordinateX, i + 1));
-      }
-    } else if (direction === Direction.bottom) {
-      this.hallSize.coordinateY++;
-      for (let i = 0; i < this.hallSize.coordinateX; i++) {
-        this.createSeat(new Point(i + 1, this.hallSize.coordinateY));
+    }
+    if (this.hallSize.coordinateY < this.maxHallSize.coordinateY) {
+      if (direction === Direction.top) {
+        this.shiftVertical(1);
+        this.hallSize.coordinateY++;
+        for (let i = 0; i < this.hallSize.coordinateX; i++) {
+          this.createSeat(new Point(i + 1, 1));
+        }
+      } else if (direction === Direction.bottom) {
+        this.hallSize.coordinateY++;
+        for (let i = 0; i < this.hallSize.coordinateX; i++) {
+          this.createSeat(new Point(i + 1, this.hallSize.coordinateY));
+        }
       }
     }
   }
 
   /**
+   * if hallSize in direction > 1:
    * deletes a row or column from plan at given direction
    * @param direction must be valid
    */
   shrinkPlanFrom(direction: Direction): void {
-    if (direction === Direction.top) {
-      this.deleteRow(1);
-      this.shiftVertical(-1);
-      this.hallSize.coordinateY--;
-    } else if (direction === Direction.left) {
-      this.deleteColumn(1);
-      this.shiftHorizontal(-1);
-      this.hallSize.coordinateX--;
-    } else if (direction === Direction.right) {
-      this.deleteColumn(this.hallSize.coordinateX);
-      this.hallSize.coordinateX--;
-    } else if (direction === Direction.bottom) {
-      this.deleteRow(this.hallSize.coordinateY);
-      this.hallSize.coordinateY--;
+    if (this.hallSize.coordinateX > 1) {
+      if (direction === Direction.left) {
+        this.deleteColumn(1);
+        this.shiftHorizontal(-1);
+        this.hallSize.coordinateX--;
+      } else if (direction === Direction.right) {
+        this.deleteColumn(this.hallSize.coordinateX);
+        this.hallSize.coordinateX--;
+      }
+    }
+    if (this.hallSize.coordinateY > 1) {
+      if (direction === Direction.top) {
+        this.deleteRow(1);
+        this.shiftVertical(-1);
+        this.hallSize.coordinateY--;
+      } else if (direction === Direction.bottom) {
+        this.deleteRow(this.hallSize.coordinateY);
+        this.hallSize.coordinateY--;
+      }
     }
   }
 
