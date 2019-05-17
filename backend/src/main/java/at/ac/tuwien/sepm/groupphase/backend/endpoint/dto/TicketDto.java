@@ -18,6 +18,9 @@ public class TicketDto {
   @ApiModelProperty(value = "The id of the invoice that bought or reserved this ticket")
   private Long invoiceId;
 
+  @ApiModelProperty(value = "The Id of the performance the ticket is for")
+  private Long performanceId;
+
   public Long getId() {
     return id;
   }
@@ -48,5 +51,13 @@ public class TicketDto {
 
   public void setInvoiceId(Long invoiceId) {
     this.invoiceId = invoiceId;
+  }
+
+  public Long getPerformanceId() {
+    return performanceId;
+  }
+
+  public void setPerformanceId(Long performanceId) {
+    this.performanceId = performanceId;
   }
 }
