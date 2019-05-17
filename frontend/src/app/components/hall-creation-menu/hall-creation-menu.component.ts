@@ -4,6 +4,7 @@ import {Point} from '../../dtos/Point';
 import {UnitType} from '../../enums/unit-type';
 import {Direction} from '../../enums/direction';
 import {Hall} from '../../dtos/hall';
+import {Unit} from '../../dtos/unit';
 
 @Component({
   selector: 'app-hall-creation-menu',
@@ -18,12 +19,15 @@ export class HallCreationMenuComponent implements OnInit {
   unitType: typeof UnitType = UnitType;
   direction: typeof Direction = Direction;
 
+  selectedSector: Unit;
+
   constructor(private hallCreationService: HallCreationService) { }
 
   ngOnInit() {
     this.hallSize = this.hallCreationService.getHallSize();
     this.getHall();
     this.getMaxHallSize();
+    this.getSelectedSector();
   }
 
   initializationMode(): boolean {
@@ -84,5 +88,9 @@ export class HallCreationMenuComponent implements OnInit {
 
   getHall(): void {
     this.hall =  this.hallCreationService.getHall();
+  }
+
+  getSelectedSector(): void {
+    this.hallCreationService.changeSector.subscribe(selectedSectorX => this.selectedSector = selectedSectorX);
   }
 }

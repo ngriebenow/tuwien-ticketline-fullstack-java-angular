@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import {Point} from '../dtos/Point';
 import {Unit} from '../dtos/unit';
 import {UnitType} from '../enums/unit-type';
@@ -21,8 +21,11 @@ export class HallCreationService {
   private readonly  sectors: Unit[];
   private readonly  aisles: Point[];
 
-  private selectedUnitType: UnitType;
-  private selectedUnitPosition: Point;
+  private selectedUnitType: UnitType; // saves unit type that is selected in menu
+  private selectedUnitPosition: Point; // saves first sector coordinate for sector creation
+  selectedSector: Unit; // saves sector for sector editing
+
+  @Output() changeSector: EventEmitter<Unit> = new EventEmitter();
 
   constructor() {
     this.initialized = false;
@@ -62,11 +65,16 @@ export class HallCreationService {
 
   /**
    * checks and ends editing process and sets edited to true
+   * if there are sectors: selects one and goes to sector mode
+   * else: saves hall to db
    */
   completeEditing(): void {
     // todo keep highlight on selector buttons
-    if (this.seats.length > 0 || this.sectors.length > 0) {
+    if (this.sectors.length > 0) {
+      this.changeSelectedSector(this.sectors[0]);
       this.edited = true;
+    } else if (this.seats.length > 0) {
+      this.saveHall();
     }
   }
 
@@ -74,8 +82,9 @@ export class HallCreationService {
    * checks and ends sector creation process and calls saveHall()
    */
   completeSectors(): void {
-    this.validateSectors();
-    this.saveHall();
+    if (this.validateSectors()) {
+      this.saveHall();
+    }
   }
 
   /**
@@ -83,16 +92,29 @@ export class HallCreationService {
    * @return true if validation is successful
    */
   validateSectors(): boolean {
-    // todo validate sectors (name, capacity)
-    return false;
+    for (let i = 0; i < this.sectors.length; i++) {
+      if (
+        this.sectors[i].name === null ||
+        this.sectors[i].name === '' ||
+        this.sectors[i].name === ' ' ||
+        this.sectors[i].capacity === null ||
+        this.sectors[i].capacity < 1
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
    * saves hall and all units to db
    */
   saveHall(): void {
+    console.log('save!');
     // todo save hall to backend
   }
+
+  // todo cancel popup and functionality
 
   /**
    * fills whole hall with seats
@@ -278,11 +300,13 @@ export class HallCreationService {
    * @param seat != null
    */
   clickSeat(seat: Point): void {
-    if (this.selectedUnitType === UnitType.aisle) {
-      this.createAisle(seat);
-      this.deleteSeat(seat);
-    } else if (this.selectedUnitType === UnitType.sector) {
-      this.createSector(seat);
+    if (this.initialized && !this.edited) {
+      if (this.selectedUnitType === UnitType.aisle) {
+        this.createAisle(seat);
+        this.deleteSeat(seat);
+      } else if (this.selectedUnitType === UnitType.sector) {
+        this.createSector(seat);
+      }
     }
   }
 
@@ -291,11 +315,13 @@ export class HallCreationService {
    * @param aisle != null
    */
   clickAisle(aisle: Point): void {
-    if (this.selectedUnitType === UnitType.seat) {
-      this.createSeat(aisle);
-      this.deleteAisle(aisle);
-    } else if (this.selectedUnitType === UnitType.sector) {
-      this.createSector(aisle);
+    if (this.initialized && !this.edited) {
+      if (this.selectedUnitType === UnitType.seat) {
+        this.createSeat(aisle);
+        this.deleteAisle(aisle);
+      } else if (this.selectedUnitType === UnitType.sector) {
+        this.createSector(aisle);
+      }
     }
   }
 
@@ -304,10 +330,14 @@ export class HallCreationService {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   clickSector(sector: Unit): void {
-    if (this.selectedUnitType === UnitType.seat) {
-      this.deleteSector(sector);
-    } else if (this.selectedUnitType === UnitType.aisle) {
-      this.deleteSector(sector);
+    if (this.initialized && !this.edited) {
+      if (this.selectedUnitType === UnitType.seat) {
+        this.deleteSector(sector);
+      } else if (this.selectedUnitType === UnitType.aisle) {
+        this.deleteSector(sector);
+      }
+    } else if (this.initialized && this.edited) {
+      this.changeSelectedSector(sector);
     }
   }
 
@@ -435,6 +465,15 @@ export class HallCreationService {
         this.seats.push(new Point(x, y));
       }
     }
+  }
+
+  /**
+   * changes saves sector and sends it to all subscribers
+   * @param sector != null
+   */
+  changeSelectedSector(sector: Unit): void {
+    this.selectedSector = sector;
+    this.changeSector.emit(this.selectedSector);
   }
 
   getInitialized(): boolean {
