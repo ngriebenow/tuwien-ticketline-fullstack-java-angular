@@ -19,14 +19,11 @@ public class InvoiceDto {
   @ApiModelProperty(value = "The reservation code of this invoice")
   private String reservationCode;
 
-  @ApiModelProperty(value = "The client who issued this invoice")
-  private ClientDto client;
-
-  @ApiModelProperty(value = "The performance this invoices tickets are for")
-  private PerformanceDto performance;
+  @ApiModelProperty(value = "The id of the client who issued this invoice")
+  private Long clientId;
 
   // TODO: Implement as soon as michis user persistance part is done
-  // private String sellerUsername;
+  // private Long selleId;
 
   @ApiModelProperty(value = "The tickets reserved and bought by this invoice")
   private List<TicketDto> tickets;
@@ -63,20 +60,12 @@ public class InvoiceDto {
     this.reservationCode = reservationCode;
   }
 
-  public ClientDto getClient() {
-    return client;
+  public Long getClientId() {
+    return clientId;
   }
 
-  public void setClient(ClientDto client) {
-    this.client = client;
-  }
-
-  public PerformanceDto getPerformance() {
-    return performance;
-  }
-
-  public void setPerformance(PerformanceDto performance) {
-    this.performance = performance;
+  public void setClientId(Long clientId) {
+    this.clientId = clientId;
   }
 
   public List<TicketDto> getTickets() {
