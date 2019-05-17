@@ -27,7 +27,7 @@ public class Ticket {
   private boolean isCancelled;
 
   @ManyToOne
-  @JoinColumn(nullable = false)
+  @JoinColumn(name = "invoice_id", nullable = false)
   private Invoice invoice;
 
   @ManyToOne
