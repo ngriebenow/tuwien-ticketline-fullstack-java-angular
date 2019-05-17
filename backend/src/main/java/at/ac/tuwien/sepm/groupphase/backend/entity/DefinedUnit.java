@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import com.google.common.base.Objects;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -29,9 +27,6 @@ public class DefinedUnit {
   @JoinColumn(nullable = false)
   private Unit unit;
 
-  @OneToMany(mappedBy = "definedUnit")
-  private List<Ticket> ticket;
-
   @ManyToOne
   @JoinColumn(nullable = false)
   private PriceCategory priceCategory;
@@ -46,7 +41,6 @@ public class DefinedUnit {
     setId(builder.id);
     setCapacityFree(builder.capacityFree);
     setUnit(builder.unit);
-    setTicket(builder.ticket);
     setPriceCategory(builder.priceCategory);
     setPerformance(builder.performance);
   }
@@ -73,14 +67,6 @@ public class DefinedUnit {
 
   public void setUnit(Unit unit) {
     this.unit = unit;
-  }
-
-  public List<Ticket> getTicket() {
-    return ticket;
-  }
-
-  public void setTicket(List<Ticket> ticket) {
-    this.ticket = ticket;
   }
 
   public PriceCategory getPriceCategory() {
@@ -111,14 +97,13 @@ public class DefinedUnit {
     return capacityFree == that.capacityFree
         && Objects.equal(id, that.id)
         && Objects.equal(unit, that.unit)
-        && Objects.equal(ticket, that.ticket)
         && Objects.equal(priceCategory, that.priceCategory)
         && Objects.equal(performance, that.performance);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, capacityFree, unit, ticket, priceCategory, performance);
+    return Objects.hashCode(id, capacityFree, unit, priceCategory, performance);
   }
 
   @Override
@@ -130,8 +115,6 @@ public class DefinedUnit {
         + capacityFree
         + ", unit="
         + unit
-        + ", ticket="
-        + ticket
         + ", priceCategory="
         + priceCategory
         + ", performance="
@@ -144,7 +127,6 @@ public class DefinedUnit {
     private Long id;
     private int capacityFree;
     private Unit unit;
-    private List<Ticket> ticket;
     private PriceCategory priceCategory;
     private Performance performance;
 
@@ -163,11 +145,6 @@ public class DefinedUnit {
 
     public Builder unit(Unit val) {
       unit = val;
-      return this;
-    }
-
-    public Builder ticket(List<Ticket> val) {
-      ticket = val;
       return this;
     }
 
