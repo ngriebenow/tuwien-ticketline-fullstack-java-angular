@@ -4,16 +4,20 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 
-@ApiModel("A request to buy or reserve one or more tickets")
+@ApiModel(
+    value = "ReservationRequest",
+    description = "A request to buy or reserve one or more tickets")
 public class ReservationRequestDto {
 
-  @ApiModelProperty("The id of the performance to but the tickets for")
+  @ApiModelProperty(value = "The id of the performance to buy the tickets for", required = true)
   private Long performanceId;
 
-  @ApiModelProperty("The id of the client to but the tickets for")
+  @ApiModelProperty(value = "The id of the client to buy the tickets for", required = true)
   private Long clientId;
 
-  @ApiModelProperty("A list of units ids with the amount to buy or reserve for each")
+  @ApiModelProperty(
+      value = "A list of units ids with the amount to buy or reserve for each",
+      required = true)
   public List<TicketRequestDto> ticketRequestDtos;
 
   public Long getPerformanceId() {
@@ -36,8 +40,7 @@ public class ReservationRequestDto {
     return ticketRequestDtos;
   }
 
-  public void setTicketRequestDtos(
-      List<TicketRequestDto> ticketRequestDtos) {
+  public void setTicketRequestDtos(List<TicketRequestDto> ticketRequestDtos) {
     this.ticketRequestDtos = ticketRequestDtos;
   }
 }

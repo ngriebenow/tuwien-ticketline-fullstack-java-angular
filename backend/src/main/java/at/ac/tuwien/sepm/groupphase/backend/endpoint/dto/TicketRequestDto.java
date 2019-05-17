@@ -3,13 +3,15 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel("Specifies how many tickets to request for a defined unit")
+@ApiModel(
+    value = "TicketRequest",
+    description = "Specifies how many tickets to request for a defined unit")
 public class TicketRequestDto {
 
-  @ApiModelProperty("The defined unit to get tickets for")
+  @ApiModelProperty(value = "The defined unit to get tickets for", required = true)
   private Long definedUnitId;
 
-  @ApiModelProperty("The amount of tickets to request")
+  @ApiModelProperty(value = "The amount of tickets to request", required = true)
   private int amount;
 
   public Long getDefinedUnitId() {

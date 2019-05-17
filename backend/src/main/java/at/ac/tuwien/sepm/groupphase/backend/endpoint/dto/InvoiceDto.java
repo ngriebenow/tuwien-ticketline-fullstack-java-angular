@@ -4,22 +4,24 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 
-@ApiModel
+@ApiModel(
+    value = "Invoice",
+    description = "An invoice at least one ticket and exactly one performance")
 public class InvoiceDto {
 
-  @ApiModelProperty(value = "The unique identifier for an individual of this resource")
+  @ApiModelProperty("The unique identifier for an individual of this resource")
   private Long id;
 
-  @ApiModelProperty(value = "Whether this invoice has been paid")
+  @ApiModelProperty("Whether this invoice has been paid")
   private boolean isPaid;
 
-  @ApiModelProperty(value = "Whether this invoice has been canceled")
+  @ApiModelProperty("Whether this invoice has been canceled")
   private boolean isCancelled;
 
-  @ApiModelProperty(value = "The reservation code of this invoice")
+  @ApiModelProperty("The reservation code of this invoice")
   private String reservationCode;
 
-  @ApiModelProperty(value = "The id of the client who issued this invoice")
+  @ApiModelProperty("The id of the client who issued this invoice")
   private Long clientId;
 
   // TODO: Implement as soon as michis user persistance part is done

@@ -3,22 +3,22 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel
+@ApiModel(value = "Ticket", description = "A ticket to a performance")
 public class TicketDto {
 
-  @ApiModelProperty(readOnly = true, value = "The unique identifier of a specific ticket")
+  @ApiModelProperty("The unique identifier of a specific ticket")
   private Long id;
 
-  @ApiModelProperty(value = "This price of the ticket in european cents")
+  @ApiModelProperty("This price of the ticket in european cents")
   private int priceInCents;
 
-  @ApiModelProperty(value = "The name of the seat or category the ticket is for")
+  @ApiModelProperty("The name of the seat or category the ticket is for")
   private String title;
 
-  @ApiModelProperty(value = "The id of the invoice that bought or reserved this ticket")
+  @ApiModelProperty("The id of the invoice that bought or reserved this ticket")
   private Long invoiceId;
 
-  @ApiModelProperty(value = "The Id of the performance the ticket is for")
+  @ApiModelProperty("The Id of the performance the ticket is for")
   private Long performanceId;
 
   public Long getId() {
