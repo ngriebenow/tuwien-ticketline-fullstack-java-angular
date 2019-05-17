@@ -46,7 +46,7 @@ public class InvoiceGenerator implements DataGenerator<Invoice> {
                 .reservationCode(FAKER.numerify("####"))
                 .isPaid(FAKER.random().nextBoolean())
                 .isCancelled(FAKER.random().nextBoolean())
-                .customer(client)
+                .client(client)
                 .build());
       }
       invoiceRepository.saveAll(generatedInvoices);
