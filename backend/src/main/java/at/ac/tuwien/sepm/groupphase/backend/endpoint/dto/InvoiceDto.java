@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import com.google.common.base.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
@@ -29,6 +30,17 @@ public class InvoiceDto {
 
   @ApiModelProperty(value = "The tickets reserved and bought by this invoice")
   private List<TicketDto> tickets;
+
+  public InvoiceDto() {}
+
+  private InvoiceDto(Builder builder) {
+    setId(builder.id);
+    setPaid(builder.isPaid);
+    setCancelled(builder.isCancelled);
+    setReservationCode(builder.reservationCode);
+    setClientId(builder.clientId);
+    setTickets(builder.tickets);
+  }
 
   public Long getId() {
     return id;
@@ -76,5 +88,91 @@ public class InvoiceDto {
 
   public void setTickets(List<TicketDto> tickets) {
     this.tickets = tickets;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    InvoiceDto that = (InvoiceDto) obj;
+    return isPaid == that.isPaid
+        && isCancelled == that.isCancelled
+        && Objects.equal(id, that.id)
+        && Objects.equal(reservationCode, that.reservationCode)
+        && Objects.equal(clientId, that.clientId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, clientId);
+  }
+
+  @Override
+  public String toString() {
+    return "InvoiceDto{"
+        + "id="
+        + id
+        + ", isPaid="
+        + isPaid
+        + ", isCancelled="
+        + isCancelled
+        + ", reservationCode='"
+        + reservationCode
+        + '\''
+        + ", clientId="
+        + clientId
+        + ", tickets="
+        + tickets
+        + '}';
+  }
+
+  public static final class Builder {
+
+    private Long id;
+    private boolean isPaid;
+    private boolean isCancelled;
+    private String reservationCode;
+    private Long clientId;
+    private List<TicketDto> tickets;
+
+    public Builder() {}
+
+    public Builder id(Long val) {
+      id = val;
+      return this;
+    }
+
+    public Builder isPaid(boolean val) {
+      isPaid = val;
+      return this;
+    }
+
+    public Builder isCancelled(boolean val) {
+      isCancelled = val;
+      return this;
+    }
+
+    public Builder reservationCode(String val) {
+      reservationCode = val;
+      return this;
+    }
+
+    public Builder clientId(Long val) {
+      clientId = val;
+      return this;
+    }
+
+    public Builder tickets(List<TicketDto> val) {
+      tickets = val;
+      return this;
+    }
+
+    public InvoiceDto build() {
+      return new InvoiceDto(this);
+    }
   }
 }
