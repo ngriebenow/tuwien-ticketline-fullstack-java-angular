@@ -8,6 +8,16 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DefinedUnitRepository extends JpaRepository<DefinedUnit, Long> {
+
   List<DefinedUnit> findAllByPerformanceAndCapacityFreeIsGreaterThan(
       Performance performance, int capacityFree);
+
+  /**
+   * Return a list of defined units belonging to performance whose id is an element of ids.
+   *
+   * @param performance the Performance to find DefniedUnits for.
+   * @param ids the DefinedUnit ids to search for.
+   * @return the filtered list of DefinedUnits.
+   */
+  List<DefinedUnit> findAllByPerformanceAndIdIn(Performance performance, List<Long> ids);
 }

@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import com.google.common.base.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class Ticket {
   @JoinColumn(name = "invoice_id", nullable = false)
   private Invoice invoice;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(nullable = false)
   private DefinedUnit definedUnit;
 
