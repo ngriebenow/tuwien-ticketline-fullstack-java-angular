@@ -13,7 +13,7 @@ public class TicketDto {
   private int priceInCents;
 
   @ApiModelProperty(value = "The name of the seat or category the ticket is for")
-  private String unitName;
+  private String title;
 
   @ApiModelProperty(value = "The id of the invoice that bought or reserved this ticket")
   private Long invoiceId;
@@ -34,12 +34,12 @@ public class TicketDto {
     this.priceInCents = priceInCents;
   }
 
-  public String getUnitName() {
-    return unitName;
+  public String getTitle() {
+    return title;
   }
 
-  public void setUnitName(String unitName) {
-    this.unitName = unitName;
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public Long getInvoiceId() {

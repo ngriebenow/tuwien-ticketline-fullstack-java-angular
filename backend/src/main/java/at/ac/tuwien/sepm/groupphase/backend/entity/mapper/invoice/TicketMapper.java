@@ -11,7 +11,7 @@ public interface TicketMapper {
 
   @Mappings({
       @Mapping(target = "priceInCents", source = "ticket.definedUnit.priceCategory.priceInCents"),
-      @Mapping(target = "unitName", source = "ticket.definedUnit.unit.name"),
+      @Mapping(target = "title", source = "ticket.definedUnit.unit.name"),
       @Mapping(target = "invoiceId", source = "ticket.invoice.id"),
   })
   TicketDto ticketToTicketDto(Ticket ticket);
