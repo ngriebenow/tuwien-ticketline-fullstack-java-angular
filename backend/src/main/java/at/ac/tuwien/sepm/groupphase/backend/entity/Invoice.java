@@ -30,7 +30,6 @@ public class Invoice {
   @Column(nullable = false)
   private boolean isCancelled;
 
-  // TODO: What to do when this invoice is not a reservation and it gets paid right away?
   @Column(nullable = false)
   private String reservationCode;
 

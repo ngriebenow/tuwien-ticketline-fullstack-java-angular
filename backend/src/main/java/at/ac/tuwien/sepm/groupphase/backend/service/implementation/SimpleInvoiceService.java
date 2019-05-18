@@ -38,7 +38,7 @@ public class SimpleInvoiceService implements InvoiceService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SimpleInvoiceService.class);
   private static final Random RANDOM = new SecureRandom();
-  // TODO: turn this in to a global config?
+
   private static final int TICKET_SALT_LENGTH = 32;
   private static final int RESERVATION_CODE_LENGTH = 6;
   private static final char[] RESERVATION_CODE_CHARACTERS =

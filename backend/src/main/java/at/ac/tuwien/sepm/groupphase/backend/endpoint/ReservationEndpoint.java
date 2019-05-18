@@ -28,8 +28,6 @@ public class ReservationEndpoint {
     this.reservationService = reservationService;
   }
 
-  // TODO: implement
-  /** TODO: add JavaDoc. */
   @PostMapping
   @ApiOperation(
       value = "Reserve tickets for the specified performance",
@@ -40,6 +38,4 @@ public class ReservationEndpoint {
         reservationRequestDto.getPerformanceId());
     return reservationService.reserveTickets(reservationRequestDto);
   }
-
-  // TODO: add endpoint to delete reservation
 }
