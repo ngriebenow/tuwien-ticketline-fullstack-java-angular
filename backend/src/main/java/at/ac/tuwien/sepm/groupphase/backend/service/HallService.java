@@ -18,7 +18,7 @@ public interface HallService {
   HallDto create();
 
   /**
-   * Updates the hall
+   * Updates the hall.
    *
    * @param hallDto the altered hall
    * @return the altered hall that has been saved

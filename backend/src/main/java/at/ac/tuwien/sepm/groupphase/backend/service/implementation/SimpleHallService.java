@@ -14,7 +14,7 @@ public class SimpleHallService implements HallService {
   private HallRepository hallRepository;
   private HallMapper hallMapper;
 
-  public SimpleHallService(HallRepository hallRepository, HallMapper hallMapper){
+  public SimpleHallService(HallRepository hallRepository, HallMapper hallMapper) {
     this.hallRepository = hallRepository;
     this.hallMapper = hallMapper;
   }

@@ -35,7 +35,7 @@ public class HallEndpoint {
   @ApiOperation(
       value = "Post hall",
       authorizations = {@Authorization(value = "apiKey")})
-  public HallDto post(){
+  public HallDto post() {
     return new HallDto();
   }
 
@@ -44,7 +44,7 @@ public class HallEndpoint {
   @ApiOperation(
       value = "Put hall",
       authorizations = {@Authorization(value = "apiKey")})
-  public HallDto put(HallDto hallDto){
+  public HallDto put(HallDto hallDto) {
     return new HallDto();
   }
 
