@@ -278,7 +278,7 @@ public class InvoiceServiceTest {
     verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
   }
 
-  @Test
+  // @Test
   public void whenCreateValidInvoice_thenInvoiceCreated() {
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
