@@ -3,9 +3,9 @@ package at.ac.tuwien.sepm.groupphase.backend.servicetest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.InvoiceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
@@ -24,6 +24,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.DefinedUnitRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,7 +80,10 @@ public class InvoiceServiceTest {
 
   @Before
   public void setUp() {
-    performanceOne = new Performance.Builder().id(INVOICE_PERFORMANCE_ID).build();
+    performanceOne = new Performance.Builder()
+        .id(INVOICE_PERFORMANCE_ID)
+        .startAt(LocalDateTime.now().plusDays(7))
+        .build();
 
     priceCategoryOne = new PriceCategory.Builder().priceInCents(TICKET_PRICE).build();
 
@@ -171,7 +175,19 @@ public class InvoiceServiceTest {
     verify(mockInvoiceRepository).findById(INVOICE_ID);
   }
 
-  // TODO: what about validating for create invoice for performances in the past?
+  @Test
+  public void whenCreateInvoiceForPastPerformance_thenThrowException() {
+    performanceOne.setStartAt(LocalDateTime.now().minusDays(7));
+    when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
+        .thenReturn(Optional.of(performanceOne));
+    when(mockClientRepository.findById(INVOICE_CLIENT_ID)).thenReturn(Optional.of(clientOne));
+
+    assertThatThrownBy(() -> invoiceService.createInvoice(reservationRequestDto, false))
+        .isInstanceOf(ValidationException.class);
+
+    verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
+    verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
+  }
 
   @Test
   public void whenCreateInvoiceEmptyTickets_thenThrowException() {
@@ -251,7 +267,8 @@ public class InvoiceServiceTest {
     assertThatThrownBy(() -> invoiceService.createInvoice(reservationRequestDto, false))
         .isInstanceOf(NotFoundException.class);
 
-    verify(mockDefinedUnitRepository).findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList);
+    verify(mockDefinedUnitRepository)
+        .findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList);
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
     verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
   }
@@ -279,7 +296,7 @@ public class InvoiceServiceTest {
     verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
   }
 
-   @Test
+  @Test
   public void whenCreateValidInvoice_thenInvoiceCreated() {
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
