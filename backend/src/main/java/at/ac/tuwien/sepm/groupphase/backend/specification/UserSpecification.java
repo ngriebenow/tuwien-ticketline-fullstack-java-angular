@@ -24,7 +24,7 @@ public class UserSpecification<T> implements Specification<T> {
       @Override
       public Predicate toPredicate(
           Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        return criteriaBuilder.like(root.get(name), "%" + key + "%");
+        return criteriaBuilder.like(criteriaBuilder.lower(root.get(name)), "%" + key.toLowerCase() + "%");
       }
     };
   }

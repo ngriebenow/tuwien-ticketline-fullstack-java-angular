@@ -24,8 +24,8 @@ public class EventSpecification {
 
         if (eventFilterDto.getHallName() != null) {
           Predicate hallName =
-              criteriaBuilder.like(
-                  root.get("hall").get("name"), "%" + eventFilterDto.getHallName() + "%");
+              criteriaBuilder.like(criteriaBuilder.lower(
+                  root.get("hall").get("name")), "%" + eventFilterDto.getHallName().toLowerCase() + "%");
           expressions.add(hallName);
         }
         if (eventFilterDto.getHallId() != null) {
@@ -35,43 +35,43 @@ public class EventSpecification {
         }
         if (eventFilterDto.getLocationId() != null) {
           Predicate locationId =
-              criteriaBuilder.equal(
-                  root.get("hall").get("location").get("id"), eventFilterDto.getLocationId());
+              criteriaBuilder.equal(criteriaBuilder.lower(
+                  root.get("hall").get("location").get("id")), eventFilterDto.getLocationId());
           expressions.add(locationId);
         }
         if (eventFilterDto.getLocationName() != null) {
           Predicate locationName =
-              criteriaBuilder.like(
-                  root.get("hall").get("location").get("name"),
-                  "%" + eventFilterDto.getLocationName() + "%");
+              criteriaBuilder.like(criteriaBuilder.lower(
+                  root.get("hall").get("location").get("name")),
+                  "%" + eventFilterDto.getLocationName().toLowerCase() + "%");
           expressions.add(locationName);
         }
 
         if (eventFilterDto.getLocationPlace() != null) {
           Predicate locationPlace =
-              criteriaBuilder.like(
-                  root.get("hall").get("location").get("place"),
-                  "%" + eventFilterDto.getLocationPlace() + "%");
+              criteriaBuilder.like(criteriaBuilder.lower(
+                  root.get("hall").get("location").get("place")),
+                  "%" + eventFilterDto.getLocationPlace().toLowerCase() + "%");
           expressions.add(locationPlace);
         }
         if (eventFilterDto.getLocationCountry() != null) {
           Predicate locationCountry =
-              criteriaBuilder.like(
-                  root.get("hall").get("location").get("country"),
-                  "%" + eventFilterDto.getLocationCountry() + "%");
+              criteriaBuilder.like(criteriaBuilder.lower(
+                  root.get("hall").get("location").get("country")),
+                  "%" + eventFilterDto.getLocationCountry().toLowerCase() + "%");
           expressions.add(locationCountry);
         }
         if (eventFilterDto.getLocationStreet() != null) {
           Predicate locationStreet =
-              criteriaBuilder.like(
-                  root.get("hall").get("location").get("street"),
-                  "%" + eventFilterDto.getLocationStreet() + "%");
+              criteriaBuilder.like(criteriaBuilder.lower(
+                  root.get("hall").get("location").get("street")),
+                  "%" + eventFilterDto.getLocationStreet().toLowerCase() + "%");
           expressions.add(locationStreet);
         }
         if (eventFilterDto.getLocationPostalCode() != null) {
           Predicate locationPostalCode =
-              criteriaBuilder.like(
-                  root.get("hall").get("location").get("postalCode"),
+              criteriaBuilder.like(criteriaBuilder.lower(
+                  root.get("hall").get("location").get("postalCode")),
                   "%" + eventFilterDto.getLocationId() + "%");
           expressions.add(locationPostalCode);
         }
@@ -88,7 +88,7 @@ public class EventSpecification {
     Specification<Event> specification = UserSpecification.alwaysTrue();
     if (eventFilterDto.getName() != null) {
       specification =
-          specification.and(UserSpecification.contains("name", eventFilterDto.getName()));
+          specification.and(UserSpecification.contains("name", eventFilterDto.getName().toLowerCase()));
     }
     if (eventFilterDto.getDuration() != null) {
       specification =
@@ -98,7 +98,7 @@ public class EventSpecification {
     }
     if (eventFilterDto.getContent() != null) {
       specification =
-          specification.and(UserSpecification.contains("content", eventFilterDto.getName()));
+          specification.and(UserSpecification.contains("content", eventFilterDto.getName().toLowerCase()));
     }
     if (eventFilterDto.getEventCategory() != null) {
       specification =

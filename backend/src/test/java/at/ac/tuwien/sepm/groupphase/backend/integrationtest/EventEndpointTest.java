@@ -1,61 +1,59 @@
-package at.ac.tuwien.sepm.groupphase.backend.serviceintegrationtest;
+package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
-import java.awt.geom.Ellipse2D;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-import javax.validation.constraints.AssertTrue;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-
-import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.message.DetailedMessageDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.message.SimpleMessageDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Message;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
-import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
+import at.ac.tuwien.sepm.groupphase.backend.integrationtest.base.BaseIntegrationTest;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.HallRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.MessageRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
-import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-//import org.junit.Assert;
+import org.junit.Assert;
 import org.junit.Before;
-//import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.convert.ThreeTenBackPortConverters.LocalTimeToDateConverter;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 
-//@RunWith(JUnit.class)
-@SpringBootTest
-@ActiveProfiles(profiles = "integration-test")
-public class EventServiceIntegrationTest {
+public class EventEndpointTest extends BaseIntegrationTest {
 
-  //@Autowired private EventRepository eventRepository;
-  //@Autowired private PerformanceRepository performanceRepository;
+  private static final String EVENT_ENDPOINT = "/events";
+  private static final String SPECIFIC_EVENT_PATH = "/{id}";
+  private static final String EVENT_PERFORMANCE_ENDPOINT = "/performances";
 
-  @Autowired private EventService eventService;
 
   @Autowired private PerformanceRepository performanceRepository;
   @Autowired private HallRepository hallRepository;
@@ -66,38 +64,36 @@ public class EventServiceIntegrationTest {
   @Autowired private EventMapper eventMapper;
   @Autowired private PerformanceMapper performanceMapper;
 
-
-
   private Event E1;
   private Event E2;
   private Event E3;
-  
+
   private Artist A1;
   private Artist A2;
   private Artist A3;
   private Artist A4;
-  
-  
+
+
   private Hall H1;
   private Hall H2;
   private Hall H3;
-  
+
   private Location L1;
   private Location L2;
-  
+
   private Performance P1;
   private Performance P2;
-  
+
   private Performance P3;
   private Performance P4;
   private Performance P5;
-  
+
   private Performance P6;
   private Performance P7;
   private Performance P8;
   private Performance P9;
 
-  @BeforeEach
+  @Before
   public void initialize() {
     E1 = new Event.Builder()
         .name("Abc")
@@ -119,14 +115,14 @@ public class EventServiceIntegrationTest {
         .duration(Duration.ofHours(3))
         .content("Content3")
         .build();
-    
+
 
 
     A1 = new Artist.Builder().surname("Artist Abcd").name("Artist Name W").build();
     A2 = new Artist.Builder().surname("Artist Bcde").name("Artist Name X").build();
     A3 = new Artist.Builder().surname("Artist Cdef").name("Artist Name Y").build();
     A4 = new Artist.Builder().surname("Artist Defg").name("Artist Name Z").build();
-    
+
     A1 = artistRepository.save(A1);
     A2 = artistRepository.save(A2);
     A3 = artistRepository.save(A3);
@@ -155,8 +151,8 @@ public class EventServiceIntegrationTest {
             .country("Germany")
             .build();
     L2 = locationRepository.save(L2);
-    
-    
+
+
 
     H1 =
         new Hall.Builder()
@@ -209,8 +205,8 @@ public class EventServiceIntegrationTest {
         .build();
     P2 = performanceRepository.save(P2);
 
-    
-    
+
+
     P3 = new Performance.Builder()
         .name("1B")
         .startAt(LocalDate.of(2000,3,15).atStartOfDay())
@@ -232,7 +228,7 @@ public class EventServiceIntegrationTest {
         .build();
     P5 = performanceRepository.save(P5);
 
-    
+
     P6 = new Performance.Builder()
         .name("1C")
         .startAt(LocalDate.of(2000,6,15).atStartOfDay())
@@ -260,45 +256,85 @@ public class EventServiceIntegrationTest {
         .event(E3)
         .build();
     P9 = performanceRepository.save(P9);
-    
-    
+
+
   }
+
+
+  @Test
+  public void givenNoEvent_whenFindInvalidEvent_ThenReturnNotFound() {
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + SPECIFIC_EVENT_PATH,0)
+            .then()
+            .extract()
+            .response();
+
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+  }
+
 
   @Test
   public void givenEvent_whenFindByEvent_thenReturnEvent() {
-    Event retE1 = eventMapper.eventDtoToEvent(eventService.getOneById(E1.getId()));
-    Assert.assertThat(retE1, is(equalTo(E1)));
-  }
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + SPECIFIC_EVENT_PATH,E1.getId())
+            .then()
+            .extract()
+            .response();
 
-  @Test
-  public void givenNoEvent_whenFindEventById_thenThrowNotFoundException() {
-    Assertions.assertThrows(NotFoundException.class,
-        () -> eventService.getOneById(-1L));
+    Event retE1 = eventMapper.eventDtoToEvent(response.as(EventDto.class));
+    Assert.assertThat(retE1, is(equalTo(E1)));
   }
 
 
   @Test
   public void givenEventId_whenFindPerformancesByEventId_thenReturnPerformances() {
-    List<PerformanceDto> retList = eventService.getPerformancesOfEvent(E1.getId(), Pageable.unpaged());
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + SPECIFIC_EVENT_PATH + EVENT_PERFORMANCE_ENDPOINT,E1.getId())
+            .then()
+            .extract()
+            .response();
+
+    List<PerformanceDto> retList = response.as(List.class);
 
     List<Performance> performances = new ArrayList<>();
     retList.forEach(p -> performances.add(performanceMapper.performanceDtoToPerformance(p)));
 
     Assert.assertTrue(performances.contains(P1));
     Assert.assertTrue(performances.contains(P2));
-
   }
 
   @Test
   public void givenInvalidEventId_whenFindPerformancesByEventId_thenThrowNotFoundException() {
-    Assertions.assertThrows(NotFoundException.class,
-        () -> eventService.getPerformancesOfEvent(-1L,Pageable.unpaged()));
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + SPECIFIC_EVENT_PATH + EVENT_PERFORMANCE_ENDPOINT,-1)
+            .then()
+            .extract()
+            .response();
 
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
   }
 
   @Test
   public void givenEvents_whenFilterByEventName_thenReturnEvents() {
-
+/*
     EventFilterDto filterDto = new EventFilterDto();
     filterDto.setName("D");
 
@@ -310,7 +346,7 @@ public class EventServiceIntegrationTest {
     Assert.assertThat(events.size(),is(2));
     Assert.assertTrue(events.contains(E2));
     Assert.assertTrue(events.contains(E3));
-
+*/
   }
-}
 
+}

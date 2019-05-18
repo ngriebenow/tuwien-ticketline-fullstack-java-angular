@@ -57,6 +57,8 @@ public class EventFilterDto {
   @ApiModelProperty(required = false, name = "The location postal code")
   private String locationPostalCode;
 
+  public EventFilterDto(){}
+
   private EventFilterDto(Builder builder) {
     name = builder.name;
     eventCategory = builder.eventCategory;

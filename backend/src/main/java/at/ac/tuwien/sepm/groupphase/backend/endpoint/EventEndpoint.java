@@ -46,9 +46,15 @@ public class EventEndpoint {
       value = "Get performances by event id",
       authorizations = {@Authorization(value = "apiKey")})
   public List<PerformanceDto> get(
-      @PathVariable Long id, @RequestParam Integer page, @RequestParam Integer count) {
+      @PathVariable Long id, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer count) {
 
-    Pageable p = PageRequest.of(page, count);
+    Pageable p;
+    if (page != null && count != null) {
+      p = PageRequest.of(page, count);
+    } else {
+      p = Pageable.unpaged();
+    }
+
     return eventService.getPerformancesOfEvent(id, p);
   }
 
