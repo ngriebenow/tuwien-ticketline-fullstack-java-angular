@@ -2,7 +2,16 @@ package at.ac.tuwien.sepm.groupphase.backend.serviceintegrationtest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
+import java.util.ArrayList;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
@@ -18,19 +27,20 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import org.junit.Assert;
+//import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
+//import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(JUnit.class)
 @SpringBootTest
 @ActiveProfiles(profiles = "integration-test")
 public class EventServiceIntegrationTest {
@@ -47,6 +57,7 @@ public class EventServiceIntegrationTest {
   @Autowired private EventRepository eventRepository;
 
   @Autowired private EventMapper eventMapper;
+  @Autowired private PerformanceMapper performanceMapper;
 
 
 
@@ -57,7 +68,7 @@ public class EventServiceIntegrationTest {
   private Performance P1;
   private Performance P2;
 
-  @Before
+  @BeforeEach
   public void initialize() {
     E1 = new Event.Builder()
         .name("Event1")
@@ -101,7 +112,7 @@ public class EventServiceIntegrationTest {
         .id(0L)
         .event(E1)
         .build();
-    performanceRepository.save(P1);
+    P1 = performanceRepository.save(P1);
 
     P2 = new Performance.Builder()
         .name("Perf 2")
@@ -109,7 +120,7 @@ public class EventServiceIntegrationTest {
         .id(1L)
         .event(E1)
         .build();
-    performanceRepository.save(P2);
+    P2 = performanceRepository.save(P2);
 
 
   }
@@ -120,16 +131,22 @@ public class EventServiceIntegrationTest {
     Assert.assertThat(retE1, is(equalTo(E1)));
   }
 
-  @Test(expected = NotFoundException.class)
+  @Test
   public void givenNoEvent_whenFindEventById_thenThrowNotFoundException() {
-    eventService.getOneById(-1L);
+    Assertions.assertThrows(NotFoundException.class,
+        () -> eventService.getOneById(-1L));
   }
-
-
 
 
   @Test
   public void givenEventId_whenFindPerformancesByEventId_thenReturnPerformances() {
+    List<PerformanceDto> retList = eventService.getPerformancesOfEvent(E1.getId(), Pageable.unpaged());
+
+    List<Performance> performances = new ArrayList<>();
+    retList.forEach(p -> performances.add(performanceMapper.performanceDtoToPerformance(p)));
+
+    Assert.assertTrue(performances.contains(P1));
+    Assert.assertTrue(performances.contains(P2));
 
   }
 }

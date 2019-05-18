@@ -1,6 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,8 +50,15 @@ public class Performance {
       return false;
     }
     Performance that = (Performance) o;
+
+    boolean datesEqual = false;
+    if (startAt != null && that.startAt != null) {
+      datesEqual = Duration.between(startAt,that.startAt).abs().getSeconds() < 1;
+    } else if (startAt != null || that.startAt != null) {
+      return false;
+    }
     return Objects.equals(id, that.id)
-        && Objects.equals(startAt, that.startAt)
+        && datesEqual
         && Objects.equals(name, that.name)
         && Objects.equals(event, that.event);
   }

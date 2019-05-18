@@ -74,8 +74,7 @@ public class Event {
         && category == event.category
         && Objects.equals(content, event.content)
         && Objects.equals(duration, event.duration)
-        && Objects.equals(hall, event.hall)
-        && Objects.equals(artists, event.artists);
+        && Objects.equals(hall, event.hall);
   }
 
   @Override

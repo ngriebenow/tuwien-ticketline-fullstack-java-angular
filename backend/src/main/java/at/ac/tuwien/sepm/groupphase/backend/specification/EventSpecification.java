@@ -83,6 +83,7 @@ public class EventSpecification {
     };
   }
 
+  /** Get the general specification for an event. */
   public static Specification<Event> getEventSpecification(EventFilterDto eventFilterDto) {
     Specification<Event> specification = UserSpecification.alwaysTrue();
     if (eventFilterDto.getName() != null) {
