@@ -18,6 +18,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TicketRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
@@ -108,6 +109,12 @@ public class SimpleInvoiceService implements InvoiceService {
                   LOGGER.error(msg);
                   return new NotFoundException(msg);
                 });
+
+    if (performance.getStartAt().isBefore(LocalDateTime.now())) {
+      String msg = "Can't reserve tickets for bygone performance " + performanceId;
+      LOGGER.error(msg);
+      throw new ValidationException(msg);
+    }
 
     Invoice invoice =
         new Invoice.Builder()
