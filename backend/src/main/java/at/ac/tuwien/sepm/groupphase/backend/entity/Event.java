@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,7 +42,7 @@ public class Event {
   @JoinColumn(nullable = false)
   private Hall hall;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable
   @Size(min = 1)
   private List<Artist> artists;
