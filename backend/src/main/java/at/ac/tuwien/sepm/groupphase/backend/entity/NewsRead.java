@@ -1,22 +1,33 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import java.util.Objects;
-import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+@Entity(name = "NewsRead")
+@IdClass(UserNewsKey.class)
 public class NewsRead {
 
-  @Column(nullable = false)
-  private String username;
+  @Id
+  @ManyToOne
+  @JoinColumn
+  private User user;
 
-  @Column(nullable = false)
-  private Long newsId;
+  @Id
+  @ManyToOne
+  @JoinColumn
+  private News news;
+
 
   /** Construct the newsRead instance. */
   public NewsRead() {}
 
   private NewsRead(Builder builder) {
-    setUsername(builder.username);
-    setNewsId(builder.newsId);
+    setUser(builder.user);
+    setNews(builder.news);
   }
 
   @Override
@@ -28,47 +39,47 @@ public class NewsRead {
       return false;
     }
     NewsRead newsRead = (NewsRead) o;
-    return Objects.equals(username, newsRead.username)
-        && Objects.equals(newsId, newsRead.newsId);
+    return Objects.equals(user, newsRead.user)
+        && Objects.equals(news, newsRead.news);
 
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, newsId);
+    return Objects.hash(user, news);
   }
 
-  public String getUsername() {
-    return username;
+  public User getUser() {
+    return user;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setUser(User user) {
+    this.user = user;
   }
 
-  public Long getNewsId() {
-    return newsId;
+  public News getNews() {
+    return news;
   }
 
-  public void setNewsId(Long newsId) {
-    this.newsId = newsId;
+  public void setNews(News news) {
+    this.news = news;
   }
 
   public static final class Builder {
 
-    private String username;
-    private Long newsId;
+    private User user;
+    private News news;
 
     public Builder() {
     }
 
-    public Builder username(String val) {
-      username = val;
+    public Builder user(User val) {
+      user = val;
       return this;
     }
 
-    public Builder newsId(Long val) {
-      newsId = val;
+    public Builder news(News val) {
+      news = val;
       return this;
     }
 
