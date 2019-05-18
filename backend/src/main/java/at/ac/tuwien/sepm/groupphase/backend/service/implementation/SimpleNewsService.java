@@ -3,9 +3,13 @@ package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
+import at.ac.tuwien.sepm.groupphase.backend.entity.NewsRead;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Picture;
+import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.news.NewsMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.user.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.repository.NewsReadRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PictureRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
@@ -19,19 +23,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class SimpleNewsService implements NewsService {
 
   private final NewsRepository newsRepository;
+  private final NewsReadRepository newsReadRepository;
   private final PictureRepository pictureRepository;
   private final NewsMapper newsMapper;
+
 
   /**
    * News service constructor.
    *
    * @param newsRepository to access news entries
+   * @param newsReadRepository to mark news as read
    * @param pictureRepository to get pictures belonging to news entry
    * @param newsMapper to map between dto and entity
    */
-  public SimpleNewsService(NewsRepository newsRepository, PictureRepository pictureRepository,
+  public SimpleNewsService(NewsRepository newsRepository,
+      NewsReadRepository newsReadRepository, PictureRepository pictureRepository,
       NewsMapper newsMapper) {
     this.newsRepository = newsRepository;
+    this.newsReadRepository = newsReadRepository;
     this.pictureRepository = pictureRepository;
     this.newsMapper = newsMapper;
   }
@@ -46,9 +55,18 @@ public class SimpleNewsService implements NewsService {
   }
 
   @Override
-  public DetailedNewsDto findOne(Long id) throws NotFoundException {
+  public DetailedNewsDto findOne(Long id, User user) throws NotFoundException {
     News news = newsRepository.findById(id).orElseThrow(NotFoundException::new);
+
+    //Mark news entry as read
+    newsReadRepository.save(new NewsRead.Builder()
+        .news(news)
+        .user(user)
+        .build());
+
     DetailedNewsDto retNewsDto = newsMapper.newsToDetailedNewsDto(news);
+
+    //Get all picture for news entry
 
     List<Picture> pictures = pictureRepository.findAllByNewsOrderByIdAsc(news);
     List<Long> pictureIds = new ArrayList<>();
