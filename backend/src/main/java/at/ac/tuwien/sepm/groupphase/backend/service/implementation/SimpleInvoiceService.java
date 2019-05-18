@@ -117,9 +117,10 @@ public class SimpleInvoiceService implements InvoiceService {
             .client(client)
             .reservationCode(generateReservationCode())
             .build();
-    invoiceRepository.save(invoice);
 
     createTickets(performance, invoice, reservationRequestDto.getTicketRequests());
+
+    invoice = invoiceRepository.save(invoice);
 
     return invoiceMapper.invoiceToInvoiceDto(invoice);
   }
