@@ -17,6 +17,7 @@ import { EventComponent } from './components/event/event.component';
 import { EventFilterComponent } from './components/event-filter/event-filter.component';
 import { MyDatePickerModule } from 'mydatepicker';
 import {IMyDpOptions} from 'mydatepicker';
+import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {IMyDpOptions} from 'mydatepicker';
     MessageComponent,
     EventComponent,
     EventFilterComponent,
+    HallViewingComponent,
   ],
   imports: [
     BrowserModule,

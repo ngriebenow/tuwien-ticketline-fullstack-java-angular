@@ -6,13 +6,15 @@ import {AuthGuard} from './guards/auth.guard';
 import {MessageComponent} from './components/message/message.component';
 import {EventComponent} from './components/event/event.component';
 import {EventFilterComponent} from './components/event-filter/event-filter.component';
+import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'message', canActivate: [AuthGuard], component: MessageComponent},
   {path: 'events/:id', canActivate: [AuthGuard], component: EventComponent},
-  {path: 'event-filter', canActivate: [AuthGuard], component: EventFilterComponent}
+  {path: 'event-filter', canActivate: [AuthGuard], component: EventFilterComponent},
+  {path: 'hall-viewing', canActivate: [AuthGuard], component: HallViewingComponent}
 ];
 
 @NgModule({

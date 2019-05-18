@@ -27,7 +27,7 @@ public class HallEndpoint {
       value = "Get hall by id",
       authorizations = {@Authorization(value = "apiKey")})
   public HallDto get(@PathVariable Long id) {
-    return hallService.getOneById(id);
+    return new HallDto();
   }
 
   @RequestMapping(method = RequestMethod.POST)
@@ -53,6 +53,6 @@ public class HallEndpoint {
       value = "Get hall units by id",
       authorizations = {@Authorization(value = "apiKey")})
   public HallDto getUnits(@PathVariable Long id) {
-    return hallService.getOneById(id);
+    return new HallDto();
   }
 }

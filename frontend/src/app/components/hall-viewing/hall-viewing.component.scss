@@ -1,0 +1,194 @@
+@import '../../../colors';
+
+.full-width {
+  width: 98vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.full-height {
+  hight: 100vh;
+  position: relative;
+  top: 50%;
+  bottom: 50%;
+  margin-top: -50vh;
+  margin-bottom: -50vh;
+}
+
+.no-padding {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.key-bg {
+  height: calc(100vh - 50px);
+}
+
+.disabled{
+  opacity: 1;
+}
+
+.hall-plan {
+  position: relative;
+  height: 880px;
+  width: 1000px;
+  background-color: $light-gray;
+}
+
+.stage {
+  position: absolute;
+  height: 20px;
+  width: 500px;
+  top: 20px;
+  left: 170px;
+  background-color: $medium-gray;
+  border-radius: 5px;
+}
+
+.btn-seat {
+  background-color: $medium-gray;
+  border-radius: 5px;
+}
+
+.btn-seat:hover,
+.btn-seat:focus,
+.btn-seat:active{
+  background-color: darken($medium-gray, 10);
+}
+
+.btn-key {
+  background-color: $main-blue;
+  border-radius: 5px;
+}
+
+.btn-key:hover,
+.btn-key:focus,
+.btn-key:active{
+  background-color: darken($main-blue, 10);
+}
+
+.btn-choice {
+  background-color: $main-orange;
+  border-radius: 5px;
+}
+
+.btn-choice:hover,
+.btn-choice:focus,
+.btn-choice:active{
+  background-color: darken($main-orange, 10);
+}
+
+.btn-reserved {
+  background-color: transparent;
+  border-radius: 5px;
+  color: $medium-gray;
+  font-size: x-large;
+  padding: 0px;
+  text-align: center;
+}
+
+.btn-reserved:hover,
+.btn-reserved:focus,
+.btn-reserved:active{
+  background-color: darken(transparent, 10);
+}
+
+.btn-sector {
+  background-color: $main-blue;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.btn-sector:hover,
+.btn-sector:focus,
+.btn-sector:active{
+  background-color: darken($main-blue, 10);
+}
+
+.row-padding {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+
+.btn-seat-key {
+  background-color: $medium-gray;
+  font-weight: bolder;
+  text-align: center !important;
+  border-radius: 5px;
+  width:40px;
+  height: 40px;
+}
+
+.btn-seat-key:hover,
+.btn-seat-key:focus,
+.btn-seat-key:active{
+  background-color: darken($medium-gray, 10);
+}
+
+.btn-key-key {
+  background-color: $main-blue;
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+}
+
+.btn-key-key:hover,
+.btn-key-key:focus,
+.btn-key-key:active{
+  background-color: darken($main-blue, 10);
+}
+
+.btn-choice-key {
+  background-color: $main-orange;
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+}
+
+.btn-choice-key:hover,
+.btn-choice-key:focus,
+.btn-choice-key:active{
+  background-color: darken($main-orange, 10);
+}
+
+.btn-reserved-key {
+  background-color: transparent;
+  border-radius: 5px;
+  color: $medium-gray;
+  font-size: 36px;
+  padding: 0px;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+}
+
+.btn-reserved-key:hover,
+.btn-reserved-key:focus,
+.btn-reserved-key:active{
+  background-color: darken(transparent, 10);
+}
+
+.my-auto{
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.cat{
+  border-left: 6px blue;
+  height: 200px;
+  position: absolute;
+}
+
+.cat-1{
+  border-left: 6px green;
+}
+
+.cat-2{
+  border-left: 6px darkmagenta;
+}
+
