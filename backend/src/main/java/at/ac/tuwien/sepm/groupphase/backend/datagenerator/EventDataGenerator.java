@@ -71,7 +71,7 @@ public class EventDataGenerator implements DataGenerator<Event> {
               .category(categories.get(FAKER.random().nextInt(categories.size())))
               .duration(
                   Duration.ofHours(FAKER.random().nextInt(MIN_EVENT_DURATION, MAX_EVENT_DURATION)))
-              .content(FAKER.lorem().sentence(50))
+              .content(FAKER.lorem().characters(20, 255))
               .artists(participatingArtists)
               .hall(halls.get(FAKER.random().nextInt(halls.size())))
               .build());
