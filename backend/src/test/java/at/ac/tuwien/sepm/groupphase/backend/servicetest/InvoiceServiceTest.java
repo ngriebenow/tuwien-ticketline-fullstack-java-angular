@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.InvoiceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
@@ -278,7 +279,7 @@ public class InvoiceServiceTest {
     verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
   }
 
-  // @Test
+   @Test
   public void whenCreateValidInvoice_thenInvoiceCreated() {
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
@@ -289,12 +290,13 @@ public class InvoiceServiceTest {
             .collect(Collectors.toList());
     when(mockDefinedUnitRepository.findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList))
         .thenReturn(Collections.singletonList(definedUnitOne));
+    doReturn(invoiceOne).when(mockInvoiceRepository).save(any(Invoice.class));
 
-    // TODO: ids are not being set here because of the underlying mock objects
     InvoiceDto invoiceDto = invoiceService.createInvoice(reservationRequestDto, false);
     assertThat(invoiceDto).isEqualTo(invoiceDtoOne);
     assertThat(invoiceDto.getTickets()).isEqualTo(invoiceDtoOne.getTickets());
 
+    verify(mockInvoiceRepository).save(any(Invoice.class));
     verify(mockDefinedUnitRepository)
         .findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList);
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
