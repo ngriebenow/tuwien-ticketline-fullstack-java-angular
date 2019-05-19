@@ -17,7 +17,7 @@ export class EventService {
   getPerformancesById(id: number): Observable<Performance[]> {
     console.log('Load performances for event ' + id);
     /**TODO pageable*/
-    return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances?page=0&count=100');
+    return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances');
   }
 
   /**
@@ -50,7 +50,7 @@ export class EventService {
       .set('page', '0')
       .set('count', '100');
 
-    console.log('getEventsFiltered 3: ' + eventFilter.name);
+    console.log('getEventsFiltered: ' + eventFilter.name);
 
     return this.httpClient.get<Event[]>(this.eventBaseUri, {params: paramsHttp});
 

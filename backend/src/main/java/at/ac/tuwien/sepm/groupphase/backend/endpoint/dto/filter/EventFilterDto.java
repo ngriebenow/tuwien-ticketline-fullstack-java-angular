@@ -1,19 +1,12 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.LocationDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PriceCategoryDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @ApiModel(value = "PerformanceFilterDto", description = "A DTO for filtering events")
 public class EventFilterDto {
-
 
   @ApiModelProperty(required = false, name = "The name which the event should contain")
   private String name;
@@ -57,7 +50,7 @@ public class EventFilterDto {
   @ApiModelProperty(required = false, name = "The location postal code")
   private String locationPostalCode;
 
-  public EventFilterDto(){}
+  public EventFilterDto() {}
 
   private EventFilterDto(Builder builder) {
     name = builder.name;
@@ -205,8 +198,7 @@ public class EventFilterDto {
     private String locationStreet;
     private String locationPostalCode;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder name(String val) {
       name = val;

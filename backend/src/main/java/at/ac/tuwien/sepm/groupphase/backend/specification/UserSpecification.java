@@ -1,19 +1,12 @@
 package at.ac.tuwien.sepm.groupphase.backend.specification;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
-import com.google.common.base.Predicates;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
-import javax.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification<T> implements Specification<T> {
@@ -24,7 +17,8 @@ public class UserSpecification<T> implements Specification<T> {
       @Override
       public Predicate toPredicate(
           Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        return criteriaBuilder.like(criteriaBuilder.lower(root.get(name)), "%" + key.toLowerCase() + "%");
+        return criteriaBuilder.like(
+            criteriaBuilder.lower(root.get(name)), "%" + key.toLowerCase() + "%");
       }
     };
   }
@@ -69,8 +63,7 @@ public class UserSpecification<T> implements Specification<T> {
       public Predicate toPredicate(
           Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
-        return criteriaBuilder.equal(root.get(name),eventCategory);
-
+        return criteriaBuilder.equal(root.get(name), eventCategory);
       }
     };
   }
@@ -82,7 +75,6 @@ public class UserSpecification<T> implements Specification<T> {
       public Predicate toPredicate(
           Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         return criteriaBuilder.and();
-
       }
     };
   }

@@ -16,11 +16,9 @@ import org.springframework.stereotype.Component;
 @Profile("generateData")
 public class CustomerDataGenerator implements DataGenerator<Customer> {
 
-  private static Set<Class<?>> dependencies = new HashSet<>();
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-
   private static final int MAX_CUSTOMER_COUNT = 103;
-
+  private static Set<Class<?>> dependencies = new HashSet<>();
   private CustomerRepository customerRepository;
 
   @Autowired

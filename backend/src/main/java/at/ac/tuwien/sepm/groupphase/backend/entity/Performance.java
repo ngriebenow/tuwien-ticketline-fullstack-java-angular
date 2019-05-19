@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,7 +52,7 @@ public class Performance {
 
     boolean datesEqual = false;
     if (startAt != null && that.startAt != null) {
-      datesEqual = Duration.between(startAt,that.startAt).abs().getSeconds() < 1;
+      datesEqual = Duration.between(startAt, that.startAt).abs().getSeconds() < 1;
     } else if (startAt != null || that.startAt != null) {
       return false;
     }

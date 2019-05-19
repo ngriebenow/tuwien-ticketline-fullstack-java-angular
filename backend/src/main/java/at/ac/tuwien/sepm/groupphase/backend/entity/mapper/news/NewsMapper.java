@@ -17,4 +17,3 @@ public interface NewsMapper {
 
   List<SimpleNewsDto> newsToSimpleNewsDto(List<News> all);
 }
-

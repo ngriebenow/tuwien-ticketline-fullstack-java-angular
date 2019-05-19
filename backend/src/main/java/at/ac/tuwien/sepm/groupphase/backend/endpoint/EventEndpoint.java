@@ -1,18 +1,18 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
+import at.ac.tuwien.sepm.groupphase.backend.service.implementation.SimpleHeaderTokenAuthenticationService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import java.time.Duration;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +28,9 @@ public class EventEndpoint {
 
   private final EventService eventService;
 
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(EventEndpoint.class);
+
   public EventEndpoint(EventService eventService) {
     this.eventService = eventService;
   }
@@ -36,30 +39,39 @@ public class EventEndpoint {
   @ApiOperation(
       value = "Get event by id",
       authorizations = {@Authorization(value = "apiKey")})
-  public EventDto get(@PathVariable Long id) {
+  public EventDto getById(@PathVariable Long id) {
+    LOGGER.info("getById " + id);
     return eventService.getOneById(id);
   }
 
-  /** Javadoc. */
+  /** Return all performances which belong to a certain event. */
   @RequestMapping(value = "/{id}/performances", method = RequestMethod.GET)
   @ApiOperation(
       value = "Get performances by event id",
       authorizations = {@Authorization(value = "apiKey")})
-  public List<PerformanceDto> get(
-      @PathVariable Long id, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer count) {
+  public List<PerformanceDto> getPerformancesById(
+      @PathVariable Long id,
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) Integer count) {
+    LOGGER.info("getPerformancesById " + id);
 
+    Pageable p = getPageable(page, count);
+
+    return eventService.getPerformancesOfEvent(id, p);
+  }
+
+  private Pageable getPageable(Integer page, Integer count) {
     Pageable p;
     if (page != null && count != null) {
       p = PageRequest.of(page, count);
     } else {
       p = Pageable.unpaged();
     }
-
-    return eventService.getPerformancesOfEvent(id, p);
+    return p;
   }
 
-  /** Javadoc. */
-  @RequestMapping(value = "", method = RequestMethod.GET)
+  /** Return the filtered events according to the specified search criteria. */
+  @RequestMapping(method = RequestMethod.GET)
   @ApiOperation(
       value = "Get filtered events",
       authorizations = {@Authorization(value = "apiKey")})
@@ -77,33 +89,33 @@ public class EventEndpoint {
       @RequestParam(required = false) String locationCountry,
       @RequestParam(required = false) String locationStreet,
       @RequestParam(required = false) String locationPlace,
-      @RequestParam(required = false, defaultValue = "0") Integer page,
-      @RequestParam(required = false, defaultValue = "1000") Integer count) {
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) Integer count) {
 
-    //TODO: pageable default values
-    Pageable p = PageRequest.of(page, count);
+    Pageable p = getPageable(page,count);
 
-    EventFilterDto eventFilterDto = new EventFilterDto.Builder()
-        .eventCategory(eventCategory)
-        .artistName(artistName)
-        .content(content)
-        .name(name)
-        .priceInCents(priceInCents)
-        .hallId(hallId)
-        .hallName(hallName)
-        .locationId(locationId)
-        .locationName(locationName)
-        .locationCountry(locationCountry)
-        .locationPlace(locationPlace)
-        .locationStreet(locationStreet).build();
+    EventFilterDto eventFilterDto =
+        new EventFilterDto.Builder()
+            .eventCategory(eventCategory)
+            .artistName(artistName)
+            .content(content)
+            .name(name)
+            .priceInCents(priceInCents)
+            .hallId(hallId)
+            .hallName(hallName)
+            .locationId(locationId)
+            .locationName(locationName)
+            .locationCountry(locationCountry)
+            .locationPlace(locationPlace)
+            .locationStreet(locationStreet)
+            .build();
+
+    LOGGER.info("get with filter " + eventFilterDto);
 
     if (duration != null) {
       eventFilterDto.setDuration(Duration.ofMinutes(duration));
     }
 
-    return eventService.getEventsFiltered(eventFilterDto,p);
-
+    return eventService.getEventsFiltered(eventFilterDto, p);
   }
-
-
 }

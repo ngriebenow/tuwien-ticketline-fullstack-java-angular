@@ -16,14 +16,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @DataJpaTest
 public class CustomerRepositoryTest {
 
+  @Autowired CustomerRepository customerRepository;
   private Customer CUSTOMER_1 =
       new Customer.Builder()
           .name("Harald")
           .surname("Tester")
           .email("haral.tester@gmail.com")
           .build();
-
-  @Autowired CustomerRepository customerRepository;
 
   @Before
   public void setUp() {

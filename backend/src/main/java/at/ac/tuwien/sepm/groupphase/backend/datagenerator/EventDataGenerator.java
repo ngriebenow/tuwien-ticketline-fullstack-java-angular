@@ -23,15 +23,13 @@ import org.springframework.stereotype.Component;
 @Profile("generateData")
 public class EventDataGenerator implements DataGenerator<Event> {
 
-  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Artist.class, Hall.class));
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-
   private static final int MAX_EVENT_COUNT = 25;
   private static final int MIN_ARTISTS = 1;
   private static final int MAX_ARTISTS = 4;
   private static final int MIN_EVENT_DURATION = 1;
   private static final int MAX_EVENT_DURATION = 3;
-
+  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Artist.class, Hall.class));
   private EventRepository eventRepository;
   private ArtistRepository artistRepository;
   private HallRepository hallRepository;

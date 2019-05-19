@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.EventEndpoint;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
@@ -13,14 +14,10 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.specification.EventSpecification;
-import at.ac.tuwien.sepm.groupphase.backend.specification.UserSpecification;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,10 +33,13 @@ public class SimpleEventService implements EventService {
   @Autowired private PerformanceMapper performanceMapper;
   @Autowired private ArtistMapper artistMapper;
 
-
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(SimpleEventService.class);
 
   @Override
   public EventDto getOneById(Long id) throws NotFoundException {
+    LOGGER.info("getOneById " + id);
+
     return eventMapper.eventToEventDto(
         eventRepository.findById(id).orElseThrow(NotFoundException::new));
   }
@@ -51,6 +51,7 @@ public class SimpleEventService implements EventService {
 
   @Override
   public List<EventDto> getEventsFiltered(EventFilterDto eventFilterDto, Pageable pageable) {
+    LOGGER.info("getEventsFiltered " + eventFilterDto);
 
     Specification<Event> specification = EventSpecification.getEventSpecification(eventFilterDto);
     specification = specification.and(EventSpecification.likeHallLocation(eventFilterDto));
@@ -64,6 +65,7 @@ public class SimpleEventService implements EventService {
   @Override
   public List<PerformanceDto> getPerformancesOfEvent(Long id, Pageable pageable)
       throws NotFoundException {
+    LOGGER.info("getPerformancesOfEvent " + id);
 
     Event event = eventRepository.findById(id).orElseThrow(NotFoundException::new);
     List<PerformanceDto> performanceDtos = new ArrayList<>();

@@ -19,11 +19,9 @@ import org.springframework.stereotype.Component;
 @Profile("generateData")
 public class MessageDataGenerator implements DataGenerator<Message> {
 
-  private final Set<Class<?>> dependencies = new HashSet<>();
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-
   private static final int MAX_NEWS_COUNT = 25;
-
+  private final Set<Class<?>> dependencies = new HashSet<>();
   private final MessageRepository messageRepository;
 
   @Autowired
