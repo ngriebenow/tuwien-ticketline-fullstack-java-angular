@@ -107,7 +107,7 @@ public class EventSpecification {
     if (eventFilterDto.getContent() != null) {
       specification =
           specification.and(
-              UserSpecification.contains("content", eventFilterDto.getName().toLowerCase()));
+              UserSpecification.contains("content", eventFilterDto.getContent().toLowerCase()));
     }
     if (eventFilterDto.getEventCategory() != null) {
       specification =
