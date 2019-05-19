@@ -19,7 +19,7 @@ export class EventFilterComponent implements OnInit {
 
   constructor(private eventService: EventService) { }
 
-  @Input() eventFilter: EventFilter = new EventFilter('', '', '', '', '', '', '', '', '', '', '', '', '', '')
+  @Input() eventFilter: EventFilter = new EventFilter('', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
   @Output() events: Event[] = [];
 

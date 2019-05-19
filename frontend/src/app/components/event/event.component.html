@@ -1,7 +1,7 @@
 <div class="container" *ngIf="event">
   <div class="row">
     <div class="col-md-12">
-      <h1 align="center">{{event.name}}</h1>
+      <h1 align="center">{{ event.name }}</h1>
     </div>
   </div>
 
@@ -82,8 +82,8 @@
     <tbody>
     <tr *ngFor="let x of performances">
       <td>{{ x.name }}</td>
-      <td>{{ x.startAt | date:'dd.mm.yyyy'  }}</td>
-      <td>{{ x.startAt | date:'HH:MM'  }}</td>
+      <td>{{ x.startAt | date:'dd.mm.yyyy' }}</td>
+      <td>{{ x.startAt | date:'HH:MM' }}</td>
     </tr>
     </tbody>
   </table>
