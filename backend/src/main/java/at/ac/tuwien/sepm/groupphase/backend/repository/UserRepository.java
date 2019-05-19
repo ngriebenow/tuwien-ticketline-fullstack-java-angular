@@ -13,4 +13,12 @@ public interface UserRepository extends JpaRepository<User, String> {
    * @return Optional containing the user entry
    */
   User findOneByUsername(String username);
+
+  /**
+   * Check if a user with given name is already present in the database.
+   *
+   * @param username of the user.
+   * @return Whether a user with that name exists.
+   */
+  boolean existsByUsername(String username);
 }
