@@ -1,0 +1,35 @@
+@import '../../../colors';
+
+.full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.full-height {
+  hight: 100vh;
+  position: relative;
+  top: 50%;
+  bottom: 50%;
+  margin-top: -50vh;
+  margin-bottom: -50vh;
+}
+
+.no-padding {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.hall-bg {
+  height: calc(100vh - 50px);
+  background-color: white;
+}
+
+.menu-bg {
+  height: calc(100vh - 50px);
+  background-color: $dark-gray;
+}
+

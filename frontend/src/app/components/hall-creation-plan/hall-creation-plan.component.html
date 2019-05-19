@@ -1,0 +1,18 @@
+<div *ngIf="legalHallSize(); else notShow" class="container hall-plan">
+  <div class="btn stage"></div>
+  <ng-container *ngFor="let seat of seats">
+    <button type="button" (click)="clickSeat(seat)" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(seat),'top':calcPositionTop(seat)}" class="btn btn-seat"></button>
+  </ng-container>
+  <ng-container *ngFor="let aisle of aisles">
+    <button type="button" (click)="clickAisle(aisle)" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(aisle),'top':calcPositionTop(aisle)}" class="btn btn-aisle"></button>
+  </ng-container>
+  <ng-container *ngFor="let sector of sectors">
+    <button type="button" (click)="clickSector(sector)" [ngStyle]="{'width':calcSectorSizeX(sector),'height':calcSectorSizeY(sector),'position':'absolute','left':calcPositionLeft(sector.upperBoundary),'top':calcPositionTop(sector.upperBoundary)}" class="btn btn-sector"></button>
+  </ng-container>
+</div>
+
+<ng-template #notShow>
+  <div class="container">
+    <h2 style="text-align: center; position: absolute; top: 50%; left: 50%">Saal muss zwischen 1x1 und {{ getMaxHallSize().coordinateX }}x{{ getMaxHallSize().coordinateY }} groß sein!</h2>
+  </div>
+</ng-template>

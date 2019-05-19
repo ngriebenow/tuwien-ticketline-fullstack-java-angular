@@ -1,0 +1,113 @@
+<div *ngIf="initializationMode()" class="container">
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Tiefe</h2>
+    </div>
+    <div class="col-6">
+      <input type="number" min="1" max="{{getMaxHallSize().coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateY" (input)="updatePlan()" class="text-field-norm">
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Breite</h2>
+    </div>
+    <div class="col-6">
+      <input type="number" min="1" max="{{getMaxHallSize().coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateX" (input)="updatePlan()" class="text-field-norm">
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <button type="button" (click)="cancelHallCreation()" class="btn btn-primary float-right btn-lg btn-font-size-reduced">Abbrechen</button>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="completeInitializing()" class="btn btn-secondary float-left btn-lg">Weiter</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="editingMode()" class="container">
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Erweitern</h2>
+    </div>
+    <div class="col-6">
+      <div class="cross">
+        <button type="button" (click)="expandPlanTo(direction.top)" [ngStyle]="{'position':'absolute', 'top':'0%', 'left':'33.3%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="expandPlanTo(direction.left)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'0%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="expandPlanTo(direction.right)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'66.6%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="expandPlanTo(direction.bottom)" [ngStyle]="{'position':'absolute', 'top':'66.6%', 'left':'33.3%'}" class="btn btn-cross"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Löschen</h2>
+    </div>
+    <div class="col-6">
+      <div class="cross">
+        <button type="button" (click)="shrinkPlanFrom(direction.top)" [ngStyle]="{'position':'absolute', 'top':'0%', 'left':'33.3%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="shrinkPlanFrom(direction.left)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'0%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="shrinkPlanFrom(direction.right)" [ngStyle]="{'position':'absolute', 'top':'33.3%', 'left':'66.6%'}" class="btn btn-cross"></button>
+        <button type="button" (click)="shrinkPlanFrom(direction.bottom)" [ngStyle]="{'position':'absolute', 'top':'66.6%', 'left':'33.3%'}" class="btn btn-cross"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Gang</h2>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="selectUnitType(unitType.aisle)" class="btn btn-aisle float-left"></button>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Sitzplatz</h2>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="selectUnitType(unitType.seat)" class="btn btn-seat float-left"></button>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Sektor</h2>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="selectUnitType(unitType.sector)" class="btn btn-sector float-left"></button>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right">Kapazität</h2>
+    </div>
+    <div class="col-6">
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <button type="button" (click)="cancelHallCreation()" class="btn btn-primary float-right btn-lg btn-font-size-reduced">Abbrechen</button>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="completeEditing()" class="btn btn-secondary float-left btn-lg">Weiter</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="sectorMode()" class="container">
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <button type="button" (click)="cancelHallCreation()" class="btn btn-primary float-right btn-lg btn-font-size-reduced">Abbrechen</button>
+    </div>
+    <div class="col-6">
+      <button type="button" (click)="completeSectors()" class="btn btn-secondary float-left btn-lg">Weiter</button>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 import {Point} from './Point';
+import {Location} from './location';
 
 export class Hall {
   constructor(
