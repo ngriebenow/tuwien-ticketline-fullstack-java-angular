@@ -1,23 +1,19 @@
 package at.ac.tuwien.sepm.groupphase.backend.specification;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event_;
-import com.google.common.base.Predicates;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
-import javax.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
 public class EventSpecification {
@@ -131,13 +127,17 @@ public class EventSpecification {
 
         if (eventFilterDto.getArtistName() != null) {
 
-          SetJoin<Event, Artist> eaJoin = root.join(Event_.artists);
+          query.distinct(true);
+          ListJoin<Event, Artist> eaJoin = root.join(Event_.artists, JoinType.LEFT);
 
           Predicate artistName =
-              criteriaBuilder.like(
-                  eaJoin.get("name"), "%" + eventFilterDto.getArtistName() + "%");
+              criteriaBuilder.like(criteriaBuilder.lower(
+                  eaJoin.get("name")), "%" + eventFilterDto.getArtistName().toLowerCase() + "%");
+          Predicate artistSurname =
+              criteriaBuilder.like(criteriaBuilder.lower(
+                  eaJoin.get("surname")), "%" + eventFilterDto.getArtistName().toLowerCase() + "%");
 
-          return artistName;
+          return criteriaBuilder.or(artistName,artistSurname);
 
         }
         return criteriaBuilder.and();

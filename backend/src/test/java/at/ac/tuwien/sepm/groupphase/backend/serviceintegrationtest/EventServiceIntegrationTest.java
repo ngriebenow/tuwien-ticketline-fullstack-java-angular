@@ -28,24 +28,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
 // import org.junit.Assert;
 // import org.junit.Test;
-
-// @RunWith(JUnit.class)
-@SpringBootTest
-@ActiveProfiles(profiles = "integration-test")
+//jdbc:h2:mem:backend;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+//@RunWith(JUnit4.class)
+@SpringBootTest//(properties = {"spring.config.name=backend-test-h2","backend.trx.datasource.url=jdbc:h2:mem:backend"})
+@ActiveProfiles(profiles = "serviceintegration-test")
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase(replace = Replace.ANY)
 public class EventServiceIntegrationTest {
 
-  // @Autowired private EventRepository eventRepository;
-  // @Autowired private PerformanceRepository performanceRepository;
+
 
   @Autowired private EventService eventService;
 
@@ -86,8 +95,10 @@ public class EventServiceIntegrationTest {
   private Performance P8;
   private Performance P9;
 
+
   @BeforeEach
   public void initialize() {
+
     E1 =
         new Event.Builder()
             .name("Abc")
@@ -112,10 +123,10 @@ public class EventServiceIntegrationTest {
             .content("Content3")
             .build();
 
-    A1 = new Artist.Builder().surname("Artist Abcd").name("Artist Name W").build();
-    A2 = new Artist.Builder().surname("Artist Bcde").name("Artist Name X").build();
-    A3 = new Artist.Builder().surname("Artist Cdef").name("Artist Name Y").build();
-    A4 = new Artist.Builder().surname("Artist Defg").name("Artist Name Z").build();
+    A1 = new Artist.Builder().surname("Artist Abcd").name("Artist Name W1").build();
+    A2 = new Artist.Builder().surname("Artist Bcde").name("Artist Name W2").build();
+    A3 = new Artist.Builder().surname("Artist Cdef").name("Artist Name W3").build();
+    A4 = new Artist.Builder().surname("Artist Defg").name("Artist Name W4").build();
 
     A1 = artistRepository.save(A1);
     A2 = artistRepository.save(A2);
@@ -307,6 +318,86 @@ public class EventServiceIntegrationTest {
 
     EventFilterDto filterDto = new EventFilterDto();
     filterDto.setEventCategory(EventCategory.CONCERT);
+
+    List<EventDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+
+    List<Event> events =
+        retList.stream().map(e -> eventMapper.eventDtoToEvent(e)).collect(Collectors.toList());
+
+    Assert.assertThat(events.size(), is(1));
+    Assert.assertTrue(events.contains(E2));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByArtistLowerCaseSurname_thenReturnEvents() {
+
+    EventFilterDto filterDto = new EventFilterDto();
+    filterDto.setArtistName("abcd");
+
+    List<EventDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+
+    List<Event> events =
+        retList.stream().map(e -> eventMapper.eventDtoToEvent(e)).collect(Collectors.toList());
+
+    Assert.assertThat(events.size(), is(2));
+    Assert.assertTrue(events.contains(E1));
+    Assert.assertTrue(events.contains(E2));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByArtistUpperCaseSurname_thenReturnEvents() {
+
+    EventFilterDto filterDto = new EventFilterDto();
+    filterDto.setArtistName("F");
+
+    List<EventDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+
+    List<Event> events =
+        retList.stream().map(e -> eventMapper.eventDtoToEvent(e)).collect(Collectors.toList());
+
+    Assert.assertThat(events.size(), is(2));
+    Assert.assertTrue(events.contains(E2));
+    Assert.assertTrue(events.contains(E3));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByArtistLowerCaseSurName_thenReturnEvents() {
+
+    EventFilterDto filterDto = new EventFilterDto();
+    filterDto.setArtistName("abcd");
+
+    List<EventDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+
+    List<Event> events =
+        retList.stream().map(e -> eventMapper.eventDtoToEvent(e)).collect(Collectors.toList());
+
+    Assert.assertThat(events.size(), is(2));
+    Assert.assertTrue(events.contains(E1));
+    Assert.assertTrue(events.contains(E2));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByArtistLowerCaseName_thenReturnEvents() {
+
+    EventFilterDto filterDto = new EventFilterDto();
+    filterDto.setArtistName("w");
+
+    List<EventDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+
+    List<Event> events =
+        retList.stream().map(e -> eventMapper.eventDtoToEvent(e)).collect(Collectors.toList());
+
+    Assert.assertThat(events.size(), is(3));
+    Assert.assertTrue(events.contains(E1));
+    Assert.assertTrue(events.contains(E2));
+    Assert.assertTrue(events.contains(E3));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByArtistUpperCaseName_thenReturnEvents() {
+
+    EventFilterDto filterDto = new EventFilterDto();
+    filterDto.setArtistName("W3");
 
     List<EventDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
 
