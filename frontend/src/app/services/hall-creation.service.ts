@@ -4,6 +4,7 @@ import {Unit} from '../dtos/unit';
 import {UnitType} from '../enums/unit-type';
 import {Direction} from '../enums/direction';
 import {Hall} from '../dtos/hall';
+import {HallService} from './hall.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class HallCreationService {
 
   @Output() changeSector: EventEmitter<Unit> = new EventEmitter();
 
-  constructor() {
+  constructor(private hallService: HallService) {
     this.initialized = false;
     this.edited = false;
     this.hallSize = new Point(10, 10);
@@ -110,8 +111,8 @@ export class HallCreationService {
    * saves hall and all units to db
    */
   saveHall(): void {
-    console.log('save!');
-    // todo save hall to backend
+    // todo prepare hall to be saved to backend
+    // this.hallService.postHall(this.hall);
   }
 
   // todo cancel popup and functionality
