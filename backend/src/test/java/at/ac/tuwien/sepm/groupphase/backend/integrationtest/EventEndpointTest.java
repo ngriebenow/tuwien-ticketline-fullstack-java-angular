@@ -1,4 +1,4 @@
-/*package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
+package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
@@ -31,17 +31,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
+
 
 //@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class EventEndpointTest extends BaseIntegrationTest {
@@ -50,14 +44,14 @@ public class EventEndpointTest extends BaseIntegrationTest {
   private static final String SPECIFIC_EVENT_PATH = "/{id}";
   private static final String EVENT_PERFORMANCE_ENDPOINT = "/performances";
 
-  @Autowired private static PerformanceRepository performanceRepository;
-  @Autowired private static HallRepository hallRepository;
-  @Autowired private static LocationRepository locationRepository;
-  @Autowired private static ArtistRepository artistRepository;
-  @Autowired private static EventRepository eventRepository;
+  @Autowired private PerformanceRepository performanceRepository;
+  @Autowired private HallRepository hallRepository;
+  @Autowired private LocationRepository locationRepository;
+  @Autowired private ArtistRepository artistRepository;
+  @Autowired private EventRepository eventRepository;
 
-  @Autowired private static EventMapper eventMapper;
-  @Autowired private static PerformanceMapper performanceMapper;
+  @Autowired private EventMapper eventMapper;
+  @Autowired private PerformanceMapper performanceMapper;
 
   private static Event E1;
   private static Event E2;
@@ -349,7 +343,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<Event> events =
         retList.stream().map(e -> eventMapper.eventDtoToEvent(e)).collect(Collectors.toList());
 
-    Assert.assertThat(events.size(), is(2));
+    Boolean allNamesContain = events.stream().allMatch(e-> e.getName().toLowerCase().contains("d"));
+    Assert.assertThat(allNamesContain,is(true));
+
     Assert.assertTrue(events.contains(E2));
     Assert.assertTrue(events.contains(E3));
 
@@ -375,10 +371,11 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<Event> events =
         retList.stream().map(e -> eventMapper.eventDtoToEvent(e)).collect(Collectors.toList());
 
-    Assert.assertThat(events.size(), is(1));
+    Boolean allCategories = events.stream().allMatch(e-> e.getCategory()== EventCategory.CINEMA);
+    Assert.assertThat(allCategories,is(true));
+
     Assert.assertTrue(events.contains(E1));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
 }
-*/
