@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.servicetest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
@@ -21,18 +22,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles(profiles = "integration-test")
 public class NewsServiceTest {
 
-  @MockBean
-  NewsRepository newsRepository;
+  @MockBean NewsRepository newsRepository;
 
   @Autowired private NewsService newsService;
 
-  private News N1 = new News.Builder().
-      id(1L).
-      publishedAt(LocalDateTime.now()).
-      title("Test").
-      summary("Just one Test").
-      text("abcdefghijk test news test news news").build();
-
+  private News N1 =
+      new News.Builder()
+          .id(1L)
+          .publishedAt(LocalDateTime.now())
+          .title("Test")
+          .summary("Just one Test")
+          .text("abcdefghijk test news test news news")
+          .build();
 
   @Test
   public void givenNews_whenFindNewsById_thenReturnNews() {

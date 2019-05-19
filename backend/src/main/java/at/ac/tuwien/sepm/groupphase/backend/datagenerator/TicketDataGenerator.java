@@ -26,15 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Profile("generateData")
 public class TicketDataGenerator implements DataGenerator<Ticket> {
 
-  private Set<Class<?>> dependencies =
-      new HashSet<>(Arrays.asList(Performance.class, Invoice.class, DefinedUnit.class));
   private static final Faker FAKER = new Faker(new Locale("de-at"));
   private static final Random RANDOM = new Random();
-
   private static final int MAX_TICKET_COUNT_PER_INVOICE = 10;
   private static final int MIN_TICKET_COUNT_PER_INVOICE = 1;
   private static final int SALT_LENGTH = 8;
-
+  private Set<Class<?>> dependencies =
+      new HashSet<>(Arrays.asList(Performance.class, Invoice.class, DefinedUnit.class));
   private TicketRepository ticketRepository;
   private DefinedUnitRepository definedUnitRepository;
   private PerformanceRepository performanceRepository;

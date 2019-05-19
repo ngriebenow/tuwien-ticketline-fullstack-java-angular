@@ -130,8 +130,7 @@ public class Ticket {
     private Invoice invoice;
     private DefinedUnit definedUnit;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder id(Long val) {
       id = val;

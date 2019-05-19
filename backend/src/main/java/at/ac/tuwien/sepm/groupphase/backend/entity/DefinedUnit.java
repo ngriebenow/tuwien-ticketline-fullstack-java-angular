@@ -130,8 +130,7 @@ public class DefinedUnit {
     private PriceCategory priceCategory;
     private Performance performance;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder id(Long val) {
       id = val;
