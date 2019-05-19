@@ -42,7 +42,7 @@ public class SecurityConfiguration {
   @Autowired private Environment env;
 
   /**
-   * Creates new h2 datasource with properties read from the current profile
+   * Creates new h2 datasource with properties read from the current profile.
    *
    * @return DataSource
    */
