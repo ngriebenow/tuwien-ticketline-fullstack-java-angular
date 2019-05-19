@@ -22,12 +22,10 @@ import org.springframework.stereotype.Component;
 @Profile("generateData")
 public class PerformanceDataGenerator implements DataGenerator<Performance> {
 
-  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Event.class));
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-
   private static final int MIN_PERFORMANCES_PER_EVENT = 1;
   private static final int MAX_PERFORMANCES_PER_EVENT = 5;
-
+  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Event.class));
   private EventRepository eventRepository;
   private PerformanceRepository performanceRepository;
 

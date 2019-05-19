@@ -17,11 +17,9 @@ import org.springframework.stereotype.Component;
 @Profile("generateData")
 public class LocationDataGenerator implements DataGenerator<Location> {
 
-  private final Set<Class<?>> dependencies = new HashSet<>();
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-
   private static final int MAX_LOCATION_COUNT = 7;
-
+  private final Set<Class<?>> dependencies = new HashSet<>();
   private LocationRepository locationRepository;
 
   @Autowired

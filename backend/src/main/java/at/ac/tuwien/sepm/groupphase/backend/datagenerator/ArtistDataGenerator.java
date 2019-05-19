@@ -16,11 +16,9 @@ import org.springframework.stereotype.Component;
 @Profile("generateData")
 public class ArtistDataGenerator implements DataGenerator<Artist> {
 
-  private static Set<Class<?>> dependencies = new HashSet<>();
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-
   private static final int MAX_ARTIST_COUNT = 21;
-
+  private static Set<Class<?>> dependencies = new HashSet<>();
   private ArtistRepository artistRepository;
 
   @Autowired
@@ -36,8 +34,7 @@ public class ArtistDataGenerator implements DataGenerator<Artist> {
           new Artist.Builder()
               .name(FAKER.name().firstName())
               .surname(FAKER.name().lastName())
-              .build()
-      );
+              .build());
     }
     artistRepository.saveAll(generatedArtists);
   }

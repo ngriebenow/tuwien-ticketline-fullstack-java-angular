@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class UnitRepositoryTest {
 
+  @Autowired UnitRepository unitRepository;
   private Unit UNIT_1 =
       new Unit.Builder()
           .name("Unit 1")
@@ -24,8 +25,6 @@ public class UnitRepositoryTest {
           .lowerBoundary(new Point(0, 0))
           .upperBoundary(new Point(1, 1))
           .build();
-
-  @Autowired UnitRepository unitRepository;
 
   @Before
   public void setUp() {

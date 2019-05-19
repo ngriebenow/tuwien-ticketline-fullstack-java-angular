@@ -1,5 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.repositorytest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
@@ -12,28 +14,30 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class NewsRepositoryTest {
 
-  @Autowired
-  NewsRepository newsRepository;
+  @Autowired NewsRepository newsRepository;
 
-  private News N1 = new News.Builder().
-      id(0L).
-      publishedAt(LocalDateTime.now()).
-      title("Test").
-      summary("Just one Test").
-      text("abcdefghijk test news test news news").build();
+  private News N1 =
+      new News.Builder()
+          .id(0L)
+          .publishedAt(LocalDateTime.now())
+          .title("Test")
+          .summary("Just one Test")
+          .text("abcdefghijk test news test news news")
+          .build();
 
-  private News N2 = new News.Builder().
-      id(1L).
-          publishedAt(LocalDateTime.now()).
-          title("Test2").
-          summary("Just another Test").
-          text("test test test test").build();
+  private News N2 =
+      new News.Builder()
+          .id(1L)
+          .publishedAt(LocalDateTime.now())
+          .title("Test2")
+          .summary("Just another Test")
+          .text("test test test test")
+          .build();
 
   @Before
   public void initialization() {

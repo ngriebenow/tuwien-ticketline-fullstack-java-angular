@@ -1,116 +1,148 @@
-  <div class="row">
-    <h1 align="center">Veranstaltungen</h1>
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    <div class="col-12">
+      <h1>Veranstaltungen</h1>
+    </div>
   </div>
+
   <div class="row">
-    <div class="col-md-2">
-      <div class="row">
-        <h2>Ort</h2>
-      </div>
-      <div class="row">
-        <select (change)="loadEvents()" [(ngModel)]="eventFilter.locationCountry" >
-          <option value="">(alle)</option>
-          <option value="Österreich">Österreich</option>
-          <option value="Deutschland">Deutschland</option>
-          <option value="Asgardlandistan">Asgardlandistan</option>
-        </select>
-      </div>
+    <div class="col-md-3">
+      <h2 class="float-right">Ort</h2>
     </div>
     <div class="col-md-2">
-      <div class="row">
-        <input placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.locationName" type="text"/>
-      </div>
-      <div class="row">
-        <input placeholder="Ortsname, PLZ" (change)="loadEvents()" [(ngModel)]="eventFilter.locationPlace" type="text"/>
-      </div>
+      <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.locationName" type="text"/>
     </div>
     <div class="col-md-2">
-      <div class="row">
-        <input placeholder="Saalname" (change)="loadEvents()" [(ngModel)]="eventFilter.hallName"  type="text"/>
-      </div>
-      <div class="row">
-        <input placeholder="Straße" (change)="loadEvents()" [(ngModel)]="eventFilter.locationStreet"  type="text"/>
-      </div>
+      <input class="form-control" placeholder="Saalname" (change)="loadEvents()" [(ngModel)]="eventFilter.hallName"  type="text"/>
+    </div>
+    <div class="col-md-2">
+      <h2 class="float-right">Datum/Preis</h2>
+    </div>
+    <div class="col-md-2">
+      <form class="date-control">
+        <my-date-picker placeholder="tt/mm/jjjj" name="mydate" [options]="myDatePickerOptions"
+                        [(ngModel)]="model" required></my-date-picker>
+      </form>
     </div>
     <div class="col-md-1">
-      <div class="row">
-        <h2>Datum/Preis</h2>
-      </div>
-    </div>
-    <div class="col-2">
-      <div class="row">
-        <input placeholder="Datum" type="text" value="TODO">
-      </div>
-      <div class="row">
-        <input placeholder="Dauer" type="text" value="TODO">
-      </div>
-    </div>
-    <div class="col-md-1">
-      <div class="row">
-        <input placeholder="Uhrzeit" type="text" value="TODO"/>
-      </div>
-      <div class="row">
-        <input placeholder="Preis" type="text" value="TODO"/>
-      </div>
+      <input class="form-control" placeholder="Uhrzeit" type="text" value=""/>
     </div>
   </div>
 
 
-
-
-
-
-
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-2">
+      <input class="form-control" placeholder="Ortsname, PLZ" (change)="loadEvents()" [(ngModel)]="eventFilter.locationPlace" type="text"/>
+    </div>
+    <div class="col-md-2">
+      <input class="form-control" placeholder="Straße" (change)="loadEvents()" [(ngModel)]="eventFilter.locationStreet"  type="text"/>
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2">
+      <div style="margin: 0" class="row">
+        <div class="col-md-9">
+          <input class="form-control" placeholder="Dauer" type="text" value="">
+        </div>
+        <div class="col-md-2" style="padding-left: 0">
+          <div class="align-content-end">
+            <label style="vertical-align: center; padding: 0; margin-top: 5px">min</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div style="margin: 0" class="row">
+        <div class="col-md-9">
+          <input  class="form-control" placeholder="Preis" type="text" value=""/>
+        </div>
+        <div class="col-md-2" style="padding-left: 0">
+          <div class="align-content-end">
+            <label style="vertical-align: center; padding: 0; margin-top: 5px">€</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="row">
+    <div class="col-md-3"></div>
     <div class="col-md-2">
-      <div class="row">
-        <h2>Veranstaltung</h2>
-      </div>
+      <select class="select-control" (change)="loadEvents()" [(ngModel)]="eventFilter.locationCountry" >
+        <option value="">(alle)</option>
+        <option value="Austria">Österreich</option>
+        <option value="Germany">Deutschland</option>
+        <option value="Asgardlandistan">Asgardlandistan</option>
+      </select>
     </div>
-    <div class="col-md-2">
-      <div class="row">
-        <input placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.name" type="text"/>
-      </div>
-      <div class="row">
-        <input placeholder="Künstler" (change)="loadEvents()" [(ngModel)]="eventFilter.artistName" type="text"/>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-2"></div>
+  </div>
 
-        <select (change)="loadEvents()" [(ngModel)]="eventFilter.eventCategory" >
+
+
+
+
+
+
+
+  <div class="row mt-3"></div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <h2 class="float-right">Veranstaltung</h2>
+    </div>
+    <div class="col-md-2">
+      <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.name" type="text"/>
+    </div>
+    <div class="col-md-2">
+       <select class="select-control" (change)="loadEvents()" [(ngModel)]="eventFilter.eventCategory" >
           <option value="">(alle)</option>
           <option value="CINEMA">Cinema</option>
           <option value="CONCERT">Concert</option>
           <option value="OTHER">Other</option>
         </select>
+    </div>
+    <div class="col-md-2">
+      <h2 class="float-right">Top 10</h2>
+    </div>
+    <div class="col-md-2">
 
-      </div>
-      <div class="row">
-        <input placeholder="Inhalt" (change)="loadEvents()" [(ngModel)]="eventFilter.content" type="text"/>
-      </div>
     </div>
     <div class="col-md-1">
-      <div class="row">
-        <h2>Top 10</h2>
-      </div>
-    </div>
-    <div class="col-2">
-      <div class="row">
-    </div>
-      <div class="row">
-      </div>
-    </div>
-    <div class="col-md-1">
-      <div class="row">
-      </div>
-      <div class="row">
-      </div>
+
     </div>
   </div>
 
 
 
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-2">
+      <input class="form-control" placeholder="Künstler" (change)="loadEvents()" [(ngModel)]="eventFilter.artistName" type="text"/>
+    </div>
+    <div class="col-md-2">
+      <input class="form-control" placeholder="Inhalt" (change)="loadEvents()" [(ngModel)]="eventFilter.content" type="text"/>
+    </div>
+    <div class="col-md-2">
+    </div>
+    <div class="col-2">
+    </div>
+    <div class="col-md-1">
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <div class="row mt-3"></div>
 
 
   <div class="row">

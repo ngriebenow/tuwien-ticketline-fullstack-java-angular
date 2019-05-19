@@ -28,9 +28,7 @@ public class NewsRead {
       return false;
     }
     NewsRead newsRead = (NewsRead) o;
-    return Objects.equals(username, newsRead.username)
-        && Objects.equals(newsId, newsRead.newsId);
-
+    return Objects.equals(username, newsRead.username) && Objects.equals(newsId, newsRead.newsId);
   }
 
   @Override
@@ -59,8 +57,7 @@ public class NewsRead {
     private String username;
     private long newsId;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder username(String val) {
       username = val;

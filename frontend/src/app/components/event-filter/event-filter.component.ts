@@ -1,4 +1,4 @@
-import {Component, Input, NgModule, OnInit, Output} from '@angular/core';
+import {Component, Input, NgModule, NO_ERRORS_SCHEMA, OnInit, Output} from '@angular/core';
 import {EventFilter} from '../../dtos/event-filter';
 import {EventService} from '../../services/event.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -12,7 +12,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
   imports: [
     FormsModule,
     ReactiveFormsModule
-  ]
+  ],
 })
 export class EventFilterComponent implements OnInit {
 

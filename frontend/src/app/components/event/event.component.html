@@ -1,83 +1,92 @@
 <div class="container" *ngIf="event">
   <div class="row">
-    <h1 align="center">{{event.name}}</h1>
+    <div class="col-md-12">
+      <h1 align="center">{{event.name}}</h1>
+    </div>
   </div>
+
+
+
   <div class="row">
-    <div class="col-1">
+    <div class="col-md-6">
       <div class="row">
-        <h2>Ort</h2>
-      </div>
-      <div class="row"></div>
-      <div class="row"></div>
-      <div class="row">
-        <h2>Künstler</h2>
-      </div>
-    </div>
-    <div class="col-2">
-      <div class="row">
-        <div class="text-field-norm"><h4 class="text-field-font">{{event.hall.location.name}}</h4></div>
-      </div>
-      <div class="row">
-        <label class="gen_label">{{event.hall.location.place}}</label>
-      </div>
-      <div class="row"></div>
-      <div class="row">
-        <label class="gen_label">{{event.artists[0].name}}</label>
-      </div>
-    </div>
-    <div class="col-2">
-      <div class="row">
-        <label class="gen_label">{{event.hall.location.street}}</label>
+        <div class="col-md-3">
+          <h2 class="float-right">Ort</h2>
+        </div>
+        <div class="col-md-4">
+          <input readonly class="form-control" type="text" value="{{event.hall.location.name}}" >
+        </div>
+        <div class="col-md-4">
+          <input readonly class="form-control" type="text" value="{{event.hall.location.street}}" >
+        </div>
+        <div class="col-md-1">
+          <input readonly class="form-control" type="text" value="{{event.hall.location.postalCode}}" >
+        </div>
       </div>
       <div class="row">
-        <label class="gen_label">{{event.hall.location.country}}</label>
-      </div>
-      <div class="row"></div>
-      <div class="row">
-        <label class="gen_label">{{event.artists[0].surname}}</label>
-      </div>
-    </div>
-    <div class="col-1">
-      <div class="row">
-        <label class="gen_label">{{event.hall.location.postalCode}}</label>
-      </div>
-      <div class="row"></div>
-      <div class="row"></div>
-      <div class="row">
-        <button class="btn btn-primary">Mehr</button>
-      </div>
-    </div>
-    <div class="col-1">
-      <div class="row">
-        <h2>Inhalt</h2>
-      </div>
-      <div class="row"></div>
-      <div class="row"></div>
-      <div class="row"></div>
-    </div>
+        <div class="col-md-3">
 
-    <div class="col-5">
-      <label class="gen_label">{{event.content}}</label>
+        </div>
+        <div class="col-md-4">
+          <input readonly class="form-control" type="text" value="{{event.hall.location.place}}" >
+        </div>
+        <div class="col-md-4">
+          <input readonly class="form-control" type="text" value="{{event.hall.location.country}}" >
+        </div>
+        <div class="col-md-1">
+
+        </div>
+      </div>
+
+      <div class="row-mt-3"></div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <h2 class="float-right">Künstler</h2>
+        </div>
+        <div class="col-md-4">
+          <input readonly class="form-control" type="text" value="{{event.artists[0].name}}" >
+        </div>
+        <div class="col-md-4">
+          <input readonly class="form-control" type="text" value="{{event.artists[0].surname}}" >
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-primary">Mehr</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-1">
+      <h2 class="float-right">Inhalt</h2>
+    </div>
+    <div class="col-md-5">
+      <textarea readonly class="form-control">
+        {{event.content}}
+      </textarea>
     </div>
   </div>
-  <div class="row">
 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <td>Name</td>
-          <td>Datum</td>
-          <td>Uhrzeit</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let x of performances">
-         <td>{{ x.name }}</td>
-         <td>{{ x.startAt | date:'dd.mm.yyyy'  }}</td>
-         <td>{{ x.startAt | date:'HH:MM'  }}</td>
-        </tr>
-      </tbody>
-    </table>
 
-  </div>
+
+
+  <div class="row mt-3"></div>
+
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <td>Name</td>
+      <td>Datum</td>
+      <td>Uhrzeit</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let x of performances">
+      <td>{{ x.name }}</td>
+      <td>{{ x.startAt | date:'dd.mm.yyyy'  }}</td>
+      <td>{{ x.startAt | date:'HH:MM'  }}</td>
+    </tr>
+    </tbody>
+  </table>
+
 </div>
+

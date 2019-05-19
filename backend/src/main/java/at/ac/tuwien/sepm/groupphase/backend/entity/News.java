@@ -29,10 +29,6 @@ public class News {
   @Column(nullable = false, length = 10_000)
   private String text;
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
   /** Construct the news entry. */
   public News() {}
 
@@ -42,6 +38,10 @@ public class News {
     setTitle(builder.title);
     setSummary(builder.summary);
     setText(builder.text);
+  }
+
+  public static Builder builder() {
+    return new Builder();
   }
 
   @Override

@@ -20,9 +20,8 @@ import org.springframework.stereotype.Component;
 @Profile("generateData")
 public class UnitDataGenerator implements DataGenerator<Unit> {
 
-  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Hall.class));
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-
+  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Hall.class));
   private UnitRepository unitRepository;
   private HallRepository hallRepository;
 

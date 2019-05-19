@@ -16,10 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class TicketRepositoryTest {
 
+  @Autowired TicketRepository ticketRepository;
   private Ticket TICKET_1 =
       new Ticket.Builder().isCancelled(false).salt("RANDOMSTRING".getBytes()).build();
-
-  @Autowired TicketRepository ticketRepository;
 
   @Before
   public void setUp() {

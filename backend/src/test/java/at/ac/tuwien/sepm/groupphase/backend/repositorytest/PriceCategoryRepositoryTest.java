@@ -17,14 +17,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class PriceCategoryRepositoryTest {
 
+  @Autowired PriceCategoryRepository priceCategoryRepository;
   private PriceCategory PRICE_CATEGORY_1 =
       new PriceCategory.Builder()
           .name("Kategorie 1")
           .priceInCents(10101)
           .color(new Color(145, 33, 0))
           .build();
-
-  @Autowired PriceCategoryRepository priceCategoryRepository;
 
   @Before
   public void setUp() {
