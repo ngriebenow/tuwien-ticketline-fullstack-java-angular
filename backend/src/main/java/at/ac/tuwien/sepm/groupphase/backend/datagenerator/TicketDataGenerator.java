@@ -20,6 +20,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -52,10 +53,9 @@ public class TicketDataGenerator implements DataGenerator<Ticket> {
     this.invoiceRepository = invoiceRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
-    List<Ticket> generatedTickets = new ArrayList<>(MAX_TICKET_COUNT_PER_INVOICE);
-    List<DefinedUnit> modifiedDefinedUnits = new ArrayList<>(MAX_TICKET_COUNT_PER_INVOICE);
 
     byte[] salt = new byte[SALT_LENGTH];
     List<Performance> performances = performanceRepository.findAll();
@@ -69,24 +69,19 @@ public class TicketDataGenerator implements DataGenerator<Ticket> {
 
       int definedUnitIdx = FAKER.random().nextInt(definedUnits.size());
 
-      modifiedDefinedUnits.clear();
-      generatedTickets.clear();
       for (int i = 0; i < ticketCount; i++) {
         RANDOM.nextBytes(salt);
         DefinedUnit definedUnit = definedUnits.get((definedUnitIdx + i) % definedUnits.size());
-        generatedTickets.add(
+        invoice.addTicket(
             new Ticket.Builder()
                 .salt(Base64.getEncoder().encodeToString(salt))
                 .isCancelled(invoice.isCancelled())
                 .definedUnit(definedUnit)
-                .invoice(invoice)
                 .build());
 
         definedUnit.setCapacityFree(definedUnit.getCapacityFree() - 1);
-        modifiedDefinedUnits.add(definedUnit);
       }
-      ticketRepository.saveAll(generatedTickets);
-      definedUnitRepository.saveAll(modifiedDefinedUnits);
+      invoiceRepository.save(invoice);
     }
   }
 
