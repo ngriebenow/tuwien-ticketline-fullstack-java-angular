@@ -12,6 +12,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,6 +66,8 @@ public class NewsEndpoint {
    * Get all (recent) news entries.
    * @param onlyNew if not specified then false
    * @param authorizationHeader to get user
+   * @param page the number of page
+   * @param count the size of a page
    * @return a list of news entries
    */
   @RequestMapping(method = RequestMethod.GET)
@@ -71,12 +75,27 @@ public class NewsEndpoint {
       value = "Get list of simple news entries",
       authorizations = {@Authorization(value = "apiKey")})
   public List<SimpleNewsDto> findAll(@RequestParam(required = false) boolean onlyNew,
-      @ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+      @ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorizationHeader,
+      @RequestParam(required = false) Integer page,
+      @RequestParam(required = false) Integer count) {
+
+    Pageable p = getPageable(page, count);
+
     if (onlyNew) {
-      return newsService.findAllNew(getUser(authorizationHeader));
+      return newsService.findAllNew(getUser(authorizationHeader), p);
     }  else {
-      return newsService.findAll();
+      return newsService.findAll(p);
     }
+  }
+
+  private Pageable getPageable(Integer page, Integer count) {
+    Pageable p;
+    if (page != null && count != null) {
+      p = PageRequest.of(page, count);
+    } else {
+      p = Pageable.unpaged();
+    }
+    return p;
   }
 
   /**

@@ -5,22 +5,25 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface NewsService {
   /**
    * Find all news entries.
    *
+   * @param pageable for pagination
    * @return list of all simple news entries
    */
-  List<SimpleNewsDto> findAll();
+  List<SimpleNewsDto> findAll(Pageable pageable);
 
   /**
    * Find all new (== not read) news entries for given user.
    *
    * @param user to find new news entry for
+   * @param pageable for pagination
    * @return list of all simple news entries
    */
-  List<SimpleNewsDto> findAllNew(User user);
+  List<SimpleNewsDto> findAllNew(User user, Pageable pageable);
   /**
    * Find a single detailed news entry by id.
    *

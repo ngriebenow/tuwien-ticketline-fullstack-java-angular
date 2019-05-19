@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +51,7 @@ public class SimpleNewsService implements NewsService {
   }
 
   @Override
-  public List<SimpleNewsDto> findAllNew(User user) {
+  public List<SimpleNewsDto> findAllNew(User user, Pageable pageable) {
 
     String queryString = "SELECT n FROM News n "
         + "WHERE NOT EXISTS (SELECT nr FROM NewsRead nr WHERE nr.news = n AND nr.user = :user)"
@@ -60,16 +61,22 @@ public class SimpleNewsService implements NewsService {
 
     q.setParameter("user", user);
     List<SimpleNewsDto> newsDtos = new ArrayList<>();
+
+    if (pageable.isPaged()) {
+      q.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
+      q.setMaxResults(pageable.getPageSize());
+    }
+
     List<News> news = q.getResultList();
     news.forEach(n -> newsDtos.add(newsMapper.newsToSimpleNewsDto(n)));
     return newsDtos;
   }
 
   @Override
-  public List<SimpleNewsDto> findAll() {
+  public List<SimpleNewsDto> findAll(Pageable pageable) {
     List<SimpleNewsDto> newsDtos = new ArrayList<>();
     List<News> news = new ArrayList<>();
-    news = newsRepository.findAllByOrderByPublishedAtDesc();
+    news = newsRepository.findAllByOrderByPublishedAtDesc(pageable);
     news.forEach(n -> newsDtos.add(newsMapper.newsToSimpleNewsDto(n)));
     return newsDtos;
   }
