@@ -46,15 +46,25 @@
   padding-bottom: 10px;
 }
 
+$cross-size: 120px;
+
 .cross {
-  width: 120px;
-  height: 120px;
+  width: $cross-size;
+  height: $cross-size;
   position: relative;
 }
 
 .btn-cross {
   background-color: $light-gray;
-  width: 33.3%;
-  height: 33.3%;
+  width: $cross-size / 3;
+  height: $cross-size / 3;
   border-radius: 5px;
+  padding: 0px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.cross-icon {
+  font-size: $cross-size / 3;
+  color: $medium-gray;
 }

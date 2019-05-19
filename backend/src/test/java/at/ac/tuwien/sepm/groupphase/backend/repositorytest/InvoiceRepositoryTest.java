@@ -37,8 +37,7 @@ public class InvoiceRepositoryTest {
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenInvoiceSaved_whenFindUnknownInvoiceById_thenThrowNotFoundException()
-      throws NotFoundException {
+  public void givenInvoiceSaved_whenFindUnknownInvoiceById_thenThrowNotFoundException() {
     invoiceRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }

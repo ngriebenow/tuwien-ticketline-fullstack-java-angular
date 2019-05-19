@@ -1,39 +1,43 @@
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import {Point} from '../dtos/Point';
 import {Unit} from '../dtos/unit';
 import {UnitType} from '../enums/unit-type';
 import {Direction} from '../enums/direction';
+import {Hall} from '../dtos/hall';
+import {HallService} from './hall.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HallCreationService {
 
-  initialized: boolean;
-  edited: boolean;
+  private initialized: boolean;
+  private edited: boolean;
 
-  hallName: string;
-  hallSize: Point;
-  maxHallSize: Point;
+  private readonly  hall: Hall;
+  private readonly  hallSize: Point;
+  private readonly  maxHallSize: Point;
 
-  seats: Point[];
-  sectors: Unit[];
-  aisles: Point[];
+  private readonly seats: Point[];
+  private readonly  sectors: Unit[];
+  private readonly  aisles: Point[];
 
-  selectedUnitType: UnitType;
-  selectedUnitPosition: Point;
+  private selectedUnitType: UnitType; // saves unit type that is selected in menu
+  private selectedUnitPosition: Point; // saves first sector coordinate for sector creation
+  selectedSector: Unit; // saves sector for sector editing
 
-  constructor() {
+  @Output() changeSector: EventEmitter<Unit> = new EventEmitter();
+
+  constructor(private hallService: HallService) {
     this.initialized = false;
     this.edited = false;
     this.hallSize = new Point(10, 10);
     this.maxHallSize = new Point(27, 27); // set max hall size here
+    this.hall = new Hall(null, null, null, null, this.hallSize);
     this.seats = [];
     this.sectors = [];
     this.aisles = [];
     this.fillWithSeats();
-    this.completeInitializing();
   }
 
   /**
@@ -48,34 +52,70 @@ export class HallCreationService {
    * checks and ends initialization process and sets initialized to true
    */
   completeInitializing(): void {
-    // todo validate hallSize (0 < hallSize <= maxHallSize)
-    // todo create name field
-    // todo validate name field
-    this.initialized = true;
+    if (
+      0 < this.hallSize.coordinateX &&
+      0 < this.hallSize.coordinateY &&
+      this.hallSize.coordinateX <= this.maxHallSize.coordinateX &&
+      this.hallSize.coordinateY <= this.hallSize.coordinateY
+    ) {
+      if (this.hall.name !== undefined && this.hall.name != null && this.hall.name !== '' && this.hall.name !== ' ') {
+        this.initialized = true;
+      }
+    }
   }
 
   /**
    * checks and ends editing process and sets edited to true
+   * if there are sectors: selects one and goes to sector mode
+   * else: saves hall to db
    */
   completeEditing(): void {
-    // todo disable resize buttons before hall gets to big/small
-    // todo validate (seats && sectors != null)
-    this.edited = true;
+    // todo keep highlight on selector buttons
+    if (this.sectors.length > 0) {
+      this.changeSelectedSector(this.sectors[0]);
+      this.edited = true;
+    } else if (this.seats.length > 0) {
+      this.saveHall();
+    }
   }
 
   /**
    * checks and ends sector creation process and calls saveHall()
    */
   completeSectors(): void {
-    // todo validate sectors (name, capacity)
+    if (this.validateSectors()) {
+      this.saveHall();
+    }
+  }
+
+  /**
+   * validates all sectors name and capacity
+   * @return true if validation is successful
+   */
+  validateSectors(): boolean {
+    for (let i = 0; i < this.sectors.length; i++) {
+      if (
+        this.sectors[i].name === null ||
+        this.sectors[i].name === '' ||
+        this.sectors[i].name === ' ' ||
+        this.sectors[i].capacity === null ||
+        this.sectors[i].capacity < 1
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
    * saves hall and all units to db
    */
   saveHall(): void {
-    // todo save hall to backend
+    // todo prepare hall to be saved to backend
+    // this.hallService.postHall(this.hall);
   }
+
+  // todo cancel popup and functionality
 
   /**
    * fills whole hall with seats
@@ -93,54 +133,66 @@ export class HallCreationService {
   }
 
   /**
+   * if hallSize in direction < maxHallSize:
    * adds a row or column of seats to plan at given direction
    * @param direction must be valid
    */
   expandPlanTo(direction: Direction): void {
-    if (direction === Direction.top) {
-      this.shiftVertical(1);
-      this.hallSize.coordinateY++;
-      for (let i = 0; i < this.hallSize.coordinateX; i++) {
-        this.createSeat(new Point(i + 1, 1));
+    if (this.hallSize.coordinateX < this.maxHallSize.coordinateX) {
+      if (direction === Direction.left) {
+        this.shiftHorizontal(1);
+        this.hallSize.coordinateX++;
+        for (let i = 0; i < this.hallSize.coordinateY; i++) {
+          this.createSeat(new Point(1, i + 1));
+        }
+      } else if (direction === Direction.right) {
+        this.hallSize.coordinateX++;
+        for (let i = 0; i < this.hallSize.coordinateY; i++) {
+          this.createSeat(new Point(this.hallSize.coordinateX, i + 1));
+        }
       }
-    } else if (direction === Direction.left) {
-      this.shiftHorizontal(1);
-      this.hallSize.coordinateX++;
-      for (let i = 0; i < this.hallSize.coordinateY; i++) {
-        this.createSeat(new Point(1, i + 1));
-      }
-    } else if (direction === Direction.right) {
-      this.hallSize.coordinateX++;
-      for (let i = 0; i < this.hallSize.coordinateY; i++) {
-        this.createSeat(new Point(this.hallSize.coordinateX, i + 1));
-      }
-    } else if (direction === Direction.bottom) {
-      this.hallSize.coordinateY++;
-      for (let i = 0; i < this.hallSize.coordinateX; i++) {
-        this.createSeat(new Point(i + 1, this.hallSize.coordinateY));
+    }
+    if (this.hallSize.coordinateY < this.maxHallSize.coordinateY) {
+      if (direction === Direction.top) {
+        this.shiftVertical(1);
+        this.hallSize.coordinateY++;
+        for (let i = 0; i < this.hallSize.coordinateX; i++) {
+          this.createSeat(new Point(i + 1, 1));
+        }
+      } else if (direction === Direction.bottom) {
+        this.hallSize.coordinateY++;
+        for (let i = 0; i < this.hallSize.coordinateX; i++) {
+          this.createSeat(new Point(i + 1, this.hallSize.coordinateY));
+        }
       }
     }
   }
 
   /**
+   * if hallSize in direction > 1:
    * deletes a row or column from plan at given direction
    * @param direction must be valid
    */
   shrinkPlanFrom(direction: Direction): void {
-    if (direction === Direction.top) {
-      this.deleteRow(1);
-      this.shiftVertical(-1);
-      this.hallSize.coordinateY--;
-    } else if (direction === Direction.left) {
-      this.deleteColumn(1);
-      this.shiftHorizontal(-1);
-      this.hallSize.coordinateX--;
-    } else if (direction === Direction.right) {
-      this.deleteColumn(this.hallSize.coordinateX);
-      this.hallSize.coordinateX--;
-    } else if (direction === Direction.bottom) {
-      this.deleteRow(this.hallSize.coordinateY);
-      this.hallSize.coordinateY--;
+    if (this.hallSize.coordinateX > 1) {
+      if (direction === Direction.left) {
+        this.deleteColumn(1);
+        this.shiftHorizontal(-1);
+        this.hallSize.coordinateX--;
+      } else if (direction === Direction.right) {
+        this.deleteColumn(this.hallSize.coordinateX);
+        this.hallSize.coordinateX--;
+      }
+    }
+    if (this.hallSize.coordinateY > 1) {
+      if (direction === Direction.top) {
+        this.deleteRow(1);
+        this.shiftVertical(-1);
+        this.hallSize.coordinateY--;
+      } else if (direction === Direction.bottom) {
+        this.deleteRow(this.hallSize.coordinateY);
+        this.hallSize.coordinateY--;
+      }
     }
   }
 
@@ -249,11 +301,13 @@ export class HallCreationService {
    * @param seat != null
    */
   clickSeat(seat: Point): void {
-    if (this.selectedUnitType === UnitType.aisle) {
-      this.createAisle(seat);
-      this.deleteSeat(seat);
-    } else if (this.selectedUnitType === UnitType.sector) {
-      this.createSector(seat);
+    if (this.initialized && !this.edited) {
+      if (this.selectedUnitType === UnitType.aisle) {
+        this.createAisle(seat);
+        this.deleteSeat(seat);
+      } else if (this.selectedUnitType === UnitType.sector) {
+        this.createSector(seat);
+      }
     }
   }
 
@@ -262,11 +316,13 @@ export class HallCreationService {
    * @param aisle != null
    */
   clickAisle(aisle: Point): void {
-    if (this.selectedUnitType === UnitType.seat) {
-      this.createSeat(aisle);
-      this.deleteAisle(aisle);
-    } else if (this.selectedUnitType === UnitType.sector) {
-      this.createSector(aisle);
+    if (this.initialized && !this.edited) {
+      if (this.selectedUnitType === UnitType.seat) {
+        this.createSeat(aisle);
+        this.deleteAisle(aisle);
+      } else if (this.selectedUnitType === UnitType.sector) {
+        this.createSector(aisle);
+      }
     }
   }
 
@@ -275,10 +331,14 @@ export class HallCreationService {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   clickSector(sector: Unit): void {
-    if (this.selectedUnitType === UnitType.seat) {
-      this.deleteSector(sector);
-    } else if (this.selectedUnitType === UnitType.aisle) {
-      this.deleteSector(sector);
+    if (this.initialized && !this.edited) {
+      if (this.selectedUnitType === UnitType.seat) {
+        this.deleteSector(sector);
+      } else if (this.selectedUnitType === UnitType.aisle) {
+        this.deleteSector(sector);
+      }
+    } else if (this.initialized && this.edited) {
+      this.changeSelectedSector(sector);
     }
   }
 
@@ -408,6 +468,23 @@ export class HallCreationService {
     }
   }
 
+  /**
+   * changes saves sector and sends it to all subscribers
+   * @param sector != null
+   */
+  changeSelectedSector(sector: Unit): void {
+    this.selectedSector = sector;
+    this.changeSector.emit(this.selectedSector);
+  }
+
+  getInitialized(): boolean {
+    return this.initialized;
+  }
+
+  getEdited(): boolean {
+    return this.edited;
+  }
+
   getHallSize(): Point {
     return this.hallSize;
   }
@@ -416,8 +493,12 @@ export class HallCreationService {
     return this.maxHallSize;
   }
 
-  getSeats(): Observable<Point[]> { // todo change this back to non observable?
-    return of(this.seats);
+  getHall(): Hall {
+    return this.hall;
+  }
+
+  getSeats(): Point[] {
+    return this.seats;
   }
 
   getAisles(): Point[] {

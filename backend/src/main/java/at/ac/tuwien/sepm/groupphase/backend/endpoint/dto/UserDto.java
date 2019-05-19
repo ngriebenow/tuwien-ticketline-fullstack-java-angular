@@ -6,7 +6,9 @@ public class UserDto {
 
   private String password;
 
-  private boolean isLocked;
+  private int failedLoginCounter;
+
+  private boolean enabled;
 
   private boolean isAdmin;
 
@@ -26,12 +28,20 @@ public class UserDto {
     this.password = password;
   }
 
-  public boolean isLocked() {
-    return isLocked;
+  public int getFailedLoginCounter() {
+    return failedLoginCounter;
   }
 
-  public void setLocked(boolean locked) {
-    isLocked = locked;
+  public void setFailedLoginCounter(int failedLoginCounter) {
+    this.failedLoginCounter = failedLoginCounter;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
   }
 
   public boolean isAdmin() {

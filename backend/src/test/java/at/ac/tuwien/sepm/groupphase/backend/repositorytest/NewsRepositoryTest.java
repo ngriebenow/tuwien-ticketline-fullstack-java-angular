@@ -42,7 +42,7 @@ public class NewsRepositoryTest {
   }
 
   @Test
-  public void givenNewsSaved_whenFindNewsById_thenReturnNews() throws NotFoundException {
+  public void givenNewsSaved_whenFindNewsById_thenReturnNews() {
     News retN1 = newsRepository.findById(N1.getId()).orElseThrow(NotFoundException::new);
     assertThat(retN1).isEqualTo(N1);
   }
@@ -56,8 +56,7 @@ public class NewsRepositoryTest {
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenNewsSaved_whenFindUnknownNewsById_thenThrowNotFoundException()
-      throws NotFoundException {
+  public void givenNewsSaved_whenFindUnknownNewsById_thenThrowNotFoundException() {
     newsRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }

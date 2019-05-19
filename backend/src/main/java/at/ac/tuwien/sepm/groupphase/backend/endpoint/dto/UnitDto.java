@@ -6,6 +6,8 @@ public class UnitDto {
 
   private Long hallId;
 
+  private String name;
+
   private PointDto lowerBoundary;
 
   private PointDto upperBoundary;
@@ -26,6 +28,14 @@ public class UnitDto {
 
   public void setHallId(Long hallId) {
     this.hallId = hallId;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public PointDto getLowerBoundary() {
