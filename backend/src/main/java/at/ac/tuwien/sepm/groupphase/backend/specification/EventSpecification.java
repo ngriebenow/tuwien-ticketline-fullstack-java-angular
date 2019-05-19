@@ -1,14 +1,19 @@
 package at.ac.tuwien.sepm.groupphase.backend.specification;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Event_;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 import org.springframework.data.jpa.domain.Specification;
 
 public class EventSpecification {
@@ -102,7 +107,7 @@ public class EventSpecification {
     if (eventFilterDto.getContent() != null) {
       specification =
           specification.and(
-              UserSpecification.contains("content", eventFilterDto.getName().toLowerCase()));
+              UserSpecification.contains("content", eventFilterDto.getContent().toLowerCase()));
     }
     if (eventFilterDto.getEventCategory() != null) {
       specification =
@@ -119,17 +124,23 @@ public class EventSpecification {
       public Predicate toPredicate(
           Root<Event> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
-        List<Predicate> expressions = new ArrayList<>();
 
         if (eventFilterDto.getArtistName() != null) {
-          Predicate hallName =
-              criteriaBuilder.like(
-                  root.get("artists").get("name"), "%" + eventFilterDto.getHallName() + "%");
-          expressions.add(hallName);
-        }
-        Predicate[] predicates = expressions.toArray(new Predicate[expressions.size()]);
 
-        return criteriaBuilder.and(predicates);
+          query.distinct(true);
+          ListJoin<Event, Artist> eaJoin = root.join(Event_.artists, JoinType.LEFT);
+
+          Predicate artistName =
+              criteriaBuilder.like(criteriaBuilder.lower(
+                  eaJoin.get("name")), "%" + eventFilterDto.getArtistName().toLowerCase() + "%");
+          Predicate artistSurname =
+              criteriaBuilder.like(criteriaBuilder.lower(
+                  eaJoin.get("surname")), "%" + eventFilterDto.getArtistName().toLowerCase() + "%");
+
+          return criteriaBuilder.or(artistName,artistSurname);
+
+        }
+        return criteriaBuilder.and();
       }
     };
   }
