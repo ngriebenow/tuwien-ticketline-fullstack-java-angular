@@ -109,11 +109,9 @@ public class DetailedNewsDto {
     }
     DetailedNewsDto that = (DetailedNewsDto) obj;
     return Objects.equals(id, that.id)
-        && Objects.equals(publishedAt, that.publishedAt)
         && Objects.equals(title, that.title)
         && Objects.equals(text, that.text)
-        && Objects.equals(summary, that.summary)
-        && Objects.equals(pictureIds, that.pictureIds);
+        && Objects.equals(summary, that.summary);
   }
 
   @Override

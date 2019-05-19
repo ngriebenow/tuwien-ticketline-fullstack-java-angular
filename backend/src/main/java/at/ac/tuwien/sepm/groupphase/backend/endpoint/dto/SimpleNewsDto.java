@@ -82,7 +82,6 @@ public class SimpleNewsDto {
     }
     SimpleNewsDto that = (SimpleNewsDto) obj;
     return Objects.equals(id, that.id)
-        && Objects.equals(publishedAt, that.publishedAt)
         && Objects.equals(title, that.title)
         && Objects.equals(summary, that.summary);
   }

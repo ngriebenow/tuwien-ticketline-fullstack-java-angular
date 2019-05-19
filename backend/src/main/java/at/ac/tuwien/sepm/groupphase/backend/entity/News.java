@@ -54,7 +54,6 @@ public class News {
     }
     News news = (News) o;
     return Objects.equals(id, news.id)
-        && Objects.equals(publishedAt, news.publishedAt)
         && Objects.equals(title, news.title)
         && Objects.equals(summary, news.summary)
         && Objects.equals(text, news.text);
