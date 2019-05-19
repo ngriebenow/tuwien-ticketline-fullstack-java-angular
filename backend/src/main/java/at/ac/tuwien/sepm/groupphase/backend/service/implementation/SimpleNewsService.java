@@ -7,7 +7,6 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.NewsRead;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Picture;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.news.NewsMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.user.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsReadRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
@@ -16,6 +15,8 @@ import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class SimpleNewsService implements NewsService {
   private final NewsReadRepository newsReadRepository;
   private final PictureRepository pictureRepository;
   private final NewsMapper newsMapper;
+  private final EntityManager entityManager;
 
 
   /**
@@ -35,14 +37,32 @@ public class SimpleNewsService implements NewsService {
    * @param newsReadRepository to mark news as read
    * @param pictureRepository to get pictures belonging to news entry
    * @param newsMapper to map between dto and entity
+   * @param entityManager for the select query
    */
   public SimpleNewsService(NewsRepository newsRepository,
       NewsReadRepository newsReadRepository, PictureRepository pictureRepository,
-      NewsMapper newsMapper) {
+      NewsMapper newsMapper, EntityManager entityManager) {
     this.newsRepository = newsRepository;
     this.newsReadRepository = newsReadRepository;
     this.pictureRepository = pictureRepository;
     this.newsMapper = newsMapper;
+    this.entityManager = entityManager;
+  }
+
+  @Override
+  public List<SimpleNewsDto> findAllNew(User user) {
+
+    String queryString = "SELECT n FROM News n "
+        + "WHERE NOT EXISTS (SELECT nr FROM NewsRead nr WHERE nr.news = n AND nr.user = :user)"
+        + "ORDER BY n.publishedAt DESC";
+
+    TypedQuery<News> q = entityManager.createQuery(queryString, News.class);
+
+    q.setParameter("user", user);
+    List<SimpleNewsDto> newsDtos = new ArrayList<>();
+    List<News> news = q.getResultList();
+    news.forEach(n -> newsDtos.add(newsMapper.newsToSimpleNewsDto(n)));
+    return newsDtos;
   }
 
   @Override

@@ -15,6 +15,13 @@ public interface NewsService {
   List<SimpleNewsDto> findAll();
 
   /**
+   * Find all new (== not read) news entries for given user.
+   *
+   * @param user to find new news entry for
+   * @return list of all simple news entries
+   */
+  List<SimpleNewsDto> findAllNew(User user);
+  /**
    * Find a single detailed news entry by id.
    *
    * @param id the id of the news entry
@@ -22,6 +29,7 @@ public interface NewsService {
    * @return the detailed news entry
    * @throws NotFoundException if the id could not be found
    */
+
   DetailedNewsDto findOne(Long id, User user) throws NotFoundException;
 
   /**

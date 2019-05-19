@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -60,16 +61,22 @@ public class NewsEndpoint {
   }
 
   /**
-   * Get all news entries.
-   *
+   * Get all (recent) news entries.
+   * @param onlyNew if not specified then false
+   * @param authorizationHeader to get user
    * @return a list of news entries
    */
   @RequestMapping(method = RequestMethod.GET)
   @ApiOperation(
       value = "Get list of simple news entries",
       authorizations = {@Authorization(value = "apiKey")})
-  public List<SimpleNewsDto> findAll() {
-    return newsService.findAll();
+  public List<SimpleNewsDto> findAll(@RequestParam(required = false) boolean onlyNew,
+      @ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+    if (onlyNew) {
+      return newsService.findAllNew(getUser(authorizationHeader));
+    }  else {
+      return newsService.findAll();
+    }
   }
 
   /**
