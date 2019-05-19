@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UserDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.UserFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface AccountService {
    *
    * @return list of all user entries
    */
-  List<User> findAll(UserDto user);
+  List<UserDto> findAll(UserFilterDto user);
 
   /**
    * Find a single user entry by id.
