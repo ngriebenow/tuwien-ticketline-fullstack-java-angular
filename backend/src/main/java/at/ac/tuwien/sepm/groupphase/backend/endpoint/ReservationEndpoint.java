@@ -28,6 +28,7 @@ public class ReservationEndpoint {
     this.reservationService = reservationService;
   }
 
+  /** Reserve tickets for the specified performance. */
   @PostMapping
   @ApiOperation(
       value = "Reserve tickets for the specified performance",
