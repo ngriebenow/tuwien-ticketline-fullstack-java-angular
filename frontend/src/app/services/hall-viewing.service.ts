@@ -16,17 +16,67 @@ export class HallViewingService {
 
   performanceName: String =  'Performance';
   eventName: String = 'Event';
-
+  selected: Boolean[] = [];
+  selectedNum: number[] = [];
+  defUnits: DefinedUnit[] = [];
+  cats: PriceCategory[] = [];
+  points: Point[] = [];
 
   constructor() {
   }
 
+  clickSeat(seat: DefinedUnit): void{
+    var index = this.defUnits.indexOf(seat);
+    if(this.selected[index] == false){
+      console.log("added" + seat.id);
+      this.selected[index] = true;
+    } else {
+      console.log("removed" + seat.id);
+      this.selected[index] = false;
+    }
+  }
+
+  getBackColor(dunit: DefinedUnit){
+    var index = this.defUnits.indexOf(dunit);
+    if(this.selected[index] == false){
+      return '#CFCFCF';
+    } else {
+      return '#FF9824';
+    }
+  }
+
+  clickDefUnit(dunit: DefinedUnit): void{
+    var index = this.defUnits.indexOf(dunit);
+    if(this.selected[index] == false){
+      this.selected[index] = true;
+      this.defUnits[index].free -= 1;
+      this.selectedNum[index] += 1;
+    } else if(this.selectedNum[index] == 1) {
+      this.selected[index] = false;
+      this.defUnits[index].free += 1;
+      this.selectedNum[index] -= 1;
+    } else {
+      this.defUnits[index].free += 1;
+      this.selectedNum[index] -= 1;
+    }
+  }
+
+  clickEmptyUnit(dunit: DefinedUnit){
+    var index = this.defUnits.indexOf(dunit);
+    if (this.selected[index] == true){
+      if(this.selectedNum[index] == 1){
+        this.selected[index] = false;
+      }
+      this.defUnits[index].free += 1;
+      this.selectedNum[index] -= 1;
+    }
+  }
   getHallSize(): Point {
     //TODO for real!
     return new Point(10,10);
   }
 
-  points: Point[] = [];
+
 
   getSeats(): Point[]{
     //TODO for real!
@@ -47,16 +97,7 @@ export class HallViewingService {
     this.points[13] = new Point(7,2);
     this.points[14] = new Point(9,2);
     this.points[15] = new Point(10,2);
-
     return this.points;
-  }
-
-  clickSeat(seat: Point): void{
-
-  }
-
-  clickUnit(unit: DefinedUnit): void{
-
   }
 
   getEventName(): String{
@@ -67,7 +108,7 @@ export class HallViewingService {
     return this.performanceName;
   }
 
-  cats: PriceCategory[] = [];
+
   getCats(): PriceCategory[]{
     this.cats[0] = new PriceCategory(1, 10.90, 'Kategorie 1',0x0000FF);
     this.cats[1] = new PriceCategory(2, 11.20, 'Kategorie 2', 0x008000);
@@ -75,7 +116,6 @@ export class HallViewingService {
     return this.cats;
   }
 
-  defUnits: DefinedUnit[] = []
   getDefUnits(): DefinedUnit[]{
     this.defUnits[0] = new DefinedUnit(1, 'something', 1, 1, new Point(1,1), new Point(1,1), 1);
     this.defUnits[1] = new DefinedUnit(2, 'something',1, 1, new Point(2,1), new Point(2,1), 1);
@@ -95,13 +135,22 @@ export class HallViewingService {
     this.defUnits[14] = new DefinedUnit(15, 'something',1, 1, new Point(9,2), new Point(9,2), 2);
     this.defUnits[15] = new DefinedUnit(16, 'something',1, 1, new Point(10,2), new Point(10,2), 2);
 
-    this.defUnits[16] = new DefinedUnit(17, 'Sektor A',1, 2, new Point(1,3), new Point(2,3), 3);
+    this.defUnits[16] = new DefinedUnit(17, 'Sektor A',2, 2, new Point(1,3), new Point(2,3), 3);
     this.defUnits[17] = new DefinedUnit(19, 'something',0, 1, new Point(4,3), new Point(4,3), 3);
     this.defUnits[18] = new DefinedUnit(20, 'something',0, 1, new Point(5,3), new Point(5,3), 3);
     this.defUnits[19] = new DefinedUnit(21, 'something',1, 1, new Point(6,3), new Point(6,3), 3);
     this.defUnits[20] = new DefinedUnit(22, 'something',0, 1, new Point(7,3), new Point(7,3), 3);
     this.defUnits[21] = new DefinedUnit(23, 'something',1, 1, new Point(9,3), new Point(9,3), 3);
     this.defUnits[22] = new DefinedUnit(24, 'something',1, 1, new Point(10,3), new Point(10,3), 3);
+
+    for (var i = 0; i < this.defUnits.length; i++){
+      this.selected[i] = false;
+    }
+
+    for (var i = 0; i < this.defUnits.length; i++){
+      this.selectedNum[i] = 0;
+    }
+
     return this.defUnits;
   }
 

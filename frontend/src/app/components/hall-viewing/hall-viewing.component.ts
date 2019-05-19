@@ -27,7 +27,6 @@ export class HallViewingComponent implements OnInit {
   hallSize: Point;
   seats: Point[];
   defUnits: DefinedUnit[];
-  performance: Performance;
   cats: PriceCategory[];
 
   constructor(private route: ActivatedRoute,
@@ -38,21 +37,24 @@ export class HallViewingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPerformance();
     this.getHallSize();
     this.getSeats();
   }
 
-  getPerformance(): void {
-    //TODO
-  }
-
-  clickSeat(seat: Point): void {
+  clickSeat(seat: DefinedUnit){
     this.hallViewingService.clickSeat(seat);
   }
 
-  clickUnit(dunit: DefinedUnit): void {
-    this.hallViewingService.clickUnit(dunit);
+  getBackColor(dunit: DefinedUnit){
+    return this.hallViewingService.getBackColor(dunit);
+  }
+
+  clickDefUnit(dunit: DefinedUnit){
+    this.hallViewingService.clickDefUnit(dunit);
+  }
+
+  clickEmptyUnit(dunit: DefinedUnit){
+    this.hallViewingService.clickEmptyUnit(dunit);
   }
 
   getEventName(): String{
@@ -107,11 +109,11 @@ export class HallViewingComponent implements OnInit {
          }
       }
     }
-    if(max === min){
+    if(max == min){
       num = 1;
       return (this.getUnitSize() - this.getSeatDistance()) + 'px';
-    } else if((max-min) === 1){
-      return (((this.getUnitSize() - this.getSeatDistance())*2)+(this.getSeatDistance()*1)) + 'px';
+    } else if((max-min) == 1){
+      return (((this.getUnitSize() - this.getSeatDistance())*2)) + 'px';
     }
     else {
       num = max-min;
@@ -133,10 +135,10 @@ export class HallViewingComponent implements OnInit {
         }
       }
     }
-    if(min === 1){
-      return ((this.getUnitSize() - this.getSeatDistance())*min - 3) + 'px';
+    if(min == 1){
+      return ((this.getUnitSize() - this.getSeatDistance())*min) + 'px';
     }
-    return (((this.getUnitSize() - this.getSeatDistance())*min)+(this.getSeatDistance()*(min-1)-3)) + 'px';
+    return (((this.getUnitSize() - this.getSeatDistance())*min)+(this.getSeatDistance()*(min-1))) + 'px';
   }
 
   /**
@@ -158,12 +160,12 @@ export class HallViewingComponent implements OnInit {
         }
       }
     }
-    if(min === max){
-      return ((this.getUnitSize() - this.getSeatDistance())*min) + ((this.getUnitSize() - this.getSeatDistance())/2) + 'px';
-    }else{
+    if(min == max){
+      return ((this.getUnitSize() - this.getSeatDistance())*min) + ((this.getUnitSize() - this.getSeatDistance())/3)  + (this.getSeatDistance()*(min-1))+ 'px';
+    } else{
       num = (max-min)/2;
-      min += num;
-      return (((this.getUnitSize() - this.getSeatDistance())*min)+(this.getSeatDistance()*min)) + 'px';
+      num += min;
+      return (((this.getUnitSize() - this.getSeatDistance())*num)+(this.getSeatDistance()*num))  + 'px';
     }
   }
 

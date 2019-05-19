@@ -27,7 +27,7 @@
         <ng-container *ngFor="let dunit of defUnits">
           <div *ngIf="dunit.capacity == 1">
             <div *ngIf="dunit.free > 0">
-              <button type="button" (click)="clickSeat(dunit.point1)" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-seat"></button>
+              <button type="button" (click)="clickSeat(dunit)" [style.background-color]="getBackColor(dunit)" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-seat"></button>
             </div>
             <div *ngIf="dunit.free == 0">
               <button type="button" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1), 'font-size':calcFontSize(), 'line-height': calcLineHeight()}" class="btn btn-reserved disabled">X</button>
@@ -35,16 +35,30 @@
           </div>
           <div *ngIf="dunit.capacity > 1">
             <div *ngIf="dunit.free > 0">
-              <button type="button" (click)="clickSector(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
+              <div (click)="clickDefUnit(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn-sector">
+                <div class="row" style="height: inherit">
+                  <div class="col-4 align-self-center" >
+                    <i class="fas fa-plus-square"></i>
+                  </div>
+                  <div class="col-4 align-self-center" style="padding: 0px;">
+                     <span>{{dunit.name}}<br>Frei:{{dunit.free}}</span>
+                  </div>
+                  <div class="col-4 align-self-center">
+                    <i class="fas fa-minus-square"></i>
+                  </div>
+                </div>
+               </div>
+              <!---<input type="number" min="0" max="{{dunit.free}}" step="1" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" placeholder="{{dunit.name}}<br>Frei:{{dunit.free}}" class="form-control text-field-norm">--->
+              <!---<button type="button" (click)="clickDefUnit(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector">{{dunit.name}}<br>Frei:{{dunit.free}}</button>--->
             </div>
             <div *ngIf="dunit.free == 0">
-              <button type="button" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector-zero disabled">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
+              <button type="button" (click)="clickEmptyUnit(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector-zero">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
             </div>
           </div>
         </ng-container>
         <ng-container *ngFor="let cat of cats">
           <button type="button" [ngStyle]="{'height': calcCatHeight(cat.id), 'background-color': getCatColor(cat.id),'position':'absolute', 'top':calcCatPosition(cat.id)}" class="btn btn-cat disabled"></button>
-          <h5 [ngStyle]="{'top': calcCatNamePosition(cat.id),'position':'absolute'}" style="margin-left: 850px">{{cat.name}}</h5>
+          <h5 [ngStyle]="{'top': calcCatNamePosition(cat.id),'position':'absolute'}" style="margin-left: 835px">{{cat.name}}</h5>
         </ng-container>
       </div>
     </div>
