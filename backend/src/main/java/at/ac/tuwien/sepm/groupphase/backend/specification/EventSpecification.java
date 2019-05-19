@@ -1,6 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.specification;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ArtistDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
 public class EventSpecification {
@@ -121,11 +124,36 @@ public class EventSpecification {
 
         List<Predicate> expressions = new ArrayList<>();
 
+
         if (eventFilterDto.getArtistName() != null) {
-          Predicate hallName =
+
+
+          Subquery<Artist> artistSubquery = query.subquery(Artist.class);
+          Root<Artist> artistRoot = artistSubquery.from(Artist.class);
+          artistSubquery.select(artistRoot)//subquery selection
+              .where(criteriaBuilder.equal(artistRoot.get("name"),
+                  employee.get(Employee_.job)));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          Predicate artistName =
               criteriaBuilder.like(
                   root.get("artists").get("name"), "%" + eventFilterDto.getHallName() + "%");
-          expressions.add(hallName);
+          expressions.add(artistName);
         }
         Predicate[] predicates = expressions.toArray(new Predicate[expressions.size()]);
 
