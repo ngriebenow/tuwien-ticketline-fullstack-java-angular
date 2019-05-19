@@ -34,7 +34,12 @@
             </div>
           </div>
           <div *ngIf="dunit.capacity > 1">
-            <button type="button" (click)="clickSector(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
+            <div *ngIf="dunit.free > 0">
+              <button type="button" (click)="clickSector(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
+            </div>
+            <div *ngIf="dunit.free == 0">
+              <button type="button" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector-zero disabled">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
+            </div>
           </div>
         </ng-container>
         <ng-container *ngFor="let cat of cats">

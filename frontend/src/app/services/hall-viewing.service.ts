@@ -51,11 +51,6 @@ export class HallViewingService {
     return this.points;
   }
 
-  getUnits(): DefinedUnit[]{
-    //TODO fro real!
-    return new DefinedUnit[60];
-  }
-
   clickSeat(seat: Point): void{
 
   }

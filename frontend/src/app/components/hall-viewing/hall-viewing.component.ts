@@ -41,11 +41,34 @@ export class HallViewingComponent implements OnInit {
     this.getPerformance();
     this.getHallSize();
     this.getSeats();
-    //this.getUnits();
   }
 
   getPerformance(): void {
+    //TODO
+  }
 
+  clickSeat(seat: Point): void {
+    this.hallViewingService.clickSeat(seat);
+  }
+
+  clickUnit(dunit: DefinedUnit): void {
+    this.hallViewingService.clickUnit(dunit);
+  }
+
+  getEventName(): String{
+    return this.hallViewingService.getEventName();
+  }
+
+  getPerformanceName(): String{
+    return this.hallViewingService.getPerformanceName();
+  }
+
+  getHallName(){
+    return this.hallViewingService.getHallName();
+  }
+
+  getStartAt(){
+    return this.hallViewingService.getStartAt();
   }
 
   getHallSize(): void{
@@ -66,6 +89,10 @@ export class HallViewingComponent implements OnInit {
     }
   }
 
+  /**
+   * calculats the height for the category-btn
+   * @param id of the category
+   */
   calcCatHeight(id:number){
     var min = 27;
     var max = 0;
@@ -93,6 +120,10 @@ export class HallViewingComponent implements OnInit {
 
   }
 
+  /**
+   * calculates the top (px values of the top end of the btn) of the categorie
+   * @param id of the category
+   */
   calcCatPosition(id: number){
     var min = 27;
     for (var y = 0; y < this.defUnits.length; y++){
@@ -108,6 +139,11 @@ export class HallViewingComponent implements OnInit {
     return (((this.getUnitSize() - this.getSeatDistance())*min)+(this.getSeatDistance()*(min-1)-3)) + 'px';
   }
 
+  /**
+   * calculates the position for the name of the categorie
+   * on the right side of the hall plan
+   * @param id of the category
+   */
   calcCatNamePosition(id: number){
     var min = 27;
     var max = 0;
@@ -130,40 +166,17 @@ export class HallViewingComponent implements OnInit {
       return (((this.getUnitSize() - this.getSeatDistance())*min)+(this.getSeatDistance()*min)) + 'px';
     }
   }
-  /*
-  getUnits(): void {
-    this.units = this.hallViewingService.getUnits();
-  }*/
 
-  clickSeat(seat: Point): void {
-    this.hallViewingService.clickSeat(seat);
-  }
-
-  clickUnit(unit: DefinedUnit): void {
-    this.hallViewingService.clickUnit(unit);
-  }
-
-  getEventName(): String{
-    return this.hallViewingService.getEventName();
-  }
-
-  getPerformanceName(): String{
-    return this.hallViewingService.getPerformanceName();
-  }
-
-  getHallName(){
-    return this.hallViewingService.getHallName();
-  }
-
-  getStartAt(){
-    return this.hallViewingService.getStartAt();
-  }
-
-
+  /**
+   * calculates the line height for the text (X) in a reserved seat
+   */
   calcLineHeight(){
     return ((this.getUnitSize() - this.getSeatDistance()) + 5) + 'px';
   }
 
+  /**
+   * calculates the font size for a reserved seat
+   * */
   calcFontSize(){
     return ((this.getUnitSize() - this.getSeatDistance()) + 10) + 'px';
   }

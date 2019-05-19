@@ -110,6 +110,19 @@
   background-color: darken($main-blue, 10);
 }
 
+.btn-sector-zero {
+  background-color: $medium-gray;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.btn-sector-zero:hover,
+.btn-sector-zero:focus,
+.btn-sector-zero:active{
+  background-color: darken($medium-gray, 10);
+}
+
 .row-padding {
   padding-top: 10px;
   padding-bottom: 10px;
