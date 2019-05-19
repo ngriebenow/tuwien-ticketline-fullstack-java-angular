@@ -378,4 +378,56 @@ public class EventEndpointTest extends BaseIntegrationTest {
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
+
+  @Test
+  public void givenEvents_whenFilterByArtistName_thenReturnEvents() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?artistName=y")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventDto> retList = Arrays.asList(response.as(EventDto[].class));
+
+    List<Event> events =
+        retList.stream().map(e -> eventMapper.eventDtoToEvent(e)).collect(Collectors.toList());
+
+    Assert.assertTrue(events.contains(E2));
+    Assert.assertFalse(events.contains(E1));
+    Assert.assertFalse(events.contains(E3));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByArtistSurname_thenReturnEvents() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?artistName=FG")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventDto> retList = Arrays.asList(response.as(EventDto[].class));
+
+    List<Event> events =
+        retList.stream().map(e -> eventMapper.eventDtoToEvent(e)).collect(Collectors.toList());
+
+    Assert.assertTrue(events.contains(E2));
+    Assert.assertTrue(events.contains(E3));
+    Assert.assertFalse(events.contains(E1));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
 }
