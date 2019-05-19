@@ -20,14 +20,12 @@ import org.springframework.stereotype.Component;
 @Profile("generateData")
 public class PriceCategoryDataGenerator implements DataGenerator<PriceCategory> {
 
-  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Event.class));
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-
   private static final int MAX_PRICE_CATEGORIES_PER_EVENT = 3;
   private static final int MIN_BASE_PRICE = 1500;
   private static final int MAX_BASE_PRICE = 9000;
   private static final double BASE_PRICE_DECREASE_FACTOR = 0.1;
-
+  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Event.class));
   private EventRepository eventRepository;
   private PriceCategoryRepository priceCategoryRepository;
 

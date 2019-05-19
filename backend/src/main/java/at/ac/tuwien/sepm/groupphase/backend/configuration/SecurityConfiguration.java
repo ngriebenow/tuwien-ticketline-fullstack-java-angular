@@ -37,22 +37,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-@PropertySource("classpath:db.properties")
 public class SecurityConfiguration {
 
   @Autowired private Environment env;
 
   /**
-   * Creates new h2 datasource with properties read from db.properties
+   * Creates new h2 datasource with properties read from the current profile.
    *
    * @return DataSource
    */
   public DataSource getDataSource() {
     BasicDataSource dataSource = new BasicDataSource();
-    dataSource.setDriverClassName(env.getProperty("h2.driver"));
-    dataSource.setUrl(env.getProperty("h2.jdbcUrl"));
-    dataSource.setUsername(env.getProperty("h2.username"));
-    dataSource.setPassword(env.getProperty("h2.password"));
+    dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
+    dataSource.setUrl(env.getProperty("spring.datasource.url"));
+    dataSource.setUsername(env.getProperty("spring.datasource.username"));
+    dataSource.setPassword(env.getProperty("spring.datasource.password"));
     return dataSource;
   }
 
