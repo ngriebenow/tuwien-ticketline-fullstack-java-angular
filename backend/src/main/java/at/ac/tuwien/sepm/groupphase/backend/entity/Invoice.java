@@ -1,7 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import com.google.common.base.Objects;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,10 +30,10 @@ public class Invoice {
   @Column(nullable = false)
   private boolean isCancelled;
 
-  // TODO: This might be better as uuid
-  // TODO: What to do when this invoice is not a reservation and it gets paid right away?
   @Column(nullable = false)
   private String reservationCode;
+
+  // TODO: add a sequence for paid and canceled invoices
 
   @ManyToOne
   @JoinColumn(nullable = false)
@@ -40,7 +42,7 @@ public class Invoice {
   /// TODO: Implement as soon as michis user persistance part is done
   // private User soldBy;
 
-  @OneToMany(mappedBy = "invoice")
+  @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Ticket> tickets;
 
   public Invoice() {}
@@ -52,6 +54,32 @@ public class Invoice {
     setReservationCode(builder.reservationCode);
     setClient(builder.client);
     setTickets(builder.tickets);
+  }
+
+  /**
+   * Remove the ticket from this invoice and take care for the bidirectional between relationship it
+   * and this invoice.
+   *
+   * @param ticket to remove.
+   * @return whether the ticket was removed.
+   */
+  public boolean removeTicket(Ticket ticket) {
+    boolean removed = this.tickets.remove(ticket);
+    if (removed) {
+      ticket.setInvoice(null);
+    }
+    return removed;
+  }
+
+  /**
+   * Add the ticket to this invoice and take care for the bidirectional between relationship it and
+   * this invoice.
+   *
+   * @param ticket to add.
+   */
+  public void addTicket(Ticket ticket) {
+    this.tickets.add(ticket);
+    ticket.setInvoice(this);
   }
 
   public List<Ticket> getTickets() {
@@ -115,13 +143,12 @@ public class Invoice {
         && isCancelled == invoice.isCancelled
         && Objects.equal(id, invoice.id)
         && Objects.equal(reservationCode, invoice.reservationCode)
-        && Objects.equal(client, invoice.client)
-        && Objects.equal(tickets, invoice.tickets);
+        && Objects.equal(client, invoice.client);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, client, tickets);
+    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, client);
   }
 
   @Override
@@ -150,7 +177,7 @@ public class Invoice {
     private boolean isCancelled;
     private String reservationCode;
     private Client client;
-    private List<Ticket> tickets;
+    private List<Ticket> tickets = new ArrayList<>();
 
     public Builder() {}
 
@@ -174,7 +201,7 @@ public class Invoice {
       return this;
     }
 
-    public Builder customer(Client val) {
+    public Builder client(Client val) {
       client = val;
       return this;
     }

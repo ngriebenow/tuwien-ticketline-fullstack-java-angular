@@ -10,11 +10,9 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,21 +29,22 @@ public class PerformanceRepositoryTest {
   @Autowired EventRepository eventRepository;
 
   private Event E1 =
-          new Event.Builder()
-                  .name("Event1")
-                  .category(EventCategory.CINEMA)
-                  .duration(Duration.ofHours(2))
-                  .build();
+      new Event.Builder()
+          .name("Event1")
+          .category(EventCategory.CINEMA)
+          .duration(Duration.ofHours(2))
+          .build();
 
-
-  private Performance P1 = new Performance.Builder()
+  private Performance P1 =
+      new Performance.Builder()
           .name("Perf 1")
           .startAt(LocalDateTime.now())
           .id(0L)
           .event(E1)
           .build();
 
-  private Performance P2 = new Performance.Builder()
+  private Performance P2 =
+      new Performance.Builder()
           .name("Perf 2")
           .startAt(LocalDateTime.now())
           .id(1L)
@@ -72,14 +71,11 @@ public class PerformanceRepositoryTest {
   }
 
   public void givenEventId_whenFindPerformancesByEvent_thenReturnPerformances() {
-    List<Performance> perfList1 = performanceRepository.findAllByEvent(E1, PageRequest.of(1,1));
-    List<Performance> perfList2 = performanceRepository.findAllByEvent(E1, PageRequest.of(1,1));
+    List<Performance> perfList1 = performanceRepository.findAllByEvent(E1, PageRequest.of(1, 1));
+    List<Performance> perfList2 = performanceRepository.findAllByEvent(E1, PageRequest.of(1, 1));
 
     perfList1.addAll(perfList2);
-    assertThat(perfList1.contains(P1),is(true));
-    assertThat(perfList1.contains(P2),is(true));
-
-
-
+    assertThat(perfList1.contains(P1), is(true));
+    assertThat(perfList1.contains(P2), is(true));
   }
 }

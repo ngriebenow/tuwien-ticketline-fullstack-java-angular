@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import com.google.common.base.Objects;
-import java.util.Arrays;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,18 +21,17 @@ public class Ticket {
   @SequenceGenerator(name = ID_SEQUENCE_NAME)
   private Long id;
 
-  // TODO: check datatype chosen by hibernate
   @Column(nullable = false)
-  private byte[] salt;
+  private String salt;
 
   @Column(nullable = false)
   private boolean isCancelled;
 
   @ManyToOne
-  @JoinColumn(nullable = false)
+  @JoinColumn(name = "invoice_id", nullable = false)
   private Invoice invoice;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.PERSIST)
   @JoinColumn(nullable = false)
   private DefinedUnit definedUnit;
 
@@ -62,11 +61,11 @@ public class Ticket {
     this.id = id;
   }
 
-  public byte[] getSalt() {
+  public String getSalt() {
     return salt;
   }
 
-  public void setSalt(byte[] salt) {
+  public void setSalt(String salt) {
     this.salt = salt;
   }
 
@@ -113,7 +112,7 @@ public class Ticket {
         + "id="
         + id
         + ", salt="
-        + Arrays.toString(salt)
+        + salt
         + ", isCancelled="
         + isCancelled
         + ", invoice="
@@ -126,20 +125,19 @@ public class Ticket {
   public static final class Builder {
 
     private Long id;
-    private byte[] salt;
+    private String salt;
     private boolean isCancelled;
     private Invoice invoice;
     private DefinedUnit definedUnit;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder id(Long val) {
       id = val;
       return this;
     }
 
-    public Builder salt(byte[] val) {
+    public Builder salt(String val) {
       salt = val;
       return this;
     }

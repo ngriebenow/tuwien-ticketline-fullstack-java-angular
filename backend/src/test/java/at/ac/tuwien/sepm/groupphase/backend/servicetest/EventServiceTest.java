@@ -3,7 +3,13 @@ package at.ac.tuwien.sepm.groupphase.backend.servicetest;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
@@ -21,13 +27,12 @@ import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@ActiveProfiles(profiles = "integration-test")
+@ActiveProfiles(profiles = "unit-test")
 public class EventServiceTest {
 
   @MockBean EventRepository eventRepository;
@@ -35,16 +40,9 @@ public class EventServiceTest {
 
   @Autowired private EventService eventService;
 
-
   @Autowired private EventMapper eventMapper;
 
-  private Event E1 =
-      new Event.Builder()
-          .name("Event1")
-          .category(EventCategory.CINEMA)
-          .duration(Duration.ofHours(2))
-          .build();
-
+  private Event E1;
   private Artist A1;
   private Hall H1;
   private Location L1;
@@ -53,6 +51,13 @@ public class EventServiceTest {
 
   @Before
   public void initialize() {
+    E1 =
+        new Event.Builder()
+            .name("Event1")
+            .category(EventCategory.CINEMA)
+            .duration(Duration.ofHours(2))
+            .build();
+
     A1 = new Artist.Builder().id(0L).surname("Artist Surname 1").name("Artist Name 1").build();
     E1.setArtists(List.of(A1));
 
@@ -74,20 +79,21 @@ public class EventServiceTest {
 
     E1.setHall(H1);
 
-    P1 = new Performance.Builder()
+    P1 =
+        new Performance.Builder()
             .name("Perf 1")
             .startAt(LocalDateTime.now())
             .id(0L)
             .event(E1)
             .build();
 
-    P2 = new Performance.Builder()
+    P2 =
+        new Performance.Builder()
             .name("Perf 2")
             .startAt(LocalDateTime.now())
             .id(1L)
             .event(E1)
             .build();
-
   }
 
   @Test
@@ -103,8 +109,8 @@ public class EventServiceTest {
     eventService.getOneById(-1L);
   }
 
-  @Test
-  public void givenEventId_whenFindPerformancesByEventId_thenReturnPerformances() {
 
-  }
+
+  @Test
+  public void givenEventId_whenFindPerformancesByEventId_thenReturnPerformances() {}
 }

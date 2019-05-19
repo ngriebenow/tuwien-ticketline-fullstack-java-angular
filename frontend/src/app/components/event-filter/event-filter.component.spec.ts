@@ -3,6 +3,7 @@ import { HttpClientTestingModule} from '@angular/common/http/testing';
 import { EventFilterComponent } from './event-filter.component';
 import { Globals} from '../../global/globals';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MyDatePickerModule } from 'mydatepicker';
 
 describe('EventFilterComponent', () => {
   let component: EventFilterComponent;
@@ -16,7 +17,8 @@ describe('EventFilterComponent', () => {
       imports: [
         HttpClientTestingModule,
         ReactiveFormsModule,
-        FormsModule
+        FormsModule,
+        MyDatePickerModule
       ],
       providers: [
         Globals,

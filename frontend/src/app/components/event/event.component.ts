@@ -33,6 +33,7 @@ export class EventComponent implements OnInit {
 
 
   getEvent(): void {
+    console.log('getEvent');
     const id = +this.route.snapshot.paramMap.get('id');
     this.loadEvent(id);
     this.loadPerformances(id);
@@ -43,6 +44,7 @@ export class EventComponent implements OnInit {
    * @param id the id of the message which details should be loaded
    */
   loadEvent(id: number) {
+    console.log('loadEvent');
     this.eventService.getEventById(id).subscribe(
       event => this.event = event);
   }
