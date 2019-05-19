@@ -16,5 +16,8 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:h2:mem:backend;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
+server:
+  servlet:
+    context-path: "/"

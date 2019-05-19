@@ -13,7 +13,6 @@ import org.assertj.core.util.Strings;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
@@ -22,18 +21,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration-test")
-public class BaseIntegrationTest {
+public abstract class BaseIntegrationTest {
 
   private static final String SERVER_HOST = "http://localhost";
+  private static final String CONTEXT_PATH = "/";
   private static final String USER_USERNAME = "user";
   private static final String USER_PASSWORD = "password";
   private static final String ADMIN_PASSWORD = "password";
   private static final String ADMIN_USERNAME = "admin";
   protected String validUserTokenWithPrefix;
   protected String validAdminTokenWithPrefix;
-
-  @Value("${server.context-path}")
-  private String contextPath;
 
   @LocalServerPort private int port;
   @Autowired private SimpleHeaderTokenAuthenticationService simpleHeaderTokenAuthenticationService;
@@ -65,7 +62,7 @@ public class BaseIntegrationTest {
     }
 
     RestAssured.baseURI = SERVER_HOST;
-    RestAssured.basePath = contextPath;
+    RestAssured.basePath = CONTEXT_PATH;
     RestAssured.port = port;
     RestAssured.config =
         RestAssuredConfig.config()
