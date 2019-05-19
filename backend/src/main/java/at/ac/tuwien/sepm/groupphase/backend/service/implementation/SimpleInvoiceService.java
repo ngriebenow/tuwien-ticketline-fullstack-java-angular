@@ -19,6 +19,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.TicketRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
 import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -208,6 +209,7 @@ public class SimpleInvoiceService implements InvoiceService {
   private Invoice markPaid(Invoice invoice) {
     invoice.setPaid(true);
     invoice.setNumber(invoiceNumberSequenceGenerator.getNext());
+    invoice.setPayedAt(LocalDate.now());
     return invoice;
   }
 

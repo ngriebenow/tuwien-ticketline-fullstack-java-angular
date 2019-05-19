@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
 import com.github.javafaker.Faker;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ public class InvoiceGenerator implements DataGenerator<Invoice> {
   private InvoiceRepository invoiceRepository;
   private InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator;
 
+  /** Construct a new InvoceGenerator. */
   @Autowired
   public InvoiceGenerator(
       ClientRepository clientRepository,
@@ -48,6 +50,7 @@ public class InvoiceGenerator implements DataGenerator<Invoice> {
       for (int i = 0; i < FAKER.random().nextInt(MAX_INVOICE_COUNT_PER_CLIENT); i++) {
         boolean isPaid = FAKER.random().nextBoolean();
         Long number = isPaid ? invoiceNumberSequenceGenerator.getNext() : null;
+        // TODO: maybe add the paidAt property
         generatedInvoices.add(
             new Invoice.Builder()
                 .reservationCode(FAKER.letterify("??????"))

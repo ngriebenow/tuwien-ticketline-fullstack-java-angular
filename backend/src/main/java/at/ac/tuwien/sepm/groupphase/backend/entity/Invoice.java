@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import com.google.common.base.Objects;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -36,7 +37,8 @@ public class Invoice {
   @Column(nullable = true)
   private Long number;
 
-  // TODO: private LocalDate payedAt
+  @Column(nullable = true)
+  private LocalDate payedAt;
 
   @ManyToOne
   @JoinColumn(nullable = false)
@@ -56,6 +58,7 @@ public class Invoice {
     setCancelled(builder.isCancelled);
     setReservationCode(builder.reservationCode);
     setNumber(builder.number);
+    setPayedAt(builder.payedAt);
     setClient(builder.client);
     setTickets(builder.tickets);
   }
@@ -134,6 +137,14 @@ public class Invoice {
     this.number = number;
   }
 
+  public LocalDate getPayedAt() {
+    return payedAt;
+  }
+
+  public void setPayedAt(LocalDate payedAt) {
+    this.payedAt = payedAt;
+  }
+
   public Client getClient() {
     return client;
   }
@@ -155,12 +166,14 @@ public class Invoice {
         && isCancelled == invoice.isCancelled
         && Objects.equal(id, invoice.id)
         && Objects.equal(reservationCode, invoice.reservationCode)
+        && Objects.equal(number, invoice.number)
+        && Objects.equal(payedAt, invoice.payedAt)
         && Objects.equal(client, invoice.client);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, client);
+    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, number, payedAt, client);
   }
 
   @Override
@@ -175,6 +188,10 @@ public class Invoice {
         + ", reservationCode='"
         + reservationCode
         + '\''
+        + ", number="
+        + number
+        + ", paidAt="
+        + payedAt
         + ", client="
         + client
         + ", tickets="
@@ -189,6 +206,7 @@ public class Invoice {
     private boolean isCancelled;
     private String reservationCode;
     private Long number;
+    private LocalDate payedAt;
     private Client client;
     private List<Ticket> tickets = new ArrayList<>();
 
@@ -216,6 +234,11 @@ public class Invoice {
 
     public Builder number(Long val) {
       number = val;
+      return this;
+    }
+
+    public Builder payedAt(LocalDate val) {
+      payedAt = val;
       return this;
     }
 
