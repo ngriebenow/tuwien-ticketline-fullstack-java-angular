@@ -17,6 +17,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TicketRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
+import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
@@ -49,6 +50,7 @@ public class SimpleInvoiceService implements InvoiceService {
   private ClientRepository clientRepository;
   private DefinedUnitRepository definedUnitRepository;
   private TicketRepository ticketRepository;
+  private InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator;
 
   private final InvoiceMapper invoiceMapper;
 
@@ -60,12 +62,14 @@ public class SimpleInvoiceService implements InvoiceService {
       ClientRepository clientRepository,
       DefinedUnitRepository definedUnitRepository,
       TicketRepository ticketRepository,
+      InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator,
       InvoiceMapper invoiceMapper) {
     this.invoiceRepository = invoiceRepository;
     this.performanceRepository = performanceRepository;
     this.clientRepository = clientRepository;
     this.definedUnitRepository = definedUnitRepository;
     this.ticketRepository = ticketRepository;
+    this.invoiceNumberSequenceGenerator = invoiceNumberSequenceGenerator;
     this.invoiceMapper = invoiceMapper;
   }
 
@@ -128,12 +132,15 @@ public class SimpleInvoiceService implements InvoiceService {
 
     Invoice invoice =
         new Invoice.Builder()
-            .isPaid(isPaid)
-            // TODO: generate an invoice number from sequence if isPaid
+            .isPaid(false)
             .isCancelled(false)
             .client(client)
             .reservationCode(generateReservationCode())
             .build();
+
+    if (isPaid) {
+      markPaid(invoice);
+    }
 
     createTickets(performance, invoice, reservationRequestDto.getTicketRequests());
 
@@ -196,6 +203,12 @@ public class SimpleInvoiceService implements InvoiceService {
                               .salt(generateTicketSalt())
                               .build()));
         });
+  }
+
+  private Invoice markPaid(Invoice invoice) {
+    invoice.setPaid(true);
+    invoice.setNumber(invoiceNumberSequenceGenerator.getNext());
+    return invoice;
   }
 
   private static String generateReservationCode() {

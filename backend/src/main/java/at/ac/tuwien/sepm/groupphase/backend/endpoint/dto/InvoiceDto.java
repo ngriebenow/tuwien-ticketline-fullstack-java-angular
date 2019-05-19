@@ -22,10 +22,13 @@ public class InvoiceDto {
   @ApiModelProperty("The reservation code of this invoice")
   private String reservationCode;
 
+  @ApiModelProperty("The sequential number of this invoice")
+  private Long number;
+
   @ApiModelProperty("The id of the client who issued this invoice")
   private Long clientId;
 
-  // TODO: Implement as soon as michis user persistance part is done
+  // TODO: Implement as soon as michis user persistence part is done
   // private Long selleId;
 
   @ApiModelProperty(value = "The tickets reserved and bought by this invoice")
@@ -38,6 +41,7 @@ public class InvoiceDto {
     setPaid(builder.isPaid);
     setCancelled(builder.isCancelled);
     setReservationCode(builder.reservationCode);
+    setNumber(builder.number);
     setClientId(builder.clientId);
     setTickets(builder.tickets);
   }
@@ -72,6 +76,14 @@ public class InvoiceDto {
 
   public void setReservationCode(String reservationCode) {
     this.reservationCode = reservationCode;
+  }
+
+  public Long getNumber() {
+    return number;
+  }
+
+  public void setNumber(Long number) {
+    this.number = number;
   }
 
   public Long getClientId() {
@@ -136,6 +148,7 @@ public class InvoiceDto {
     private boolean isPaid;
     private boolean isCancelled;
     private String reservationCode;
+    private Long number;
     private Long clientId;
     private List<TicketDto> tickets;
 
@@ -158,6 +171,11 @@ public class InvoiceDto {
 
     public Builder reservationCode(String val) {
       reservationCode = val;
+      return this;
+    }
+
+    public Builder number(Long val) {
+      number = val;
       return this;
     }
 

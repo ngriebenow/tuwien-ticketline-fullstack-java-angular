@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Client;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Invoice;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,12 +27,16 @@ public class InvoiceGenerator implements DataGenerator<Invoice> {
 
   private ClientRepository clientRepository;
   private InvoiceRepository invoiceRepository;
+  private InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator;
 
   @Autowired
   public InvoiceGenerator(
-      ClientRepository clientRepository, InvoiceRepository invoiceRepository) {
+      ClientRepository clientRepository,
+      InvoiceRepository invoiceRepository,
+      InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator) {
     this.clientRepository = clientRepository;
     this.invoiceRepository = invoiceRepository;
+    this.invoiceNumberSequenceGenerator = invoiceNumberSequenceGenerator;
   }
 
   @Override
@@ -41,10 +46,13 @@ public class InvoiceGenerator implements DataGenerator<Invoice> {
     for (Client client : clientRepository.findAll()) {
       generatedInvoices.clear();
       for (int i = 0; i < FAKER.random().nextInt(MAX_INVOICE_COUNT_PER_CLIENT); i++) {
+        boolean isPaid = FAKER.random().nextBoolean();
+        Long number = isPaid ? invoiceNumberSequenceGenerator.getNext() : null;
         generatedInvoices.add(
             new Invoice.Builder()
-                .reservationCode(FAKER.numerify("####"))
-                .isPaid(FAKER.random().nextBoolean())
+                .reservationCode(FAKER.letterify("??????"))
+                .isPaid(isPaid)
+                .number(number)
                 .isCancelled(FAKER.random().nextBoolean())
                 .client(client)
                 .build());
