@@ -3,12 +3,12 @@
   <div class="row full-width h-100">
     <div class="col-2 no-padding my-auto">
       <div class="container-fluid key-bg" style="padding-top: 70px; padding-left: 100px">
-        <div class="row row-padding" *ngFor="let cat of cats; let i = index">
+        <div class="row row-padding" *ngFor="let cat of cats">
           <div class="col-6">
-            <h2  style="font-size:20px">Kategorie {{i+1}}</h2>
+            <h2  style="font-size:20px">{{cat.name}}</h2>
           </div>
           <div class="col-6 align-self-center">
-            <input readonly class="form-control" type="text" value="{{cat.toFixed(2)}} €">
+            <input readonly class="form-control" type="text" value="{{cat.priceInCent.toFixed(2)}} €">
           </div>
         </div>
         <div class="row row-padding" style="padding-top: 100px">
@@ -24,17 +24,44 @@
     <div class="col-8 no-padding my-auto">
       <div class="container-fluid hall-plan key-bg">
         <div class="btn stage"></div>
-        <ng-container *ngFor="let seat of seats">
-          <button type="button" (click)="clickSeat(seat)" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(seat),'top':calcPositionTop(seat)}" class="btn btn-seat"></button>
+        <ng-container *ngFor="let dunit of defUnits">
+          <div *ngIf="dunit.capacity == 1">
+            <div *ngIf="dunit.free > 0">
+              <button type="button" (click)="clickSeat(dunit.point1)" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-seat"></button>
+            </div>
+            <div *ngIf="dunit.free == 0">
+              <button type="button" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1), 'font-size':calcFontSize(), 'line-height': calcLineHeight()}" class="btn btn-reserved disabled">X</button>
+            </div>
+          </div>
+          <div *ngIf="dunit.capacity > 1">
+            <button type="button" (click)="clickSector(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
+          </div>
         </ng-container>
-        <!---   <ng-container *ngFor="let sector of sectors">
-          <button type="button" (click)="clickSector(sector)" [ngStyle]="{'width':calcSectorSizeX(sector),'height':calcSectorSizeY(sector),'position':'absolute','left':calcPositionLeft(sector.upperBoundary),'top':calcPositionTop(sector.upperBoundary)}" class="btn btn-sector"></button>
-        </ng-container>--->
+        <ng-container *ngFor="let cat of cats">
+          <button type="button" [ngStyle]="{'height': calcCatHeight(cat.id), 'background-color': getCatColor(cat.id),'position':'absolute', 'top':calcCatPosition(cat.id)}" class="btn btn-cat disabled"></button>
+          <h5 [ngStyle]="{'top': calcCatNamePosition(cat.id),'position':'absolute'}" style="margin-left: 850px">{{cat.name}}</h5>
+        </ng-container>
       </div>
     </div>
     <div class="col-2 no-padding my-auto">
       <div class="container-fluid key-bg" style="padding-top: 70px">
         <div class="row row-padding">
+          <div class="col-1 align-self-center">
+            <h2 class="float-right" style="font-size: 20px">Saal</h2>
+          </div>
+          <div class="col-6 align-self-center">
+            <input readonly class="form-control" type="text" value="{{getHallName()}}">
+          </div>
+        </div>
+        <div class="row row-padding">
+          <div class="col-1 align-self-center">
+            <h2 class="float-right" style="font-size: 20px">Uhrzeit</h2>
+          </div>
+          <div class="col-6 align-self-center">
+            <input readonly class="form-control" type="text" value="{{getStartAt()}}">
+          </div>
+        </div>
+        <div class="row row-padding" style="padding-top: 50px">
           <div class="col-1 align-self-center">
             <h2 class="float-right" style="font-size: 20px">Sitzplatz</h2>
           </div>

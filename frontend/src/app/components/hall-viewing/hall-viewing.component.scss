@@ -88,6 +88,7 @@
   font-size: x-large;
   padding: 0px;
   text-align: center;
+  vertical-align: top;
 }
 
 .btn-reserved:hover,
@@ -178,17 +179,10 @@
   margin-bottom: auto;
 }
 
-.cat{
-  border-left: 6px blue;
-  height: 200px;
-  position: absolute;
-}
-
-.cat-1{
-  border-left: 6px green;
-}
-
-.cat-2{
-  border-left: 6px darkmagenta;
+.btn-cat{
+  width: 4px !important;
+  padding: 0px;
+  margin-left: 840px;
+  border-radius: 0px;
 }
 
