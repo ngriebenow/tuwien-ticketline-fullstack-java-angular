@@ -43,8 +43,7 @@ public class Picture {
       return false;
     }
     Picture picture = (Picture) o;
-    return Objects.equals(id, picture.id)
-        && Objects.equals(data, picture.data);
+    return Objects.equals(id, picture.id) && Objects.equals(data, picture.data);
   }
 
   @Override
@@ -82,8 +81,7 @@ public class Picture {
     private byte[] data;
     private News news;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder id(Long val) {
       id = val;

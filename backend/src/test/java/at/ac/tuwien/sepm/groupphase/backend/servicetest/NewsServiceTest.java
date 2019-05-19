@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.news.NewsMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
@@ -21,19 +20,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles(profiles = "integration-test")
 public class NewsServiceTest {
 
-
   @Autowired private NewsService newsService;
-  @Autowired private NewsMapper newsMapper;
   @Autowired private UserRepository userRepository;
 
   private User U1;
   private User U2;
 
-  private DetailedNewsDto N1 = DetailedNewsDto.builder().
-      id(1L).
-      title("Test").
-      summary("Just one Test").
-      text("abcdefghijk test news test news news").build();
+  private DetailedNewsDto N1 = DetailedNewsDto.builder()
+      .id(1L)
+      .title("Test")
+      .summary("Just one Test")
+      .text("abcdefghijk test news test news news").build();
 
   @Before
   public void initialization() {

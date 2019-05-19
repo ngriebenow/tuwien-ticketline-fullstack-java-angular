@@ -122,7 +122,7 @@ export class AuthService {
     return date;
   }
 
-  setUsername(username : string): void {
+  setUsername(username: string): void {
     this.username = username;
   }
 

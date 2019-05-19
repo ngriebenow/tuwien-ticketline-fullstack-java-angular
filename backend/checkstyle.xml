@@ -15,7 +15,10 @@
     Authors: Max Vetrenko, Ruslan Diachenko, Roman Ivanov.
  -->
 
+
 <module name="Checker">
+
+
   <property name="charset" value="UTF-8"/>
 
   <property name="severity" value="warning"/>
@@ -127,10 +130,10 @@
       <message key="name.invalidPattern"
         value="Package name ''{0}'' must match pattern ''{1}''."/>
     </module>
-    <module name="TypeName">
+    <!--<module name="TypeName">
       <message key="name.invalidPattern"
         value="Type name ''{0}'' must match pattern ''{1}''."/>
-    </module>
+    </module>-->
     <module name="MemberName">
       <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9]*$"/>
       <message key="name.invalidPattern"

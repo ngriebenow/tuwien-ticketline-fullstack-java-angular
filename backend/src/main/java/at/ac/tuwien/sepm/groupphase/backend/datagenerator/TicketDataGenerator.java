@@ -11,6 +11,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.TicketRepository;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -19,20 +20,19 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
 public class TicketDataGenerator implements DataGenerator<Ticket> {
 
-  private Set<Class<?>> dependencies =
-      new HashSet<>(Arrays.asList(Performance.class, Invoice.class, DefinedUnit.class));
   private static final Faker FAKER = new Faker(new Locale("de-at"));
   private static final Random RANDOM = new Random();
-
   private static final int MAX_TICKET_COUNT_PER_INVOICE = 10;
   private static final int MIN_TICKET_COUNT_PER_INVOICE = 1;
   private static final int SALT_LENGTH = 8;
-
+  private Set<Class<?>> dependencies =
+      new HashSet<>(Arrays.asList(Performance.class, Invoice.class, DefinedUnit.class));
   private TicketRepository ticketRepository;
   private DefinedUnitRepository definedUnitRepository;
   private PerformanceRepository performanceRepository;
@@ -51,10 +51,9 @@ public class TicketDataGenerator implements DataGenerator<Ticket> {
     this.invoiceRepository = invoiceRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
-    List<Ticket> generatedTickets = new ArrayList<>(MAX_TICKET_COUNT_PER_INVOICE);
-    List<DefinedUnit> modifiedDefinedUnits = new ArrayList<>(MAX_TICKET_COUNT_PER_INVOICE);
 
     byte[] salt = new byte[SALT_LENGTH];
     List<Performance> performances = performanceRepository.findAll();
@@ -68,24 +67,19 @@ public class TicketDataGenerator implements DataGenerator<Ticket> {
 
       int definedUnitIdx = FAKER.random().nextInt(definedUnits.size());
 
-      modifiedDefinedUnits.clear();
-      generatedTickets.clear();
       for (int i = 0; i < ticketCount; i++) {
         RANDOM.nextBytes(salt);
         DefinedUnit definedUnit = definedUnits.get((definedUnitIdx + i) % definedUnits.size());
-        generatedTickets.add(
+        invoice.addTicket(
             new Ticket.Builder()
-                .salt(salt)
+                .salt(Base64.getEncoder().encodeToString(salt))
                 .isCancelled(invoice.isCancelled())
                 .definedUnit(definedUnit)
-                .invoice(invoice)
                 .build());
 
         definedUnit.setCapacityFree(definedUnit.getCapacityFree() - 1);
-        modifiedDefinedUnits.add(definedUnit);
       }
-      ticketRepository.saveAll(generatedTickets);
-      definedUnitRepository.saveAll(modifiedDefinedUnits);
+      invoiceRepository.save(invoice);
     }
   }
 

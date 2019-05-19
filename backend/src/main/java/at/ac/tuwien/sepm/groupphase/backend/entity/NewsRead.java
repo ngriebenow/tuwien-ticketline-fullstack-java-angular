@@ -39,9 +39,7 @@ public class NewsRead {
       return false;
     }
     NewsRead newsRead = (NewsRead) o;
-    return Objects.equals(user, newsRead.user)
-        && Objects.equals(news, newsRead.news);
-
+    return Objects.equals(user, newsRead.user) && Objects.equals(news, newsRead.news);
   }
 
   @Override
@@ -70,8 +68,7 @@ public class NewsRead {
     private User user;
     private News news;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder user(User val) {
       user = val;
