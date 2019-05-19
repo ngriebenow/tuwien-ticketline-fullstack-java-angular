@@ -84,6 +84,16 @@ public class SimpleInvoiceService implements InvoiceService {
 
   @Transactional
   @Override
+  public InvoiceDto buyTickets(@Valid ReservationRequestDto reservationRequestDto) {
+    LOGGER.info(
+        "Buying tickets for performance {} and client {}",
+        reservationRequestDto.getPerformanceId(),
+        reservationRequestDto.getClientId());
+    return createInvoice(reservationRequestDto, true);
+  }
+
+  @Transactional
+  @Override
   public InvoiceDto createInvoice(
       @Valid ReservationRequestDto reservationRequestDto, boolean isPaid) {
     Long performanceId = reservationRequestDto.getPerformanceId();
@@ -134,8 +144,8 @@ public class SimpleInvoiceService implements InvoiceService {
 
   /**
    * Create tickets for the given definedUnitIds and attaches them to invoice. Note that this will
-   * update the corresponding defined units but not save them. This will happen as soon as you
-   * save the invoice or tickets.
+   * update the corresponding defined units but not save them. This will happen as soon as you save
+   * the invoice or tickets.
    *
    * @param performance the performance to create tickets for.
    * @param invoice the invoice created for these tickets.

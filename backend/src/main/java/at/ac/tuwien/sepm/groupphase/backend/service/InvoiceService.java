@@ -26,4 +26,13 @@ public interface InvoiceService {
    * @return a new unpaid invoice.
    */
   InvoiceDto createInvoice(@Valid ReservationRequestDto reservationRequestDto, boolean isPaid);
+
+  /**
+   * Issue an attempt to buy tickets for a performance.
+   *
+   * @param reservationRequestDto an object containing information about performance, client and
+   *     tickets.
+   * @return the paid invoice.
+   */
+  InvoiceDto buyTickets(@Valid ReservationRequestDto reservationRequestDto);
 }
