@@ -2,6 +2,7 @@ import {Component, Input, NgModule, NO_ERRORS_SCHEMA, OnInit, Output} from '@ang
 import {EventFilter} from '../../dtos/event-filter';
 import {EventService} from '../../services/event.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-event-filter',
@@ -47,10 +48,21 @@ export class EventFilterComponent implements OnInit {
    * Loads the performances of a given event id
    * @param id the id of the event whose performances should be loaded
    */
-  loadPerformances(id: number) {
+  loadPerformances(id: number): Performance[] {
     console.log('loadPerformances');
+
+    let pers: Performance[] = [];
+
+
+
+
+
+    // return this.eventService.getPerformancesById(id);
+
     this.eventService.getPerformancesById(id).subscribe(
-      performances => this.performances = performances as Performance[]);
+      performances => pers = performances as Performance[]);
+
+    return pers;
   }
 
 }

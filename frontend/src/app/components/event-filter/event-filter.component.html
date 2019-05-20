@@ -139,39 +139,32 @@
   <div class="row mt-3"></div>
 
 
-<table *ngFor="let event of events">
-  <tr>
-    <td>{{event.name}}</td>
-  </tr>
-  <tr *ngFor="let per of loadPerformances(event.id)">
-    <td>{{per.startAt}}</td>
-  </tr>
-</table>
+<div class="row" *ngFor="let event of events">
+
+  <div (click)="loadPerformances(event.id)" class="card">
+
+    <div class="card-body">
+      <h5 class="card-title">{{ event.name }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ event.hall}}</h6>
+      <p class="card-text">{{ event.content }}</p>
+
+      <div class="row" *ngFor="let p of event.performances">
+        <label>Perf: {{p.name}}</label>
+      </div>
+
+
+      <!--<button (click)="loadPerformances(event.id)" type="button" class="btn btn-primary" data-toggle="modal"
+              [attr.data-target]="'.event-modal-'+event.id">
+        Details
+      </button>-->
+    </div>
+
+  </div>
+
+</div>
 
 
 
 
-  <!--<div class="row">
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <td>Event</td>
-        <td>Kategorie</td>
-        <td>Ort</td>
-        <td>Saal</td>
-        <td>Dauer</td>
-        <td>Preis</td>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let x of events">
-        <td>{{ x.name }}</td>
-        <td>{{ x.category }}</td>
-        <td>{{ x.hall.location.name }}</td>
-        <td>{{ x.hall.name }}</td>
-        <td>{{ x.duration }}</td>
-        <td>TODO</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>-->
+
+

@@ -59,7 +59,18 @@ public class SimpleEventService implements EventService {
     Page<Event> events = eventRepository.findAll(specification, pageable);
 
     List<EventDto> eventDtos = new ArrayList<>();
-    events.forEach(e -> eventDtos.add(eventMapper.eventToEventDto(e)));
+
+
+    for (Event e: events) {
+      EventDto eventDto = eventMapper.eventToEventDto(e);
+      eventDtos.add(eventDto);
+      eventDto.setPerformances(getPerformancesOfEvent(e.getId(),Pageable.unpaged()));
+    }
+
+    /*events.forEach(e -> eventDtos.add(eventMapper.eventToEventDto(e)));
+    eventDtos.forEach(
+        performanceRepository.
+    );*/
     return eventDtos;
   }
 

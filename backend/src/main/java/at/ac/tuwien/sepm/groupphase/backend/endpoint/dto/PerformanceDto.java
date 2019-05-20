@@ -13,8 +13,8 @@ public class PerformanceDto {
   @ApiModelProperty(required = true, name = "The name of the performance")
   private LocalDateTime startAt;
 
-  @ApiModelProperty(required = true, name = "The corresponding event of the performance")
-  private EventDto event;
+  //@ApiModelProperty(required = true, name = "The corresponding event of the performance")
+  //private EventDto event;
 
   @ApiModelProperty(required = true, name = "The name of the performance")
   private String name;
@@ -35,13 +35,13 @@ public class PerformanceDto {
     this.startAt = startAt;
   }
 
-  public EventDto getEvent() {
+  /*public EventDto getEvent() {
     return event;
   }
 
   public void setEvent(EventDto event) {
     this.event = event;
-  }
+  }*/
 
   public String getName() {
     return name;
@@ -55,7 +55,7 @@ public class PerformanceDto {
   public PerformanceDto build() {
     PerformanceDto performanceDto = new PerformanceDto();
     performanceDto.setId(id);
-    performanceDto.setEvent(event);
+    //performanceDto.setEvent(event);
     performanceDto.setName(name);
     performanceDto.setStartAt(startAt);
     return performanceDto;
