@@ -6,11 +6,15 @@ import at.ac.tuwien.sepm.groupphase.backend.service.PictureService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class NewsPictureEndpoint {
 
   private final PictureService pictureService;
+
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(NewsPictureEndpoint.class);
 
   public NewsPictureEndpoint(PictureService pictureService) {
     this.pictureService = pictureService;
@@ -35,6 +42,7 @@ public class NewsPictureEndpoint {
       value = "Get picture dto",
       authorizations = {@Authorization(value = "apiKey")})
   public PictureDto get(@PathVariable Long id) throws NotFoundException {
+    LOGGER.info("get picture by id");
     return pictureService.findOne(id);
   }
 
@@ -45,11 +53,13 @@ public class NewsPictureEndpoint {
    * @return the id of the created picture
    */
   @RequestMapping(method = RequestMethod.POST)
-  @PreAuthorize("hasRole('ADMIN')")
+  @ResponseStatus(HttpStatus.CREATED)
+  //@PreAuthorize("hasRole('ADMIN')") TODO discuss with MS
   @ApiOperation(
       value = "create a picture",
       authorizations = {@Authorization(value = "apiKey")})
   public Long post(@RequestBody PictureDto pictureDto) {
+    LOGGER.info("create picture");
     return pictureService.create(pictureDto);
   }
 }

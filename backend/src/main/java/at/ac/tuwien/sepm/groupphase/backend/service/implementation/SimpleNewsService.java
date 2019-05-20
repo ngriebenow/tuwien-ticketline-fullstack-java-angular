@@ -8,6 +8,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Picture;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.news.NewsMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsReadRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PictureRepository;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +33,8 @@ public class SimpleNewsService implements NewsService {
   private final NewsMapper newsMapper;
   private final EntityManager entityManager;
 
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(SimpleNewsService.class);
 
   /**
    * News service constructor.
@@ -52,6 +57,7 @@ public class SimpleNewsService implements NewsService {
 
   @Override
   public List<SimpleNewsDto> findAllNew(User user, Pageable pageable) {
+    LOGGER.info("get all unread news");
 
     String queryString = "SELECT n FROM News n "
         + "WHERE NOT EXISTS (SELECT nr FROM NewsRead nr WHERE nr.news = n AND nr.user = :user)"
@@ -74,6 +80,8 @@ public class SimpleNewsService implements NewsService {
 
   @Override
   public List<SimpleNewsDto> findAll(Pageable pageable) {
+    LOGGER.info("get all news");
+
     List<SimpleNewsDto> newsDtos = new ArrayList<>();
     List<News> news = new ArrayList<>();
     news = newsRepository.findAllByOrderByPublishedAtDesc(pageable);
@@ -83,7 +91,14 @@ public class SimpleNewsService implements NewsService {
 
   @Override
   public DetailedNewsDto findOne(Long id, User user) throws NotFoundException {
-    News news = newsRepository.findById(id).orElseThrow(NotFoundException::new);
+    LOGGER.info("getNewsById " + id);
+
+    News news = newsRepository.findById(id).orElseThrow(
+        () -> {
+          String msg = "Can't find news with id " + id;
+          LOGGER.error(msg);
+          return new NotFoundException(msg);
+        });
 
     //Mark news entry as read
     newsReadRepository.save(new NewsRead.Builder()
@@ -98,8 +113,9 @@ public class SimpleNewsService implements NewsService {
     List<Picture> pictures = pictureRepository.findAllByNewsOrderByIdAsc(news);
     List<Long> pictureIds = new ArrayList<>();
 
-    pictures.forEach(p -> pictureIds.add(p.getId()));
-
+    if (pictures != null) {
+      pictures.forEach(p -> pictureIds.add(p.getId()));
+    }
     retNewsDto.setPictureIds(pictureIds);
 
     return retNewsDto;
@@ -108,8 +124,53 @@ public class SimpleNewsService implements NewsService {
   @Transactional
   @Override
   public DetailedNewsDto create(DetailedNewsDto news) {
+    LOGGER.info("create news " + news);
+
+    validateDetailedNewsDto(news);
     news.setPublishedAt(LocalDateTime.now());
     return newsMapper
         .newsToDetailedNewsDto(newsRepository.save(newsMapper.detailedNewsDtoToNews(news)));
   }
+
+  private void validateDetailedNewsDto(DetailedNewsDto news) {
+    final String empty_summary_msg = "Error while creating news, Summary must not be empty.";
+    final String empty_text_msg = "Error while creating news, Text must not be empty.";
+    final String empty_title_msg = "Error while creating news, Title must not be empty.";
+    if (news.getSummary() == null) {
+      LOGGER.error(empty_summary_msg);
+      throw new ValidationException(empty_summary_msg);
+    } else if (news.getSummary().isEmpty()) {
+      LOGGER.error(empty_summary_msg);
+      throw new ValidationException(empty_summary_msg);
+    }
+    if (news.getText() == null) {
+      LOGGER.error(empty_text_msg);
+      throw new ValidationException(empty_text_msg);
+    } else if (news.getText().isEmpty()) {
+      LOGGER.error(empty_text_msg);
+      throw new ValidationException(empty_text_msg);
+    }
+    if (news.getTitle() == null) {
+      LOGGER.error(empty_title_msg);
+      throw new ValidationException(empty_title_msg);
+    } else if (news.getTitle().isEmpty()) {
+      LOGGER.error(empty_title_msg);
+      throw new ValidationException(empty_title_msg);
+    }
+
+    //Check if picture ids exists
+    if (news.getPictureIds() != null) {
+      for (Long id : news.getPictureIds()) {
+        if (!pictureRepository.existsById(id)) {
+          String msg = "Error while creating news, Picture with id " + id + " does not exist.";
+          LOGGER.error(msg);
+          throw new ValidationException(msg);
+        }
+      }
+    }
+
+
+  }
+
+
 }

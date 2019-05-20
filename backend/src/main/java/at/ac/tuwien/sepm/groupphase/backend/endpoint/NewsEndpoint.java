@@ -12,9 +12,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -34,6 +38,9 @@ public class NewsEndpoint {
   private final PictureService pictureService;
   private final SimpleHeaderTokenAuthenticationService tokenAuthenticationService;
   private final AccountService accountService;
+
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(NewsEndpoint.class);
 
   /**
    * Construct the entity.
@@ -82,8 +89,10 @@ public class NewsEndpoint {
     Pageable p = getPageable(page, count);
 
     if (onlyNew) {
+      LOGGER.info("get all unread news");
       return newsService.findAllNew(getUser(authorizationHeader), p);
     }  else {
+      LOGGER.info("get all news");
       return newsService.findAll(p);
     }
   }
@@ -111,6 +120,7 @@ public class NewsEndpoint {
       authorizations = {@Authorization(value = "apiKey")})
   public DetailedNewsDto find(@PathVariable Long id,
       @ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+    LOGGER.info("getNewsById " + id);
     return newsService.findOne(id, getUser(authorizationHeader));
   }
 
@@ -121,13 +131,17 @@ public class NewsEndpoint {
    * @return the created detailed news entry
    */
   @RequestMapping(method = RequestMethod.POST)
-  @PreAuthorize("hasRole('ADMIN')")
+  @ResponseStatus(HttpStatus.CREATED)
+  //@PreAuthorize("hasRole('ADMIN')") //TODO discuss with MS
   @ApiOperation(
       value = "Publish a news entry",
       authorizations = {@Authorization(value = "apiKey")})
   public DetailedNewsDto publishNews(@RequestBody DetailedNewsDto newsDto) {
+    LOGGER.info("create news " + newsDto);
     DetailedNewsDto retNewsDto = newsService.create(newsDto);
-    pictureService.updateSetNews(retNewsDto, newsDto.getPictureIds());
+    if (newsDto.getPictureIds() != null) {
+      pictureService.updateSetNews(retNewsDto, newsDto.getPictureIds());
+    }
     retNewsDto.setPictureIds(newsDto.getPictureIds());
     return retNewsDto;
   }
