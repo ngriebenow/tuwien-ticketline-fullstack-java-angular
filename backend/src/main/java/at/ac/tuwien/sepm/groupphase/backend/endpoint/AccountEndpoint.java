@@ -1,12 +1,15 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UserDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.UserFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,5 +34,23 @@ public class AccountEndpoint {
   @PreAuthorize("hasRole('ADMIN')")
   public UserDto saveAccount(@RequestBody UserDto user) {
     return accountService.saveUser(user);
+  }
+
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @ApiOperation(
+      value = "Get user by id",
+      authorizations = {@Authorization(value = "apiKey")})
+  @PreAuthorize("hasRole('ADMIN')")
+  public UserDto get(@PathVariable String id) {
+    return accountService.getOneById(id);
+  }
+
+  @RequestMapping(method = RequestMethod.GET)
+  @ApiOperation(
+      value = "Get filtered users",
+      authorizations = {@Authorization(value = "apiKey")})
+  @PreAuthorize("hasRole('ADMIN')")
+  public List<UserDto> get(UserFilterDto filter) {
+    return accountService.findAll(filter);
   }
 }
