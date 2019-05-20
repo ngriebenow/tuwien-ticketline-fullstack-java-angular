@@ -139,7 +139,7 @@
   <div class="row mt-3"></div>
 
 
-<div class="row" *ngFor="let event of events; let i1 = index">
+<!--<div class="row" *ngFor="let event of events; let i1 = index">
 
   <div class="card"
        [attr.aria-expanded]="isActive[i1]" aria-controls="collapseExample">
@@ -164,7 +164,47 @@
 
   </div>
 
+</div>-->
+
+
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <td>Event</td>
+      <td>Kategorie</td>
+      <td>Ort</td>
+      <td>Saal</td>
+      <td>Dauer</td>
+      <td>Preis</td>
+    </tr>
+    </thead>
+  </table>
+    <div *ngFor="let event of events; let i1 = index" style="width: 100%">
+      <table class="table table-striped">
+        <tr>
+          <td>{{ event.name }}</td>
+          <td>{{ event.category }}</td>
+          <td>{{ event.hall.location.name }}</td>
+          <td>{{ event.hall.name }}</td>
+          <td>{{ event.duration }}</td>
+          <td>TODO</td>
+        </tr>
+        <tr *ngFor="let p of event.performances">
+          <td></td>
+          <td>{{ p.name }}</td>
+          <td></td>
+          <td>{{ p.startAt }}</td>
+          <td>{{ p.name }}</td>
+        </tr>
+      </table>
+    </div>
 </div>
+
+
+
+
+
 
 <!--
 <div class="row">
