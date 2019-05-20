@@ -21,6 +21,7 @@ export class HallViewingService {
   defUnits: DefinedUnit[] = [];
   cats: PriceCategory[] = [];
   points: Point[] = [];
+  sectorSel: DefinedUnit;
 
   constructor() {
   }
@@ -28,10 +29,8 @@ export class HallViewingService {
   clickSeat(seat: DefinedUnit): void{
     var index = this.defUnits.indexOf(seat);
     if(this.selected[index] == false){
-      console.log("added" + seat.id);
       this.selected[index] = true;
     } else {
-      console.log("removed" + seat.id);
       this.selected[index] = false;
     }
   }
@@ -45,17 +44,21 @@ export class HallViewingService {
     }
   }
 
-  clickDefUnit(dunit: DefinedUnit): void{
+  clickDefUnitPlus(dunit: DefinedUnit){
     var index = this.defUnits.indexOf(dunit);
     if(this.selected[index] == false){
       this.selected[index] = true;
-      this.defUnits[index].free -= 1;
-      this.selectedNum[index] += 1;
-    } else if(this.selectedNum[index] == 1) {
-      this.selected[index] = false;
-      this.defUnits[index].free += 1;
-      this.selectedNum[index] -= 1;
-    } else {
+    }
+    this.defUnits[index].free -= 1;
+    this.selectedNum[index] += 1;
+  }
+
+  clickDefUnitMinus(dunit: DefinedUnit){
+    var index = this.defUnits.indexOf(dunit);
+    if(this.selected[index] == true){
+      if(this.selectedNum[index] == 1){
+        this.selected[index] = false;
+      }
       this.defUnits[index].free += 1;
       this.selectedNum[index] -= 1;
     }
@@ -110,9 +113,9 @@ export class HallViewingService {
 
 
   getCats(): PriceCategory[]{
-    this.cats[0] = new PriceCategory(1, 10.90, 'Kategorie 1',0x0000FF);
-    this.cats[1] = new PriceCategory(2, 11.20, 'Kategorie 2', 0x008000);
-    this.cats[2] = new PriceCategory(3, 12.50, 'Kategorie 3', 0xFF00FF);
+    this.cats[0] = new PriceCategory(1, 10.90, 'Kategorie1',0x0000FF);
+    this.cats[1] = new PriceCategory(2, 11.20, 'Kategorie2', 0x008000);
+    this.cats[2] = new PriceCategory(3, 12.50, 'Kategorie3', 0xFF00FF);
     return this.cats;
   }
 
@@ -162,4 +165,91 @@ export class HallViewingService {
     return '12:30';
   }
 
+  selectionNotEmpty(){
+    return this.selected.includes(true)
+  }
+
+  getTicketSum(){
+    var ticketSum = 0;
+    var num = 1;
+    var cat = 0;
+    for (var i = 0; i < this.selected.length; i++) {
+      if(this.selected[i]){
+        cat = this.defUnits[i].priceCategory;
+        for (var j = 0; j < this.cats.length; j++) {
+          if(cat == this.cats[j].id){
+            if (this.defUnits[i].capacity > 1){
+              num = this.selectedNum[i];
+            }
+            ticketSum += (this.cats[j].priceInCent*num);
+            num = 1;
+          }
+        }
+      }
+    }
+    return ticketSum;
+  }
+
+  sectorSelected(dunit: DefinedUnit){
+    this.sectorSel = dunit;
+  }
+
+  anySectorSelected(){
+    return this.sectorSel != null ? true : false;
+  }
+
+  getSelectedSectorName(){
+    return this.sectorSel.name;
+  }
+
+  getSelectedSectorCap(){
+    return this.sectorSel.capacity;
+  }
+
+  getSelectedSectorFree(){
+    var num = this.sectorSel.free;
+    var index = this.defUnits.indexOf(this.sectorSel);
+    if(this.selected[index] && this.sectorSel.free == 0){
+      num = this.selectedNum[index];
+    }
+    return num;
+  }
+
+  updateSelectedNum(sectorNum: number){
+    var index = this.defUnits.indexOf(this.sectorSel);
+    this.selectedNum[index] = sectorNum;
+  }
+
+  getNumOfSelectedSec(){
+    var index = this.defUnits.indexOf(this.sectorSel);
+    return this.selectedNum[index] > 0 ? this.selectedNum[index] : 'Kein Ticket';
+  }
+
+  checkValue(value: number){
+    var index = this.defUnits.indexOf(this.sectorSel);
+    if(value > this.defUnits[index].free){
+      value = this.defUnits[index].free;
+    }
+    if(value < 0){
+      value = 0;
+    }
+    return value;
+  }
+
+  sectorIsSelected(dunit: DefinedUnit){
+    var index = this.defUnits.indexOf(dunit);
+    return this.selected[index];
+  }
+
+  sectorDone(sectorNum: number){
+    var index = this.defUnits.indexOf(this.sectorSel);
+    this.selectedNum[index] = sectorNum;
+    this.defUnits[index].free -= sectorNum;
+    if(sectorNum != 0){
+      this.selected[index] = true;
+    } else {
+      this.selected[index] = false;
+    }
+    this.sectorSel = null;
+  }
 }

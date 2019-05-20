@@ -1,27 +1,67 @@
 <div class="container">
   <h1 style="padding-bottom: 0px; margin: 0px;">{{getEventName()}} - {{getPerformanceName()}}</h1>
   <div class="row full-width h-100">
-    <div class="col-2 no-padding my-auto">
+    <div class="col-3 no-padding my-auto">
       <div class="container-fluid key-bg" style="padding-top: 70px; padding-left: 100px">
         <div class="row row-padding" *ngFor="let cat of cats">
-          <div class="col-6">
-            <h2  style="font-size:20px">{{cat.name}}</h2>
-          </div>
           <div class="col-6 align-self-center">
+            <h2 class="float-right" style="font-size:20px">{{cat.name}}</h2>
+          </div>
+          <div class="col-4 align-self-center">
             <input readonly class="form-control" type="text" value="{{cat.priceInCent.toFixed(2)}} €">
           </div>
         </div>
-        <div class="row row-padding" style="padding-top: 100px">
-          <div class="col-6">
-            <h2 style="font-size: 20px">Gesamtpreis</h2>
+        <div class="row row-padding" style="padding-top: 25px" *ngIf="anySectorSelected()">
+          <div class="col-10 align-self-center">
+            <div class="sector-pop shadow p-3 mb-5 bg-white rounded">
+              <div class="row row-padding">
+                <div class="col-12 mx-auto">
+                  <h2 class="text-center" style="font-size: 20px">{{getSelectedSectorName()}}</h2>
+                </div>
+              </div>
+              <div class="row row-padding">
+                <div class="col-6 align-self-center">
+                  <h5 style="font-size: 16px" class="float-right">Anzahl</h5>
+                </div>
+                <div class="col-6 align-self-center">
+                  <input class="form-control" style="height: 28px; font-size: 16px" type="number" min="0" max="{{getSelectedSectorFree()}}" step="1" [(ngModel)]="sectorNum" (input)="checkValue(); updateSelectedNum()" placeholder="{{updateSelectedNum()}}">
+                </div>
+              </div>
+              <div class="row row-padding">
+                <div class="col-6 align-self-center">
+                  <h5 style="font-size: 16px" class="float-right">Kapazität</h5>
+                </div>
+                <div class="col-4 align-self-center">
+                  <input readonly class="form-control" style="height: 26px; font-size: 16px" type="text" value="{{getSelectedSectorCap()}}">
+                </div>
+              </div>
+              <div class="row" style="padding-bottom: 5px">
+                <div class="col-6 align-self-center">
+                  <h5 style="font-size: 16px" class="float-right">Frei</h5>
+                </div>
+                <div class="col-4 align-self-center">
+                  <input readonly class="form-control" style="height: 26px; font-size: 16px" type="text" value="{{getSelectedSectorFree()}}">
+                </div>
+              </div>
+              <div class="row" style="padding-bottom: 10px; padding-top: 30px">
+                <div class="col-12 text-center">
+                  <button (click)="sectorDone()" style="width: 100px" type="button" class="btn btn-primary btn-md">Fertig</button>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+        <div class="row row-padding" style="padding-top: 100px">
           <div class="col-6 align-self-center">
-            <input readonly class="form-control" type="text" value="... €">
+            <h2 class="float-right" style="font-size: 20px">Gesamtpreis</h2>
+          </div>
+          <div class="col-4 align-self-center">
+            <input readonly class="form-control" type="text" value="{{getTicketSum().toFixed(2)}} €">
           </div>
         </div>
       </div>
     </div>
-    <div class="col-8 no-padding my-auto">
+    <div class="col-6 no-padding my-auto">
       <div class="container-fluid hall-plan key-bg">
         <div class="btn stage"></div>
         <ng-container *ngFor="let dunit of defUnits">
@@ -35,24 +75,13 @@
           </div>
           <div *ngIf="dunit.capacity > 1">
             <div *ngIf="dunit.free > 0">
-              <div (click)="clickDefUnit(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn-sector">
-                <div class="row" style="height: inherit">
-                  <div class="col-4 align-self-center" >
-                    <i class="fas fa-plus-square"></i>
-                  </div>
-                  <div class="col-4 align-self-center" style="padding: 0px;">
-                     <span>{{dunit.name}}<br>Frei:{{dunit.free}}</span>
-                  </div>
-                  <div class="col-4 align-self-center">
-                    <i class="fas fa-minus-square"></i>
-                  </div>
-                </div>
-               </div>
-              <!---<input type="number" min="0" max="{{dunit.free}}" step="1" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" placeholder="{{dunit.name}}<br>Frei:{{dunit.free}}" class="form-control text-field-norm">--->
-              <!---<button type="button" (click)="clickDefUnit(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector">{{dunit.name}}<br>Frei:{{dunit.free}}</button>--->
+              <button (click)="sectorSelected(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector text-truncate">{{dunit.free}} frei<br>{{dunit.name}}</button>
+             </div>
+            <div *ngIf="dunit.free == 0 && sectorIsSelected(dunit) == false">
+              <button [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector-zero text-truncate">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
             </div>
-            <div *ngIf="dunit.free == 0">
-              <button type="button" (click)="clickEmptyUnit(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector-zero">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
+            <div *ngIf="dunit.free == 0 && sectorIsSelected(dunit) == true">
+              <button (click)="sectorSelected(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector-zero-selected text-truncate">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
             </div>
           </div>
         </ng-container>
@@ -62,26 +91,26 @@
         </ng-container>
       </div>
     </div>
-    <div class="col-2 no-padding my-auto">
-      <div class="container-fluid key-bg" style="padding-top: 70px">
+    <div class="col-3 no-padding my-auto">
+      <div class="container-fluid key-bg" style="padding-top: 70px; padding-right: 100px">
         <div class="row row-padding">
-          <div class="col-1 align-self-center">
+          <div class="col-6 align-self-center">
             <h2 class="float-right" style="font-size: 20px">Saal</h2>
           </div>
-          <div class="col-6 align-self-center">
+          <div class="col-4 align-self-center">
             <input readonly class="form-control" type="text" value="{{getHallName()}}">
           </div>
         </div>
         <div class="row row-padding">
-          <div class="col-1 align-self-center">
+          <div class="col-6 align-self-center">
             <h2 class="float-right" style="font-size: 20px">Uhrzeit</h2>
           </div>
-          <div class="col-6 align-self-center">
+          <div class="col-4 align-self-center">
             <input readonly class="form-control" type="text" value="{{getStartAt()}}">
           </div>
         </div>
         <div class="row row-padding" style="padding-top: 50px">
-          <div class="col-1 align-self-center">
+          <div class="col-6 align-self-center">
             <h2 class="float-right" style="font-size: 20px">Sitzplatz</h2>
           </div>
           <div class="col-1 align-self-center">
@@ -89,7 +118,7 @@
           </div>
         </div>
         <div class="row row-padding">
-          <div class="col-1 align-self-center">
+          <div class="col-6 align-self-center">
             <h2 class="float-right" style="font-size: 20px">Sektor</h2>
           </div>
           <div class="col-1 align-self-center">
@@ -97,7 +126,7 @@
           </div>
         </div>
         <div class="row row-padding">
-          <div class="col-1 align-self-center">
+          <div class="col-6 align-self-center">
             <h2 class="float-right" style="font-size: 20px">Reserviert</h2>
           </div>
           <div class="col-1 align-self-center">
@@ -105,7 +134,7 @@
           </div>
         </div>
         <div class="row row-padding">
-          <div class="col-1 align-self-center">
+          <div class="col-6 align-self-center">
             <h2 class="float-right" style="font-size: 20px">Auswahl</h2>
           </div>
           <div class="col-1 align-self-center">
@@ -116,7 +145,11 @@
     </div>
   </div>
 </div>
-
+<div *ngIf="selectionNotEmpty() === true">
+  <div class="bottom-right-above-1">
+    <button type="button" class="btn btn-primary btn-lg">Fertig</button>
+  </div>
+</div>
 <div class="bottom-right">
   <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
 </div>

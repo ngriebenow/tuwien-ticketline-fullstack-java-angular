@@ -103,7 +103,7 @@
   height: 50px;
   border-radius: 5px;
   text-align: center;
-  color: $dark-gray;
+  color: white;
   font-size: inherit;
 }
 
@@ -118,12 +118,31 @@
   width: 50px;
   height: 50px;
   border-radius: 5px;
+  text-align: center;
+  color: $dark-gray;
+  font-size: inherit;
 }
 
 .btn-sector-zero:hover,
 .btn-sector-zero:focus,
 .btn-sector-zero:active{
   background-color: darken($medium-gray, 10);
+}
+
+.btn-sector-zero-selected{
+  background-color: $main-orange;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+  font-size: inherit;
+}
+
+.btn-sector-zero-selected:hover,
+.btn-sector-zero-selected:focus,
+.btn-sector-zero-selected:active{
+  background-color: darken($main-orange, 10);
 }
 
 .row-padding {
@@ -202,3 +221,9 @@
   border-radius: 0px;
 }
 
+.sector-pop{
+  width: inherit;
+  height: 300px;
+  border-radius: 5px;
+  margin: 15px;
+}

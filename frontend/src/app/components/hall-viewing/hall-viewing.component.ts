@@ -28,6 +28,7 @@ export class HallViewingComponent implements OnInit {
   seats: Point[];
   defUnits: DefinedUnit[];
   cats: PriceCategory[];
+  sectorNum: number;
 
   constructor(private route: ActivatedRoute,
               private hallViewingService: HallViewingService) {
@@ -49,8 +50,12 @@ export class HallViewingComponent implements OnInit {
     return this.hallViewingService.getBackColor(dunit);
   }
 
-  clickDefUnit(dunit: DefinedUnit){
-    this.hallViewingService.clickDefUnit(dunit);
+  clickDefUnitPlus(dunit: DefinedUnit){
+    this.hallViewingService.clickDefUnitPlus(dunit);
+  }
+
+  clickDefUnitMinus(dunit: DefinedUnit){
+    this.hallViewingService.clickDefUnitMinus(dunit);
   }
 
   clickEmptyUnit(dunit: DefinedUnit){
@@ -79,6 +84,54 @@ export class HallViewingComponent implements OnInit {
 
   getSeats(): void {
     this.hallViewingService.getSeats();
+  }
+
+  selectionNotEmpty(){
+    return this.hallViewingService.selectionNotEmpty();
+  }
+
+  getTicketSum(){
+    return this.hallViewingService.getTicketSum();
+  }
+
+  sectorSelected(dunit: DefinedUnit){
+    this.hallViewingService.sectorSelected(dunit);
+  }
+
+  anySectorSelected(){
+    return this.hallViewingService.anySectorSelected();
+  }
+
+  getSelectedSectorName(){
+    return this.hallViewingService.getSelectedSectorName();
+  }
+
+  getSelectedSectorCap(){
+    return this.hallViewingService.getSelectedSectorCap();
+  }
+
+  getSelectedSectorFree(){
+    return this.hallViewingService.getSelectedSectorFree();
+  }
+
+  updateSelectedNum(){
+    this.hallViewingService.updateSelectedNum(this.sectorNum);
+  }
+
+  getNumOfSelectedSec(){
+    return this.hallViewingService.getNumOfSelectedSec();
+  }
+
+  checkValue(){
+    this.sectorNum = this.hallViewingService.checkValue(this.sectorNum);
+  }
+
+  sectorIsSelected(dunit: DefinedUnit){
+    return this.hallViewingService.sectorIsSelected(dunit);
+  }
+
+  sectorDone(){
+    this.hallViewingService.sectorDone(this.sectorNum);
   }
 
   getCatColor(id: number){
