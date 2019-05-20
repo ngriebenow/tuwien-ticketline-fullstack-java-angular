@@ -139,30 +139,69 @@
   <div class="row mt-3"></div>
 
 
-<div class="row" *ngFor="let event of events">
+<div class="row" *ngFor="let event of events; let i1 = index">
 
-  <div (click)="loadPerformances(event.id)" class="card">
+  <div class="card"
+       [attr.aria-expanded]="isActive[i1]" aria-controls="collapseExample">
 
-    <div class="card-body">
+    <div (click)="isActive=[];isActive[i1] = !isActive[i1];" class="card-body">
       <h5 class="card-title">{{ event.name }}</h5>
       <h6 class="card-subtitle mb-2 text-muted">{{ event.hall}}</h6>
-      <p class="card-text">{{ event.content }}</p>
+      <div id="collapseExample" [ngbCollapse]="isActive[i1]">
+        <table class="table table-striped">
+          <tr *ngFor="let p of event.performances">
+            <td></td>
+            <td>{{ p.name }}</td>
+            <td></td>
+            <td>{{ p.startAt }}</td>
+            <td>{{ p.name }}</td>
+          </tr>
+        </table>
 
-      <div class="row" *ngFor="let p of event.performances">
-        <label>Perf: {{p.name}}</label>
       </div>
 
-
-      <!--<button (click)="loadPerformances(event.id)" type="button" class="btn btn-primary" data-toggle="modal"
-              [attr.data-target]="'.event-modal-'+event.id">
-        Details
-      </button>-->
     </div>
 
   </div>
 
 </div>
 
+<!--
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <td>Event</td>
+      <td>Kategorie</td>
+      <td>Ort</td>
+      <td>Saal</td>
+      <td>Dauer</td>
+      <td>Preis</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let x of events">
+      <td>{{ x.name }}</td>
+      <td>{{ x.category }}</td>
+      <td>{{ x.hall.location.name }}</td>
+      <td>{{ x.hall.name }}</td>
+      <td>{{ x.duration }}</td>
+      <td>TODO</td>
+
+    <tr *ngFor="let p of x.performances">
+      <td></td>
+      <td>{{ p.name }}</td>
+      <td></td>
+      <td>{{ p.startAt }}</td>
+      <td>{{ p.name }}</td>
+    </tr>
+
+    </tr>
+
+    </tbody>
+  </table>
+</div>
+-->
 
 
 
