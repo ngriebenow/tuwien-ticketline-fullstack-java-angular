@@ -6,7 +6,6 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
 import com.github.javafaker.Faker;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Profile("generateData")
-public class InvoiceGenerator implements DataGenerator<Invoice> {
+public class InvoiceDataGenerator implements DataGenerator<Invoice> {
 
   private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Client.class));
   private static final Faker FAKER = new Faker(new Locale("de-at"));
@@ -32,7 +31,7 @@ public class InvoiceGenerator implements DataGenerator<Invoice> {
 
   /** Construct a new InvoceGenerator. */
   @Autowired
-  public InvoiceGenerator(
+  public InvoiceDataGenerator(
       ClientRepository clientRepository,
       InvoiceRepository invoiceRepository,
       InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator) {
@@ -50,13 +49,14 @@ public class InvoiceGenerator implements DataGenerator<Invoice> {
       for (int i = 0; i < FAKER.random().nextInt(MAX_INVOICE_COUNT_PER_CLIENT); i++) {
         boolean isPaid = FAKER.random().nextBoolean();
         Long number = isPaid ? invoiceNumberSequenceGenerator.getNext() : null;
+        boolean isCancelled = isPaid ? FAKER.random().nextBoolean() : false;
         // TODO: maybe add the paidAt property
         generatedInvoices.add(
             new Invoice.Builder()
                 .reservationCode(FAKER.letterify("??????"))
                 .isPaid(isPaid)
                 .number(number)
-                .isCancelled(FAKER.random().nextBoolean())
+                .isCancelled(isCancelled)
                 .client(client)
                 .build());
       }
