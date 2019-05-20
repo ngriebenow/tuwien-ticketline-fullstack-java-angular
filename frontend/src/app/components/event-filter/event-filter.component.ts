@@ -19,13 +19,17 @@ export class EventFilterComponent implements OnInit {
 
   constructor(private eventService: EventService) { }
 
+
+
   @Input() eventFilter: EventFilter = new EventFilter('', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
   @Output() events: Event[] = [];
+  @Output() performances: Performance[] = [];
 
   ngOnInit() {
     console.log('ngOnInit');
     this.loadEvents();
+    this.loadPerformances(2);
   }
 
 
@@ -37,6 +41,16 @@ export class EventFilterComponent implements OnInit {
     console.log('loadEvents');
     this.eventService.getEventsFiltered(this.eventFilter).subscribe(
       (events: Event[]) => this.events = events);
+  }
+
+  /**
+   * Loads the performances of a given event id
+   * @param id the id of the event whose performances should be loaded
+   */
+  loadPerformances(id: number) {
+    console.log('loadPerformances');
+    this.eventService.getPerformancesById(id).subscribe(
+      performances => this.performances = performances as Performance[]);
   }
 
 }
