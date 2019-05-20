@@ -1,3 +1,4 @@
+@import "../../../colors";
 
 .form-control {
   width: 100% !important;
@@ -25,6 +26,10 @@
 
 .card {
   width: 100%;
+}
+
+.card-event {
+  color: $main-blue;
 }
 
 
