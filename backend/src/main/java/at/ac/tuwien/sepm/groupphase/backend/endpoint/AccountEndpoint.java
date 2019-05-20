@@ -50,7 +50,16 @@ public class AccountEndpoint {
       value = "Get filtered users",
       authorizations = {@Authorization(value = "apiKey")})
   @PreAuthorize("hasRole('ADMIN')")
-  public List<UserDto> get(UserFilterDto filter) {
+  public List<UserDto> getList(UserFilterDto filter) {
     return accountService.findAll(filter);
+  }
+
+  @RequestMapping(method = RequestMethod.PUT)
+  @ApiOperation(
+      value = "Update user",
+      authorizations = {@Authorization(value = "apiKey")})
+  @PreAuthorize("hasRole('ADMIN')")
+  public UserDto update(@RequestBody UserDto updated) {
+    return accountService.editUser(updated);
   }
 }

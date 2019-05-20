@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -111,14 +112,42 @@ public class SimpleAccountService implements AccountService {
     } catch (NotFoundException e) {
       // Everything fine
     }
-    User u = userMapper.userDtoToUser(user);
+    User u;
+    try {
+      u = userMapper.userDtoToUser(user);
+    } catch (NullPointerException e) {
+      throw new InvalidInputException("All fields must be set!");
+    }
     userRepository.saveAndFlush(u);
     return userMapper.userToUserDto(findOne(u.getUsername()));
   }
 
+  private User updateUserHelper(User old, UserDto updated) {
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    if (updated.getPassword() != null) {
+      old.setPassword(encoder.encode(updated.getPassword()));
+    }
+    if (updated.getFailedLoginCounter() != null) {
+      old.setFailedLoginCounter(updated.getFailedLoginCounter());
+    }
+    if (updated.getEnabled() != null) {
+      old.setEnabled(updated.getEnabled());
+    }
+    if (updated.getAdmin() != null) {
+      old.setAuthority(updated.getAdmin() ? "ROLE_ADMIN, ROLE_USER" : "ROLE_USER");
+    }
+    return old;
+  }
+
   @Override
   public UserDto editUser(UserDto user) {
-    return null;
+    if (user.getUsername() == null) {
+      throw new InvalidInputException("Username must be set!");
+    }
+    User old = findOne(user.getUsername());
+    old = updateUserHelper(old, user);
+    userRepository.saveAndFlush(old);
+    return getOneById(user.getUsername());
   }
 
   @Override
