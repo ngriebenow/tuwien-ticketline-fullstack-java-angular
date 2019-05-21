@@ -48,8 +48,8 @@
           <input readonly class="form-control" type="text" value="{{event.duration}}" >
         </div>
         <div class="col-md-4">
-          <input readonly class="form-control" type="text" value="{{event.priceCategories[0].priceInCents/100 | currency:'EUR'}} -
-{{event.priceCategories[event.priceCategories.length-1].priceInCents/100 | currency:'EUR'}}" >
+          <input readonly class="form-control" type="text"
+                 value="{{event.priceCategories[0].priceInCents/100 | currency:'EUR'}} - {{event.priceCategories[event.priceCategories.length-1].priceInCents/100 | currency:'EUR'}}" >
         </div>
         <div class="col-md-1">
         </div>
