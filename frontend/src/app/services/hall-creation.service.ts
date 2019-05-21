@@ -13,7 +13,6 @@ import {Router} from '@angular/router';
 })
 export class HallCreationService {
 
-  private created: boolean;
   private loadedExisting: boolean;
   private initialized: boolean;
   private edited: boolean;
@@ -72,6 +71,7 @@ export class HallCreationService {
         this.hall.version = loadedHall.version;
         this.hall.name = loadedHall.name;
         this.hall.location = loadedHall.location;
+        // todo cleaner with subscriptions?
         /*
         this.hallSize = new Point(loadedHall.boundaryPoint.coordinateX, loadedHall.boundaryPoint.coordinateY);
         this.hall = new Hall(
@@ -122,6 +122,9 @@ export class HallCreationService {
     );
   }
 
+  /**
+   * creates an aisle at every empty position of hall
+   */
   createAisles(): void {
     // todo fill empty spaces with aisles
   }
@@ -130,7 +133,6 @@ export class HallCreationService {
    * checks and ends initialization process and sets initialized to true
    */
   completeInitializing(): void {
-    // todo clip values of number fields
     if (
       0 < this.hallSize.coordinateX &&
       0 < this.hallSize.coordinateY &&
@@ -162,7 +164,6 @@ export class HallCreationService {
    * checks and ends sector creation process and calls saveHall()
    */
   completeSectors(): void {
-    // todo clip values of number fields
     if (this.validateSectors()) {
       this.saveHall();
     }
