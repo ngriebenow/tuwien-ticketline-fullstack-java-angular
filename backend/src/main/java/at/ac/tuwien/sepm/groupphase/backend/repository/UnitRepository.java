@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface UnitRepository extends JpaRepository<Unit, Long> {
 
   List<Unit> findAllByHall(Hall hall);
+
+  List<Unit> findAllByHall_Id(Long id);
 }
