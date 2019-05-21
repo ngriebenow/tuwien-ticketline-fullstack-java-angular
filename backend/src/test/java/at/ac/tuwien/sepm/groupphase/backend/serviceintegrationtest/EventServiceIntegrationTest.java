@@ -32,8 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,16 +51,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
-// import org.junit.Assert;
-// import org.junit.Test;
-//jdbc:h2:mem:backend;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-//@RunWith(JUnit4.class)
 @SpringBootTest//(properties = {"spring.config.name=backend-test-h2","backend.trx.datasource.url=jdbc:h2:mem:backend"})
 @ActiveProfiles(profiles = "serviceintegration-test")
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-@AutoConfigureTestDatabase(replace = Replace.ANY)
 public class EventServiceIntegrationTest {
-
 
 
   @Autowired private EventService eventService;
@@ -273,6 +268,15 @@ public class EventServiceIntegrationTest {
     P9 = performanceRepository.save(P9);
   }
 
+  @AfterEach
+  public void cleanUp() {
+    performanceRepository.deleteAll();
+    eventRepository.deleteAll();
+    hallRepository.deleteAll();
+    locationRepository.deleteAll();
+    artistRepository.deleteAll();
+  }
+
   @Test
   public void givenEvent_whenFindByEvent_thenReturnEvent() {
     Event retE1 = eventMapper.eventDtoToEvent(eventService.getOneById(E1.getId()));
@@ -374,7 +378,7 @@ public class EventServiceIntegrationTest {
 
     List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
 
-    Assert.assertThat(retList.size(), is(2));
+    Assert.assertThat(retList.size(), is(3));
     Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E1)));
     Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
     Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
