@@ -6,12 +6,16 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
 import com.github.javafaker.Faker;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -48,17 +52,21 @@ public class InvoiceDataGenerator implements DataGenerator<Invoice> {
       generatedInvoices.clear();
       for (int i = 0; i < FAKER.random().nextInt(MAX_INVOICE_COUNT_PER_CLIENT); i++) {
         boolean isPaid = FAKER.random().nextBoolean();
-        Long number = isPaid ? invoiceNumberSequenceGenerator.getNext() : null;
-        boolean isCancelled = isPaid ? FAKER.random().nextBoolean() : false;
-        // TODO: maybe add the paidAt property
-        generatedInvoices.add(
+        Invoice.Builder invoiceBuilder =
             new Invoice.Builder()
                 .reservationCode(FAKER.letterify("??????"))
                 .isPaid(isPaid)
-                .number(number)
-                .isCancelled(isCancelled)
                 .client(client)
-                .build());
+                .isCancelled(false);
+        if (isPaid) {
+          Date today = localDateToDate(LocalDate.now());
+          LocalDate paidAt = dateToLocalDate(FAKER.date().past(14, TimeUnit.DAYS, today));
+          invoiceBuilder
+              .number(invoiceNumberSequenceGenerator.getNext())
+              .isCancelled(FAKER.random().nextBoolean())
+              .paidAt(paidAt);
+        }
+        generatedInvoices.add(invoiceBuilder.build());
       }
       invoiceRepository.saveAll(generatedInvoices);
     }
@@ -72,5 +80,13 @@ public class InvoiceDataGenerator implements DataGenerator<Invoice> {
   @Override
   public Set<Class<?>> getDependencies() {
     return dependencies;
+  }
+
+  private Date localDateToDate(LocalDate dateToConvert) {
+    return Date.from(dateToConvert.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+  }
+
+  private LocalDate dateToLocalDate(Date dateToConvert) {
+    return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
   }
 }
