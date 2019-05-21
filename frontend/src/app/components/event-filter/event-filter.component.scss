@@ -32,6 +32,33 @@
   color: $main-blue;
 }
 
+.card-performance-body {
+  margin: 8px !important;
+}
+
+.card-performance:hover {
+  background-color: $main-orange;
+  color: white;
+}
+
+.card-performance:hover h5{
+  color: white;
+}
+
+.performance-title {
+  font-size: 14px;
+}
+
+.performance-subtitle {
+  font-size: 12px;
+}
+
+.bottom-column
+{
+  float: none;
+  display: table-cell;
+  vertical-align: bottom;
+}
 
 .col-md-10 {
   padding: 2px !important;
