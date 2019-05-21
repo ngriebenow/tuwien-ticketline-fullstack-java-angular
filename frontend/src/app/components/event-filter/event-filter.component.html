@@ -41,7 +41,7 @@
     <div class="col-2">
       <div style="margin: 0" class="row">
         <div class="col-9">
-          <input class="form-control" placeholder="Dauer" type="text" value="">
+          <input class="form-control" placeholder="Dauer" (change)="loadEvents()" [(ngModel)]="eventFilter.duration" type="text" value="">
         </div>
         <div class="col-2" style="padding-left: 0">
           <div class="align-content-end">
