@@ -44,6 +44,7 @@ public class SimpleInvoiceService implements InvoiceService {
   private static final Logger LOGGER = LoggerFactory.getLogger(SimpleInvoiceService.class);
   private static final Random RANDOM = new SecureRandom();
 
+  private static final Long PRE_PERFORMANCE_RESERVATION_CLEAR_MINUTES = 30L;
   private static final int TICKET_SALT_LENGTH = 32;
   private static final int RESERVATION_CODE_LENGTH = 6;
   private static final char[] RESERVATION_CODE_CHARACTERS =
@@ -87,11 +88,50 @@ public class SimpleInvoiceService implements InvoiceService {
   @Transactional
   @Override
   public InvoiceDto buyTickets(@Valid ReservationRequestDto reservationRequestDto) {
-    LOGGER.info(
-        "Buying tickets for performance {} and client {}",
-        reservationRequestDto.getPerformanceId(),
-        reservationRequestDto.getClientId());
-    return createInvoice(reservationRequestDto, true);
+    Long performanceId = reservationRequestDto.getPerformanceId();
+    Long clientId = reservationRequestDto.getClientId();
+
+    LOGGER.info("Buying tickets for performance {} and client {}", performanceId, clientId);
+
+    String errorMessage = "Can't find client with id " + clientId;
+    Client client = getOrThrowNotFound(clientRepository.findById(clientId), errorMessage);
+
+    errorMessage = "Can't find performance with id " + performanceId;
+    Performance performance =
+        getOrThrowNotFound(performanceRepository.findById(performanceId), errorMessage);
+
+    if (performance.getStartAt().isBefore(LocalDateTime.now())) {
+      errorMessage = "Can't reserve tickets for bygone performance " + performanceId;
+      throw invalid(errorMessage);
+    }
+
+    return createInvoice(performance, client, reservationRequestDto.getTicketRequests(), true);
+  }
+
+  @Transactional
+  @Override
+  public InvoiceDto reserveTickets(@Valid ReservationRequestDto reservationRequestDto) {
+    Long performanceId = reservationRequestDto.getPerformanceId();
+    Long clientId = reservationRequestDto.getClientId();
+
+    LOGGER.info("Reserving tickets for performance {} for client {}", performanceId, clientId);
+
+    String errorMessage = "Can't find client with id " + clientId;
+    Client client = getOrThrowNotFound(clientRepository.findById(clientId), errorMessage);
+
+    errorMessage = "Can't find performance with id " + performanceId;
+    Performance performance =
+        getOrThrowNotFound(performanceRepository.findById(performanceId), errorMessage);
+
+    if (performance
+        .getStartAt()
+        .minusMinutes(PRE_PERFORMANCE_RESERVATION_CLEAR_MINUTES)
+        .isBefore(LocalDateTime.now())) {
+      errorMessage = "Can't reserve tickets for bygone performance " + performanceId;
+      throw invalid(errorMessage);
+    }
+
+    return createInvoice(performance, client, reservationRequestDto.getTicketRequests(), false);
   }
 
   @Transactional
@@ -134,27 +174,18 @@ public class SimpleInvoiceService implements InvoiceService {
     return invoiceMapper.invoiceToInvoiceDto(invoice);
   }
 
-  @Transactional
-  @Override
-  public InvoiceDto createInvoice(
-      @Valid ReservationRequestDto reservationRequestDto, boolean isPaid) {
-    String errorMessage;
-    Long performanceId = reservationRequestDto.getPerformanceId();
-    Long clientId = reservationRequestDto.getClientId();
+  /**
+   * Create a new invoice with the passed details. The only validation performed is if the requested
+   * tickets do belong to the specified performance.
+   */
+  private InvoiceDto createInvoice(
+      Performance performance,
+      Client client,
+      List<TicketRequestDto> ticketRequestDtos,
+      boolean isPaid) {
 
-    LOGGER.info("Creating invoice for performance {} for client {}", performanceId, clientId);
-
-    errorMessage = "Can't find performance with id " + performanceId;
-    Performance performance =
-        getOrThrowNotFound(performanceRepository.findById(performanceId), errorMessage);
-
-    errorMessage = "Can't find client with id " + clientId;
-    Client client = getOrThrowNotFound(clientRepository.findById(clientId), errorMessage);
-
-    if (performance.getStartAt().isBefore(LocalDateTime.now())) {
-      errorMessage = "Can't reserve tickets for bygone performance " + performanceId;
-      throw invalid(errorMessage);
-    }
+    LOGGER.info(
+        "Creating invoice for performance {} for client {}", performance.getId(), client.getId());
 
     Invoice invoice =
         new Invoice.Builder()
@@ -168,7 +199,7 @@ public class SimpleInvoiceService implements InvoiceService {
       markPaid(invoice);
     }
 
-    createTickets(performance, invoice, reservationRequestDto.getTicketRequests());
+    createTickets(performance, invoice, ticketRequestDtos);
 
     invoice = invoiceRepository.save(invoice);
 

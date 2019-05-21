@@ -44,9 +44,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
-public class ReservationEndpointTest extends BaseIntegrationTest {
+public class InvoiceEndpointTest extends BaseIntegrationTest {
 
-  private static final String RESERVATION_ENDPOINT = "/reservations";
+  private static final String RESERVATION_ENDPOINT = "/invoices/reserve";
 
   private ReservationRequestDto reservationRequestDto;
   private List<TicketRequestDto> ticketRequestDtoList;
@@ -238,144 +238,81 @@ public class ReservationEndpointTest extends BaseIntegrationTest {
   @Test
   public void whenRequestReservationNullClientId_thenStatus400() {
     reservationRequestDto.setClientId(null);
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationNullPerformanceId_thenStatus400() {
     reservationRequestDto.setPerformanceId(null);
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationNullTickets_thenStatus400() {
     reservationRequestDto.setTicketRequests(null);
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationEmptyTickets_thenStatus400() {
     reservationRequestDto.setTicketRequests(Collections.emptyList());
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationNullTicketId_thenStatus400() {
     reservationRequestDto.getTicketRequests().get(0).setDefinedUnitId(null);
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationInvalidAmount_thenStatus400() {
     reservationRequestDto.getTicketRequests().get(0).setAmount(0);
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationInvalidClientId_thenStatus404() {
     reservationRequestDto.setClientId(-1L);
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
   }
 
   @Test
   public void whenRequestReservationInvalidPerformanceId_thenStatus404() {
     reservationRequestDto.setPerformanceId(-1L);
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
   }
 
   @Test
   public void whenRequestReservationInvalidDefinedUnitId_thenStatus404() {
     ticketRequestDtoList.get(0).setDefinedUnitId(definedUnit3.getId());
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
   }
 
@@ -383,32 +320,18 @@ public class ReservationEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationPastPerformance_thenStatus400() {
     performance1.setStartAt(LocalDateTime.now().minusMinutes(14));
     performanceRepository.save(performance1);
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationCapacityTooHigh_thenStatus400() {
     ticketRequestDtoList.get(0).setAmount(unit1.getCapacity() + 1);
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
@@ -418,16 +341,8 @@ public class ReservationEndpointTest extends BaseIntegrationTest {
     for (TicketRequestDto ticketRequestDto : ticketRequestDtoList) {
       requestedTicketCount += ticketRequestDto.getAmount();
     }
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED.value());
 
     InvoiceDto invoiceDto = response.as(InvoiceDto.class);
@@ -437,5 +352,17 @@ public class ReservationEndpointTest extends BaseIntegrationTest {
     assertThat(invoiceDto.getId()).isNotNull();
     assertThat(invoiceDto.isCancelled()).isFalse();
     assertThat(invoiceDto.isPaid()).isFalse();
+  }
+
+  private Response post(String endpoint, Object body) {
+    return RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .body(reservationRequestDto)
+            .when()
+            .post(RESERVATION_ENDPOINT)
+            .then()
+            .extract()
+            .response();
   }
 }

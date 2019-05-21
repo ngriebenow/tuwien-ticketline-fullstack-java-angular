@@ -54,6 +54,19 @@ public class InvoiceEndpoint {
     return invoiceService.buyTickets(reservationRequestDto);
   }
 
+  /** Reserve tickets for the specified performance. */
+  @PostMapping("/reserve")
+  @ResponseStatus(HttpStatus.CREATED)
+  @ApiOperation(
+      value = "Reserve tickets for the specified performance",
+      authorizations = {@Authorization("apiKey")})
+  public InvoiceDto reserve(@RequestBody ReservationRequestDto reservationRequestDto) {
+    LOGGER.info(
+        "Attempting to reserve tickets for performance with id {}",
+        reservationRequestDto.getPerformanceId());
+    return invoiceService.reserveTickets(reservationRequestDto);
+  }
+
   @PostMapping("/{id}/pay")
   @ApiOperation(
       value = "Pay tickets for the specified invoice",

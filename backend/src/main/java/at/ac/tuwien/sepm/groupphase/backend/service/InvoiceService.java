@@ -20,17 +20,6 @@ public interface InvoiceService {
   InvoiceDto getOneById(Long id);
 
   /**
-   * Create a new Invoice and Tickets for the specified defined units of one performance for a
-   * client.
-   *
-   * @param reservationRequestDto an object containing information about performance, client and
-   *     tickets.
-   * @param isPaid whether the invoice should be flagged as paid right away.
-   * @return a new unpaid invoice.
-   */
-  InvoiceDto createInvoice(@Valid ReservationRequestDto reservationRequestDto, boolean isPaid);
-
-  /**
    * Issue an attempt to buy tickets for a performance.
    *
    * @param reservationRequestDto an object containing information about performance, client and
@@ -38,6 +27,15 @@ public interface InvoiceService {
    * @return the paid invoice.
    */
   InvoiceDto buyTickets(@Valid ReservationRequestDto reservationRequestDto);
+
+  /**
+   * Issue a new reservation for the specified defined units of one performance for a client.
+   *
+   * @param reservationRequestDto an object containing information about performance, client and
+   *     tickets.
+   * @return the unpaid invoice for the reservation.
+   */
+  InvoiceDto reserveTickets(@Valid ReservationRequestDto reservationRequestDto);
 
   /**
    * Buy a subset of tickets for an existing invoice.
