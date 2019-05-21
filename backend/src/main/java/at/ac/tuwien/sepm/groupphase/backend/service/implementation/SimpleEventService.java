@@ -3,7 +3,9 @@ package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.EventEndpoint;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.artist.ArtistMapper;
@@ -31,6 +33,7 @@ public class SimpleEventService implements EventService {
   @Autowired private PerformanceRepository performanceRepository;
   @Autowired private EventMapper eventMapper;
   @Autowired private PerformanceMapper performanceMapper;
+  @Autowired private PerformanceSearchResultDto performanceSearchResultDto;
   @Autowired private ArtistMapper artistMapper;
 
   private static final Logger LOGGER =
@@ -50,7 +53,7 @@ public class SimpleEventService implements EventService {
   }
 
   @Override
-  public List<EventDto> getEventsFiltered(EventFilterDto eventFilterDto, Pageable pageable) {
+  public List<EventSearchDto> getEventsFiltered(EventFilterDto eventFilterDto, Pageable pageable) {
     LOGGER.info("getEventsFiltered " + eventFilterDto);
 
     Specification<Event> specification = EventSpecification.getEventSpecification(eventFilterDto);
@@ -58,7 +61,7 @@ public class SimpleEventService implements EventService {
     specification = specification.and(EventSpecification.likeArtist(eventFilterDto));
     Page<Event> events = eventRepository.findAll(specification, pageable);
 
-    List<EventDto> eventDtos = new ArrayList<>();
+    List<EventSearchResultDto> eventDtos = new ArrayList<>();
 
 
     for (Event e: events) {
@@ -75,7 +78,7 @@ public class SimpleEventService implements EventService {
   }
 
   @Override
-  public List<PerformanceDto> getPerformancesOfEvent(Long id, Pageable pageable)
+  public List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, Pageable pageable)
       throws NotFoundException {
     LOGGER.info("getPerformancesOfEvent " + id);
 

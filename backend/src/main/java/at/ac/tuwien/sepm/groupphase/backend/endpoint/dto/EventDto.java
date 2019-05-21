@@ -33,17 +33,6 @@ public class EventDto {
   @ApiModelProperty(required = true, name = "The price categories of the event")
   private List<PriceCategoryDto> priceCategories;
 
-  private List<PerformanceDto> performances;
-
-  public List<PerformanceDto> getPerformances() {
-    return performances;
-  }
-
-  public void setPerformances(
-      List<PerformanceDto> performances) {
-    this.performances = performances;
-  }
-
   public Long getId() {
     return id;
   }
