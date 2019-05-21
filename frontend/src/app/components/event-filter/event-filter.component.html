@@ -140,19 +140,19 @@
     <div  class="card-body">
       <div class="row">
         <div class="col-3">
-          <h3 class="card-event-name">{{ event.name }}</h3>
+          <h5 class="card-title">{{ event.name }}</h5>
         </div>
         <div class="col-2 align-bottom">
-            <h5 style="vertical-align: bottom" class="card-event-category">{{ event.category | titlecase}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted card-event-info">{{ event.category | titlecase}}</h6>
         </div>
         <div class="col-4">
-          <h6 class="card-event-hall-location">
+          <h6 class="card-subtitle mb-2 text-muted card-event-info">
             <i class="far fa-building"></i>
             {{ event.hallName }}, {{ event.locationName}}</h6>
         </div>
         <div class="col-3">
           <div class="row">
-            <h6 class="card-event-location-place" >
+            <h6 class="card-subtitle mb-2 text-muted card-event-info" >
               <i class="fas fa-map-marker-alt"></i> {{ event.locationPlace}}</h6>
           </div>
         </div>
@@ -163,8 +163,8 @@
         <div class="col-2" *ngFor="let p of event.performances">
           <div class="card card-performance">
             <div class="card-performance-body">
-              <h5 class="card-performance-title">{{ p.name }}</h5>
-              <h6 class="card-performance-subtitle">{{ p.startAt | date:'hh:mm, dd.MM.yyyy' }}</h6>
+              <h5 class="card-performance-title">{{ p.startAt | date:'hh:mm, dd.MM.yyyy' }}</h5>
+              <h6 class="card-performance-subtitle">{{ p.name }}</h6>
             </div>
           </div>
         </div>

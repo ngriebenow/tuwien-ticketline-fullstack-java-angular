@@ -45,7 +45,23 @@
   margin-bottom: 5px;
 }
 
+.card-body {
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-bottom: 10px;
+}
+
+.card-performance {
+  background-color: $main-blue;
+}
+
+.card-performance h5{
+  color: white;
+}
+
 .card-performance-body {
+  color: white;
   margin: 8px !important;
 }
 
@@ -58,25 +74,8 @@
   color: white;
 }
 
-.card-event-name {
-  color: $main-blue;
-}
-
-
-.card-event-category {
-  margin-top: 7px;
-}
-
-.card-event-hall-location {
-  margin-top: 8px;
-}
-
-.card-event-location-place {
-  margin-top: 8px;
-}
-
-.row {
-  margin-bottom: 0;
+.card-event-info {
+  margin-top: 6px;
 }
 
 
