@@ -1,6 +1,6 @@
 import {Event} from './event';
 
-export class Performance {
+export class PerformanceSearchResult {
   constructor(
     public id: number,
     public startAt: string,

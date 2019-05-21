@@ -3,6 +3,8 @@ import {EventFilter} from '../../dtos/event-filter';
 import {EventService} from '../../services/event.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Observable} from "rxjs";
+import {EventSearchResult} from "../../dtos/event-search-result";
+import {PerformanceSearchResult} from "../../dtos/performance-search-result";
 
 @Component({
   selector: 'app-event-filter',
@@ -24,45 +26,21 @@ export class EventFilterComponent implements OnInit {
 
   @Input() eventFilter: EventFilter = new EventFilter('', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
-  @Output() events: Event[] = [];
-  @Output() performances: Performance[] = [];
+  @Output() eventSearchResults: EventSearchResult[] = [];
 
   ngOnInit() {
     console.log('ngOnInit');
     this.loadEvents();
-    this.loadPerformances(2);
   }
 
 
   /**
    * Loads the events
-   * @param id the id of the event whose performances should be search for
    */
   loadEvents(): void {
     console.log('loadEvents');
     this.eventService.getEventsFiltered(this.eventFilter).subscribe(
-      (events: Event[]) => this.events = events);
-  }
-
-  /**
-   * Loads the performances of a given event id
-   * @param id the id of the event whose performances should be loaded
-   */
-  loadPerformances(id: number): Performance[] {
-    console.log('loadPerformances');
-
-    let pers: Performance[] = [];
-
-
-
-
-
-    // return this.eventService.getPerformancesById(id);
-
-    this.eventService.getPerformancesById(id).subscribe(
-      performances => pers = performances as Performance[]);
-
-    return pers;
+      (events: EventSearchResult[]) => this.eventSearchResults = events);
   }
 
 }

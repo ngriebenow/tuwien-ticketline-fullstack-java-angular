@@ -1,7 +1,7 @@
 import {Artist} from './artist';
 import {Hall} from './hall';
 import {PriceCategory} from './price-category';
-import {Performance} from './performance';
+import {PerformanceSearchResult} from './performance-search-result';
 
 export class Event {
   constructor(
@@ -13,7 +13,7 @@ export class Event {
     public hall: Hall,
     public artists: Artist[],
     public priceCategories: PriceCategory[],
-    public performances: Performance[]
+    public performances: PerformanceSearchResult[]
     ) {
 
   }

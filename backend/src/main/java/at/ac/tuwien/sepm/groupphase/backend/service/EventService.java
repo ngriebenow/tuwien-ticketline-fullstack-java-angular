@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import java.util.List;
@@ -45,5 +46,5 @@ public interface EventService {
    * @param pageable the pageable for determing the page
    * @return the list of performances which belong to the event
    */
-  //List<PerformanceDto> getPerformancesOfEvent(Long id, Pageable pageable);*/
+  List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, Pageable pageable);
 }

@@ -133,13 +133,9 @@
     </div>
   </div>
 
-
-
-
   <div class="row mt-3"></div>
 
-
-<div class="row" *ngFor="let event of events">
+<div class="row" *ngFor="let event of eventSearchResults">
   <div  class="card">
     <div  class="card-body">
       <div class="row">
@@ -149,18 +145,15 @@
         <div class="col-2 align-bottom">
           <h5 class="card-title align-bottom">{{ event.category | titlecase}}</h5>
         </div>
-        <div class="col-2 align-bottom">
-          <h6 class="card-subtitle mb-2 text-muted">{{ event.hall.name }}</h6>
-        </div>
-        <div class="col-2 align-bottom">
+        <div class="col-4 align-bottom">
           <h6 class="card-subtitle mb-2 text-muted">
             <i class="far fa-building"></i>
-            {{ event.hall.name}}</h6>
+            {{ event.hallName }}, {{ event.locationName}}</h6>
         </div>
-        <div class="col-3 align-bottom">
-          <div class="row align-bottom">
-            <h6 class="card-subtitle mb-2 text-muted align-bottom">
-              <i class="fas fa-map-marker-alt"></i> {{ event.hall.location.name}}, {{ event.hall.location.place}}</h6>
+        <div class="col-3">
+          <div class="row">
+            <h6 class="card-subtitle mb-2 text-muted" >
+              <i class="fas fa-map-marker-alt"></i> {{ event.locationPlace}}</h6>
 
           </div>
         </div>
@@ -184,97 +177,4 @@
     </div>
   </div>
 </div>
-
-
-<!--
-<div class="row">
-  <div class="col-2">
-    Event
-  </div>
-  <div class="col-2">
-    Kategorie
-  </div>
-  <div class="col-2">
-    Ort
-  </div>
-  <div class="col-2">
-    Saal
-  </div>
-  <div class="col-2">
-    Dauer
-  </div>
-  <div class="col-2">
-    Preis
-  </div>
-</div>
-<div>
-
-    <div style="overflow-y: auto;" *ngFor="let event of events; let i1 = index" style="width:100%">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <td width="40%">{{ event.name }}</td>
-          <td>{{ event.category }}</td>
-          <td>{{ event.hall.location.name }}</td>
-          <td>{{ event.hall.name }}</td>
-          <td>{{ event.duration }}</td>
-          <td>TODO</td>
-        </tr>
-        </thead>
-        <tr *ngFor="let p of event.performances">
-          <td></td>
-          <td>{{ p.name }}</td>
-          <td></td>
-          <td>{{ p.startAt }}</td>
-          <td>{{ p.name }}</td>
-        </tr>
-      </table>
-    </div>
-</div>
-
--->
-
-
-
-
-<!--
-<div class="row">
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <td>Event</td>
-      <td>Kategorie</td>
-      <td>Ort</td>
-      <td>Saal</td>
-      <td>Dauer</td>
-      <td>Preis</td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let x of events">
-      <td>{{ x.name }}</td>
-      <td>{{ x.category }}</td>
-      <td>{{ x.hall.location.name }}</td>
-      <td>{{ x.hall.name }}</td>
-      <td>{{ x.duration }}</td>
-      <td>TODO</td>
-
-    <tr *ngFor="let p of x.performances">
-      <td></td>
-      <td>{{ p.name }}</td>
-      <td></td>
-      <td>{{ p.startAt }}</td>
-      <td>{{ p.name }}</td>
-    </tr>
-
-    </tr>
-
-    </tbody>
-  </table>
-</div>
--->
-
-
-
-
 

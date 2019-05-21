@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import org.mapstruct.Mapper;
@@ -8,4 +9,6 @@ import org.mapstruct.Mapper;
 public interface PerformanceSearchResultMapper {
 
   PerformanceSearchResultDto performanceToPerformanceSearchResultDto(Performance performance);
+
+  Performance performanceSearchResultDtoToPerformance(PerformanceSearchResultDto performanceDto);
 }

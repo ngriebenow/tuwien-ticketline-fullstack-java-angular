@@ -72,7 +72,8 @@ public class SimpleEventService implements EventService {
     return eventDtos;
   }
 
-  private List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, Pageable pageable)
+  @Override
+  public List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, Pageable pageable)
       throws NotFoundException {
     LOGGER.info("getPerformancesOfEvent " + id);
 

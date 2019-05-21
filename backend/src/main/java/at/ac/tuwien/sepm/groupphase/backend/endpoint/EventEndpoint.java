@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
@@ -47,11 +48,11 @@ public class EventEndpoint {
 
 
   /** Return all performances which belong to a certain event. */
-  /*@RequestMapping(value = "/{id}/performances", method = RequestMethod.GET)
+  @RequestMapping(value = "/{id}/performances", method = RequestMethod.GET)
   @ApiOperation(
       value = "Get performances by event id",
       authorizations = {@Authorization(value = "apiKey")})
-  public List<PerformanceDto> getPerformancesById(
+  public List<PerformanceSearchResultDto> getPerformancesById(
       @PathVariable Long id,
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) Integer count) {
@@ -59,8 +60,8 @@ public class EventEndpoint {
 
     Pageable p = getPageable(page, count);
 
-    return eventService.getPerformancesOfEvent(id, p);
-  }*/
+    return eventService.getPerformancesFiltered(id, p);
+  }
 
   private Pageable getPageable(Integer page, Integer count) {
     Pageable p;
