@@ -24,12 +24,25 @@
   padding: 2px !important;
 }
 
-.card {
-  width: 100%;
+.col-4 {
+  padding: 2px !important;
 }
 
-.card-event {
-  color: $main-blue;
+.col-6 {
+  padding: 2px !important;
+}
+
+.col-9 {
+  padding: 2px !important;
+}
+
+.col-10 {
+  padding: 2px !important;
+}
+
+.card {
+  width: 100%;
+  margin-bottom: 5px;
 }
 
 .card-performance-body {
@@ -45,6 +58,28 @@
   color: white;
 }
 
+.card-event-name {
+  color: $main-blue;
+}
+
+
+.card-event-category {
+  margin-top: 7px;
+}
+
+.card-event-hall-location {
+  margin-top: 8px;
+}
+
+.card-event-location-place {
+  margin-top: 8px;
+}
+
+.row {
+  margin-bottom: 0;
+}
+
+
 .performance-title {
   font-size: 14px;
 }
@@ -53,21 +88,5 @@
   font-size: 12px;
 }
 
-.bottom-column
-{
-  float: none;
-  display: table-cell;
-  vertical-align: bottom;
-}
 
-.col-10 {
-  padding: 2px !important;
-}
 
-.col-9 {
-  padding: 2px !important;
-}
-
-.col-6 {
-  padding: 2px !important;
-}

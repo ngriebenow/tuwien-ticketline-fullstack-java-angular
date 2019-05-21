@@ -1,5 +1,5 @@
 
-export class PerformanceSearchResult {
+export class Performance {
   constructor(
     public id: number,
     public startAt: string,

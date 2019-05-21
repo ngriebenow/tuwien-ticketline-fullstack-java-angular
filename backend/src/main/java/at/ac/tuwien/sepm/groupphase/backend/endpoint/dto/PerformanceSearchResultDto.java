@@ -50,9 +50,9 @@ public class PerformanceSearchResultDto {
       return false;
     }
     PerformanceSearchResultDto that = (PerformanceSearchResultDto) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(startAt, that.startAt) &&
-        Objects.equals(name, that.name);
+    return Objects.equals(id, that.id)
+        && Objects.equals(startAt, that.startAt)
+        && Objects.equals(name, that.name);
   }
 
   @Override

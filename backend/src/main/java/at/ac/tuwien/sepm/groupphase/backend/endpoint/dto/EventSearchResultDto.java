@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +32,6 @@ public class EventSearchResultDto {
 
   @ApiModelProperty(required = true, name = "The corresponding performances")
   private List<PerformanceSearchResultDto> performances;
-
 
   public Long getId() {
     return id;
@@ -95,8 +93,7 @@ public class EventSearchResultDto {
     return performances;
   }
 
-  public void setPerformances(
-      List<PerformanceSearchResultDto> performances) {
+  public void setPerformances(List<PerformanceSearchResultDto> performances) {
     this.performances = performances;
   }
 
@@ -109,18 +106,18 @@ public class EventSearchResultDto {
       return false;
     }
     EventSearchResultDto that = (EventSearchResultDto) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(name, that.name) &&
-        category == that.category &&
-        Objects.equals(hallName, that.hallName) &&
-        Objects.equals(locationName, that.locationName) &&
-        Objects.equals(locationPlace, that.locationPlace) &&
-        Objects.equals(priceRange, that.priceRange);
+    return Objects.equals(id, that.id)
+        && Objects.equals(name, that.name)
+        && category == that.category
+        && Objects.equals(hallName, that.hallName)
+        && Objects.equals(locationName, that.locationName)
+        && Objects.equals(locationPlace, that.locationPlace)
+        && Objects.equals(priceRange, that.priceRange);
   }
 
   @Override
   public int hashCode() {
-    return Objects
-        .hash(id, name, category, hallName, locationName, locationPlace, priceRange, performances);
+    return Objects.hash(
+        id, name, category, hallName, locationName, locationPlace, priceRange, performances);
   }
 }

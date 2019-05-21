@@ -1,4 +1,4 @@
-import {PerformanceSearchRequest} from './performance';
+import {PerformanceSearchResult} from "./performance-search-result";
 
 export class EventSearchResult {
   constructor(
@@ -9,7 +9,7 @@ export class EventSearchResult {
     public locationName: string,
     public locationPlace: string,
     public priceCategories: string,
-    public performances: PerformanceSearchRequest[]
+    public performances: PerformanceSearchResult[]
     ) {
 
   }
