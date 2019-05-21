@@ -11,6 +11,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.artist.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
@@ -33,7 +34,8 @@ public class SimpleEventService implements EventService {
   @Autowired private PerformanceRepository performanceRepository;
   @Autowired private EventMapper eventMapper;
   @Autowired private PerformanceMapper performanceMapper;
-  @Autowired private PerformanceSearchResultDto performanceSearchResultDto;
+  @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
+  @Autowired private EventS
   @Autowired private ArtistMapper artistMapper;
 
   private static final Logger LOGGER =
