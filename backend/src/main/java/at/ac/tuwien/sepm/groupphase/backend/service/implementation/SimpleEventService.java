@@ -11,13 +11,16 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.pricecategory.PriceCategoryMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.specification.EventSpecification;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +35,27 @@ public class SimpleEventService implements EventService {
   private static final Logger LOGGER = LoggerFactory.getLogger(SimpleEventService.class);
   @Autowired private EventRepository eventRepository;
   @Autowired private PerformanceRepository performanceRepository;
+  @Autowired private PriceCategoryRepository priceCategoryRepository;
+
   @Autowired private EventMapper eventMapper;
-  @Autowired private PerformanceMapper performanceMapper;
   @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
   @Autowired private EventSearchResultMapper eventSearchResultMapper;
-  @Autowired private ArtistMapper artistMapper;
+  @Autowired private PriceCategoryMapper priceCategoryMapper;
 
   @Override
   public EventDto getOneById(Long id) throws NotFoundException {
     LOGGER.info("getOneById " + id);
 
-    return eventMapper.eventToEventDto(
-        eventRepository.findById(id).orElseThrow(NotFoundException::new));
+    Event event = eventRepository.findById(id).orElseThrow(NotFoundException::new);
+    EventDto eventDto = eventMapper.eventToEventDto(event);
+
+    eventDto.setPriceCategories(
+        priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(event).stream().map(
+            pc -> priceCategoryMapper.priceCategoryToPriceCategoryDto(pc))
+            .collect(Collectors.toList())
+    );
+
+    return eventDto;
   }
 
   @Override

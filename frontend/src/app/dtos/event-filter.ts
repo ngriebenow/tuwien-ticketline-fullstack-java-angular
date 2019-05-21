@@ -14,7 +14,6 @@ export class EventFilter {
     public locationPlace: string,
     public locationCountry: string,
     public locationStreet: string,
-    public locationPostalCode: string
     ) {
   }
 }
