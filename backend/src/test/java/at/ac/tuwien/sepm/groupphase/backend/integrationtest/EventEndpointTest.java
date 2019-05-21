@@ -422,8 +422,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
 
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(3));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E1)));
+    Assert.assertThat(retList.size(),is(2));
     Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
     Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
 

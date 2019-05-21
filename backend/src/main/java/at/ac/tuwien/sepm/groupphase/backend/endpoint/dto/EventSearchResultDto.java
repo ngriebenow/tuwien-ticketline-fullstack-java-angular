@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 @ApiModel(value = "EventSearchResultDto", description = "A DTO for an event via rest")
 public class EventSearchResultDto {
@@ -97,5 +98,29 @@ public class EventSearchResultDto {
   public void setPerformances(
       List<PerformanceSearchResultDto> performances) {
     this.performances = performances;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    EventSearchResultDto that = (EventSearchResultDto) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(name, that.name) &&
+        category == that.category &&
+        Objects.equals(hallName, that.hallName) &&
+        Objects.equals(locationName, that.locationName) &&
+        Objects.equals(locationPlace, that.locationPlace) &&
+        Objects.equals(priceRange, that.priceRange);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects
+        .hash(id, name, category, hallName, locationName, locationPlace, priceRange, performances);
   }
 }
