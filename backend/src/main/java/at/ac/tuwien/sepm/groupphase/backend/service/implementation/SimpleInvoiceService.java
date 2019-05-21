@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -78,15 +79,9 @@ public class SimpleInvoiceService implements InvoiceService {
 
   @Override
   public InvoiceDto getOneById(Long id) {
+    String errorMessage = "Can't find invoice with id " + id;
     return invoiceMapper.invoiceToInvoiceDto(
-        invoiceRepository
-            .findById(id)
-            .orElseThrow(
-                () -> {
-                  String msg = "Can't find invoice with id " + id;
-                  LOGGER.error(msg);
-                  return new NotFoundException(msg);
-                }));
+        getOrThrowNotFound(invoiceRepository.findById(id), errorMessage));
   }
 
   @Transactional
@@ -104,26 +99,17 @@ public class SimpleInvoiceService implements InvoiceService {
   public InvoiceDto payTickets(Long id, @NotEmpty List<@NotNull Long> ticketIds) {
     LOGGER.info("Paying tickets {} for invoice {}", ticketIds, id);
 
-    Invoice invoice =
-        invoiceRepository
-            .findById(id)
-            .orElseThrow(
-                () -> {
-                  String msg = "Can't find invoice " + id;
-                  LOGGER.error(msg);
-                  return new NotFoundException(msg);
-                });
+    String errorMessage = "Can't find invoice " + id;
+    Invoice invoice = getOrThrowNotFound(invoiceRepository.findById(id), errorMessage);
 
     if (invoice.isPaid()) {
       String msg = "Invoice " + id + " is already paid";
-      LOGGER.error(msg);
-      throw new ValidationException(msg);
+      throw invalid(msg);
     }
 
     if (invoice.isCancelled()) {
       String msg = "Invoice " + id + " is canceled";
-      LOGGER.error(msg);
-      throw new ValidationException(msg);
+      throw invalid(msg);
     }
 
     List<Long> invoiceTicketIds =
@@ -132,8 +118,7 @@ public class SimpleInvoiceService implements InvoiceService {
         ticketId -> {
           if (!invoiceTicketIds.contains(ticketId)) {
             String msg = "Ticket " + ticketId + " is was not issued for invoice " + id;
-            LOGGER.error(msg);
-            throw new NotFoundException(msg);
+            throw notFound(msg);
           }
         });
 
@@ -153,34 +138,22 @@ public class SimpleInvoiceService implements InvoiceService {
   @Override
   public InvoiceDto createInvoice(
       @Valid ReservationRequestDto reservationRequestDto, boolean isPaid) {
+    String errorMessage;
     Long performanceId = reservationRequestDto.getPerformanceId();
     Long clientId = reservationRequestDto.getClientId();
 
     LOGGER.info("Creating invoice for performance {} for client {}", performanceId, clientId);
 
+    errorMessage = "Can't find performance with id " + performanceId;
     Performance performance =
-        performanceRepository
-            .findById(performanceId)
-            .orElseThrow(
-                () -> {
-                  String msg = "Can't find performance with id " + performanceId;
-                  LOGGER.error(msg);
-                  return new NotFoundException(msg);
-                });
-    Client client =
-        clientRepository
-            .findById(clientId)
-            .orElseThrow(
-                () -> {
-                  String msg = "Can't find client with id " + clientId;
-                  LOGGER.error(msg);
-                  return new NotFoundException(msg);
-                });
+        getOrThrowNotFound(performanceRepository.findById(performanceId), errorMessage);
+
+    errorMessage = "Can't find client with id " + clientId;
+    Client client = getOrThrowNotFound(clientRepository.findById(clientId), errorMessage);
 
     if (performance.getStartAt().isBefore(LocalDateTime.now())) {
-      String msg = "Can't reserve tickets for bygone performance " + performanceId;
-      LOGGER.error(msg);
-      throw new ValidationException(msg);
+      errorMessage = "Can't reserve tickets for bygone performance " + performanceId;
+      throw invalid(errorMessage);
     }
 
     Invoice invoice =
@@ -228,21 +201,20 @@ public class SimpleInvoiceService implements InvoiceService {
     ticketRequestDtos.forEach(
         ticketRequestDto -> {
           Long id = ticketRequestDto.getDefinedUnitId();
+
+          String errorMessage =
+              "Defined unit " + id + " doesn't belong to performance " + performance.getId();
           DefinedUnit definedUnit =
-              requestedDefinedUnits.stream()
-                  .filter(defUnit -> defUnit.getId().equals(id))
-                  .findFirst()
-                  .orElseThrow(
-                      () ->
-                          new NotFoundException(
-                              "Defined unit "
-                                  + id
-                                  + " doesn't belong to performance "
-                                  + performance.getId()));
+              getOrThrowNotFound(
+                  requestedDefinedUnits.stream()
+                      .filter(defUnit -> defUnit.getId().equals(id))
+                      .findFirst(),
+                  errorMessage);
 
           int newCapacity = definedUnit.getCapacityFree() - ticketRequestDto.getAmount();
           if (newCapacity < 0) {
-            throw new ValidationException("Defined unit " + id + " doesn't have enough capacity.");
+            errorMessage = "Defined unit " + id + " doesn't have enough capacity";
+            throw invalid(errorMessage);
           }
           definedUnit.setCapacityFree(newCapacity);
 
@@ -258,6 +230,7 @@ public class SimpleInvoiceService implements InvoiceService {
         });
   }
 
+  /** Mark the invoice as paid by setting all the needed attributes. */
   private Invoice markPaid(Invoice invoice) {
     invoice.setPaid(true);
     invoice.setNumber(invoiceNumberSequenceGenerator.getNext());
@@ -275,6 +248,23 @@ public class SimpleInvoiceService implements InvoiceService {
           tic.getInvoice().removeTicket(tic);
         });
     ticketRepository.deleteAll(tickets);
+  }
+
+  /** Return an object of type T or log an error and throw a NotFoundException. */
+  private <T> T getOrThrowNotFound(Optional<T> optional, String msg) {
+    return optional.orElseThrow(() -> notFound(msg));
+  }
+
+  /** Log an error message and return a not found exception. */
+  private NotFoundException notFound(String msg) {
+    LOGGER.error(msg);
+    throw new NotFoundException(msg);
+  }
+
+  /** Log an error message and return a not validation exception. */
+  private ValidationException invalid(String msg) {
+    LOGGER.error(msg);
+    throw new ValidationException(msg);
   }
 
   private static String generateReservationCode() {
