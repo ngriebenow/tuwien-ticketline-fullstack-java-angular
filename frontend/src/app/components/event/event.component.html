@@ -42,10 +42,10 @@
 
       <div class="row">
         <div class="col-md-3">
-          <h2 class="float-right">Dauer</h2>
+          <h2 class="float-right">Dauer/€</h2>
         </div>
         <div class="col-md-4">
-          <input readonly class="form-control" type="text" value="{{event.duration}}" >
+          <input readonly class="form-control" type="text" value="{{event.duration / 3600 | number:'1.0-2' }}h" >
         </div>
         <div class="col-md-4">
           <input readonly class="form-control" type="text"
