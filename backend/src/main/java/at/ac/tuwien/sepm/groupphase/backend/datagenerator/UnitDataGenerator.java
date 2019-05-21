@@ -42,9 +42,9 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
         for (int j = 0; j < hall.getBoundaryPoint().getCoordinateX(); j++) {
           generatedUnits.add(
               new Unit.Builder()
-                  .name(String.format("Unit %d %d", j, i))
-                  .lowerBoundary(new Point(j, i))
-                  .upperBoundary(new Point(j, i))
+                  .name(String.format("Unit %d %d", j + 1, i + 1))
+                  .lowerBoundary(new Point(j + 1, i + 1))
+                  .upperBoundary(new Point(j + 1, i + 1))
                   .capacity(1)
                   .hall(hall)
                   .build());
