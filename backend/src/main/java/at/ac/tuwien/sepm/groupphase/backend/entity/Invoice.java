@@ -38,7 +38,7 @@ public class Invoice {
   private Long number;
 
   @Column(nullable = true)
-  private LocalDate payedAt;
+  private LocalDate paidAt;
 
   @ManyToOne
   @JoinColumn(nullable = false)
@@ -58,7 +58,7 @@ public class Invoice {
     setCancelled(builder.isCancelled);
     setReservationCode(builder.reservationCode);
     setNumber(builder.number);
-    setPayedAt(builder.payedAt);
+    setPaidAt(builder.paidAt);
     setClient(builder.client);
     setTickets(builder.tickets);
   }
@@ -137,12 +137,12 @@ public class Invoice {
     this.number = number;
   }
 
-  public LocalDate getPayedAt() {
-    return payedAt;
+  public LocalDate getPaidAt() {
+    return paidAt;
   }
 
-  public void setPayedAt(LocalDate payedAt) {
-    this.payedAt = payedAt;
+  public void setPaidAt(LocalDate paidAt) {
+    this.paidAt = paidAt;
   }
 
   public Client getClient() {
@@ -167,13 +167,13 @@ public class Invoice {
         && Objects.equal(id, invoice.id)
         && Objects.equal(reservationCode, invoice.reservationCode)
         && Objects.equal(number, invoice.number)
-        && Objects.equal(payedAt, invoice.payedAt)
+        && Objects.equal(paidAt, invoice.paidAt)
         && Objects.equal(client, invoice.client);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, number, payedAt, client);
+    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, number, paidAt, client);
   }
 
   @Override
@@ -191,11 +191,9 @@ public class Invoice {
         + ", number="
         + number
         + ", paidAt="
-        + payedAt
+        + paidAt
         + ", client="
         + client
-        + ", tickets="
-        + tickets
         + '}';
   }
 
@@ -206,7 +204,7 @@ public class Invoice {
     private boolean isCancelled;
     private String reservationCode;
     private Long number;
-    private LocalDate payedAt;
+    private LocalDate paidAt;
     private Client client;
     private List<Ticket> tickets = new ArrayList<>();
 
@@ -237,8 +235,8 @@ public class Invoice {
       return this;
     }
 
-    public Builder payedAt(LocalDate val) {
-      payedAt = val;
+    public Builder paidAt(LocalDate val) {
+      paidAt = val;
       return this;
     }
 

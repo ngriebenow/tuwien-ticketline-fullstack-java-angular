@@ -26,6 +26,7 @@ public class InvoiceDto {
   @ApiModelProperty("The sequential number of this invoice")
   private Long number;
 
+  // TODO: this is not showing up in the swagger ui, check what the maper is doing with it
   @ApiModelProperty("The date this invoice was payed")
   private LocalDate paidAt;
 
@@ -156,8 +157,6 @@ public class InvoiceDto {
         + paidAt
         + ", clientId="
         + clientId
-        + ", tickets="
-        + tickets
         + '}';
   }
 
