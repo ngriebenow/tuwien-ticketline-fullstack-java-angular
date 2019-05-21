@@ -6,8 +6,9 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface PerformanceMapper {
-  Performance performanceDtoToPerformance(PerformanceDto performanceDto);
+public interface PerformanceSearchResultMapper {
 
-  PerformanceDto performanceToPerformanceDto(Performance performance);
+  PerformanceSearchResultDto performanceToPerformanceSearchResultDto(Performance performance);
+
+  Performance performanceSearchResultDtoToPerformance(PerformanceSearchResultDto performanceDto);
 }

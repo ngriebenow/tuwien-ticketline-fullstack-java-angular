@@ -1,10 +1,9 @@
 
-export class Performance {
+export class PerformanceSearchResult {
   constructor(
     public id: number,
     public startAt: string,
-    public name: string,
-    public event: Event
+    public name: string
   ) {
   }
 }
