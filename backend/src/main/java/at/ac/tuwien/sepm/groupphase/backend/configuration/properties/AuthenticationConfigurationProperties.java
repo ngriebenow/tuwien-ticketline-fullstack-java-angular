@@ -15,8 +15,10 @@ public class AuthenticationConfigurationProperties {
 
   @NotNull private SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
   @NotNull private String secret;
-  @NotNull private Duration validityDuration = Duration.of(600L, ChronoUnit.SECONDS);
-  @NotNull private Duration overlapDuration = Duration.of(300L, ChronoUnit.SECONDS);
+  @NotNull
+  private Duration validityDuration = Duration.of(6L, ChronoUnit.HOURS);
+  @NotNull
+  private Duration overlapDuration = Duration.of(3L, ChronoUnit.MINUTES);
 
   public SignatureAlgorithm getSignatureAlgorithm() {
     return signatureAlgorithm;
@@ -39,7 +41,7 @@ public class AuthenticationConfigurationProperties {
   }
 
   public void setValidityDuration(long validityDuration) {
-    this.validityDuration = Duration.of(validityDuration, ChronoUnit.SECONDS);
+    this.validityDuration = Duration.of(validityDuration, ChronoUnit.HOURS);
   }
 
   public Duration getOverlapDuration() {
@@ -47,6 +49,6 @@ public class AuthenticationConfigurationProperties {
   }
 
   public void setOverlapDuration(long overlapDuration) {
-    this.overlapDuration = Duration.of(overlapDuration, ChronoUnit.SECONDS);
+    this.overlapDuration = Duration.of(overlapDuration, ChronoUnit.MINUTES);
   }
 }
