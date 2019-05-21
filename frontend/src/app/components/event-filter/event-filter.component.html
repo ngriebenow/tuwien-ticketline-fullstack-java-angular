@@ -136,14 +136,14 @@
   <div class="row mt-3"></div>
 
 <div class="row" *ngFor="let event of eventSearchResults">
-  <div  class="card">
+  <div routerLink="/events/{{event.id}}" class="card">
     <div  class="card-body">
       <div class="row">
         <div class="col-3">
           <h5 class="card-title">{{ event.name }}</h5>
         </div>
         <div class="col-2 align-bottom">
-            <h6 class="card-subtitle mb-2 text-muted card-event-info">{{ event.category | titlecase}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted card-event-info"><i class="far fa-calendar-alt"></i> {{ event.category | titlecase}}</h6>
         </div>
         <div class="col-4">
           <h6 class="card-subtitle mb-2 text-muted card-event-info">
@@ -161,7 +161,7 @@
 
         <div class="row">
         <div class="col-2" *ngFor="let p of event.performances">
-          <div class="card card-performance">
+          <div class="card card-performance" (click)="$event.stopPropagation()" routerLink="/hall-viewing/{{event.id}}">
             <div class="card-performance-body">
               <h5 class="card-performance-title">{{ p.startAt | date:'hh:mm, dd.MM.yyyy' }}</h5>
               <h6 class="card-performance-subtitle">{{ p.name }}</h6>

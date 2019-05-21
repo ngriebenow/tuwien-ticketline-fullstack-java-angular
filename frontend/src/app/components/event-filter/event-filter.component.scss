@@ -53,11 +53,19 @@
 }
 
 .card-performance {
-  background-color: $main-blue;
+  /*background-color: $main-blue;*/
+  border: $main-blue;
+  border-style: solid;
+  border-width: thin;
+
 }
 
 .card-performance h5{
-  color: white;
+  color: $dark-gray;
+}
+
+.card-performance h6{
+  color: $dark-gray;
 }
 
 .card-performance-body {
@@ -67,10 +75,16 @@
 
 .card-performance:hover {
   background-color: $main-orange;
-  color: white;
+  border: $main-orange;
+  border-style: solid;
+  border-width: thin;
 }
 
 .card-performance:hover h5{
+  color: white;
+}
+
+.card-performance:hover h6{
   color: white;
 }
 
