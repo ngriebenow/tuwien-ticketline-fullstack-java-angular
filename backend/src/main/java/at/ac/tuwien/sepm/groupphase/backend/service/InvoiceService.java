@@ -2,11 +2,13 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.InvoiceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.InvoiceFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import org.springframework.data.domain.Pageable;
 
 public interface InvoiceService {
 
@@ -20,7 +22,17 @@ public interface InvoiceService {
   InvoiceDto getOneById(Long id);
 
   /**
-   * Issue an attempt to buy tickets for a performance.
+   * Return a page of events which satisfy the given filter properties.
+   *
+   * @param invoiceFilterDto an object containing all the filter criteria.
+   * @param pageable the pageable for determining the page.
+   * @return a page of invoices.
+   */
+  List<InvoiceDto> getFiltered(InvoiceFilterDto invoiceFilterDto, Pageable pageable);
+
+  /**
+   * Create a new Invoice and Tickets for the specified defined units of one performance for a
+   * client.
    *
    * @param reservationRequestDto an object containing information about performance, client and
    *     tickets.

@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.InvoiceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TicketRequestDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.InvoiceFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Client;
 import at.ac.tuwien.sepm.groupphase.backend.entity.DefinedUnit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Invoice;
@@ -33,6 +34,7 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -83,6 +85,20 @@ public class SimpleInvoiceService implements InvoiceService {
     String errorMessage = "Can't find invoice with id " + id;
     return invoiceMapper.invoiceToInvoiceDto(
         getOrThrowNotFound(invoiceRepository.findById(id), errorMessage));
+  }
+
+  @Override
+  public List<InvoiceDto> getFiltered(InvoiceFilterDto invoiceFilterDto, Pageable pageable) {
+    LOGGER.info("Filtering for invoices");
+    return invoiceRepository
+        .findByFilter(
+            invoiceFilterDto.getReservationCode(),
+            invoiceFilterDto.isPaid(),
+            invoiceFilterDto.isCancelled(),
+            pageable)
+        .stream()
+        .map(invoiceMapper::invoiceToInvoiceDto)
+        .collect(Collectors.toList());
   }
 
   @Transactional

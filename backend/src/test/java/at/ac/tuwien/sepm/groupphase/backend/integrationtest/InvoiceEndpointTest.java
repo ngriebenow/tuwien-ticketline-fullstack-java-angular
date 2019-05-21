@@ -31,12 +31,16 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.UnitRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import java.awt.Color;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,10 +50,13 @@ import org.springframework.http.HttpStatus;
 
 public class InvoiceEndpointTest extends BaseIntegrationTest {
 
-  private static final String RESERVATION_ENDPOINT = "/invoices/reserve";
+  private static final String INVOICE_ENDPOINT = "/invoices";
+  private static final String RESERVATION_ENDPOINT = INVOICE_ENDPOINT + "/reserve";
 
-  private ReservationRequestDto reservationRequestDto;
-  private List<TicketRequestDto> ticketRequestDtoList;
+  private ReservationRequestDto reservationRequestDtoOne;
+  private ReservationRequestDto reservationRequestDtoTwo;
+  private List<TicketRequestDto> ticketRequestDtoListOne;
+  private List<TicketRequestDto> ticketRequestDtoListTwo;
 
   @Autowired private ClientRepository clientRepository;
   @Autowired private LocationRepository locationRepository;
@@ -63,7 +70,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   @Autowired private TicketRepository ticketRepository;
   @Autowired private InvoiceRepository invoiceRepository;
 
-  private Client client;
+  private Client clientOne;
+  private Client clientTwo;
   private Location location;
   private Artist artist;
   private Hall hall;
@@ -81,9 +89,17 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Before
   public void setUp() {
-    client =
+    clientOne =
         new Client.Builder().name("Klaus").surname("Klauser").email("klaus@klausur.at").build();
-    clientRepository.save(client);
+    clientRepository.save(clientOne);
+
+    clientTwo =
+        new Client.Builder()
+            .name("Rabarbara")
+            .surname("Arabrabar")
+            .email("rabarbara@arabrabar.at")
+            .build();
+    clientRepository.save(clientTwo);
 
     location =
         new Location.Builder()
@@ -208,15 +224,26 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
             .build();
     definedUnitRepository.save(definedUnit4);
 
-    ticketRequestDtoList =
+    ticketRequestDtoListOne =
         Arrays.asList(
             new TicketRequestDto.Builder().definedUnitId(definedUnit1.getId()).amount(1).build(),
             new TicketRequestDto.Builder().definedUnitId(definedUnit2.getId()).amount(1).build());
-    reservationRequestDto =
+    reservationRequestDtoOne =
         new ReservationRequestDto.Builder()
             .performanceId(performance1.getId())
-            .clientId(client.getId())
-            .ticketRequests(ticketRequestDtoList)
+            .clientId(clientOne.getId())
+            .ticketRequests(ticketRequestDtoListOne)
+            .build();
+
+    ticketRequestDtoListTwo =
+        Arrays.asList(
+            new TicketRequestDto.Builder().definedUnitId(definedUnit3.getId()).amount(1).build(),
+            new TicketRequestDto.Builder().definedUnitId(definedUnit4.getId()).amount(1).build());
+    reservationRequestDtoTwo =
+        new ReservationRequestDto.Builder()
+            .performanceId(performance2.getId())
+            .clientId(clientTwo.getId())
+            .ticketRequests(ticketRequestDtoListTwo)
             .build();
   }
 
@@ -237,81 +264,81 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void whenRequestReservationNullClientId_thenStatus400() {
-    reservationRequestDto.setClientId(null);
+    reservationRequestDtoOne.setClientId(null);
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationNullPerformanceId_thenStatus400() {
-    reservationRequestDto.setPerformanceId(null);
+    reservationRequestDtoOne.setPerformanceId(null);
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationNullTickets_thenStatus400() {
-    reservationRequestDto.setTicketRequests(null);
+    reservationRequestDtoOne.setTicketRequests(null);
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationEmptyTickets_thenStatus400() {
-    reservationRequestDto.setTicketRequests(Collections.emptyList());
+    reservationRequestDtoOne.setTicketRequests(Collections.emptyList());
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationNullTicketId_thenStatus400() {
-    reservationRequestDto.getTicketRequests().get(0).setDefinedUnitId(null);
+    reservationRequestDtoOne.getTicketRequests().get(0).setDefinedUnitId(null);
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationInvalidAmount_thenStatus400() {
-    reservationRequestDto.getTicketRequests().get(0).setAmount(0);
+    reservationRequestDtoOne.getTicketRequests().get(0).setAmount(0);
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationInvalidClientId_thenStatus404() {
-    reservationRequestDto.setClientId(-1L);
+    reservationRequestDtoOne.setClientId(-1L);
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
   }
 
   @Test
   public void whenRequestReservationInvalidPerformanceId_thenStatus404() {
-    reservationRequestDto.setPerformanceId(-1L);
+    reservationRequestDtoOne.setPerformanceId(-1L);
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
   }
 
   @Test
   public void whenRequestReservationInvalidDefinedUnitId_thenStatus404() {
-    ticketRequestDtoList.get(0).setDefinedUnitId(definedUnit3.getId());
+    ticketRequestDtoListOne.get(0).setDefinedUnitId(definedUnit3.getId());
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
   }
@@ -321,16 +348,16 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     performance1.setStartAt(LocalDateTime.now().minusMinutes(14));
     performanceRepository.save(performance1);
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   @Test
   public void whenRequestReservationCapacityTooHigh_thenStatus400() {
-    ticketRequestDtoList.get(0).setAmount(unit1.getCapacity() + 1);
+    ticketRequestDtoListOne.get(0).setAmount(unit1.getCapacity() + 1);
 
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
@@ -338,31 +365,194 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   @Test
   public void whenRequestReservation_thenCorrectInvoiceReturned() {
     int requestedTicketCount = 0;
-    for (TicketRequestDto ticketRequestDto : ticketRequestDtoList) {
+    for (TicketRequestDto ticketRequestDto : ticketRequestDtoListOne) {
       requestedTicketCount += ticketRequestDto.getAmount();
     }
-    Response response = post(RESERVATION_ENDPOINT, reservationRequestDto);
+    Response response = post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED.value());
 
     InvoiceDto invoiceDto = response.as(InvoiceDto.class);
+
     assertThat(invoiceDto.getTickets().size()).isEqualTo(requestedTicketCount);
-    assertThat(invoiceDto.getClientId()).isEqualTo(reservationRequestDto.getClientId());
+    assertThat(invoiceDto.getClientId()).isEqualTo(reservationRequestDtoOne.getClientId());
     assertThat(invoiceDto.getReservationCode()).isNotBlank();
     assertThat(invoiceDto.getId()).isNotNull();
     assertThat(invoiceDto.isCancelled()).isFalse();
     assertThat(invoiceDto.isPaid()).isFalse();
   }
 
+  @Test
+  public void givenTwoInvoices_whenFilter_thenTwoInvoicesReturned() {
+    post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    post(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(2);
+  }
+
+  @Test
+  public void givenUnpaidInvoices_whenFilterInvoicesIsPaid_thenEmptyListReturned() {
+    post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    post(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("isPaid", "true");
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.isEmpty()).isTrue();
+  }
+
+  @Test
+  public void givenUnpaidInvoices_whenFilterInvoicesIsNotPaid_thenInvoicesReturned() {
+    post(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    post(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("isPaid", "false");
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(2);
+  }
+
+  @Test
+  public void givenPaidInvoices_whenFilterInvoicesIsPaid_thenInvoicesReturned() {
+    post(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("isPaid", "true");
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(2);
+  }
+
+  @Test
+  public void givenPaidInvoices_whenFilterInvoicesIsNotPaid_thenEmptyListReturned() {
+    post(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("isPaid", "false");
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(0L);
+  }
+
+  @Test
+  public void givenTwoInvoices_whenFilterReservationCodeOne_thenInvoiceOneReturned() {
+    String reservationCodeOne =
+        post(RESERVATION_ENDPOINT, reservationRequestDtoOne)
+            .body()
+            .as(InvoiceDto.class)
+            .getReservationCode();
+    post(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("reservationCode", reservationCodeOne);
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().response().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(1L);
+    assertThat(invoiceDtoPage.get(0).getReservationCode()).isEqualTo(reservationCodeOne);
+  }
+
+  @Test
+  public void givenTwoInvoices_whenFilterInvalidReservationCode_thenNothingReturned() {
+    String reservationCodeOne =
+        post(RESERVATION_ENDPOINT, reservationRequestDtoOne)
+            .body()
+            .as(InvoiceDto.class)
+            .getReservationCode();
+    String reservationCodeTwo =
+        post(RESERVATION_ENDPOINT, reservationRequestDtoTwo)
+            .body()
+            .as(InvoiceDto.class)
+            .getReservationCode();
+
+    Map<String, String> params = new HashMap<>();
+    params.put("reservationCode", reservationCodeOne + reservationCodeTwo);
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.isEmpty()).isTrue();
+  }
+
+  private Response getResponse(String endpoint, Map<String, String> parameters) {
+    return get(endpoint, parameters).extract().response();
+  }
+
+  private ValidatableResponse get(String endpoint, Map<String, String> parameters) {
+    RequestSpecification specification =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix);
+    parameters.forEach(specification::queryParam);
+    return specification.when().get(endpoint).then();
+  }
+
   private Response post(String endpoint, Object body) {
     return RestAssured.given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(reservationRequestDto)
-            .when()
-            .post(RESERVATION_ENDPOINT)
-            .then()
-            .extract()
-            .response();
+        .contentType(ContentType.JSON)
+        .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+        .body(body)
+        .when()
+        .post(endpoint)
+        .then()
+        .extract()
+        .response();
+  }
+
+  private <T> List<T> listFromResponse(ValidatableResponse response, Class<T> clazz) {
+    return response.extract().jsonPath().getList(".", clazz);
   }
 }
