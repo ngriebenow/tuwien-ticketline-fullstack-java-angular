@@ -27,6 +27,8 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +97,56 @@ public class SimpleInvoiceService implements InvoiceService {
         reservationRequestDto.getPerformanceId(),
         reservationRequestDto.getClientId());
     return createInvoice(reservationRequestDto, true);
+  }
+
+  @Transactional
+  @Override
+  public InvoiceDto payTickets(Long id, @NotEmpty List<@NotNull Long> ticketIds) {
+    LOGGER.info("Paying tickets {} for invoice {}", ticketIds, id);
+
+    Invoice invoice =
+        invoiceRepository
+            .findById(id)
+            .orElseThrow(
+                () -> {
+                  String msg = "Can't find invoice " + id;
+                  LOGGER.error(msg);
+                  return new NotFoundException(msg);
+                });
+
+    if (invoice.isPaid()) {
+      String msg = "Invoice " + id + " is already paid";
+      LOGGER.error(msg);
+      throw new ValidationException(msg);
+    }
+
+    if (invoice.isCancelled()) {
+      String msg = "Invoice " + id + " is canceled";
+      LOGGER.error(msg);
+      throw new ValidationException(msg);
+    }
+
+    List<Long> invoiceTicketIds =
+        invoice.getTickets().stream().map(Ticket::getId).collect(Collectors.toList());
+    ticketIds.forEach(
+        ticketId -> {
+          if (!invoiceTicketIds.contains(ticketId)) {
+            String msg = "Ticket " + ticketId + " is was not issued for invoice " + id;
+            LOGGER.error(msg);
+            throw new NotFoundException(msg);
+          }
+        });
+
+    List<Ticket> unboughtTickets =
+        invoice.getTickets().stream()
+            .filter(tic -> !ticketIds.contains(tic.getId()))
+            .collect(Collectors.toList());
+    deleteTickets(unboughtTickets);
+
+    markPaid(invoice);
+    invoiceRepository.save(invoice);
+
+    return invoiceMapper.invoiceToInvoiceDto(invoice);
   }
 
   @Transactional
@@ -209,8 +261,20 @@ public class SimpleInvoiceService implements InvoiceService {
   private Invoice markPaid(Invoice invoice) {
     invoice.setPaid(true);
     invoice.setNumber(invoiceNumberSequenceGenerator.getNext());
-    invoice.setPayedAt(LocalDate.now());
+    invoice.setPaidAt(LocalDate.now());
     return invoice;
+  }
+
+  /** Remove tickets from their invoice, delete them and release their defined units. */
+  private void deleteTickets(List<Ticket> tickets) {
+    tickets.forEach(
+        tic -> {
+          DefinedUnit definedUnit = tic.getDefinedUnit();
+          definedUnit.setCapacityFree(definedUnit.getCapacityFree() + 1);
+          definedUnitRepository.save(definedUnit);
+          tic.getInvoice().removeTicket(tic);
+        });
+    ticketRepository.deleteAll(tickets);
   }
 
   private static String generateReservationCode() {

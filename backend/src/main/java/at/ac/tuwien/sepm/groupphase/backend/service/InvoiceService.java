@@ -3,7 +3,10 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.InvoiceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public interface InvoiceService {
 
@@ -35,4 +38,13 @@ public interface InvoiceService {
    * @return the paid invoice.
    */
   InvoiceDto buyTickets(@Valid ReservationRequestDto reservationRequestDto);
+
+  /**
+   * Buy a subset of tickets for an existing invoice.
+   *
+   * @param id of the invoice to pay tickets for.
+   * @param ticketIds list of ticket ids to be paid for.
+   * @return the paid invoice.
+   */
+  InvoiceDto payTickets(Long id, @NotEmpty List<@NotNull Long> ticketIds);
 }

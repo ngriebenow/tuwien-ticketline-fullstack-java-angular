@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,14 @@ public class InvoiceEndpoint {
     LOGGER.info(
         "Attempting to buy tickets for performance {}", reservationRequestDto.getPerformanceId());
     return invoiceService.buyTickets(reservationRequestDto);
+  }
+
+  @PostMapping("/{id}/pay")
+  @ApiOperation(
+      value = "Pay tickets for the specified invoice",
+      authorizations = {@Authorization("apiKey")})
+  public InvoiceDto pay(@PathVariable Long id, @RequestBody List<Long> ticketIds) {
+    LOGGER.info("Attempting to pay tickets {} for invoice {}", ticketIds, id);
+    return invoiceService.payTickets(id, ticketIds);
   }
 }
