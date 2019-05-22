@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.artist.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
@@ -78,11 +79,30 @@ public class SimpleEventService implements EventService {
 
     for (Event e : events) {
       EventSearchResultDto eventDto = eventSearchResultMapper.eventToEventSearchResultDto(e);
+      List<PriceCategory> priceCategories = priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(e);
+      eventDto.setPriceRange(formatPriceRange(priceCategories));
       eventDtos.add(eventDto);
       eventDto.setPerformances(getPerformancesFiltered(e.getId(), Pageable.unpaged()));
     }
 
     return eventDtos;
+  }
+
+  private String formatPriceRange(List<PriceCategory> priceCategories) {
+    String price = "";
+
+    if (priceCategories.size() > 0) {
+      price = String.format("%.0f", priceCategories.get(0).getPriceInCents() / 100.);
+
+      if (priceCategories.size() > 1) {
+        price += " - " + String.format("%.0f",priceCategories
+            .get(priceCategories.size()-1).getPriceInCents() / 100.) + " €";
+      }
+    } else {
+      price = "kein Preis";
+    }
+
+    return price;
   }
 
   @Override

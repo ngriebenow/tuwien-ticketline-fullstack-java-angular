@@ -22,7 +22,7 @@ export class EventFilterComponent implements OnInit {
 
 
 
-  @Input() eventFilter: EventFilter = new EventFilter( '', '', '', '', '', '', '', '', '', '', '', '', '');
+  @Input() eventFilter: EventFilter = new EventFilter( '', '', '', null, '', '', '', '', '', '', '', '', '');
 
   @Output() eventSearchResults: EventSearchResult[] = [];
 

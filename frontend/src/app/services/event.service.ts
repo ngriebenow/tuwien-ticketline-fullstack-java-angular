@@ -33,8 +33,8 @@ export class EventService {
 
     console.log('getEventsFiltered');
 
-    var price: string = "";
-    if (eventFilter.priceInEuro.length > 0) {
+    let price: string = "";
+    if (eventFilter.priceInEuro != null) {
       price = eventFilter.priceInEuro + '00';
     }
 
@@ -55,7 +55,7 @@ export class EventService {
       .set('page', '0')
       .set('count', '100');
 
-    console.log('getEventsFiltered: ' + eventFilter.name);
+    console.log('getEventsFiltered: ' + paramsHttp);
 
     return this.httpClient.get<EventSearchResult[]>(this.eventBaseUri, {params: paramsHttp});
 

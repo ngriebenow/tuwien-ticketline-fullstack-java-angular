@@ -53,7 +53,7 @@
     <div class="col-1">
       <div style="margin: 0" class="row">
         <div class="col-9">
-          <input class="form-control" placeholder="Preis" type="number" min="0" step="1" (change)="loadEvents()" [(ngModel)]="eventFilter.priceInEuro" value=""/>
+          <input class="form-control" placeholder="Preis" (change)="loadEvents()" type="number" [(ngModel)]="eventFilter.priceInEuro" value=""/>
         </div>
         <div class="col-2" style="padding-left: 0">
           <div class="align-content-end">
@@ -150,10 +150,16 @@
             <i class="far fa-building"></i>
             {{ event.hallName }}, {{ event.locationName}}</h6>
         </div>
-        <div class="col-3">
+        <div class="col-2">
           <div class="row">
             <h6 class="card-subtitle mb-2 text-muted card-event-info" >
               <i class="fas fa-map-marker-alt"></i> {{ event.locationPlace}}</h6>
+          </div>
+        </div>
+        <div class="col-1">
+          <div class="row">
+            <h6 class="card-subtitle mb-2 text-muted card-event-info" >
+              <i class="far fa-money-bill-alt"></i> {{ event.priceRange}}</h6>
           </div>
         </div>
       </div>
