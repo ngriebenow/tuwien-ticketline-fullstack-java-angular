@@ -14,6 +14,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
+import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
@@ -24,9 +25,11 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.HallRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,6 +55,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
   @Autowired private LocationRepository locationRepository;
   @Autowired private ArtistRepository artistRepository;
   @Autowired private EventRepository eventRepository;
+  @Autowired private PriceCategoryRepository priceCategoryRepository;
 
   @Autowired private EventMapper eventMapper;
   @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
@@ -84,6 +88,17 @@ public class EventEndpointTest extends BaseIntegrationTest {
   private static Performance P7;
   private static Performance P8;
   private static Performance P9;
+
+  private PriceCategory PC1;
+  private PriceCategory PC2;
+
+  private PriceCategory PC3;
+  private PriceCategory PC4;
+
+  private PriceCategory PC5;
+  private PriceCategory PC6;
+
+  private static int PRICE_TOLERANCE = 1000;
 
 
   @Before
@@ -254,10 +269,56 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .event(E3)
             .build();
     P9 = performanceRepository.save(P9);
+
+
+
+    PC1 = new PriceCategory.Builder()
+        .name("PC1")
+        .color(Color.BLACK)
+        .event(E1)
+        .priceInCents(2000).build();
+    PC1 = priceCategoryRepository.save(PC1);
+    
+
+    PC2 = new PriceCategory.Builder()
+        .name("PC2")
+        .color(Color.BLACK)
+        .event(E2)
+        .priceInCents(3000).build();
+    PC2 = priceCategoryRepository.save(PC2);
+
+    PC3 = new PriceCategory.Builder()
+        .name("PC3")
+        .color(Color.BLACK)
+        .event(E2)
+        .priceInCents(4000).build();
+    PC3 = priceCategoryRepository.save(PC3);
+
+    PC4 = new PriceCategory.Builder()
+        .name("PC4")
+        .color(Color.BLACK)
+        .event(E3)
+        .priceInCents(5000).build();
+    PC4 = priceCategoryRepository.save(PC4);
+
+    PC5 = new PriceCategory.Builder()
+        .name("PC5")
+        .color(Color.BLACK)
+        .event(E3)
+        .priceInCents(6000).build();
+    PC5 = priceCategoryRepository.save(PC5);
+
+    PC6 = new PriceCategory.Builder()
+        .name("PC6")
+        .color(Color.BLACK)
+        .event(E3)
+        .priceInCents(7000).build();
+    PC6 = priceCategoryRepository.save(PC6);
   }
 
   @After
   public void cleanUp() {
+    priceCategoryRepository.deleteAll();
     performanceRepository.deleteAll();
     eventRepository.deleteAll();
     hallRepository.deleteAll();
@@ -428,4 +489,114 @@ public class EventEndpointTest extends BaseIntegrationTest {
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
+
+  @Test
+  public void givenEvents_whenFilterByPrice0_thenReturnNoEvents() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?priceInCents=0")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(0));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByPrice1000_thenReturnE1() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?priceInCents=1000")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E1)));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByPrice4000_thenReturnE2E3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?priceInCents=4000")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(2));
+    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
+    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByPrice8000_thenReturnE3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?priceInCents=8000")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByPrice8001_thenReturnNoEvents() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?priceInCents=8001")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(0));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
 }

@@ -5,23 +5,16 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event_;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
-import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory_;
-import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
-import com.google.common.base.Predicates;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 
 public class EventSpecification {

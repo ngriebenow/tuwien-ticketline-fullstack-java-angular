@@ -15,6 +15,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
+import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
@@ -26,6 +27,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.HallRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -71,6 +73,7 @@ public class EventServiceIntegrationTest {
   private Event E1;
   private Event E2;
   private Event E3;
+
 
   private Artist A1;
   private Artist A2;
@@ -266,6 +269,10 @@ public class EventServiceIntegrationTest {
             .event(E3)
             .build();
     P9 = performanceRepository.save(P9);
+
+
+
+
   }
 
   @AfterEach
