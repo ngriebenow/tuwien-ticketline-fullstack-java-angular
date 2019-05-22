@@ -63,11 +63,11 @@ public class ClientFilterDto {
       return false;
     }
     ClientFilterDto that = (ClientFilterDto) o;
-    return Objects.equals(name, that.name) &&
-        Objects.equals(surname, that.surname) &&
-        Objects.equals(email, that.email) &&
-        Objects.equals(page, that.page) &&
-        Objects.equals(count, that.count);
+    return Objects.equals(name, that.name)
+        && Objects.equals(surname, that.surname)
+        && Objects.equals(email, that.email)
+        && Objects.equals(page, that.page)
+        && Objects.equals(count, that.count);
   }
 
   @Override
