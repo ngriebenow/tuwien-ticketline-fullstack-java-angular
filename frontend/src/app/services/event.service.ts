@@ -33,13 +33,18 @@ export class EventService {
 
     console.log('getEventsFiltered');
 
+    var price: string = "";
+    if (eventFilter.priceInEuro.length > 0) {
+      price = eventFilter.priceInEuro + '00';
+    }
+
     const paramsHttp = new HttpParams()
       .set('name', eventFilter.name)
       .set('content', eventFilter.content)
       .set('duration', eventFilter.duration)
       .set('eventCategory', eventFilter.eventCategory)
       .set('artistName', eventFilter.artistName)
-      .set('priceInCents', eventFilter.priceInCents)
+      .set('priceInCents', price)
       .set('hallName', eventFilter.hallName)
       .set('hallId', eventFilter.hallId)
       .set('locationId', eventFilter.locationId)

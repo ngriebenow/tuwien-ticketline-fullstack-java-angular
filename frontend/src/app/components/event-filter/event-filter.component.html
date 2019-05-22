@@ -53,7 +53,7 @@
     <div class="col-1">
       <div style="margin: 0" class="row">
         <div class="col-9">
-          <input  class="form-control" placeholder="Preis" type="text" (change)="loadEvents()"  [(ngModel)]="eventFilter.priceInCents" value=""/>
+          <input class="form-control" placeholder="Preis" type="number" min="0" step="1" (change)="loadEvents()" [(ngModel)]="eventFilter.priceInEuro" value=""/>
         </div>
         <div class="col-2" style="padding-left: 0">
           <div class="align-content-end">
