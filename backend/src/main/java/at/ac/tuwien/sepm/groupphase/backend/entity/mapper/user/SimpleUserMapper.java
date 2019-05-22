@@ -19,7 +19,7 @@ public class SimpleUserMapper implements UserMapper {
     u.setUsername(user.getUsername());
     u.setPassword(encoder.encode(user.getPassword()));
     if (user.getAdmin()) {
-      u.setAuthority("ROLE_ADMIN, ROLE_USER");
+      u.setAuthority("ROLE_ADMIN");
     } else {
       u.setAuthority("ROLE_USER");
     }

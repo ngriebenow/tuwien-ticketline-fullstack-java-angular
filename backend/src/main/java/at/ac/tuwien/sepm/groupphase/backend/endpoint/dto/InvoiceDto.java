@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 import com.google.common.base.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.time.LocalDate;
 import java.util.List;
 
 @ApiModel(
@@ -22,10 +23,16 @@ public class InvoiceDto {
   @ApiModelProperty("The reservation code of this invoice")
   private String reservationCode;
 
+  @ApiModelProperty("The sequential number of this invoice")
+  private Long number;
+
+  @ApiModelProperty("The date this invoice was payed")
+  private LocalDate paidAt;
+
   @ApiModelProperty("The id of the client who issued this invoice")
   private Long clientId;
 
-  // TODO: Implement as soon as michis user persistance part is done
+  // TODO: Implement as soon as michis user persistence part is done
   // private Long selleId;
 
   @ApiModelProperty(value = "The tickets reserved and bought by this invoice")
@@ -38,6 +45,8 @@ public class InvoiceDto {
     setPaid(builder.isPaid);
     setCancelled(builder.isCancelled);
     setReservationCode(builder.reservationCode);
+    setNumber(builder.number);
+    setPaidAt(builder.paidAt);
     setClientId(builder.clientId);
     setTickets(builder.tickets);
   }
@@ -74,6 +83,22 @@ public class InvoiceDto {
     this.reservationCode = reservationCode;
   }
 
+  public Long getNumber() {
+    return number;
+  }
+
+  public void setNumber(Long number) {
+    this.number = number;
+  }
+
+  public LocalDate getPaidAt() {
+    return paidAt;
+  }
+
+  public void setPaidAt(LocalDate paidAt) {
+    this.paidAt = paidAt;
+  }
+
   public Long getClientId() {
     return clientId;
   }
@@ -91,24 +116,26 @@ public class InvoiceDto {
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
+  public boolean equals(Object o) {
+    if (this == o) {
       return true;
     }
-    if (obj == null || getClass() != obj.getClass()) {
+    if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    InvoiceDto that = (InvoiceDto) obj;
+    InvoiceDto that = (InvoiceDto) o;
     return isPaid == that.isPaid
         && isCancelled == that.isCancelled
         && Objects.equal(id, that.id)
         && Objects.equal(reservationCode, that.reservationCode)
+        && Objects.equal(number, that.number)
+        && Objects.equal(paidAt, that.paidAt)
         && Objects.equal(clientId, that.clientId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, clientId);
+    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, number, paidAt, clientId);
   }
 
   @Override
@@ -123,10 +150,12 @@ public class InvoiceDto {
         + ", reservationCode='"
         + reservationCode
         + '\''
+        + ", number="
+        + number
+        + ", paidAt="
+        + paidAt
         + ", clientId="
         + clientId
-        + ", tickets="
-        + tickets
         + '}';
   }
 
@@ -136,6 +165,8 @@ public class InvoiceDto {
     private boolean isPaid;
     private boolean isCancelled;
     private String reservationCode;
+    private Long number;
+    private LocalDate paidAt;
     private Long clientId;
     private List<TicketDto> tickets;
 
@@ -158,6 +189,16 @@ public class InvoiceDto {
 
     public Builder reservationCode(String val) {
       reservationCode = val;
+      return this;
+    }
+
+    public Builder number(Long val) {
+      number = val;
+      return this;
+    }
+
+    public Builder paidAt(LocalDate val) {
+      paidAt = val;
       return this;
     }
 

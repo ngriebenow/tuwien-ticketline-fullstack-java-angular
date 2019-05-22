@@ -1,14 +1,16 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.EventEndpoint;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.artist.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
@@ -27,14 +29,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class SimpleEventService implements EventService {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(SimpleEventService.class);
   @Autowired private EventRepository eventRepository;
   @Autowired private PerformanceRepository performanceRepository;
   @Autowired private EventMapper eventMapper;
   @Autowired private PerformanceMapper performanceMapper;
+  @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
+  @Autowired private EventSearchResultMapper eventSearchResultMapper;
   @Autowired private ArtistMapper artistMapper;
-
-  private static final Logger LOGGER =
-      LoggerFactory.getLogger(SimpleEventService.class);
 
   @Override
   public EventDto getOneById(Long id) throws NotFoundException {
@@ -50,7 +52,8 @@ public class SimpleEventService implements EventService {
   }
 
   @Override
-  public List<EventDto> getEventsFiltered(EventFilterDto eventFilterDto, Pageable pageable) {
+  public List<EventSearchResultDto> getEventsFiltered(
+      EventFilterDto eventFilterDto, Pageable pageable) {
     LOGGER.info("getEventsFiltered " + eventFilterDto);
 
     Specification<Event> specification = EventSpecification.getEventSpecification(eventFilterDto);
@@ -58,22 +61,31 @@ public class SimpleEventService implements EventService {
     specification = specification.and(EventSpecification.likeArtist(eventFilterDto));
     Page<Event> events = eventRepository.findAll(specification, pageable);
 
-    List<EventDto> eventDtos = new ArrayList<>();
-    events.forEach(e -> eventDtos.add(eventMapper.eventToEventDto(e)));
+    List<EventSearchResultDto> eventDtos = new ArrayList<>();
+
+    for (Event e : events) {
+      EventSearchResultDto eventDto = eventSearchResultMapper.eventToEventSearchResultDto(e);
+      eventDtos.add(eventDto);
+      eventDto.setPerformances(getPerformancesFiltered(e.getId(), Pageable.unpaged()));
+    }
+
     return eventDtos;
   }
 
   @Override
-  public List<PerformanceDto> getPerformancesOfEvent(Long id, Pageable pageable)
+  public List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, Pageable pageable)
       throws NotFoundException {
     LOGGER.info("getPerformancesOfEvent " + id);
 
     Event event = eventRepository.findById(id).orElseThrow(NotFoundException::new);
-    List<PerformanceDto> performanceDtos = new ArrayList<>();
+    List<PerformanceSearchResultDto> performanceDtos = new ArrayList<>();
 
     performanceRepository
         .findAllByEvent(event, pageable)
-        .forEach(p -> performanceDtos.add(performanceMapper.performanceToPerformanceDto(p)));
+        .forEach(
+            p ->
+                performanceDtos.add(
+                    performanceSearchResultMapper.performanceToPerformanceSearchResultDto(p)));
 
     return performanceDtos;
   }

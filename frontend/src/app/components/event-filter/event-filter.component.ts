@@ -1,7 +1,8 @@
-import {Component, Input, NgModule, NO_ERRORS_SCHEMA, OnInit, Output} from '@angular/core';
+import {Component, Input, NgModule, OnInit, Output} from '@angular/core';
 import {EventFilter} from '../../dtos/event-filter';
 import {EventService} from '../../services/event.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {EventSearchResult} from "../../dtos/event-search-result";
 
 @Component({
   selector: 'app-event-filter',
@@ -19,9 +20,11 @@ export class EventFilterComponent implements OnInit {
 
   constructor(private eventService: EventService) { }
 
+
+
   @Input() eventFilter: EventFilter = new EventFilter('', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
-  @Output() events: Event[] = [];
+  @Output() eventSearchResults: EventSearchResult[] = [];
 
   ngOnInit() {
     console.log('ngOnInit');
@@ -31,12 +34,11 @@ export class EventFilterComponent implements OnInit {
 
   /**
    * Loads the events
-   * @param id the id of the event whose performances should be search for
    */
   loadEvents(): void {
     console.log('loadEvents');
     this.eventService.getEventsFiltered(this.eventFilter).subscribe(
-      (events: Event[]) => this.events = events);
+      (events: EventSearchResult[]) => this.eventSearchResults = events);
   }
 
 }

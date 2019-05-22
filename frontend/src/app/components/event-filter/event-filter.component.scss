@@ -1,3 +1,4 @@
+@import "../../../colors";
 
 .form-control {
   width: 100% !important;
@@ -11,27 +12,94 @@
   width: 100% !important;
 }
 
-.col-md-1 {
+.col-1 {
   padding: 2px !important;
 }
 
-.col-md-2 {
+.col-2 {
   padding: 2px !important;
 }
 
-.col-md-3 {
+.col-3 {
   padding: 2px !important;
 }
 
-
-.col-md-10 {
+.col-4 {
   padding: 2px !important;
 }
 
-.col-md-9 {
+.col-6 {
   padding: 2px !important;
 }
 
-.col-md-6 {
+.col-9 {
   padding: 2px !important;
 }
+
+.col-10 {
+  padding: 2px !important;
+}
+
+.card {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.card-body {
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-bottom: 10px;
+}
+
+.card-performance {
+  /*background-color: $main-blue;*/
+  border: $main-blue;
+  border-style: solid;
+  border-width: thin;
+
+}
+
+.card-performance h5{
+  color: $dark-gray;
+}
+
+.card-performance h6{
+  color: $dark-gray;
+}
+
+.card-performance-body {
+  color: white;
+  margin: 8px !important;
+}
+
+.card-performance:hover {
+  background-color: $main-orange;
+  border: $main-orange;
+  border-style: solid;
+  border-width: thin;
+}
+
+.card-performance:hover h5{
+  color: white;
+}
+
+.card-performance:hover h6{
+  color: white;
+}
+
+.card-event-info {
+  margin-top: 6px;
+}
+
+
+.performance-title {
+  font-size: 14px;
+}
+
+.performance-subtitle {
+  font-size: 12px;
+}
+
+
+
