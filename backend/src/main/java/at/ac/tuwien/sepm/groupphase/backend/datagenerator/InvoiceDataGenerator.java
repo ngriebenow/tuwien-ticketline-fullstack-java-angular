@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -44,6 +45,7 @@ public class InvoiceDataGenerator implements DataGenerator<Invoice> {
     this.invoiceNumberSequenceGenerator = invoiceNumberSequenceGenerator;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<Invoice> generatedInvoices = new ArrayList<>(MAX_INVOICE_COUNT_PER_CLIENT);

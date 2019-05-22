@@ -18,6 +18,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -45,6 +46,7 @@ public class EventDataGenerator implements DataGenerator<Event> {
     this.hallRepository = hallRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<Event> generatedEvents = new ArrayList<>(MAX_EVENT_COUNT);

@@ -8,18 +8,20 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
-public class UserGenerator implements DataGenerator<User> {
+public class UserDataGenerator implements DataGenerator<User> {
   private final Set<Class<?>> dependencies = new HashSet<>();
   private AccountService accountService;
 
   @Autowired
-  public UserGenerator(AccountService accountService) {
+  public UserDataGenerator(AccountService accountService) {
     this.accountService = accountService;
   }
 
+  @Transactional
   @Override
   public void execute() {
     UserDto admin = new UserDto();

@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -29,6 +30,7 @@ public class MessageDataGenerator implements DataGenerator<Message> {
     this.messageRepository = messageRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<Message> generatedMessages = new ArrayList<>(MAX_NEWS_COUNT);
