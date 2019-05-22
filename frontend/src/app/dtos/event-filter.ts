@@ -15,8 +15,8 @@ export class EventFilter {
     public locationPlace: string,
     public locationCountry: string,
     public locationStreet: string,
-    public startsAtTime: string,
-    public startsAtDate: string
+    public startAtTime: string,
+    public startAtDate: string
     ) {
   }
 }

@@ -37,7 +37,7 @@ export class EventFilterComponent implements OnInit {
 
 
   onDateChanged(event: IMyDateModel) {
-    this.eventFilter.startsAtDate = event.formatted;
+    this.eventFilter.startAtDate = event.formatted;
     this.loadEvents();
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
   }

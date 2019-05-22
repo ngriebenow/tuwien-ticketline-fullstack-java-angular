@@ -52,8 +52,8 @@ export class EventService {
       .set('locationCountry', eventFilter.locationCountry)
       .set('locationStreet', eventFilter.locationStreet)
       .set('locationPlace', eventFilter.locationPlace)
-      .set('startsAtDate', eventFilter.startsAtDate)
-      .set('startsAtTime', eventFilter.startsAtTime)
+      .set('startAtDate', eventFilter.startAtDate)
+      .set('startAtTime', eventFilter.startAtTime)
       .set('page', '0')
       .set('count', '100');
 
