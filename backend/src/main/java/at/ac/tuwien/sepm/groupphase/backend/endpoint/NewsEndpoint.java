@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -36,7 +37,6 @@ public class NewsEndpoint {
 
   private final NewsService newsService;
   private final PictureService pictureService;
-  private final SimpleHeaderTokenAuthenticationService tokenAuthenticationService;
   private final AccountService accountService;
 
   private static final Logger LOGGER =
@@ -46,33 +46,28 @@ public class NewsEndpoint {
    * Construct the entity.
    */
   public NewsEndpoint(NewsService newsService, PictureService pictureService,
-      SimpleHeaderTokenAuthenticationService tokenAuthenticationService,
       AccountService accountService) {
     this.newsService = newsService;
     this.pictureService = pictureService;
-    this.tokenAuthenticationService = tokenAuthenticationService;
     this.accountService = accountService;
   }
 
   /**
    * Get the logged in user.
    *
-   * @param authorizationHeader token
    * @return the currently logged in user
    */
-  private User getUser(String authorizationHeader) {
+  private User getUser() {
 
-    String trimmedHeader = authorizationHeader
-        .substring(AuthenticationConstants.TOKEN_PREFIX.length()).trim();
-
-    return accountService.findOne(tokenAuthenticationService
-        .authenticationTokenInfo(trimmedHeader).getUsername());
+    org.springframework.security.core.userdetails.User
+        tmp = (org.springframework.security.core.userdetails.User)
+        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return accountService.findOne(tmp.getUsername());
   }
 
   /**
    * Get all (recent) news entries.
    * @param onlyNew if not specified then false
-   * @param authorizationHeader to get user
    * @param page the number of page
    * @param count the size of a page
    * @return a list of news entries
@@ -82,7 +77,6 @@ public class NewsEndpoint {
       value = "Get list of simple news entries",
       authorizations = {@Authorization(value = "apiKey")})
   public List<SimpleNewsDto> findAll(@RequestParam(required = false) boolean onlyNew,
-      @ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorizationHeader,
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) Integer count) {
 
@@ -90,7 +84,7 @@ public class NewsEndpoint {
 
     if (onlyNew) {
       LOGGER.info("get all unread news");
-      return newsService.findAllNew(getUser(authorizationHeader), p);
+      return newsService.findAllNew(getUser(), p);
     }  else {
       LOGGER.info("get all news");
       return newsService.findAll(p);
@@ -111,17 +105,15 @@ public class NewsEndpoint {
    * Get news entry with id.
    *
    * @param id of the news entry
-   * @param authorizationHeader to get user and eventually mark news entry as read
    * @return the detailed news entry with given id
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   @ApiOperation(
       value = "Get detailed information about a specific news entry",
       authorizations = {@Authorization(value = "apiKey")})
-  public DetailedNewsDto find(@PathVariable Long id,
-      @ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+  public DetailedNewsDto find(@PathVariable Long id) {
     LOGGER.info("getNewsById " + id);
-    return newsService.findOne(id, getUser(authorizationHeader));
+    return newsService.findOne(id, getUser());
   }
 
   /**
