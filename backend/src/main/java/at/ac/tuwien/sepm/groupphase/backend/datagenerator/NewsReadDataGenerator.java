@@ -32,6 +32,7 @@ import javax.imageio.ImageIO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -58,6 +59,7 @@ public class NewsReadDataGenerator implements DataGenerator<NewsRead> {
     this.newsRepository = newsRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<NewsRead> generatedNewsReads = new ArrayList<>(MAX_READ_COUNT_PER_USER);

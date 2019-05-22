@@ -27,6 +27,7 @@ import javax.imageio.ImageIO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -48,6 +49,7 @@ public class PictureDataGenerator implements DataGenerator<Picture> {
     this.newsRepository = newsRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<Picture> generatedPictures = new ArrayList<>(MAX_PICTURE_COUNT_PER_NEWS);

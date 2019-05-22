@@ -15,6 +15,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -31,6 +32,7 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
     this.hallRepository = hallRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<Unit> generatedUnits = new ArrayList<>();

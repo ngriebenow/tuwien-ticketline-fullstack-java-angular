@@ -38,7 +38,7 @@ public class Event {
   @Column(nullable = false)
   private Duration duration;
 
-  @ManyToOne(optional = false)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(nullable = false)
   private Hall hall;
 

@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -12,13 +13,13 @@ import javax.persistence.ManyToOne;
 public class NewsRead {
 
   @Id
-  @ManyToOne
-  @JoinColumn
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(nullable = false)
   private User user;
 
   @Id
-  @ManyToOne
-  @JoinColumn
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(nullable = false)
   private News news;
 
 

@@ -55,6 +55,7 @@ public class SimpleNewsService implements NewsService {
     this.entityManager = entityManager;
   }
 
+  @Transactional
   @Override
   public List<SimpleNewsDto> findAllNew(User user, Pageable pageable) {
     LOGGER.info("get all unread news");
@@ -78,6 +79,7 @@ public class SimpleNewsService implements NewsService {
     return newsDtos;
   }
 
+  @Transactional
   @Override
   public List<SimpleNewsDto> findAll(Pageable pageable) {
     LOGGER.info("get all news");
@@ -89,6 +91,7 @@ public class SimpleNewsService implements NewsService {
     return newsDtos;
   }
 
+  @Transactional
   @Override
   public DetailedNewsDto findOne(Long id, User user) throws NotFoundException {
     LOGGER.info("getNewsById " + id);

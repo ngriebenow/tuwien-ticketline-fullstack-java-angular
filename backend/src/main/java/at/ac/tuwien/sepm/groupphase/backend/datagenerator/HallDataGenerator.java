@@ -15,6 +15,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -35,6 +36,8 @@ public class HallDataGenerator implements DataGenerator<Hall> {
     this.hallRepository = hallRepository;
     this.locationRepository = locationRepository;
   }
+
+  @Transactional
 
   @Override
   public void execute() {

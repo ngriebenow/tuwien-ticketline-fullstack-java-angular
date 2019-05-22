@@ -50,6 +50,7 @@ public class SimplePictureService implements PictureService {
     this.entityManager = entityManager;
   }
 
+  @Transactional
   @Override
   public PictureDto findOne(Long id) throws NotFoundException {
     LOGGER.info("get picture by id");
@@ -62,6 +63,7 @@ public class SimplePictureService implements PictureService {
             }));
   }
 
+  @Transactional
   @Override
   public Long create(PictureDto pictureDto) {
     LOGGER.info("create picture");

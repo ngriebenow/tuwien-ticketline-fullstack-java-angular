@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -54,6 +55,7 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
     this.definedUnitRepository = definedUnitRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<DefinedUnit> generatedDefinedUnits = new ArrayList<>();
