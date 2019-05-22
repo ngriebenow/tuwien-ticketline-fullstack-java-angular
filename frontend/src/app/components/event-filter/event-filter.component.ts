@@ -3,7 +3,7 @@ import {EventFilter} from '../../dtos/event-filter';
 import {EventService} from '../../services/event.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EventSearchResult} from "../../dtos/event-search-result";
-
+import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 @Component({
   selector: 'app-event-filter',
   templateUrl: './event-filter.component.html',
@@ -17,33 +17,16 @@ import {EventSearchResult} from "../../dtos/event-search-result";
 })
 export class EventFilterComponent implements OnInit {
 
-  noCategory: boolean;
-  countryClass: string = 'first-selected';
-  noDateTime: boolean;
-
-  //times: number[];
 
   constructor(private eventService: EventService) {
 
-    //this.times = Array(24).fill().map((x,i)=>i);
   }
 
-  updateCountry(selected: boolean) {
-    if (selected) {
-      this.countryClass = 'other-selected';
-    } else {
-      this.countryClass = 'first-selected';
-    }
-  }
+  myDatePickerOptions: IMyDpOptions = {
+    dateFormat: 'dd.mm.yyyy',
+  };
 
-
-
-
-
-
-
-
-  @Input() eventFilter: EventFilter = new EventFilter( '', '', '', null, '', '', '', '', '', '', '', '', '', null, null);
+  @Input() eventFilter: EventFilter = new EventFilter( '', '', '', null, '', '', '', '', '', '', '', '', '', '', '');
 
   @Output() eventSearchResults: EventSearchResult[] = [];
 
@@ -52,6 +35,12 @@ export class EventFilterComponent implements OnInit {
     this.loadEvents();
   }
 
+
+  onDateChanged(event: IMyDateModel) {
+    this.eventFilter.startsAtDate = event.formatted;
+    this.loadEvents();
+    // event properties are: event.date, event.jsdate, event.formatted and event.epoc
+  }
 
 
   /**
@@ -66,11 +55,5 @@ export class EventFilterComponent implements OnInit {
 
 
 
-  updateBackground(index: number): void {
-
-    if (index == 0) {
-
-    }
-}
 
 }
