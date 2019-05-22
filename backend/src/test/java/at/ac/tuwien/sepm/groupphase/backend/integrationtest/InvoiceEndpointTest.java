@@ -363,6 +363,15 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   }
 
   @Test
+  public void givenReservedDefinedUnit_whenReserveAgain_thenStatus400() {
+    postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+  }
+
+  @Test
   public void whenRequestReservation_thenCorrectInvoiceReturned() {
     int requestedTicketCount = 0;
     for (TicketRequestDto ticketRequestDto : ticketRequestDtoListOne) {
