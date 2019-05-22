@@ -4,19 +4,30 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event_;
+import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
+import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory_;
+import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
+import com.google.common.base.Predicates;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
+import javax.persistence.criteria.Subquery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 
 public class EventSpecification {
+
+  private static final int PRICE_TOLERANCE = 1000;
 
   /** Javadoc. */
   public static Specification<Event> likeHallLocation(EventFilterDto eventFilterDto) {
@@ -138,6 +149,35 @@ public class EventSpecification {
                   eaJoin.get("surname")), "%" + eventFilterDto.getArtistName().toLowerCase() + "%");
 
           return criteriaBuilder.or(artistName,artistSurname);
+
+        }
+        return criteriaBuilder.and();
+      }
+    };
+  }
+
+  /** Javadoc. */
+  public static Specification<Event> likePrice(EventFilterDto eventFilterDto) {
+    return new Specification<Event>() {
+      @Override
+      public Predicate toPredicate(
+          Root<Event> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+
+        if (eventFilterDto.getPriceInCents() != null) {
+
+          Subquery<PriceCategory> subquery = query.subquery(PriceCategory.class);
+
+          Root<PriceCategory> pc = subquery.from(PriceCategory.class);
+
+          subquery.where(criteriaBuilder.and(
+              criteriaBuilder.equal(pc.get("event").get("id"),root.get("id")),
+              criteriaBuilder.between(pc.get("priceInCents"),
+                  eventFilterDto.getPriceInCents() - PRICE_TOLERANCE,
+                  eventFilterDto.getPriceInCents() + PRICE_TOLERANCE)));
+
+          subquery.select(pc);
+
+          return criteriaBuilder.exists(subquery);
 
         }
         return criteriaBuilder.and();
