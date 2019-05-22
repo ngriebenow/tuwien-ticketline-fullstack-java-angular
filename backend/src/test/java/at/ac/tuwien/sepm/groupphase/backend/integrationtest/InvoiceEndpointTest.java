@@ -266,7 +266,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationNullClientId_thenStatus400() {
     reservationRequestDtoOne.setClientId(null);
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
@@ -275,7 +275,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationNullPerformanceId_thenStatus400() {
     reservationRequestDtoOne.setPerformanceId(null);
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
@@ -284,7 +284,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationNullTickets_thenStatus400() {
     reservationRequestDtoOne.setTicketRequests(null);
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
@@ -293,7 +293,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationEmptyTickets_thenStatus400() {
     reservationRequestDtoOne.setTicketRequests(Collections.emptyList());
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
@@ -302,7 +302,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationNullTicketId_thenStatus400() {
     reservationRequestDtoOne.getTicketRequests().get(0).setDefinedUnitId(null);
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
@@ -311,7 +311,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationInvalidAmount_thenStatus400() {
     reservationRequestDtoOne.getTicketRequests().get(0).setAmount(0);
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
@@ -320,7 +320,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationInvalidClientId_thenStatus404() {
     reservationRequestDtoOne.setClientId(-1L);
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
   }
@@ -329,7 +329,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationInvalidPerformanceId_thenStatus404() {
     reservationRequestDtoOne.setPerformanceId(-1L);
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
   }
@@ -338,7 +338,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationInvalidDefinedUnitId_thenStatus404() {
     ticketRequestDtoListOne.get(0).setDefinedUnitId(definedUnit3.getId());
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
   }
@@ -348,7 +348,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     performance1.setStartAt(LocalDateTime.now().minusMinutes(14));
     performanceRepository.save(performance1);
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
@@ -357,7 +357,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   public void whenRequestReservationCapacityTooHigh_thenStatus400() {
     ticketRequestDtoListOne.get(0).setAmount(unit1.getCapacity() + 1);
 
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
@@ -368,7 +368,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     for (TicketRequestDto ticketRequestDto : ticketRequestDtoListOne) {
       requestedTicketCount += ticketRequestDto.getAmount();
     }
-    Response response = postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED.value());
 
@@ -384,8 +384,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenTwoInvoices_whenFilter_thenTwoInvoicesReturned() {
-    postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
-    postRespone(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    postResponse(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("page", "0");
@@ -402,8 +402,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenUnpaidInvoices_whenFilterInvoicesIsPaid_thenEmptyListReturned() {
-    postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
-    postRespone(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    postResponse(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("isPaid", "true");
@@ -421,8 +421,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenUnpaidInvoices_whenFilterInvoicesIsNotPaid_thenInvoicesReturned() {
-    postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne);
-    postRespone(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);
+    postResponse(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("isPaid", "false");
@@ -440,8 +440,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenPaidInvoices_whenFilterInvoicesIsPaid_thenInvoicesReturned() {
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoOne);
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("isPaid", "true");
@@ -459,8 +459,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenPaidInvoices_whenFilterInvoicesIsNotPaid_thenEmptyListReturned() {
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoOne);
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("isPaid", "false");
@@ -479,11 +479,11 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   @Test
   public void givenTwoInvoices_whenFilterReservationCodeOne_thenInvoiceOneReturned() {
     String reservationCodeOne =
-        postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne)
+        postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne)
             .body()
             .as(InvoiceDto.class)
             .getReservationCode();
-    postRespone(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(RESERVATION_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("reservationCode", reservationCodeOne);
@@ -503,12 +503,12 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   @Test
   public void givenTwoInvoices_whenFilterInvalidReservationCode_thenNothingReturned() {
     String reservationCodeOne =
-        postRespone(RESERVATION_ENDPOINT, reservationRequestDtoOne)
+        postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne)
             .body()
             .as(InvoiceDto.class)
             .getReservationCode();
     String reservationCodeTwo =
-        postRespone(RESERVATION_ENDPOINT, reservationRequestDtoTwo)
+        postResponse(RESERVATION_ENDPOINT, reservationRequestDtoTwo)
             .body()
             .as(InvoiceDto.class)
             .getReservationCode();
@@ -529,8 +529,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenTowInvoices_whenFilterInvoicesClientOneName_thenThatInvoiceReturned() {
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoOne);
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("clientName", clientOne.getName());
@@ -549,8 +549,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenTowInvoices_whenFilterInvoicesClientOneSurName_thenThatInvoiceReturned() {
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoOne);
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("clientName", clientOne.getSurname());
@@ -569,8 +569,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenTowInvoices_whenFilterInvoicesClientOneFullName_thenThatInvoiceReturned() {
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoOne);
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("clientName", clientOne.getName() + " " + clientOne.getSurname());
@@ -589,8 +589,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenTowInvoices_whenFilterInvoicesClientOneEmail_thenThatInvoiceReturned() {
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoOne);
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("clientEmail", clientOne.getEmail());
@@ -609,8 +609,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenTowInvoices_whenFilterInvoicesPerformanceOneName_thenThatInvoiceReturned() {
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoOne);
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("performanceName", performance1.getName());
@@ -630,8 +630,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenTowInvoices_whenFilterInvoicesEventName_thenBothReturned() {
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoOne);
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("performanceName", event.getName());
@@ -649,8 +649,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenTowInvoices_whenFilterInvalidPerformanceName_thenNothingReturned() {
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoOne);
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("performanceName", performance1.getName() + performance2.getName());
@@ -668,8 +668,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenTowInvoices_whenFilterEmptyPerformanceName_thenNothingReturned() {
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoOne);
-    postRespone(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
     Map<String, String> params = new HashMap<>();
     params.put("performanceName", "");
@@ -698,7 +698,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     return specification.when().get(endpoint).then();
   }
 
-  private Response postRespone(String endpoint, Object body) {
+  private Response postResponse(String endpoint, Object body) {
     return RestAssured.given()
         .contentType(ContentType.JSON)
         .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
