@@ -50,7 +50,7 @@ public class HallEndpoint {
    * @return the hall that has been saved
    */
   @RequestMapping(method = RequestMethod.POST)
-  // @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ApiOperation(
       value = "Post hall",
       authorizations = {@Authorization(value = "apiKey")})
@@ -66,7 +66,7 @@ public class HallEndpoint {
    * @return the altered hall that has been saved
    */
   @RequestMapping(method = RequestMethod.PUT)
-  // @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ApiOperation(
       value = "Put hall",
       authorizations = {@Authorization(value = "apiKey")})
@@ -82,7 +82,7 @@ public class HallEndpoint {
    * @return the list of units
    */
   @RequestMapping(value = "/{id}/units", method = RequestMethod.GET)
-  // @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   @ApiOperation(
       value = "Get hall units by id",
       authorizations = {@Authorization(value = "apiKey")})

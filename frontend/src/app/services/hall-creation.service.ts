@@ -19,7 +19,7 @@ export class HallCreationService {
 
   private hall: Hall;
   private hallSize: Point;
-  private maxHallSize: Point;
+  private readonly maxHallSize: Point;
 
   private seats: Point[];
   private sectors: Unit[];
@@ -35,8 +35,7 @@ export class HallCreationService {
     console.log('constructor');
     this.maxHallSize = new Point(27, 27); // set max hall size here
     // this.createNewHall();
-    // this.loadExistingHall(3152);
-    this.loadExistingHall(4752);
+    this.loadExistingHall(1552);
   }
 
   /**
@@ -60,14 +59,13 @@ export class HallCreationService {
    * Call this or createNewHall at start of hall creation process
    * loads hall from backend and sets initialized to true
    */
-  async loadExistingHall(id: number): Promise<void> {
-    // todo load hall from backend
+  loadExistingHall(id: number): void {
     this.hallSize = new Point(10, 10);
     this.hall = new Hall(null, null, null, null, null);
     this.seats = [];
     this.sectors = [];
     this.aisles = [];
-    await this.hallService.getHallById(id).then(
+    this.hallService.getHallById(id).then(
       result => result.subscribe(
         (loadedHall: Hall) => {
           this.hallSize.coordinateX = loadedHall.boundaryPoint.coordinateX;
