@@ -34,8 +34,9 @@ export class HallCreationService {
   constructor(private hallService: HallService, private router: Router) {
     console.log('constructor');
     this.maxHallSize = new Point(27, 27); // set max hall size here
-    this.createNewHall();
-    // this.loadExistingHall(1);
+    // this.createNewHall();
+    // this.loadExistingHall(3152);
+    this.loadExistingHall(4752);
   }
 
   /**
@@ -59,40 +60,30 @@ export class HallCreationService {
    * Call this or createNewHall at start of hall creation process
    * loads hall from backend and sets initialized to true
    */
-  loadExistingHall(id: number): void {
+  async loadExistingHall(id: number): Promise<void> {
     // todo load hall from backend
     this.hallSize = new Point(10, 10);
     this.hall = new Hall(null, null, null, null, null);
-    this.hallService.getHallById(id).subscribe(
-      (loadedHall: Hall) => {
-        this.hallSize.coordinateX = loadedHall.boundaryPoint.coordinateX;
-        this.hallSize.coordinateY = loadedHall.boundaryPoint.coordinateY;
-        this.hall.id = loadedHall.id;
-        this.hall.version = loadedHall.version;
-        this.hall.name = loadedHall.name;
-        this.hall.location = loadedHall.location;
-        // todo cleaner with subscriptions?
-        /*
-        this.hallSize = new Point(loadedHall.boundaryPoint.coordinateX, loadedHall.boundaryPoint.coordinateY);
-        this.hall = new Hall(
-          loadedHall.id,
-          loadedHall.version,
-          loadedHall.name,
-          loadedHall.location,
-          this.hallSize
-        );
-        */
-      },
-      error => {
-        console.log(error);
-        // todo error handling
-      }
-    );
     this.seats = [];
     this.sectors = [];
     this.aisles = [];
-    this.loadUnits(id);
-    this.createAisles();
+    await this.hallService.getHallById(id).then(
+      result => result.subscribe(
+        (loadedHall: Hall) => {
+          this.hallSize.coordinateX = loadedHall.boundaryPoint.coordinateX;
+          this.hallSize.coordinateY = loadedHall.boundaryPoint.coordinateY;
+          this.hall.id = loadedHall.id;
+          this.hall.version = loadedHall.version;
+          this.hall.name = loadedHall.name;
+          this.hall.location = loadedHall.location;
+          this.loadUnits(id);
+        },
+        error => {
+          console.log(error);
+          // todo error handling
+        }
+      )
+    );
     this.loadedExisting = true;
     this.initialized = true;
     this.edited = false;
@@ -114,6 +105,7 @@ export class HallCreationService {
             this.sectors.push(loadedUnits[i]);
           }
         }
+        this.createAisles();
       },
       error => {
         console.log(error);
@@ -126,7 +118,25 @@ export class HallCreationService {
    * creates an aisle at every empty position of hall
    */
   createAisles(): void {
-    // todo fill empty spaces with aisles
+    for (let y = 0; y < this.hallSize.coordinateY; y++) {
+      for (let x = 0; x < this.hallSize.coordinateX; x++) {
+        let found = false;
+        const aisle: Point = new Point(x + 1, y + 1);
+        for (let s = 0; !found && s < this.sectors.length; s++) {
+          if (this.pointInSector(aisle, this.sectors[s])) {
+            found = true;
+          }
+        }
+        for (let s = 0; !found && s < this.seats.length; s++) {
+          if (x + 1 === this.seats[s].coordinateX && y + 1 === this.seats[s].coordinateY) {
+            found = true;
+          }
+        }
+        if (!found) {
+          this.aisles.push(aisle);
+        }
+      }
+    }
   }
 
   /**
@@ -225,7 +235,7 @@ export class HallCreationService {
   prepareHallRequest(): HallRequest {
     const units: Unit[] = [];
     for (const s of this.seats) {
-      units.push(new Unit(null, null, null, s, s, 1));
+      units.push(new Unit(null, null, 'seat', s, s, 1));
     }
     for (const s of this.sectors) {
       units.push(s);

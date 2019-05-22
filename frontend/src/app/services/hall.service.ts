@@ -15,9 +15,9 @@ export class HallService {
 
   constructor(private httpClient: HttpClient, private globals: Globals) { }
 
-  getHallById(id: number): Observable<Hall> {
+  async getHallById(id: number): Promise<Observable<Hall>> {
     console.log('Load hall with id ' + id);
-    return this.httpClient.get<Hall>(this.hallBaseUri + '/' + id);
+    return await this.httpClient.get<Hall>(this.hallBaseUri + '/' + id);
   }
 
   postHall(hallRequest: HallRequest): Observable<Hall> {
