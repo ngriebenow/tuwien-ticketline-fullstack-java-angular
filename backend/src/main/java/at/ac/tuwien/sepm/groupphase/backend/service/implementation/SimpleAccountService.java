@@ -52,7 +52,7 @@ public class SimpleAccountService implements AccountService {
         if (userFilter.getRole() != null) {
           String rolestr = "";
           if (userFilter.getRole().toLowerCase().equals("admin")) {
-            rolestr = "ROLE_ADMIN, ROLE_USER";
+            rolestr = "ROLE_ADMIN";
           } else if (userFilter.getRole().toLowerCase().equals("user")) {
             rolestr = "ROLE_USER";
           } else {
@@ -134,7 +134,7 @@ public class SimpleAccountService implements AccountService {
       old.setEnabled(updated.getEnabled());
     }
     if (updated.getAdmin() != null) {
-      old.setAuthority(updated.getAdmin() ? "ROLE_ADMIN, ROLE_USER" : "ROLE_USER");
+      old.setAuthority(updated.getAdmin() ? "ROLE_ADMIN" : "ROLE_USER");
     }
     return old;
   }
