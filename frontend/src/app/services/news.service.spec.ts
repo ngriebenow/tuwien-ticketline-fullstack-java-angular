@@ -1,10 +1,10 @@
 import {TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import {MessageService} from './message.service';
+import {NewsService} from './news.service';
 import {Globals} from '../global/globals';
 
-describe('MessageService', () => {
+describe('NewsService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
       HttpClientTestingModule,
@@ -15,7 +15,7 @@ describe('MessageService', () => {
   }));
 
   it('should be created', () => {
-    const service: MessageService = TestBed.get(MessageService);
+    const service: NewsService = TestBed.get(NewsService);
     expect(service).toBeTruthy();
   });
 });
