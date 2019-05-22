@@ -36,12 +36,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-// TODO: mark @Transactional readOnlys
 @Service
 @Validated
 public class SimpleInvoiceService implements InvoiceService {
@@ -83,6 +81,7 @@ public class SimpleInvoiceService implements InvoiceService {
     this.invoiceMapper = invoiceMapper;
   }
 
+  @Transactional(readOnly = true)
   @Override
   public InvoiceDto getOneById(Long id) {
     String errorMessage = "Can't find invoice with id " + id;
@@ -90,6 +89,7 @@ public class SimpleInvoiceService implements InvoiceService {
         getOrThrowNotFound(invoiceRepository.findById(id), errorMessage));
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<InvoiceDto> getFiltered(InvoiceFilterDto invoiceFilterDto, Pageable pageable) {
     LOGGER.info("Filtering for invoices");
