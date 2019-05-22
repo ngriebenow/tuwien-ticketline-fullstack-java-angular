@@ -48,8 +48,6 @@ public class InvoiceEndpoint {
     return invoiceService.getOneById(id);
   }
 
-  // reservation code, paid, cancelled, customer name, customer id, customer email, performance name
-
   /** Add JavaDoc. */
   @GetMapping
   @ApiOperation(
