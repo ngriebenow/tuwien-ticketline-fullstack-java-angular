@@ -42,43 +42,32 @@ export class HallViewingComponent implements OnInit {
     this.getSeats();
   }
 
-  clickSeat(seat: DefinedUnit){
+  clickSeat(seat: DefinedUnit) {
     this.hallViewingService.clickSeat(seat);
   }
 
-  getBackColor(dunit: DefinedUnit){
+  getBackColor(dunit: DefinedUnit) {
     return this.hallViewingService.getBackColor(dunit);
   }
 
-  clickDefUnitPlus(dunit: DefinedUnit){
-    this.hallViewingService.clickDefUnitPlus(dunit);
-  }
 
-  clickDefUnitMinus(dunit: DefinedUnit){
-    this.hallViewingService.clickDefUnitMinus(dunit);
-  }
-
-  clickEmptyUnit(dunit: DefinedUnit){
-    this.hallViewingService.clickEmptyUnit(dunit);
-  }
-
-  getEventName(): String{
+  getEventName(): String {
     return this.hallViewingService.getEventName();
   }
 
-  getPerformanceName(): String{
+  getPerformanceName(): String {
     return this.hallViewingService.getPerformanceName();
   }
 
-  getHallName(){
+  getHallName() {
     return this.hallViewingService.getHallName();
   }
 
-  getStartAt(){
+  getStartAt() {
     return this.hallViewingService.getStartAt();
   }
 
-  getHallSize(): void{
+  getHallSize(): void {
     this.hallSize = this.hallViewingService.getHallSize();
   }
 
@@ -86,91 +75,105 @@ export class HallViewingComponent implements OnInit {
     this.hallViewingService.getSeats();
   }
 
-  selectionNotEmpty(){
+  selectionNotEmpty() {
     return this.hallViewingService.selectionNotEmpty();
   }
 
-  getTicketSum(){
+  getTicketSum() {
     return this.hallViewingService.getTicketSum();
   }
 
-  sectorSelected(dunit: DefinedUnit){
+  sectorSelected(dunit: DefinedUnit) {
     this.hallViewingService.sectorSelected(dunit);
   }
 
-  anySectorSelected(){
+  anySectorSelected() {
     return this.hallViewingService.anySectorSelected();
   }
 
-  getSelectedSectorName(){
+  getSelectedSectorName() {
     return this.hallViewingService.getSelectedSectorName();
   }
 
-  getSelectedSectorCap(){
+  getSelectedSectorCap() {
     return this.hallViewingService.getSelectedSectorCap();
   }
 
-  getSelectedSectorFree(){
+  getSelectedSectorFree() {
     return this.hallViewingService.getSelectedSectorFree();
   }
 
-  updateSelectedNum(){
+  updateSelectedNum() {
     this.hallViewingService.updateSelectedNum(this.sectorNum);
   }
 
-  getNumOfSelectedSec(){
+  getNumOfSelectedSec() {
     return this.hallViewingService.getNumOfSelectedSec();
   }
 
-  checkValue(){
-    this.sectorNum = this.hallViewingService.checkValue(this.sectorNum);
+  getChosenNum(dunit: DefinedUnit) {
+    return this.hallViewingService.getChosenNum(dunit);
   }
 
-  sectorIsSelected(dunit: DefinedUnit){
+  checkValue() {
+    this.sectorNum = this.sectorNum = this.hallViewingService.checkValue(this.sectorNum);
+  }
+
+  sectorIsSelected(dunit: DefinedUnit) {
     return this.hallViewingService.sectorIsSelected(dunit);
   }
 
-  sectorDone(){
+  sectorDone() {
     this.hallViewingService.sectorDone(this.sectorNum);
   }
 
-  getCatColor(id: number){
-    var tmp: number;
-    for (var i = 0; i < this.cats.length; i++){
-      if(this.cats[i].id === id){
+  endTransaction() {
+    this.hallViewingService.endTransaction();
+  }
+
+  getCatColor(id: number) {
+    let tmp: number;
+    for (let i = 0; i < this.cats.length; i++) {
+      if (this.cats[i].id === id) {
         tmp = this.cats[i].color + 0x1000000;
         return '#' + tmp.toString(16).substr(1);
       }
     }
   }
 
+  showName(dunit: DefinedUnit) {
+    let tmp = dunit.point2.coordinateY - dunit.point1.coordinateY;
+    if (tmp === 0) {
+      tmp = 1;
+    }
+    return tmp * this.getUnitSize();
+  }
+
   /**
    * calculats the height for the category-btn
    * @param id of the category
    */
-  calcCatHeight(id:number){
-    var min = 27;
-    var max = 0;
-    var num = 0;
-    for (var y = 0; y < this.defUnits.length; y++){
-      if(this.defUnits[y].priceCategory === id){
-         if(this.defUnits[y].point1.coordinateY < min){
-           min = this.defUnits[y].point1.coordinateY;
-         }
-         if (this.defUnits[y].point1.coordinateY > max){
-           max = this.defUnits[y].point1.coordinateY;
-         }
+  calcCatHeight(id: number) {
+    let min = 27;
+    let max = 0;
+    let num = 0;
+    for (let y = 0; y < this.defUnits.length; y++) {
+      if (this.defUnits[y].priceCategory === id) {
+        if (this.defUnits[y].point1.coordinateY < min) {
+          min = this.defUnits[y].point1.coordinateY;
+        }
+        if (this.defUnits[y].point1.coordinateY > max) {
+          max = this.defUnits[y].point1.coordinateY;
+        }
       }
     }
-    if(max == min){
-      num = 1;
+    if (max === min) {
       return (this.getUnitSize() - this.getSeatDistance()) + 'px';
-    } else if((max-min) == 1){
-      return (((this.getUnitSize() - this.getSeatDistance())*2)) + 'px';
-    }
-    else {
-      num = max-min;
-      return (((this.getUnitSize() - this.getSeatDistance())*(num))+(this.getSeatDistance()*(num-1))) + 'px';
+    } else if ((max - min) === 1) {
+      return ((((this.getUnitSize() - this.getSeatDistance()) * 2)) + this.getSeatDistance()) + 'px';
+    } else {
+      num = max - min;
+      return (((this.getUnitSize() - this.getSeatDistance()) * (num + 1)) + (this.getSeatDistance() * num)) + 'px';
     }
 
   }
@@ -179,19 +182,16 @@ export class HallViewingComponent implements OnInit {
    * calculates the top (px values of the top end of the btn) of the categorie
    * @param id of the category
    */
-  calcCatPosition(id: number){
-    var min = 27;
-    for (var y = 0; y < this.defUnits.length; y++){
-      if(this.defUnits[y].priceCategory === id){
-        if(this.defUnits[y].point1.coordinateY < min){
+  calcCatPosition(id: number) {
+    let min = 27;
+    for (let y = 0; y < this.defUnits.length; y++) {
+      if (this.defUnits[y].priceCategory === id) {
+        if (this.defUnits[y].point1.coordinateY < min) {
           min = this.defUnits[y].point1.coordinateY;
         }
       }
     }
-    if(min == 1){
-      return ((this.getUnitSize() - this.getSeatDistance())*min) + 'px';
-    }
-    return (((this.getUnitSize() - this.getSeatDistance())*min)+(this.getSeatDistance()*(min-1))) + 'px';
+    return (min * this.getUnitSize() - this.getUnitSize() + 60 + this.getSeatDistance()) + 'px';
   }
 
   /**
@@ -199,40 +199,37 @@ export class HallViewingComponent implements OnInit {
    * on the right side of the hall plan
    * @param id of the category
    */
-  calcCatNamePosition(id: number){
-    var min = 27;
-    var max = 0;
-    var num = 0;
-    for (var y = 0; y < this.defUnits.length; y++){
-      if(this.defUnits[y].priceCategory === id){
-        if(this.defUnits[y].point1.coordinateY < min){
+  calcCatNamePosition(id: number) {
+    let min = 27;
+    let max = 0;
+    for (let y = 0; y < this.defUnits.length; y++) {
+      if (this.defUnits[y].priceCategory === id) {
+        if (this.defUnits[y].point1.coordinateY < min) {
           min = this.defUnits[y].point1.coordinateY;
         }
-        if (this.defUnits[y].point1.coordinateY > max){
+        if (this.defUnits[y].point1.coordinateY > max) {
           max = this.defUnits[y].point1.coordinateY;
         }
       }
     }
-    if(min == max){
-      return ((this.getUnitSize() - this.getSeatDistance())*min) + ((this.getUnitSize() - this.getSeatDistance())/3)  + (this.getSeatDistance()*(min-1))+ 'px';
-    } else{
-      num = (max-min)/2;
-      num += min;
-      return (((this.getUnitSize() - this.getSeatDistance())*num)+(this.getSeatDistance()*num))  + 'px';
+    if (min === max) {
+      return min * this.getUnitSize() - this.getUnitSize() + 60 + this.getSeatDistance() + ((this.getUnitSize()) / 4) + 'px';
     }
+    return (min * this.getUnitSize() - this.getUnitSize() + 60 + this.getSeatDistance() + ((this.getUnitSize() - this.getSeatDistance()) * (max - min) / 2)) + 'px';
   }
+
 
   /**
    * calculates the line height for the text (X) in a reserved seat
    */
-  calcLineHeight(){
+  calcLineHeight() {
     return ((this.getUnitSize() - this.getSeatDistance()) + 5) + 'px';
   }
 
   /**
    * calculates the font size for a reserved seat
    * */
-  calcFontSize(){
+  calcFontSize() {
     return ((this.getUnitSize() - this.getSeatDistance()) + 10) + 'px';
   }
 
@@ -241,7 +238,6 @@ export class HallViewingComponent implements OnInit {
    * @param p != null
    */
   calcPositionLeft(p: Point) {
-
     let left: number = p.coordinateX * this.getUnitSize() - this.getUnitSize() + 20 + this.getSeatDistance() / 2;
     if (this.hallSize.coordinateY > this.hallSize.coordinateX) {
       left += (this.hallSize.coordinateY - this.hallSize.coordinateX) * this.getUnitSize() / 2;

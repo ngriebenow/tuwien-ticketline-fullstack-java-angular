@@ -24,7 +24,9 @@
                   <h5 style="font-size: 16px" class="float-right">Anzahl</h5>
                 </div>
                 <div class="col-6 align-self-center">
-                  <input class="form-control" style="height: 28px; font-size: 16px" type="number" min="0" max="{{getSelectedSectorFree()}}" step="1" [(ngModel)]="sectorNum" (input)="checkValue(); updateSelectedNum()" placeholder="{{updateSelectedNum()}}">
+                  <input class="form-control" style="height: 28px; font-size: 16px" type="number" min="0"
+                         max="{{getSelectedSectorFree()}}" step="1" [(ngModel)]="sectorNum"
+                         (change)="checkValue(); updateSelectedNum()" placeholder="0">
                 </div>
               </div>
               <div class="row row-padding">
@@ -32,7 +34,8 @@
                   <h5 style="font-size: 16px" class="float-right">Kapazität</h5>
                 </div>
                 <div class="col-4 align-self-center">
-                  <input readonly class="form-control" style="height: 26px; font-size: 16px" type="text" value="{{getSelectedSectorCap()}}">
+                  <input readonly class="form-control" style="height: 26px; font-size: 16px" type="text"
+                         value="{{getSelectedSectorCap()}}">
                 </div>
               </div>
               <div class="row" style="padding-bottom: 5px">
@@ -40,12 +43,15 @@
                   <h5 style="font-size: 16px" class="float-right">Frei</h5>
                 </div>
                 <div class="col-4 align-self-center">
-                  <input readonly class="form-control" style="height: 26px; font-size: 16px" type="text" value="{{getSelectedSectorFree()}}">
+                  <input readonly class="form-control" style="height: 26px; font-size: 16px" type="text"
+                         value="{{getSelectedSectorFree()}}">
                 </div>
               </div>
               <div class="row" style="padding-bottom: 10px; padding-top: 30px">
                 <div class="col-12 text-center">
-                  <button (click)="sectorDone()" style="width: 100px" type="button" class="btn btn-primary btn-md">Fertig</button>
+                  <button (click)="sectorDone()" style="width: 100px" type="button" class="btn btn-primary btn-md">
+                    Fertig
+                  </button>
                 </div>
               </div>
             </div>
@@ -67,27 +73,44 @@
         <ng-container *ngFor="let dunit of defUnits">
           <div *ngIf="dunit.capacity == 1">
             <div *ngIf="dunit.free > 0">
-              <button type="button" (click)="clickSeat(dunit)" [style.background-color]="getBackColor(dunit)" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-seat"></button>
+              <button type="button" (click)="clickSeat(dunit)" [style.background-color]="getBackColor(dunit)"
+                      [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}"
+                      class="btn btn-seat"></button>
             </div>
             <div *ngIf="dunit.free == 0">
-              <button type="button" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1), 'font-size':calcFontSize(), 'line-height': calcLineHeight()}" class="btn btn-reserved disabled">X</button>
+              <button type="button"
+                      [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1), 'font-size':calcFontSize(), 'line-height': calcLineHeight()}"
+                      class="btn btn-reserved disabled">X
+              </button>
             </div>
           </div>
           <div *ngIf="dunit.capacity > 1">
-            <div *ngIf="dunit.free > 0">
-              <button (click)="sectorSelected(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector text-truncate">{{dunit.free}} frei<br>{{dunit.name}}</button>
-             </div>
-            <div *ngIf="dunit.free == 0 && sectorIsSelected(dunit) == false">
-              <button [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector-zero text-truncate">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
+            <div *ngIf="dunit.free > 0 && sectorIsSelected(dunit) == false">
+              <button (click)="sectorSelected(dunit)"
+                      [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}"
+                      class="btn btn-sector text-truncate align-middle"><h4 *ngIf="showName(dunit) > 50">
+                {{dunit.name}}</h4><h4>{{dunit.free}}</h4></button>
             </div>
-            <div *ngIf="dunit.free == 0 && sectorIsSelected(dunit) == true">
-              <button (click)="sectorSelected(dunit)" [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}" class="btn btn-sector-zero-selected text-truncate">{{dunit.name}}<br>Frei:{{dunit.free}}</button>
+            <div *ngIf="dunit.free == 0 && sectorIsSelected(dunit) == false">
+              <button
+                [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}"
+                class="btn btn-sector-zero text-truncate"><h4 class="zero" *ngIf="showName(dunit) > 50">
+                {{dunit.name}}</h4><h4 class="zero">{{dunit.free}}</h4></button>
+            </div>
+            <div *ngIf="sectorIsSelected(dunit) == true">
+              <button (click)="sectorSelected(dunit)"
+                      [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}"
+                      class="btn btn-sector-zero-selected text-truncate"><h4 *ngIf="showName(dunit) > 50">
+                {{dunit.name}}</h4><h4>{{getChosenNum(dunit)}}/{{dunit.free}}</h4></button>
             </div>
           </div>
         </ng-container>
         <ng-container *ngFor="let cat of cats">
-          <button type="button" [ngStyle]="{'height': calcCatHeight(cat.id), 'background-color': getCatColor(cat.id),'position':'absolute', 'top':calcCatPosition(cat.id)}" class="btn btn-cat disabled"></button>
-          <h5 [ngStyle]="{'top': calcCatNamePosition(cat.id),'position':'absolute'}" style="margin-left: 835px">{{cat.name}}</h5>
+          <div
+            [ngStyle]="{'height': calcCatHeight(cat.id), 'background-color': getCatColor(cat.id),'position':'absolute', 'top':calcCatPosition(cat.id)}"
+            class="btn btn-cat disabled"></div>
+          <h5 [ngStyle]="{'top': calcCatNamePosition(cat.id),'position':'absolute'}" style="margin-left: 835px">
+            {{cat.name}}</h5>
         </ng-container>
       </div>
     </div>
@@ -114,7 +137,7 @@
             <h2 class="float-right" style="font-size: 20px">Sitzplatz</h2>
           </div>
           <div class="col-1 align-self-center">
-            <button type="button" class="btn btn-seat-key disabled" ></button>
+            <button type="button" class="btn btn-seat-key disabled"></button>
           </div>
         </div>
         <div class="row row-padding">
@@ -144,12 +167,13 @@
       </div>
     </div>
   </div>
-</div>
-<div *ngIf="selectionNotEmpty() === true">
-  <div class="bottom-right-above-1">
-    <button type="button" class="btn btn-primary btn-lg">Fertig</button>
+  <div *ngIf="selectionNotEmpty() === true">
+    <div class="bottom-right-above-1">
+      <button (click)="endTransaction()" type="button" class="btn btn-primary btn-lg">Fertig</button>
+    </div>
+  </div>
+  <div class="bottom-right">
+    <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
   </div>
 </div>
-<div class="bottom-right">
-  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
-</div>
+

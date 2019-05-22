@@ -219,6 +219,7 @@
   padding: 0px;
   margin-left: 820px;
   border-radius: 0px;
+  position: absolute;
 }
 
 .sector-pop{
@@ -226,4 +227,14 @@
   height: 300px;
   border-radius: 5px;
   margin: 15px;
+}
+
+h4{
+  color: white;
+  font-size: 18px;
+  margin: 0px;
+}
+
+.zero{
+  color: $dark-gray;
 }

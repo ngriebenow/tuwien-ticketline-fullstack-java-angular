@@ -27,7 +27,8 @@ public class ReservationRequestDto {
   // TODO: require valid ticketRequests
   public List<@Valid TicketRequestDto> ticketRequests;
 
-  public ReservationRequestDto() {}
+  public ReservationRequestDto() {
+  }
 
   private ReservationRequestDto(Builder builder) {
     setPerformanceId(builder.performanceId);
