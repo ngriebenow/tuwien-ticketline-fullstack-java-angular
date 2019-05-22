@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @ApiModel(value = "HallRequestDto", description = "A DTO for a hall request via rest")
 public class HallRequestDto {
@@ -14,20 +18,26 @@ public class HallRequestDto {
   @ApiModelProperty(required = true, name = "The version of the hall")
   private int version;
 
+  @NotBlank(message = "name must not be empty")
   @ApiModelProperty(required = true, name = "The name of the hall")
   private String name;
 
+  @NotNull(message = "location must be set")
+  @Valid
   @ApiModelProperty(required = true, name = "The location of the hall")
   private LocationDto location;
 
+  @NotNull(message = "boundaryPoint must be set")
+  @Valid
   @JsonProperty("boundaryPoint")
   @ApiModelProperty(
       required = true,
       name = "The boundaryPoint which defines the maximum size of the hall")
   private PointDto boundaryPoint;
 
+  @NotEmpty
   @ApiModelProperty(required = true, name = "The units contained in the hall")
-  private List<UnitDto> units;
+  private List<@Valid UnitDto> units;
 
   public Long getId() {
     return id;
