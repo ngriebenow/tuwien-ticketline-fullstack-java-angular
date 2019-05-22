@@ -84,7 +84,8 @@ public class SimpleInvoiceService implements InvoiceService {
   @Transactional(readOnly = true)
   @Override
   public InvoiceDto getOneById(Long id) {
-    String errorMessage = "Can't find invoice with id " + id;
+    LOGGER.info("Get invoice {}", id);
+    String errorMessage = "Can't find invoice " + id;
     return invoiceMapper.invoiceToInvoiceDto(
         getOrThrowNotFound(invoiceRepository.findById(id), errorMessage));
   }
