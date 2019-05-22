@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-@Entity
+@Entity(name = "Picture")
 public class Picture {
 
   @Id
@@ -19,11 +19,11 @@ public class Picture {
   @SequenceGenerator(name = "seq_picture_id", sequenceName = "seq_picture_id")
   private Long id;
 
-  @Column(nullable = false)
+  @Column(nullable = false, columnDefinition = "mediumblob")
   private byte[] data;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
+  @JoinColumn
   private News news;
 
   /** Construct the picture. */
