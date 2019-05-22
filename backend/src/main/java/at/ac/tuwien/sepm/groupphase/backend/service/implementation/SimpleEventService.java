@@ -25,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SimpleEventService implements EventService {
@@ -38,6 +39,7 @@ public class SimpleEventService implements EventService {
   @Autowired private EventSearchResultMapper eventSearchResultMapper;
   @Autowired private ArtistMapper artistMapper;
 
+  @Transactional(readOnly = true)
   @Override
   public EventDto getOneById(Long id) throws NotFoundException {
     LOGGER.info("getOneById " + id);
@@ -46,11 +48,13 @@ public class SimpleEventService implements EventService {
         eventRepository.findById(id).orElseThrow(NotFoundException::new));
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<EventRankingDto> getBestEvents(Integer limit) {
     return null;
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<EventSearchResultDto> getEventsFiltered(
       EventFilterDto eventFilterDto, Pageable pageable) {
@@ -72,6 +76,7 @@ public class SimpleEventService implements EventService {
     return eventDtos;
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, Pageable pageable)
       throws NotFoundException {

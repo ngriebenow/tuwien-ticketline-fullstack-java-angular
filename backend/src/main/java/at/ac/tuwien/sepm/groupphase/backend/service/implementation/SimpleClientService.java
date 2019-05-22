@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SimpleClientService implements ClientService {
@@ -67,6 +68,7 @@ public class SimpleClientService implements ClientService {
     };
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<ClientDto> findAll(ClientFilterDto client) {
     if (client.getCount() == null) {
@@ -89,6 +91,7 @@ public class SimpleClientService implements ClientService {
     return toret;
   }
 
+  @Transactional(readOnly = true)
   @Override
   public Client findOne(long id) {
     Client c = clientRepository.getOne(id);
@@ -98,6 +101,7 @@ public class SimpleClientService implements ClientService {
     return c;
   }
 
+  @Transactional
   @Override
   public ClientDto saveClient(ClientDto client) {
     Client tmp = clientRepository.saveAndFlush(clientMapper.clientDtoToClient(client));
@@ -117,6 +121,7 @@ public class SimpleClientService implements ClientService {
     return old;
   }
 
+  @Transactional
   @Override
   public ClientDto editClient(ClientDto client) {
     if (client.getId() == null) {
@@ -128,6 +133,7 @@ public class SimpleClientService implements ClientService {
     return getOneById(client.getId());
   }
 
+  @Transactional(readOnly = true)
   @Override
   public ClientDto getOneById(long id) {
     return clientMapper.clientToClientDto(findOne(id));
