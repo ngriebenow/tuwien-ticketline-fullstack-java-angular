@@ -132,7 +132,7 @@ public class NewsEndpoint {
    */
   @RequestMapping(method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.CREATED)
-  //@PreAuthorize("hasRole('ADMIN')") //TODO discuss with MS
+  @PreAuthorize("hasRole('ADMIN')")
   @ApiOperation(
       value = "Publish a news entry",
       authorizations = {@Authorization(value = "apiKey")})

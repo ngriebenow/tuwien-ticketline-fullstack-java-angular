@@ -54,7 +54,7 @@ public class NewsPictureEndpoint {
    */
   @RequestMapping(method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.CREATED)
-  //@PreAuthorize("hasRole('ADMIN')") TODO discuss with MS
+  @PreAuthorize("hasRole('ADMIN')")
   @ApiOperation(
       value = "create a picture",
       authorizations = {@Authorization(value = "apiKey")})
