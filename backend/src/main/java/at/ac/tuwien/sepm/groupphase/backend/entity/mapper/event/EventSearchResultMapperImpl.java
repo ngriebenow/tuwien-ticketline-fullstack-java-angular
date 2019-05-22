@@ -17,6 +17,7 @@ public class EventSearchResultMapperImpl implements EventSearchResultMapper {
     dto.setName(event.getName());
     dto.setCategory(event.getCategory());
     dto.setHallName(event.getHall().getName());
+    dto.setDuration(event.getDuration());
     dto.setLocationName(event.getHall().getLocation().getName());
     dto.setLocationPlace(event.getHall().getLocation().getPlace());
 

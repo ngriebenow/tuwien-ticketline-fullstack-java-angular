@@ -9,6 +9,7 @@ export class EventSearchResult {
     public hallName: string,
     public locationName: string,
     public locationPlace: string,
+    public duration: string,
     public priceRange: string,
     public performances: PerformanceSearchResult[]
     ) {
