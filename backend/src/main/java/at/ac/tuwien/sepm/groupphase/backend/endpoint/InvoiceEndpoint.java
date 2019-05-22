@@ -57,11 +57,10 @@ public class InvoiceEndpoint {
       authorizations = {@Authorization("apiKey")})
   public List<InvoiceDto> get(
       @RequestParam(required = false) String reservationCode,
-      @RequestParam(required = false) boolean isPaid,
-      @RequestParam(required = false) boolean isCancelled,
+      @RequestParam(required = false) Boolean isPaid,
+      @RequestParam(required = false) Boolean isCancelled,
       @RequestParam(required = false) String clientName,
       @RequestParam(required = false) String clientEmail,
-      @RequestParam(required = false) String customerEmail,
       @RequestParam @NotNull @Min(0L) Integer page,
       @RequestParam @NotNull @Min(1L) Integer count) {
     Pageable pageable = PageRequest.of(page, count);

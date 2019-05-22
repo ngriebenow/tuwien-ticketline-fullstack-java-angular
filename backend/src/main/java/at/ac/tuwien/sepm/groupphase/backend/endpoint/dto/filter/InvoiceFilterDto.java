@@ -1,76 +1,79 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter;
 
+import java.util.Optional;
+
 public class InvoiceFilterDto {
 
-  private String reservationCode;
-  private boolean isPaid;
-  private boolean isCancelled;
-  private String clientName;
-  private String clientEmail;
-  private String customerEmail;
+  private Optional<String> reservationCode;
+  private Optional<Boolean> isPaid;
+  private Optional<Boolean> isCancelled;
+  private Optional<String> clientName;
+  private Optional<String> clientEmail;
+  private Optional<String> customerEmail;
 
   private InvoiceFilterDto(Builder builder) {
     setReservationCode(builder.reservationCode);
-    setPaid(builder.isPaid);
-    setCancelled(builder.isCancelled);
+    setIsPaid(builder.isPaid);
+    setIsCancelled(builder.isCancelled);
     setClientName(builder.clientName);
     setClientEmail(builder.clientEmail);
     setCustomerEmail(builder.customerEmail);
   }
 
-  public String getReservationCode() {
+  public Optional<String> getReservationCode() {
     return reservationCode;
   }
 
   public void setReservationCode(String reservationCode) {
-    this.reservationCode = reservationCode;
+    this.reservationCode = Optional.ofNullable(reservationCode);
   }
 
-  public boolean isPaid() {
+  public Optional<Boolean> getIsPaid() {
     return isPaid;
   }
 
-  public void setPaid(boolean paid) {
-    isPaid = paid;
+  public void setIsPaid(Boolean isPaid) {
+    this.isPaid = Optional.ofNullable(isPaid);
   }
 
-  public boolean isCancelled() {
+  public Optional<Boolean> getIsCancelled() {
     return isCancelled;
   }
 
-  public void setCancelled(boolean cancelled) {
-    isCancelled = cancelled;
+  public void setIsCancelled(Boolean isCancelled) {
+    this.isCancelled = Optional.ofNullable(isCancelled);
   }
 
-  public String getClientName() {
+  public Optional<String> getClientName() {
     return clientName;
   }
 
   public void setClientName(String clientName) {
-    this.clientName = clientName;
+    this.clientName = Optional.ofNullable(clientName);
   }
 
-  public String getClientEmail() {
+  public Optional<String> getClientEmail() {
     return clientEmail;
   }
 
   public void setClientEmail(String clientEmail) {
-    this.clientEmail = clientEmail;
+    this.clientEmail = Optional.ofNullable(clientEmail);
   }
 
-  public String getCustomerEmail() {
+  public Optional<String> getCustomerEmail() {
     return customerEmail;
   }
 
   public void setCustomerEmail(String customerEmail) {
-    this.customerEmail = customerEmail;
+    this.customerEmail = Optional.ofNullable(customerEmail);
   }
+
 
   public static final class Builder {
 
     private String reservationCode;
-    private boolean isPaid;
-    private boolean isCancelled;
+    private Boolean isPaid;
+    private Boolean isCancelled;
     private String clientName;
     private String clientEmail;
     private String customerEmail;
@@ -83,12 +86,12 @@ public class InvoiceFilterDto {
       return this;
     }
 
-    public Builder isPaid(boolean val) {
+    public Builder isPaid(Boolean val) {
       isPaid = val;
       return this;
     }
 
-    public Builder isCancelled(boolean val) {
+    public Builder isCancelled(Boolean val) {
       isCancelled = val;
       return this;
     }

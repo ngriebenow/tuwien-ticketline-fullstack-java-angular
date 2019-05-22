@@ -527,6 +527,86 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     assertThat(invoiceDtoPage.isEmpty()).isTrue();
   }
 
+  @Test
+  public void givenTowInvoices_whenFilterInvoicesClientOneName_thenThatInvoiceReturned() {
+    post(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("clientName", clientOne.getName());
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(1);
+    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+  }
+
+  @Test
+  public void givenTowInvoices_whenFilterInvoicesClientOneSurName_thenThatInvoiceReturned() {
+    post(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("clientName", clientOne.getSurname());
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(1);
+    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+  }
+
+  @Test
+  public void givenTowInvoices_whenFilterInvoicesClientOneFullName_thenThatInvoiceReturned() {
+    post(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("clientName", clientOne.getName() + " " + clientOne.getSurname());
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(1);
+    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+  }
+
+  @Test
+  public void givenInvoices_whenFilterInvoicesClientOneEmail_thenThatInvoiceReturned() {
+    post(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("clientEmail", clientOne.getEmail());
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(1);
+    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+  }
+
   private Response getResponse(String endpoint, Map<String, String> parameters) {
     return get(endpoint, parameters).extract().response();
   }

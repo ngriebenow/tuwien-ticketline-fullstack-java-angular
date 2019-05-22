@@ -19,6 +19,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TicketRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
 import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
+import at.ac.tuwien.sepm.groupphase.backend.specification.InvoiceSpecification;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,10 +36,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+// TODO: mark @Transactional readOnlys
 @Service
 @Validated
 public class SimpleInvoiceService implements InvoiceService {
@@ -91,14 +94,9 @@ public class SimpleInvoiceService implements InvoiceService {
   public List<InvoiceDto> getFiltered(InvoiceFilterDto invoiceFilterDto, Pageable pageable) {
     LOGGER.info("Filtering for invoices");
     return invoiceRepository
-        .findByFilter(
-            invoiceFilterDto.getReservationCode(),
-            invoiceFilterDto.isPaid(),
-            invoiceFilterDto.isCancelled(),
-            pageable)
-        .stream()
+        .findAll(InvoiceSpecification.buildFilterSpecification(invoiceFilterDto), pageable)
         .map(invoiceMapper::invoiceToInvoiceDto)
-        .collect(Collectors.toList());
+        .getContent();
   }
 
   @Transactional
