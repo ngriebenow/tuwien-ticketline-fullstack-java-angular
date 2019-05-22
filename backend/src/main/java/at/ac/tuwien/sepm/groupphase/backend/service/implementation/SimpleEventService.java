@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.artist.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
@@ -19,6 +20,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.specification.EventSpecification;
+import at.ac.tuwien.sepm.groupphase.backend.specification.PerformanceSpecification;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,7 +84,7 @@ public class SimpleEventService implements EventService {
       List<PriceCategory> priceCategories = priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(e);
       eventDto.setPriceRange(formatPriceRange(priceCategories));
       eventDtos.add(eventDto);
-      eventDto.setPerformances(getPerformancesFiltered(e.getId(), Pageable.unpaged()));
+      eventDto.setPerformances(getPerformancesFiltered(e.getId(), eventFilterDto));
     }
 
     return eventDtos;
@@ -105,10 +107,32 @@ public class SimpleEventService implements EventService {
     return price;
   }
 
+  private List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, EventFilterDto eventFilterDto)
+      throws NotFoundException {
+    LOGGER.info("getPerformancesFiltered " + id);
+
+    List<PerformanceSearchResultDto> performanceDtos = new ArrayList<>();
+
+    Specification<Performance> specification = PerformanceSpecification.like(id, eventFilterDto);
+
+    performanceRepository
+        .findAll(specification)
+        .forEach(
+            p ->
+                performanceDtos.add(
+                    performanceSearchResultMapper.performanceToPerformanceSearchResultDto(p)));
+
+    return performanceDtos;
+  }
+
+
   @Override
   public List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, Pageable pageable)
       throws NotFoundException {
     LOGGER.info("getPerformancesOfEvent " + id);
+
+
+
 
     Event event = eventRepository.findById(id).orElseThrow(NotFoundException::new);
     List<PerformanceSearchResultDto> performanceDtos = new ArrayList<>();
