@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ClientDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.InvoiceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TicketRequestDto;
@@ -384,7 +385,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     InvoiceDto invoiceDto = response.as(InvoiceDto.class);
 
     assertThat(invoiceDto.getTickets().size()).isEqualTo(requestedTicketCount);
-    assertThat(invoiceDto.getClientId()).isEqualTo(reservationRequestDtoOne.getClientId());
+    assertThat(invoiceDto.getClient().getId()).isEqualTo(reservationRequestDtoOne.getClientId());
     assertThat(invoiceDto.getReservationCode()).isNotBlank();
     assertThat(invoiceDto.getId()).isNotNull();
     assertThat(invoiceDto.isCancelled()).isFalse();
@@ -553,7 +554,9 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
-    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+
+    ClientDto client = invoiceDtoPage.get(0).getClient();
+    assertThat(client.getId()).isEqualTo(clientOne.getId());
   }
 
   @Test
@@ -573,7 +576,9 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
-    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+
+    ClientDto client = invoiceDtoPage.get(0).getClient();
+    assertThat(client.getId()).isEqualTo(clientOne.getId());
   }
 
   @Test
@@ -593,7 +598,9 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
-    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+
+    ClientDto client = invoiceDtoPage.get(0).getClient();
+    assertThat(client.getId()).isEqualTo(clientOne.getId());
   }
 
   @Test
@@ -613,7 +620,9 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
-    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+
+    ClientDto client = invoiceDtoPage.get(0).getClient();
+    assertThat(client.getId()).isEqualTo(clientOne.getId());
   }
 
   @Test

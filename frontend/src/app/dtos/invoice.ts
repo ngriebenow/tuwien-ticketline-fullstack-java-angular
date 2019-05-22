@@ -1,4 +1,5 @@
 import {Ticket} from './ticket';
+import {Client} from './client';
 
 export class Invoice {
   constructor(
@@ -7,8 +8,8 @@ export class Invoice {
     public number: number,
     public cancelled: boolean,
     public paid: boolean,
-    public paidAt: string, // TODO: can we convert this to a date right here?
-    public clientId: number,
+    public paidAt: string, // TODO: can we convert this to a date right here? do we need to?
+    public client: Client,
     public tickets: Ticket[]
   ) {
   }

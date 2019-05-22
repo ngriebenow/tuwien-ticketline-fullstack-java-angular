@@ -7,6 +7,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ClientDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.InvoiceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TicketDto;
@@ -46,7 +47,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class InvoiceServiceTest {
 
   private static final Long INVOICE_ID = 1L;
-  private static final Long INVOICE_CLIENT_ID = 1L;
   private static final Long INVOICE_PERFORMANCE_ID = 1L;
   private static final boolean INVOICE_IS_PAID = false;
   private static final boolean INVOICE_IS_CANCELED = false;
@@ -59,6 +59,11 @@ public class InvoiceServiceTest {
   private static final int TICKET_PRICE = 1560;
   private static final boolean TICKET_IS_CANCELED = INVOICE_IS_CANCELED;
 
+  private static final Long CLIENT_ID = 1L;
+  private static final String CLIENT_NAME = "Friedrich";
+  private static final String CLIENT_SURNAME = "Schabernackl";
+  private static final String CLIENT_EMAIL = "witzhaus@nac.kl";
+
   private Invoice invoiceOne;
   private Ticket ticketOne;
   private Performance performanceOne;
@@ -70,6 +75,7 @@ public class InvoiceServiceTest {
   private TicketDto ticketDtoOne;
   private ReservationRequestDto reservationRequestDto;
   private TicketRequestDto ticketRequestDto;
+  private ClientDto clientDtoOne;
 
   @Autowired private InvoiceService invoiceService;
 
@@ -80,10 +86,11 @@ public class InvoiceServiceTest {
 
   @Before
   public void setUp() {
-    performanceOne = new Performance.Builder()
-        .id(INVOICE_PERFORMANCE_ID)
-        .startAt(LocalDateTime.now().plusDays(7))
-        .build();
+    performanceOne =
+        new Performance.Builder()
+            .id(INVOICE_PERFORMANCE_ID)
+            .startAt(LocalDateTime.now().plusDays(7))
+            .build();
 
     priceCategoryOne = new PriceCategory.Builder().priceInCents(TICKET_PRICE).build();
 
@@ -103,7 +110,13 @@ public class InvoiceServiceTest {
             .isCancelled(TICKET_IS_CANCELED)
             .build();
 
-    clientOne = new Client.Builder().id(INVOICE_CLIENT_ID).build();
+    clientOne =
+        new Client.Builder()
+            .id(CLIENT_ID)
+            .name(CLIENT_NAME)
+            .surname(CLIENT_SURNAME)
+            .email(CLIENT_EMAIL)
+            .build();
 
     invoiceOne =
         new Invoice.Builder()
@@ -124,10 +137,18 @@ public class InvoiceServiceTest {
             .performanceId(INVOICE_PERFORMANCE_ID)
             .build();
 
+    clientDtoOne =
+        new ClientDto.Builder()
+            .id(CLIENT_ID)
+            .name(CLIENT_NAME)
+            .surname(CLIENT_SURNAME)
+            .email(CLIENT_EMAIL)
+            .build();
+
     invoiceDtoOne =
         new InvoiceDto.Builder()
             .id(INVOICE_ID)
-            .clientId(INVOICE_CLIENT_ID)
+            .client(clientDtoOne)
             .reservationCode(INVOICE_RESERVATION_CODE)
             .isPaid(INVOICE_IS_PAID)
             .isCancelled(INVOICE_IS_CANCELED)
@@ -139,7 +160,7 @@ public class InvoiceServiceTest {
 
     reservationRequestDto =
         new ReservationRequestDto.Builder()
-            .clientId(INVOICE_CLIENT_ID)
+            .clientId(CLIENT_ID)
             .performanceId(INVOICE_PERFORMANCE_ID)
             .ticketRequests(Collections.singletonList(ticketRequestDto))
             .build();
@@ -180,13 +201,13 @@ public class InvoiceServiceTest {
     performanceOne.setStartAt(LocalDateTime.now().minusDays(7));
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
-    when(mockClientRepository.findById(INVOICE_CLIENT_ID)).thenReturn(Optional.of(clientOne));
+    when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
 
     assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
         .isInstanceOf(ValidationException.class);
 
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
-    verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
+    verify(mockClientRepository).findById(CLIENT_ID);
   }
 
   @Test
@@ -240,14 +261,13 @@ public class InvoiceServiceTest {
     Long invalidPerformanceId = 32L;
     reservationRequestDto.setPerformanceId(invalidPerformanceId);
 
-    when(mockClientRepository.findById(INVOICE_CLIENT_ID))
-        .thenReturn(Optional.of(clientOne));
+    when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
     when(mockPerformanceRepository.findById(invalidPerformanceId)).thenReturn(Optional.empty());
 
     assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
         .isInstanceOf(NotFoundException.class);
 
-    verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
+    verify(mockClientRepository).findById(CLIENT_ID);
     verify(mockPerformanceRepository).findById(invalidPerformanceId);
   }
 
@@ -257,7 +277,7 @@ public class InvoiceServiceTest {
 
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
-    when(mockClientRepository.findById(INVOICE_CLIENT_ID)).thenReturn(Optional.of(clientOne));
+    when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
     List<Long> definedUnitIdList =
         reservationRequestDto.getTicketRequests().stream()
             .map(TicketRequestDto::getDefinedUnitId)
@@ -271,7 +291,7 @@ public class InvoiceServiceTest {
     verify(mockDefinedUnitRepository)
         .findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList);
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
-    verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
+    verify(mockClientRepository).findById(CLIENT_ID);
   }
 
   @Test
@@ -280,7 +300,7 @@ public class InvoiceServiceTest {
 
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
-    when(mockClientRepository.findById(INVOICE_CLIENT_ID)).thenReturn(Optional.of(clientOne));
+    when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
     List<Long> definedUnitIdList =
         reservationRequestDto.getTicketRequests().stream()
             .map(TicketRequestDto::getDefinedUnitId)
@@ -294,14 +314,14 @@ public class InvoiceServiceTest {
     verify(mockDefinedUnitRepository)
         .findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList);
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
-    verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
+    verify(mockClientRepository).findById(CLIENT_ID);
   }
 
   @Test
   public void whenCreateValidInvoice_thenInvoiceCreated() {
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
-    when(mockClientRepository.findById(INVOICE_CLIENT_ID)).thenReturn(Optional.of(clientOne));
+    when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
     List<Long> definedUnitIdList =
         reservationRequestDto.getTicketRequests().stream()
             .map(TicketRequestDto::getDefinedUnitId)
@@ -318,7 +338,7 @@ public class InvoiceServiceTest {
     verify(mockDefinedUnitRepository)
         .findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList);
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
-    verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
+    verify(mockClientRepository).findById(CLIENT_ID);
   }
 
   @Test
@@ -326,14 +346,13 @@ public class InvoiceServiceTest {
     Long invalidPerformanceId = 33L;
     reservationRequestDto.setPerformanceId(invalidPerformanceId);
 
-    when(mockClientRepository.findById(INVOICE_CLIENT_ID))
-        .thenReturn(Optional.of(clientOne));
+    when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
     when(mockPerformanceRepository.findById(invalidPerformanceId)).thenReturn(Optional.empty());
 
     assertThatThrownBy(() -> invoiceService.reserveTickets(reservationRequestDto))
         .isInstanceOf(NotFoundException.class);
 
-    verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
+    verify(mockClientRepository).findById(CLIENT_ID);
     verify(mockPerformanceRepository).findById(invalidPerformanceId);
   }
 
@@ -341,15 +360,14 @@ public class InvoiceServiceTest {
   public void whenReserveInReservationClearWindow_thenThrowsException() {
     performanceOne.setStartAt(LocalDateTime.now().minusMinutes(22));
 
-    when(mockClientRepository.findById(INVOICE_CLIENT_ID))
-        .thenReturn(Optional.of(clientOne));
+    when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
 
     assertThatThrownBy(() -> invoiceService.reserveTickets(reservationRequestDto))
         .isInstanceOf(ValidationException.class);
 
-    verify(mockClientRepository).findById(INVOICE_CLIENT_ID);
+    verify(mockClientRepository).findById(CLIENT_ID);
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
   }
 }
