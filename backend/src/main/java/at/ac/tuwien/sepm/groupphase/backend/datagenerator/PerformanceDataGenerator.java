@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -36,6 +37,7 @@ public class PerformanceDataGenerator implements DataGenerator<Performance> {
     this.performanceRepository = performanceRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<Performance> generatedPerformances = new ArrayList<>(MAX_PERFORMANCES_PER_EVENT);

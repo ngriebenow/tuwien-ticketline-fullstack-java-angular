@@ -15,6 +15,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -36,6 +37,7 @@ public class PriceCategoryDataGenerator implements DataGenerator<PriceCategory> 
     this.priceCategoryRepository = priceCategoryRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<PriceCategory> generatedPriceCategories = new ArrayList<>(MAX_PRICE_CATEGORIES_PER_EVENT);
