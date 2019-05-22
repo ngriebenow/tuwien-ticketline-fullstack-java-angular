@@ -17,12 +17,25 @@ import {EventSearchResult} from "../../dtos/event-search-result";
 })
 export class EventFilterComponent implements OnInit {
 
+  noCategory: boolean;
+  countryClass: string = 'first-selected';
+  noDateTime: boolean;
 
   //times: number[];
 
   constructor(private eventService: EventService) {
+
     //this.times = Array(24).fill().map((x,i)=>i);
   }
+
+  updateCountry(selected: boolean) {
+    if (selected) {
+      this.countryClass = 'other-selected';
+    } else {
+      this.countryClass = 'first-selected';
+    }
+  }
+
 
 
 

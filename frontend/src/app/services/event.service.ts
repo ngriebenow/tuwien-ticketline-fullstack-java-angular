@@ -52,8 +52,19 @@ export class EventService {
       .set('locationCountry', eventFilter.locationCountry)
       .set('locationStreet', eventFilter.locationStreet)
       .set('locationPlace', eventFilter.locationPlace)
+      .set('startsAtDate', eventFilter.startsAtDate)
+      .set('startsAtTime', eventFilter.startsAtTime)
       .set('page', '0')
       .set('count', '100');
+
+    /*
+    if (eventFilter.startsAtDate != null) {
+      paramsHttp.set('startsAtDate', eventFilter.startsAtDate.toDateString())
+    }
+    if (eventFilter.startsAtTime != null) {
+      paramsHttp.set('startsAtTime', eventFilter.startsAtTime.hours.toString() + ":" + eventFilter.startsAtTime.minutes.toString())
+
+    }*/
 
     console.log('getEventsFiltered: ' + paramsHttp);
 
