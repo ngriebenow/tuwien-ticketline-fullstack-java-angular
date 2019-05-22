@@ -61,6 +61,7 @@ public class InvoiceEndpoint {
       @RequestParam(required = false) Boolean isCancelled,
       @RequestParam(required = false) String clientName,
       @RequestParam(required = false) String clientEmail,
+      @RequestParam(required = false) String performanceName,
       @RequestParam @NotNull @Min(0L) Integer page,
       @RequestParam @NotNull @Min(1L) Integer count) {
     Pageable pageable = PageRequest.of(page, count);
@@ -72,6 +73,7 @@ public class InvoiceEndpoint {
             .isCancelled(isCancelled)
             .clientName(clientName)
             .clientEmail(clientEmail)
+            .perfomanceName(performanceName)
             .build();
 
     return invoiceService.getFiltered(invoiceFilterDto, pageable);

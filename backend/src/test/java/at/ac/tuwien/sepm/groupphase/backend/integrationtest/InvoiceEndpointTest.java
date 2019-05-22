@@ -125,9 +125,9 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
     event =
         new Event.Builder()
-            .name("Event 1")
+            .name("Freuden der Freizeit")
             .duration(Duration.ofMinutes(90L))
-            .content("Some description")
+            .content("Alle wollen mal ausspannen und neues ausprobieren. Bist du dabei?")
             .category(EventCategory.CONCERT)
             .hall(hall)
             .artists(Collections.singletonList(artist))
@@ -156,7 +156,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
     performance1 =
         new Performance.Builder()
-            .name("Performance 1")
+            .name("Sonntagskrunch")
             .event(event)
             .startAt(LocalDateTime.now().plusDays(3))
             .build();
@@ -164,7 +164,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
     performance2 =
         new Performance.Builder()
-            .name("Performance 2")
+            .name("Luftballonkochkurz")
             .event(event)
             .startAt(LocalDateTime.now().plusDays(4))
             .build();
@@ -588,7 +588,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   }
 
   @Test
-  public void givenInvoices_whenFilterInvoicesClientOneEmail_thenThatInvoiceReturned() {
+  public void givenTowInvoices_whenFilterInvoicesClientOneEmail_thenThatInvoiceReturned() {
     post(INVOICE_ENDPOINT, reservationRequestDtoOne);
     post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
 
@@ -605,6 +605,84 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
     assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+  }
+
+  @Test
+  public void givenTowInvoices_whenFilterInvoicesPerformanceOneName_thenThatInvoiceReturned() {
+    post(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("performanceName", performance1.getName());
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(1);
+    assertThat(invoiceDtoPage.get(0).getTickets().get(0).getPerformanceId())
+        .isEqualTo(performance1.getId());
+  }
+
+  @Test
+  public void givenTowInvoices_whenFilterInvoicesEventName_thenBothReturned() {
+    post(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("performanceName", event.getName());
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(2);
+  }
+
+  @Test
+  public void givenTowInvoices_whenFilterInvalidPerformanceName_thenNothingReturned() {
+    post(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("performanceName", performance1.getName() + performance2.getName());
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(0);
+  }
+
+  @Test
+  public void givenTowInvoices_whenFilterEmptyPerformanceName_thenNothingReturned() {
+    post(INVOICE_ENDPOINT, reservationRequestDtoOne);
+    post(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("performanceName", "");
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(2);
   }
 
   private Response getResponse(String endpoint, Map<String, String> parameters) {
