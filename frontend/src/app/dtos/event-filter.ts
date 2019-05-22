@@ -1,3 +1,4 @@
+import {Time} from "@angular/common";
 
 export class EventFilter {
   constructor(
@@ -14,6 +15,8 @@ export class EventFilter {
     public locationPlace: string,
     public locationCountry: string,
     public locationStreet: string,
+    public startsAtTime: Time,
+    public startsAtDate: Date
     ) {
   }
 }

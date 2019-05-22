@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 @ApiModel(value = "PerformanceFilterDto", description = "A DTO for filtering events")
 public class EventFilterDto {
@@ -50,6 +51,15 @@ public class EventFilterDto {
   @ApiModelProperty(required = false, name = "The location postal code")
   private String locationPostalCode;
 
+  @ApiModelProperty(required = false, name = "The time at which the performance should take place")
+  private LocalDateTime startAtTime;
+
+  @ApiModelProperty(required = false, name = "The date at which the performance should take place")
+  private LocalDateTime startAtDate;
+
+  @ApiModelProperty(required = false, name = "The name of the performance")
+  private String performanceName;
+
   public EventFilterDto() {}
 
   private EventFilterDto(Builder builder) {
@@ -67,6 +77,30 @@ public class EventFilterDto {
     locationCountry = builder.locationCountry;
     locationStreet = builder.locationStreet;
     locationPostalCode = builder.locationPostalCode;
+  }
+
+  public LocalDateTime getStartAtTime() {
+    return startAtTime;
+  }
+
+  public void setStartAtTime(LocalDateTime startAtTime) {
+    this.startAtTime = startAtTime;
+  }
+
+  public LocalDateTime getStartAtDate() {
+    return startAtDate;
+  }
+
+  public void setStartAtDate(LocalDateTime startAtDate) {
+    this.startAtDate = startAtDate;
+  }
+
+  public String getPerformanceName() {
+    return performanceName;
+  }
+
+  public void setPerformanceName(String performanceName) {
+    this.performanceName = performanceName;
   }
 
   public String getName() {

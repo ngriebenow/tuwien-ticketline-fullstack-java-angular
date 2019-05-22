@@ -18,11 +18,19 @@ import {EventSearchResult} from "../../dtos/event-search-result";
 export class EventFilterComponent implements OnInit {
 
 
-  constructor(private eventService: EventService) { }
+  //times: number[];
+
+  constructor(private eventService: EventService) {
+    //this.times = Array(24).fill().map((x,i)=>i);
+  }
 
 
 
-  @Input() eventFilter: EventFilter = new EventFilter( '', '', '', null, '', '', '', '', '', '', '', '', '');
+
+
+
+
+  @Input() eventFilter: EventFilter = new EventFilter( '', '', '', null, '', '', '', '', '', '', '', '', '', null, null);
 
   @Output() eventSearchResults: EventSearchResult[] = [];
 
@@ -30,6 +38,7 @@ export class EventFilterComponent implements OnInit {
     console.log('ngOnInit');
     this.loadEvents();
   }
+
 
 
   /**
@@ -40,5 +49,15 @@ export class EventFilterComponent implements OnInit {
     this.eventService.getEventsFiltered(this.eventFilter).subscribe(
       (events: EventSearchResult[]) => this.eventSearchResults = events);
   }
+
+
+
+
+  updateBackground(index: number): void {
+
+    if (index == 0) {
+
+    }
+}
 
 }
