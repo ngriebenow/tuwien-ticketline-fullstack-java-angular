@@ -34,8 +34,9 @@ export class HallCreationService {
   constructor(private hallService: HallService, private router: Router) {
     console.log('constructor');
     this.maxHallSize = new Point(27, 27); // set max hall size here
-    // this.createNewHall();
-    this.loadExistingHall(1552);
+    this.createNewHall();
+    // this.loadExistingHall(1552);
+    // this.loadExistingHall(4752);
   }
 
   /**
