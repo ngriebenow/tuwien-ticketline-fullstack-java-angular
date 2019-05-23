@@ -15,7 +15,11 @@ describe('HallCreationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HallCreationComponent ],
+      declarations: [
+        HallCreationComponent,
+        HallCreationMenuComponent,
+        HallCreationPlanComponent,
+      ],
       imports: [
         HttpClientTestingModule,
         ReactiveFormsModule,
