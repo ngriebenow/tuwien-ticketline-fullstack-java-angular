@@ -227,12 +227,14 @@ export class HallViewingService {
   }
 
   endTransaction() {
-    const dunits: number[] = [];
+    const dunitIds: number[] = [];
+    const dunits: DefinedUnit[] = [];
     const amount: number[] = [];
     let tmp = 0;
     for (let i = 0; i < this.defUnits.length; i++) {
       if (this.selected[i]) {
-        dunits[tmp] = this.defUnits[i].id;
+        dunitIds[tmp] = this.defUnits[i].id;
+        dunits[tmp] = this.defUnits[i];
         if (this.defUnits[i].capacity > 1) {
           amount[tmp] = this.selectedNum[i];
         } else {
@@ -241,6 +243,6 @@ export class HallViewingService {
         tmp++;
       }
     }
-    this.ticketingService.putTicketRequests(dunits, amount);
+    this.ticketingService.setTicketRequests(dunitIds, amount, dunits, this.cats);
   }
 }
