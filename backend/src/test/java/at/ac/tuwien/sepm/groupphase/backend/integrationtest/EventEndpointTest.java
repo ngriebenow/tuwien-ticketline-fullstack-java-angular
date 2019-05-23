@@ -645,10 +645,10 @@ public class EventEndpointTest extends BaseIntegrationTest {
     PerformanceSearchResultDto retP2sR = retE2sR.getPerformances().get(0);
     
     PerformanceSearchResultDto P1sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P1);
-    PerformanceSearchResultDto P2sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P2);
+    PerformanceSearchResultDto P5sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P5);
 
     Assert.assertThat(retP1sR,equalTo(P1sR));
-    Assert.assertThat(retP2sR,equalTo(P2sR));
+    Assert.assertThat(retP2sR,equalTo(P5sR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }

@@ -26,6 +26,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.HallRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.awt.Color;
 import java.time.Duration;
@@ -65,7 +66,8 @@ public class EventServiceIntegrationTest {
   @Autowired private LocationRepository locationRepository;
   @Autowired private ArtistRepository artistRepository;
   @Autowired private EventRepository eventRepository;
-
+  @Autowired private PriceCategoryRepository priceCategoryRepository;
+  
   @Autowired private EventMapper eventMapper;
   @Autowired private EventSearchResultMapper eventSearchResultMapper;
   @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
@@ -74,6 +76,9 @@ public class EventServiceIntegrationTest {
   private Event E2;
   private Event E3;
 
+  private static EventSearchResultDto E1_SR;
+  private static EventSearchResultDto E2_SR;
+  private static EventSearchResultDto E3_SR;
 
   private Artist A1;
   private Artist A2;
@@ -98,6 +103,15 @@ public class EventServiceIntegrationTest {
   private Performance P7;
   private Performance P8;
   private Performance P9;
+
+  private PriceCategory PC1;
+  private PriceCategory PC2;
+
+  private PriceCategory PC3;
+  private PriceCategory PC4;
+
+  private PriceCategory PC5;
+  private PriceCategory PC6;
 
 
   @BeforeEach
@@ -272,11 +286,62 @@ public class EventServiceIntegrationTest {
 
 
 
+    PC1 = new PriceCategory.Builder()
+        .name("PC1")
+        .color(Color.BLACK)
+        .event(E1)
+        .priceInCents(2000).build();
+    PC1 = priceCategoryRepository.save(PC1);
+
+
+    PC2 = new PriceCategory.Builder()
+        .name("PC2")
+        .color(Color.BLACK)
+        .event(E2)
+        .priceInCents(3000).build();
+    PC2 = priceCategoryRepository.save(PC2);
+
+    PC3 = new PriceCategory.Builder()
+        .name("PC3")
+        .color(Color.BLACK)
+        .event(E2)
+        .priceInCents(4000).build();
+    PC3 = priceCategoryRepository.save(PC3);
+
+    PC4 = new PriceCategory.Builder()
+        .name("PC4")
+        .color(Color.BLACK)
+        .event(E3)
+        .priceInCents(5000).build();
+    PC4 = priceCategoryRepository.save(PC4);
+
+    PC5 = new PriceCategory.Builder()
+        .name("PC5")
+        .color(Color.BLACK)
+        .event(E3)
+        .priceInCents(6000).build();
+    PC5 = priceCategoryRepository.save(PC5);
+
+    PC6 = new PriceCategory.Builder()
+        .name("PC6")
+        .color(Color.BLACK)
+        .event(E3)
+        .priceInCents(7000).build();
+    PC6 = priceCategoryRepository.save(PC6);
+
+
+    E1_SR = eventSearchResultMapper.eventToEventSearchResultDto(E1);
+    E1_SR.setPriceRange("20 €");
+    E2_SR = eventSearchResultMapper.eventToEventSearchResultDto(E2);
+    E2_SR.setPriceRange("30 - 40 €");
+    E3_SR = eventSearchResultMapper.eventToEventSearchResultDto(E3);
+    E3_SR.setPriceRange("50 - 70 €");
 
   }
 
   @AfterEach
   public void cleanUp() {
+    priceCategoryRepository.deleteAll();
     performanceRepository.deleteAll();
     eventRepository.deleteAll();
     hallRepository.deleteAll();
@@ -321,8 +386,8 @@ public class EventServiceIntegrationTest {
     List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(2));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+    Assert.assertTrue(retList.contains(E2_SR));
+    Assert.assertTrue(retList.contains(E3_SR));
 
   }
 
@@ -335,7 +400,7 @@ public class EventServiceIntegrationTest {
     List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(1));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
+    Assert.assertTrue(retList.contains(E2_SR));
   }
 
   @Test
@@ -347,8 +412,8 @@ public class EventServiceIntegrationTest {
     List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(2));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E1)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
+    Assert.assertTrue(retList.contains(E1_SR));
+    Assert.assertTrue(retList.contains(E2_SR));
   }
 
   @Test
@@ -360,8 +425,8 @@ public class EventServiceIntegrationTest {
     List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(2));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+    Assert.assertTrue(retList.contains(E2_SR));
+    Assert.assertTrue(retList.contains(E3_SR));
   }
 
   @Test
@@ -373,8 +438,8 @@ public class EventServiceIntegrationTest {
     List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(2));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E1)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
+    Assert.assertTrue(retList.contains(E1_SR));
+    Assert.assertTrue(retList.contains(E2_SR));
   }
 
   @Test
@@ -386,9 +451,9 @@ public class EventServiceIntegrationTest {
     List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(3));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E1)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+    Assert.assertTrue(retList.contains(E1_SR));
+    Assert.assertTrue(retList.contains(E2_SR));
+    Assert.assertTrue(retList.contains(E3_SR));
   }
 
   @Test
@@ -400,6 +465,6 @@ public class EventServiceIntegrationTest {
     List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(1));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
+    Assert.assertTrue(retList.contains(E2_SR));
   }
 }
