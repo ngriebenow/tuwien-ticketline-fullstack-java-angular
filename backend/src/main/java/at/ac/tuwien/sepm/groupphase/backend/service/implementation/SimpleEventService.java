@@ -104,8 +104,9 @@ public class SimpleEventService implements EventService {
 
       if (priceCategories.size() > 1) {
         price += " - " + String.format("%.0f",priceCategories
-            .get(priceCategories.size()-1).getPriceInCents() / 100.) + " €";
+            .get(priceCategories.size()-1).getPriceInCents() / 100.);
       }
+      price += " €";
     } else {
       price = "kein Preis";
     }
