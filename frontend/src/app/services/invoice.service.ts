@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Globals} from '../global/globals';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Invoice} from '../dtos/invoice';
 import {ReservationRequest} from '../dtos/reservation-request';
@@ -20,8 +20,11 @@ export class InvoiceService {
   }
 
   // TODO: add search parameters
-  getInvoices(): Observable<Invoice[]> {
-    return this.httClient.get<Invoice[]>(this.invoiceBaseUri);
+  getInvoices(page: number, count: number): Observable<Invoice[]> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('count', count.toString());
+    return this.httClient.get<Invoice[]>(this.invoiceBaseUri, {params});
   }
 
   buyTickets(reservationRequest: ReservationRequest): Observable<Invoice> {

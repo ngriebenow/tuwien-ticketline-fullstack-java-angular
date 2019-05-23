@@ -17,6 +17,7 @@ import { EventComponent } from './components/event/event.component';
 import { EventFilterComponent } from './components/event-filter/event-filter.component';
 import { MyDatePickerModule } from 'mydatepicker';
 import {IMyDpOptions} from 'mydatepicker';
+import { InvoiceFilterComponent } from './components/invoice-filter/invoice-filter.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {IMyDpOptions} from 'mydatepicker';
     MessageComponent,
     EventComponent,
     EventFilterComponent,
+    InvoiceFilterComponent,
   ],
   imports: [
     BrowserModule,

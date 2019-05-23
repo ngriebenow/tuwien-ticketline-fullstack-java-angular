@@ -1,0 +1,24 @@
+<div class="container">
+  <table class="table table-striped table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Reservierungsnummer</th>
+        <th scope="col">Rechnungsnummer</th>
+        <th scope="col">Kundenname</th>
+        <th scope="col">Email</th>
+        <th scope="col">Storniert</th>
+        <th scope="col">Bezahlt</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let invoice of invoices">
+        <td>{{ invoice.reservationCode }}</td>
+        <td>{{ invoice.number }}</td>
+        <td>{{ getClientFullName(invoice) }}</td>
+        <td>{{ invoice.client.email }}</td>
+        <td><i class="fas fa-check" *ngIf="invoice.cancelled"></i> </td>
+        <td><i class="fas fa-check" *ngIf="invoice.paid"></i> </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
