@@ -79,10 +79,19 @@ public class PerformanceSpecification {
           Root<Performance> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
         if (eventFilterDto.getStartAtDate() != null) {
-          return criteriaBuilder.equal(
-              criteriaBuilder.function(
-                  "getdate", Date.class,root.get(Performance_.startAt)),
-              Date.valueOf(eventFilterDto.getStartAtDate()));
+          return criteriaBuilder.and(
+              criteriaBuilder.equal(
+                  criteriaBuilder.function(
+                      "day", Integer.class,root.get(Performance_.startAt)),
+                  eventFilterDto.getStartAtDate().getDayOfMonth()),
+              criteriaBuilder.equal(
+                  criteriaBuilder.function(
+                      "month", Integer.class,root.get(Performance_.startAt)),
+                  eventFilterDto.getStartAtDate().getMonthValue()),
+              criteriaBuilder.equal(
+                  criteriaBuilder.function(
+                      "year", Integer.class,root.get(Performance_.startAt)),
+                  eventFilterDto.getStartAtDate().getYear()));
         }
         return criteriaBuilder.and();
       }
