@@ -6,8 +6,8 @@ application:
   authentication:
     signature-algorithm: HS256
     secret: jwtSecret
-    validity-duration: 600
-    overlap-duration: 300
+    validity-duration: 6
+    overlap-duration: 3
 
 spring:
   jpa:

@@ -1,16 +1,18 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
+import java.util.Objects;
+
 public class UserDto {
 
   private String username;
 
   private String password;
 
-  private int failedLoginCounter;
+  private Integer failedLoginCounter;
 
-  private boolean enabled;
+  private Boolean enabled;
 
-  private boolean isAdmin;
+  private Boolean isAdmin;
 
   public String getUsername() {
     return username;
@@ -28,27 +30,47 @@ public class UserDto {
     this.password = password;
   }
 
-  public int getFailedLoginCounter() {
+  public Integer getFailedLoginCounter() {
     return failedLoginCounter;
   }
 
-  public void setFailedLoginCounter(int failedLoginCounter) {
+  public void setFailedLoginCounter(Integer failedLoginCounter) {
     this.failedLoginCounter = failedLoginCounter;
   }
 
-  public boolean isEnabled() {
+  public Boolean getEnabled() {
     return enabled;
   }
 
-  public void setEnabled(boolean enabled) {
+  public void setEnabled(Boolean enabled) {
     this.enabled = enabled;
   }
 
-  public boolean isAdmin() {
+  public Boolean getAdmin() {
     return isAdmin;
   }
 
-  public void setAdmin(boolean admin) {
+  public void setAdmin(Boolean admin) {
     isAdmin = admin;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    UserDto userDto = (UserDto) o;
+    return failedLoginCounter == userDto.failedLoginCounter
+        && enabled == userDto.enabled
+        && isAdmin == userDto.isAdmin
+        && username.equals(userDto.username);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(username, failedLoginCounter, enabled, isAdmin);
   }
 }

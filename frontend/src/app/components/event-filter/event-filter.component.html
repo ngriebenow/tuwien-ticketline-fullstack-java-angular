@@ -5,57 +5,57 @@
   </div>
 
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-3">
       <h2 class="float-right">Ort</h2>
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
       <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.locationName" type="text"/>
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
       <input class="form-control" placeholder="Saalname" (change)="loadEvents()" [(ngModel)]="eventFilter.hallName"  type="text"/>
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
       <h2 class="float-right">Datum/Preis</h2>
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
       <!--<form class="date-control">
         <my-date-picker placeholder="tt/mm/jjjj" name="mydate" [options]="myDatePickerOptions"
                         [(ngModel)]="model" required></my-date-picker>
       </form>TODO-->
     </div>
-    <div class="col-md-1">
+    <div class="col-1">
       <input class="form-control" placeholder="Uhrzeit" type="text" value=""/>
     </div>
   </div>
 
 
   <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-2">
+    <div class="col-3"></div>
+    <div class="col-2">
       <input class="form-control" placeholder="Ortsname, PLZ" (change)="loadEvents()" [(ngModel)]="eventFilter.locationPlace" type="text"/>
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
       <input class="form-control" placeholder="Straße" (change)="loadEvents()" [(ngModel)]="eventFilter.locationStreet"  type="text"/>
     </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-2">
+    <div class="col-2"></div>
+    <div class="col-2">
       <div style="margin: 0" class="row">
-        <div class="col-md-9">
+        <div class="col-9">
           <input class="form-control" placeholder="Dauer" type="text" value="">
         </div>
-        <div class="col-md-2" style="padding-left: 0">
+        <div class="col-2" style="padding-left: 0">
           <div class="align-content-end">
             <label style="vertical-align: center; padding: 0; margin-top: 5px">min</label>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-1">
+    <div class="col-1">
       <div style="margin: 0" class="row">
-        <div class="col-md-9">
+        <div class="col-9">
           <input  class="form-control" placeholder="Preis" type="text" value=""/>
         </div>
-        <div class="col-md-2" style="padding-left: 0">
+        <div class="col-2" style="padding-left: 0">
           <div class="align-content-end">
             <label style="vertical-align: center; padding: 0; margin-top: 5px">€</label>
           </div>
@@ -65,8 +65,8 @@
   </div>
 
   <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-2">
+    <div class="col-3"></div>
+    <div class="col-2">
       <select class="select-control" (change)="loadEvents()" [(ngModel)]="eventFilter.locationCountry" >
         <option value="">(alle)</option>
         <option value="Austria">Österreich</option>
@@ -74,9 +74,9 @@
         <option value="Asgardlandistan">Asgardlandistan</option>
       </select>
     </div>
-    <div class="col-md-2"></div>
-    <div class="col-md-2"></div>
-    <div class="col-md-2"></div>
+    <div class="col-2"></div>
+    <div class="col-2"></div>
+    <div class="col-2"></div>
   </div>
 
 
@@ -89,13 +89,13 @@
   <div class="row mt-3"></div>
 
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-3">
       <h2 class="float-right">Veranstaltung</h2>
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
       <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.name" type="text"/>
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
        <select class="select-control" (change)="loadEvents()" [(ngModel)]="eventFilter.eventCategory" >
           <option value="">(alle)</option>
           <option value="CINEMA">Cinema</option>
@@ -103,13 +103,13 @@
           <option value="OTHER">Other</option>
         </select>
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
       <h2 class="float-right">Top 10</h2>
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
 
     </div>
-    <div class="col-md-1">
+    <div class="col-1">
 
     </div>
   </div>
@@ -117,55 +117,60 @@
 
 
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-3">
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
       <input class="form-control" placeholder="Künstler" (change)="loadEvents()" [(ngModel)]="eventFilter.artistName" type="text"/>
     </div>
-    <div class="col-md-2">
+    <div class="col-2">
       <input class="form-control" placeholder="Inhalt" (change)="loadEvents()" [(ngModel)]="eventFilter.content" type="text"/>
-    </div>
-    <div class="col-md-2">
     </div>
     <div class="col-2">
     </div>
-    <div class="col-md-1">
+    <div class="col-2">
+    </div>
+    <div class="col-1">
     </div>
   </div>
 
-
-
-
-
-
-
-
-
-
   <div class="row mt-3"></div>
 
+<div class="row" *ngFor="let event of eventSearchResults">
+  <div routerLink="/events/{{event.id}}" class="card">
+    <div  class="card-body">
+      <div class="row">
+        <div class="col-3">
+          <h5 class="card-title">{{ event.name }}</h5>
+        </div>
+        <div class="col-2 align-bottom">
+            <h6 class="card-subtitle mb-2 text-muted card-event-info"><i class="far fa-calendar-alt"></i> {{ event.category | titlecase}}</h6>
+        </div>
+        <div class="col-4">
+          <h6 class="card-subtitle mb-2 text-muted card-event-info">
+            <i class="far fa-building"></i>
+            {{ event.hallName }}, {{ event.locationName}}</h6>
+        </div>
+        <div class="col-3">
+          <div class="row">
+            <h6 class="card-subtitle mb-2 text-muted card-event-info" >
+              <i class="fas fa-map-marker-alt"></i> {{ event.locationPlace}}</h6>
+          </div>
+        </div>
+      </div>
+      <div>
 
-  <div class="row">
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <td>Event</td>
-        <td>Kategorie</td>
-        <td>Ort</td>
-        <td>Saal</td>
-        <td>Dauer</td>
-        <td>Preis</td>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let x of events">
-        <td>{{ x.name }}</td>
-        <td>{{ x.category }}</td>
-        <td>{{ x.hall.location.name }}</td>
-        <td>{{ x.hall.name }}</td>
-        <td>{{ x.duration }}</td>
-        <td>TODO</td>
-      </tr>
-      </tbody>
-    </table>
+        <div class="row">
+        <div class="col-2" *ngFor="let p of event.performances">
+          <div class="card card-performance" (click)="$event.stopPropagation()" routerLink="/hall-viewing/{{event.id}}">
+            <div class="card-performance-body">
+              <h5 class="card-performance-title">{{ p.startAt | date:'hh:mm, dd.MM.yyyy' }}</h5>
+              <h6 class="card-performance-subtitle">{{ p.name }}</h6>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
+

@@ -67,6 +67,16 @@ export class HallCreationMenuComponent implements OnInit {
   }
 
   updatePlan(): void {
+    if (this.hallSize.coordinateX < 1) {
+      this.hallSize.coordinateX = 1;
+    } else if (this.hallSize.coordinateX > this.maxHallSize.coordinateX) {
+      this.hallSize.coordinateX = this.maxHallSize.coordinateX;
+    }
+    if (this.hallSize.coordinateY < 1) {
+      this.hallSize.coordinateY = 1;
+    } else if (this.hallSize.coordinateY > this.maxHallSize.coordinateY) {
+      this.hallSize.coordinateY = this.maxHallSize.coordinateY;
+    }
     this.hallCreationService.fillWithSeats();
   }
 
@@ -92,5 +102,13 @@ export class HallCreationMenuComponent implements OnInit {
 
   getSelectedSector(): void {
     this.hallCreationService.changeSector.subscribe(selectedSectorX => this.selectedSector = selectedSectorX);
+  }
+
+  clipCapacity(): void {
+    if (this.selectedSector.capacity < 2) {
+      this.selectedSector.capacity = 2;
+    } else if (this.selectedSector.capacity > Number.MAX_SAFE_INTEGER) {
+      this.selectedSector.capacity = Number.MAX_SAFE_INTEGER;
+    }
   }
 }

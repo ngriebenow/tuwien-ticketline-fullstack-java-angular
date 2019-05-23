@@ -133,7 +133,7 @@
       <h2 class="float-right">Kapazität</h2>
     </div>
     <div class="col-6">
-      <input type="number" min="1" step="1" [(ngModel)]="selectedSector.capacity" class="form-control" required placeholder="10">
+      <input type="number" min="1" step="1" [(ngModel)]="selectedSector.capacity" (input)="clipCapacity()" class="form-control" required placeholder="10">
     </div>
   </div>
 

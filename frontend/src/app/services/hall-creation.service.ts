@@ -5,22 +5,25 @@ import {UnitType} from '../enums/unit-type';
 import {Direction} from '../enums/direction';
 import {Hall} from '../dtos/hall';
 import {HallService} from './hall.service';
+import {HallRequest} from '../dtos/hall-request';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HallCreationService {
 
+  private loadedExisting: boolean;
   private initialized: boolean;
   private edited: boolean;
 
-  private readonly  hall: Hall;
-  private readonly  hallSize: Point;
-  private readonly  maxHallSize: Point;
+  private hall: Hall;
+  private hallSize: Point;
+  private readonly maxHallSize: Point;
 
-  private readonly seats: Point[];
-  private readonly  sectors: Unit[];
-  private readonly  aisles: Point[];
+  private seats: Point[];
+  private sectors: Unit[];
+  private aisles: Point[];
 
   private selectedUnitType: UnitType; // saves unit type that is selected in menu
   private selectedUnitPosition: Point; // saves first sector coordinate for sector creation
@@ -28,11 +31,24 @@ export class HallCreationService {
 
   @Output() changeSector: EventEmitter<Unit> = new EventEmitter();
 
-  constructor(private hallService: HallService) {
+  constructor(private hallService: HallService, private router: Router) {
+    console.log('constructor');
+    this.maxHallSize = new Point(27, 27); // set max hall size here
+    this.createNewHall();
+    // this.loadExistingHall(1552);
+    // this.loadExistingHall(4752);
+  }
+
+  /**
+   * Call this or loadExistingHall at start of hall creation process
+   * creates new hall
+   */
+  createNewHall(): void {
+    console.log('create new hall');
+    this.loadedExisting = false;
     this.initialized = false;
     this.edited = false;
     this.hallSize = new Point(10, 10);
-    this.maxHallSize = new Point(27, 27); // set max hall size here
     this.hall = new Hall(null, null, null, null, this.hallSize);
     this.seats = [];
     this.sectors = [];
@@ -41,11 +57,85 @@ export class HallCreationService {
   }
 
   /**
+   * Call this or createNewHall at start of hall creation process
    * loads hall from backend and sets initialized to true
    */
-  loadHall(): void {
-    // todo load hall from backend
+  loadExistingHall(id: number): void {
+    this.hallSize = new Point(10, 10);
+    this.hall = new Hall(null, null, null, null, null);
+    this.seats = [];
+    this.sectors = [];
+    this.aisles = [];
+    this.hallService.getHallById(id).then(
+      result => result.subscribe(
+        (loadedHall: Hall) => {
+          this.hallSize.coordinateX = loadedHall.boundaryPoint.coordinateX;
+          this.hallSize.coordinateY = loadedHall.boundaryPoint.coordinateY;
+          this.hall.id = loadedHall.id;
+          this.hall.version = loadedHall.version;
+          this.hall.name = loadedHall.name;
+          this.hall.location = loadedHall.location;
+          this.loadUnits(id);
+        },
+        error => {
+          console.log(error);
+          // todo error handling
+        }
+      )
+    );
+    this.loadedExisting = true;
     this.initialized = true;
+    this.edited = false;
+  }
+
+  /**
+   * loads units of hall from db
+   * @param id of hall
+   */
+  loadUnits(id: number): void {
+    let loadedUnits: Unit[];
+    this.hallService.getUnitsByHallId(id).subscribe(
+      (dbUnits: Unit[]) => {
+        loadedUnits = dbUnits;
+        for (let i = 0; i < loadedUnits.length; i++) {
+          if (loadedUnits[i].capacity === 1) {
+            this.seats.push(loadedUnits[i].upperBoundary);
+          } else if (loadedUnits[i].capacity > 1) {
+            this.sectors.push(loadedUnits[i]);
+          }
+        }
+        this.createAisles();
+      },
+      error => {
+        console.log(error);
+        // todo error handling
+      }
+    );
+  }
+
+  /**
+   * creates an aisle at every empty position of hall
+   */
+  createAisles(): void {
+    for (let y = 0; y < this.hallSize.coordinateY; y++) {
+      for (let x = 0; x < this.hallSize.coordinateX; x++) {
+        let found = false;
+        const aisle: Point = new Point(x + 1, y + 1);
+        for (let s = 0; !found && s < this.sectors.length; s++) {
+          if (this.pointInSector(aisle, this.sectors[s])) {
+            found = true;
+          }
+        }
+        for (let s = 0; !found && s < this.seats.length; s++) {
+          if (x + 1 === this.seats[s].coordinateX && y + 1 === this.seats[s].coordinateY) {
+            found = true;
+          }
+        }
+        if (!found) {
+          this.aisles.push(aisle);
+        }
+      }
+    }
   }
 
   /**
@@ -111,8 +201,60 @@ export class HallCreationService {
    * saves hall and all units to db
    */
   saveHall(): void {
-    // todo prepare hall to be saved to backend
-    // this.hallService.postHall(this.hall);
+    const hallToSave: HallRequest = this.prepareHallRequest();
+    if (this.loadedExisting) {
+      this.hallService.putHall(hallToSave).subscribe(
+        () => {
+          console.log('Updated hall successfully!');
+          this.backToMenu();
+        },
+        error => {
+          console.log(error);
+          // todo error handling
+        }
+      );
+    } else {
+      this.hallService.postHall(hallToSave).subscribe(
+        () => {
+          console.log('Saved hall successfully!');
+          this.backToMenu();
+        },
+        error => {
+          console.log(error);
+          // this.defaultServiceErrorHandling(error);
+          // todo error handling
+        }
+      );
+    }
+  }
+
+  /**
+   * create hallRequest with all values of this.hall and all units except aisles
+   */
+  prepareHallRequest(): HallRequest {
+    const units: Unit[] = [];
+    for (const s of this.seats) {
+      units.push(new Unit(null, null, 'seat', s, s, 1));
+    }
+    for (const s of this.sectors) {
+      units.push(s);
+    }
+    return new HallRequest(
+      this.hall.id,
+      this.hall.version,
+      this.hall.name,
+      this.hall.location,
+      this.hallSize,
+      units
+    );
+  }
+
+  /**
+   * returns back to home menu
+   */
+  backToMenu(): void {
+    // todo reset values at exit or at enter?
+    this.router.navigateByUrl('');
   }
 
   // todo cancel popup and functionality

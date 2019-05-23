@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Globals} from '../global/globals';
 import {Observable} from 'rxjs';
 import {EventFilter} from '../dtos/event-filter';
+import {EventSearchResult} from "../dtos/event-search-result";
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class EventService {
     return this.httpClient.get<Event>(this.eventBaseUri + '/' + id);
   }
 
-  getEventsFiltered(eventFilter: EventFilter): Observable<Event[]> {
+  getEventsFiltered(eventFilter: EventFilter): Observable<EventSearchResult[]> {
 
     console.log('getEventsFiltered');
 
@@ -51,7 +52,7 @@ export class EventService {
 
     console.log('getEventsFiltered: ' + eventFilter.name);
 
-    return this.httpClient.get<Event[]>(this.eventBaseUri, {params: paramsHttp});
+    return this.httpClient.get<EventSearchResult[]>(this.eventBaseUri, {params: paramsHttp});
 
   }
 

@@ -18,12 +18,12 @@ public class SimpleUserMapper implements UserMapper {
     User u = new User();
     u.setUsername(user.getUsername());
     u.setPassword(encoder.encode(user.getPassword()));
-    if (user.isAdmin()) {
-      u.setAuthority("ROLE_ADMIN, ROLE_USER");
+    if (user.getAdmin()) {
+      u.setAuthority("ROLE_ADMIN");
     } else {
       u.setAuthority("ROLE_USER");
     }
-    u.setEnabled(user.isEnabled());
+    u.setEnabled(user.getEnabled());
     u.setFailedLoginCounter(user.getFailedLoginCounter());
     return u;
   }

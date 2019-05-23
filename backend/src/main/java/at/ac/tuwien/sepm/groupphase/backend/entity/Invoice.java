@@ -1,11 +1,13 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import com.google.common.base.Objects;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,12 +32,16 @@ public class Invoice {
   @Column(nullable = false)
   private boolean isCancelled;
 
-  @Column(nullable = false)
+  @Column(nullable = true)
   private String reservationCode;
 
-  // TODO: add a sequence for paid and canceled invoices
+  @Column(nullable = true)
+  private Long number;
 
-  @ManyToOne
+  @Column(nullable = true)
+  private LocalDate paidAt;
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(nullable = false)
   private Client client;
 
@@ -52,6 +58,8 @@ public class Invoice {
     setPaid(builder.isPaid);
     setCancelled(builder.isCancelled);
     setReservationCode(builder.reservationCode);
+    setNumber(builder.number);
+    setPaidAt(builder.paidAt);
     setClient(builder.client);
     setTickets(builder.tickets);
   }
@@ -122,6 +130,22 @@ public class Invoice {
     this.reservationCode = reservationCode;
   }
 
+  public Long getNumber() {
+    return number;
+  }
+
+  public void setNumber(Long number) {
+    this.number = number;
+  }
+
+  public LocalDate getPaidAt() {
+    return paidAt;
+  }
+
+  public void setPaidAt(LocalDate paidAt) {
+    this.paidAt = paidAt;
+  }
+
   public Client getClient() {
     return client;
   }
@@ -143,12 +167,14 @@ public class Invoice {
         && isCancelled == invoice.isCancelled
         && Objects.equal(id, invoice.id)
         && Objects.equal(reservationCode, invoice.reservationCode)
+        && Objects.equal(number, invoice.number)
+        && Objects.equal(paidAt, invoice.paidAt)
         && Objects.equal(client, invoice.client);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, client);
+    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, number, paidAt, client);
   }
 
   @Override
@@ -163,10 +189,12 @@ public class Invoice {
         + ", reservationCode='"
         + reservationCode
         + '\''
+        + ", number="
+        + number
+        + ", paidAt="
+        + paidAt
         + ", client="
         + client
-        + ", tickets="
-        + tickets
         + '}';
   }
 
@@ -176,6 +204,8 @@ public class Invoice {
     private boolean isPaid;
     private boolean isCancelled;
     private String reservationCode;
+    private Long number;
+    private LocalDate paidAt;
     private Client client;
     private List<Ticket> tickets = new ArrayList<>();
 
@@ -198,6 +228,16 @@ public class Invoice {
 
     public Builder reservationCode(String val) {
       reservationCode = val;
+      return this;
+    }
+
+    public Builder number(Long val) {
+      number = val;
+      return this;
+    }
+
+    public Builder paidAt(LocalDate val) {
+      paidAt = val;
       return this;
     }
 

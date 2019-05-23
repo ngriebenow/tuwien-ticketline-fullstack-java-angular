@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,7 @@ public class Picture {
   @Column(nullable = false)
   private byte[] data;
 
-  @ManyToOne(optional = false)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(nullable = false)
   private News news;
 

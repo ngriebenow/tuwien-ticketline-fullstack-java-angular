@@ -11,6 +11,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -28,6 +29,7 @@ public class ClientDataGenerator implements DataGenerator<Client> {
     this.clientRepository = clientRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<Client> generatedClients = new ArrayList<>(MAX_CLIENT_COUNT);

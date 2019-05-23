@@ -15,6 +15,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Profile("generateData")
@@ -31,6 +32,7 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
     this.hallRepository = hallRepository;
   }
 
+  @Transactional
   @Override
   public void execute() {
     List<Unit> generatedUnits = new ArrayList<>();
@@ -42,9 +44,9 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
         for (int j = 0; j < hall.getBoundaryPoint().getCoordinateX(); j++) {
           generatedUnits.add(
               new Unit.Builder()
-                  .name(String.format("Unit %d %d", j, i))
-                  .lowerBoundary(new Point(j, i))
-                  .upperBoundary(new Point(j, i))
+                  .name(String.format("Unit %d %d", j + 1, i + 1))
+                  .lowerBoundary(new Point(j + 1, i + 1))
+                  .upperBoundary(new Point(j + 1, i + 1))
                   .capacity(1)
                   .hall(hall)
                   .build());

@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,11 +28,11 @@ public class Ticket {
   @Column(nullable = false)
   private boolean isCancelled;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "invoice_id", nullable = false)
   private Invoice invoice;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   @JoinColumn(nullable = false)
   private DefinedUnit definedUnit;
 

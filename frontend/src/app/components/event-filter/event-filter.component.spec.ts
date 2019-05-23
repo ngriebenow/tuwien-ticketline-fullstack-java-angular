@@ -4,6 +4,8 @@ import { EventFilterComponent } from './event-filter.component';
 import { Globals} from '../../global/globals';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MyDatePickerModule } from 'mydatepicker';
+import {RouterTestingModule} from '@angular/router/testing';
+import {RouterModule} from '@angular/router';
 
 describe('EventFilterComponent', () => {
   let component: EventFilterComponent;
@@ -18,7 +20,9 @@ describe('EventFilterComponent', () => {
         HttpClientTestingModule,
         ReactiveFormsModule,
         FormsModule,
-        MyDatePickerModule
+        MyDatePickerModule,
+        RouterModule,
+        RouterTestingModule
       ],
       providers: [
         Globals,

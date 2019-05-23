@@ -1,11 +1,21 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallRequestDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UnitDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Unit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.hall.HallMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.unit.UnitMapper;
+import at.ac.tuwien.sepm.groupphase.backend.exception.InvalidInputException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.HallRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UnitRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.HallService;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,37 +27,186 @@ public class SimpleHallService implements HallService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHallService.class);
   private HallRepository hallRepository;
+  private UnitRepository unitRepository;
+  private LocationRepository locationRepository;
   private HallMapper hallMapper;
+  private UnitMapper unitMapper;
 
+  /**
+   * javadoc.
+   */
   @Autowired
-  public SimpleHallService(HallRepository hallRepository, HallMapper hallMapper) {
+  public SimpleHallService(
+      HallRepository hallRepository,
+      UnitRepository unitRepository,
+      LocationRepository locationRepository,
+      HallMapper hallMapper,
+      UnitMapper unitMapper
+  ) {
     this.hallRepository = hallRepository;
+    this.unitRepository = unitRepository;
+    this.locationRepository = locationRepository;
     this.hallMapper = hallMapper;
+    this.unitMapper = unitMapper;
   }
 
   @Override
   public HallDto getOneById(Long id) throws NotFoundException {
+    LOGGER.info("Get hall with id " + id);
     return hallMapper.hallToHallDto(
         hallRepository.findById(id).orElseThrow(
             () -> {
               String msg = "Can't find hall with id " + id;
               LOGGER.error(msg);
               return new NotFoundException(msg);
-            }));
+            }
+        )
+    );
   }
 
   @Override
-  public HallDto create(HallDto hallDto) {
-    return null; // todo implement
+  public HallDto create(HallRequestDto hallRequestDto) {
+    LOGGER.info("Save hall");
+    // convert dtos to entitys
+    Hall hall = hallMapper.hallRequestDtoToHall(hallRequestDto);
+    List<Unit> units = new ArrayList<>();
+    for (UnitDto unitDto : hallRequestDto.getUnits()) {
+      units.add(unitMapper.unitDtoToUnit(unitDto));
+    }
+
+    // todo remove this when locations are implemented
+    Location location = locationRepository.findById(1L).orElseThrow(NotFoundException::new);
+    hall.setLocation(location);
+
+    // validate units
+    try {
+      validUnits(units);
+    } catch (InvalidInputException e) {
+      LOGGER.error(e.getMessage());
+      throw e;
+    }
+    // calculate seat names
+    calculateSeatNames(units);
+    // save hall
+    Hall savedHall = hallRepository.save(hall);
+    LOGGER.info("Saved hall. Id: " + hall.getId());
+    // save units
+    for (Unit unit : units) {
+      unit.setHall(savedHall);
+      unitRepository.save(unit);
+    }
+    LOGGER.info("Saved units for hall with id " + hall.getId());
+    return hallMapper.hallToHallDto(savedHall);
   }
 
   @Override
-  public HallDto update(HallDto hallDto) {
+  public HallDto update(HallRequestDto hallRequestDto) {
+    LOGGER.info("Update hall with id " + hallRequestDto.getId());
     return null; // todo implement
   }
 
   @Override
   public List<UnitDto> getUnitsByHallId(Long id) {
-    return null; // todo implement
+    LOGGER.info("Get units of hall with id " + id);
+    List<Unit> units = unitRepository.findAllByHall_Id(id).orElseThrow(NotFoundException::new);
+    List<UnitDto> unitDtos = new ArrayList<>();
+    for (Unit u : units) {
+      unitDtos.add(unitMapper.unitToUnitDto(u));
+    }
+    return unitDtos;
+  }
+
+  /**
+   * Validates all units for overlapping and correct boundary points.
+   *
+   * @param units != null
+   * @throws InvalidInputException if validation goes wrong
+   */
+  private void validUnits(List<Unit> units) throws InvalidInputException {
+    // separate units into seats and sectors
+    List<Unit> seats = new ArrayList<>();
+    List<Unit> sectors = new ArrayList<>();
+    for (Unit unit : units) {
+      if (unit.getCapacity() == 1) {
+        seats.add(unit);
+      } else if (unit.getCapacity() > 1) {
+        sectors.add(unit);
+      } else {
+        throw new InvalidInputException("Unit capacity must be at least 1");
+      }
+    }
+    // validate seats
+    for (Unit seat : seats) {
+      if (seat.getUpperBoundary().getCoordinateX() != seat.getLowerBoundary().getCoordinateX()
+          || seat.getUpperBoundary().getCoordinateY() != seat.getLowerBoundary().getCoordinateY()
+      ) {
+        throw new InvalidInputException("Seat upper boundary must be same as seat lower boundary");
+      }
+    }
+    // validate sectors
+    for (Unit sector : sectors) {
+      if (sector.getUpperBoundary().getCoordinateX() > sector.getLowerBoundary().getCoordinateX()
+          || sector.getUpperBoundary().getCoordinateY() > sector.getLowerBoundary().getCoordinateY()
+      ) {
+        throw new InvalidInputException(
+            "Sector lower boundary must not be above or left of upper boundary");
+      }
+    }
+    // validate units
+    for (int i = 0; i < units.size(); i++) {
+      Unit unit1 = units.get(i);
+      for (int j = i + 1; j < units.size(); j++) {
+        if (unitsOverlapping(unit1, units.get(j))) {
+          throw new InvalidInputException("Units must not overlap each other " + unit1.getName()
+              + unit1.getUpperBoundary().getCoordinateX()
+              + "/" + unit1.getUpperBoundary().getCoordinateY()
+              + " / " + units.get(j).getName() + units.get(j).getUpperBoundary().getCoordinateX()
+              + "/" + units.get(j).getUpperBoundary().getCoordinateY());
+        }
+      }
+    }
+  }
+
+  /**
+   * Evaluates if two units overlap each other.
+   *
+   * @param unit1 != null
+   * @param unit2 != null
+   * @return true if unit1 overlaps unit2
+   */
+  private boolean unitsOverlapping(Unit unit1, Unit unit2) {
+    return !(unit1.getLowerBoundary().getCoordinateX() < unit2.getUpperBoundary().getCoordinateX()
+        || unit2.getLowerBoundary().getCoordinateX() < unit1.getUpperBoundary().getCoordinateX()
+        || unit1.getLowerBoundary().getCoordinateY() < unit2.getUpperBoundary().getCoordinateY()
+        || unit2.getLowerBoundary().getCoordinateY() < unit1.getUpperBoundary().getCoordinateY());
+  }
+
+  /**
+   * Calculates names for all seats starting with "Reihe: 1 Sitz: 1" for first seat in first row
+   * that has seats.
+   *
+   * @param units != null
+   */
+  private void calculateSeatNames(List<Unit> units) {
+    int rowCounter = 1;
+    int columnCounter = 1;
+
+    List<Unit> seats = new ArrayList<>();
+    for (Unit unit : units) {
+      if (unit.getCapacity() == 1) {
+        seats.add(unit);
+      }
+    }
+    seats.sort(Comparator.comparing((Unit u) -> u.getUpperBoundary().getCoordinateY())
+        .thenComparing((Unit u) -> u.getUpperBoundary().getCoordinateX()));
+
+    for (Unit seat : seats) {
+      if (seat.getUpperBoundary().getCoordinateY() == rowCounter) {
+        seat.setName("Reihe: " + rowCounter + " Sitz: " + columnCounter++);
+      } else {
+        rowCounter++;
+        columnCounter = 1;
+      }
+    }
   }
 }

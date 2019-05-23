@@ -47,8 +47,7 @@ public class TicketRequestDto {
     private Long definedUnitId;
     private int amount;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder definedUnitId(Long val) {
       definedUnitId = val;

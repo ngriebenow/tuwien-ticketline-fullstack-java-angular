@@ -12,20 +12,18 @@ import javax.validation.constraints.NotNull;
     description = "A request to buy or reserve one or more tickets")
 public class ReservationRequestDto {
 
-  @NotNull(message = "performanceId must be set")
-  @ApiModelProperty(value = "The id of the performance to buy the tickets for", required = true)
-  private Long performanceId;
-
-  @NotNull(message = "clientId must be set")
-  @ApiModelProperty(value = "The id of the client to buy the tickets for", required = true)
-  private Long clientId;
-
   @NotEmpty(message = "ticketRequests has to be set and not empty")
   @ApiModelProperty(
       value = "A list of units ids with the amount to buy or reserve for each",
       required = true)
   // TODO: require valid ticketRequests
   public List<@Valid TicketRequestDto> ticketRequests;
+  @NotNull(message = "performanceId must be set")
+  @ApiModelProperty(value = "The id of the performance to buy the tickets for", required = true)
+  private Long performanceId;
+  @NotNull(message = "clientId must be set")
+  @ApiModelProperty(value = "The id of the client to buy the tickets for", required = true)
+  private Long clientId;
 
   public ReservationRequestDto() {
   }
@@ -66,8 +64,7 @@ public class ReservationRequestDto {
     private Long clientId;
     private List<TicketRequestDto> ticketRequests;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder performanceId(Long val) {
       performanceId = val;
