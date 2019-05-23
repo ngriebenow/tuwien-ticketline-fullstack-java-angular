@@ -8,10 +8,8 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.artist.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.pricecategory.PriceCategoryMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
@@ -53,10 +51,9 @@ public class SimpleEventService implements EventService {
     EventDto eventDto = eventMapper.eventToEventDto(event);
 
     eventDto.setPriceCategories(
-        priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(event).stream().map(
-            pc -> priceCategoryMapper.priceCategoryToPriceCategoryDto(pc))
-            .collect(Collectors.toList())
-    );
+        priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(event).stream()
+            .map(pc -> priceCategoryMapper.priceCategoryToPriceCategoryDto(pc))
+            .collect(Collectors.toList()));
 
     return eventDto;
   }
@@ -81,16 +78,17 @@ public class SimpleEventService implements EventService {
 
     for (Event e : events) {
       EventSearchResultDto eventDto = eventSearchResultMapper.eventToEventSearchResultDto(e);
-      List<PriceCategory> priceCategories = priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(e);
+      List<PriceCategory> priceCategories =
+          priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(e);
       eventDto.setPriceRange(formatPriceRange(priceCategories));
 
-      List<PerformanceSearchResultDto> performanceSearchResultDtos = getPerformancesFiltered(e.getId(), eventFilterDto);
+      List<PerformanceSearchResultDto> performanceSearchResultDtos =
+          getPerformancesFiltered(e.getId(), eventFilterDto);
 
       if (performanceSearchResultDtos.size() > 0) {
         eventDtos.add(eventDto);
         eventDto.setPerformances(getPerformancesFiltered(e.getId(), eventFilterDto));
       }
-
     }
 
     return eventDtos;
@@ -103,8 +101,11 @@ public class SimpleEventService implements EventService {
       price = String.format("%.0f", priceCategories.get(0).getPriceInCents() / 100.);
 
       if (priceCategories.size() > 1) {
-        price += " - " + String.format("%.0f",priceCategories
-            .get(priceCategories.size()-1).getPriceInCents() / 100.);
+        price +=
+            " - "
+                + String.format(
+                    "%.0f",
+                    priceCategories.get(priceCategories.size() - 1).getPriceInCents() / 100.);
       }
       price += " €";
     } else {
@@ -114,8 +115,8 @@ public class SimpleEventService implements EventService {
     return price;
   }
 
-  private List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, EventFilterDto eventFilterDto)
-      throws NotFoundException {
+  private List<PerformanceSearchResultDto> getPerformancesFiltered(
+      Long id, EventFilterDto eventFilterDto) throws NotFoundException {
     LOGGER.info("getPerformancesFiltered " + id);
 
     List<PerformanceSearchResultDto> performanceDtos = new ArrayList<>();
@@ -132,14 +133,10 @@ public class SimpleEventService implements EventService {
     return performanceDtos;
   }
 
-
   @Override
   public List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, Pageable pageable)
       throws NotFoundException {
     LOGGER.info("getPerformancesOfEvent " + id);
-
-
-
 
     Event event = eventRepository.findById(id).orElseThrow(NotFoundException::new);
     List<PerformanceSearchResultDto> performanceDtos = new ArrayList<>();

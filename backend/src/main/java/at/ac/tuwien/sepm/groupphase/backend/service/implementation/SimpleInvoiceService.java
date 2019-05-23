@@ -45,12 +45,11 @@ public class SimpleInvoiceService implements InvoiceService {
       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 
   private final InvoiceRepository invoiceRepository;
+  private final InvoiceMapper invoiceMapper;
   private PerformanceRepository performanceRepository;
   private ClientRepository clientRepository;
   private DefinedUnitRepository definedUnitRepository;
   private TicketRepository ticketRepository;
-
-  private final InvoiceMapper invoiceMapper;
 
   /** Create a new InvoiceService. */
   @Autowired
@@ -67,6 +66,21 @@ public class SimpleInvoiceService implements InvoiceService {
     this.definedUnitRepository = definedUnitRepository;
     this.ticketRepository = ticketRepository;
     this.invoiceMapper = invoiceMapper;
+  }
+
+  private static String generateReservationCode() {
+    String reservationCode = "";
+    for (int i = 0; i < RESERVATION_CODE_LENGTH; i++) {
+      int idx = RANDOM.nextInt(RESERVATION_CODE_CHARACTERS.length);
+      reservationCode += RESERVATION_CODE_CHARACTERS[idx];
+    }
+    return reservationCode;
+  }
+
+  private static String generateTicketSalt() {
+    byte[] saltBytes = new byte[TICKET_SALT_LENGTH];
+    RANDOM.nextBytes(saltBytes);
+    return Base64.getEncoder().encodeToString(saltBytes);
   }
 
   @Override
@@ -134,8 +148,8 @@ public class SimpleInvoiceService implements InvoiceService {
 
   /**
    * Create tickets for the given definedUnitIds and attaches them to invoice. Note that this will
-   * update the corresponding defined units but not save them. This will happen as soon as you
-   * save the invoice or tickets.
+   * update the corresponding defined units but not save them. This will happen as soon as you save
+   * the invoice or tickets.
    *
    * @param performance the performance to create tickets for.
    * @param invoice the invoice created for these tickets.
@@ -186,20 +200,5 @@ public class SimpleInvoiceService implements InvoiceService {
                               .salt(generateTicketSalt())
                               .build()));
         });
-  }
-
-  private static String generateReservationCode() {
-    String reservationCode = "";
-    for (int i = 0; i < RESERVATION_CODE_LENGTH; i++) {
-      int idx = RANDOM.nextInt(RESERVATION_CODE_CHARACTERS.length);
-      reservationCode += RESERVATION_CODE_CHARACTERS[idx];
-    }
-    return reservationCode;
-  }
-
-  private static String generateTicketSalt() {
-    byte[] saltBytes = new byte[TICKET_SALT_LENGTH];
-    RANDOM.nextBytes(saltBytes);
-    return Base64.getEncoder().encodeToString(saltBytes);
   }
 }

@@ -2,22 +2,18 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
-import at.ac.tuwien.sepm.groupphase.backend.service.implementation.SimpleHeaderTokenAuthenticationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import javax.swing.text.DateFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -33,10 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "events")
 public class EventEndpoint {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(EventEndpoint.class);
   private final EventService eventService;
-
-  private static final Logger LOGGER =
-      LoggerFactory.getLogger(EventEndpoint.class);
 
   public EventEndpoint(EventService eventService) {
     this.eventService = eventService;
@@ -50,7 +44,6 @@ public class EventEndpoint {
     LOGGER.info("getById " + id);
     return eventService.getOneById(id);
   }
-
 
   /** Return all performances which belong to a certain event. */
   @RequestMapping(value = "/{id}/performances", method = RequestMethod.GET)
@@ -102,20 +95,14 @@ public class EventEndpoint {
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) Integer count) {
 
-    Pageable p = getPageable(page,count);
-
-
-
     LocalTime time = null;
     if (startAtTime != null && !startAtTime.isEmpty()) {
-      time = LocalTime.parse(startAtTime,DateTimeFormatter.ofPattern("H-mm"));
+      time = LocalTime.parse(startAtTime, DateTimeFormatter.ofPattern("H-mm"));
     }
     LocalDate date = null;
     if (startAtDate != null && !startAtDate.isEmpty()) {
       date = LocalDate.parse(startAtDate, DateTimeFormatter.ofPattern("d.MM.yyyy"));
     }
-
-
 
     EventFilterDto eventFilterDto =
         new EventFilterDto.Builder()
@@ -141,6 +128,7 @@ public class EventEndpoint {
       eventFilterDto.setDuration(Duration.ofMinutes(duration));
     }
 
+    Pageable p = getPageable(page, count);
     return eventService.getEventsFiltered(eventFilterDto, p);
   }
 }

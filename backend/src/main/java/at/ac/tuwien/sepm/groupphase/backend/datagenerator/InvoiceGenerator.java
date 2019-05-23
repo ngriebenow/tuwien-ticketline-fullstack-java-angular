@@ -19,17 +19,14 @@ import org.springframework.stereotype.Component;
 @Profile("generateData")
 public class InvoiceGenerator implements DataGenerator<Invoice> {
 
-  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Client.class));
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-
   private static final int MAX_INVOICE_COUNT_PER_CLIENT = 13;
-
+  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Client.class));
   private ClientRepository clientRepository;
   private InvoiceRepository invoiceRepository;
 
   @Autowired
-  public InvoiceGenerator(
-      ClientRepository clientRepository, InvoiceRepository invoiceRepository) {
+  public InvoiceGenerator(ClientRepository clientRepository, InvoiceRepository invoiceRepository) {
     this.clientRepository = clientRepository;
     this.invoiceRepository = invoiceRepository;
   }

@@ -61,8 +61,8 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
     for (Event event : eventRepository.findAll()) {
       Hall hall = event.getHall();
       List<Unit> units = unitRepository.findAllByHall(hall);
-      List<PriceCategory> priceCategories = priceCategoryRepository
-          .findAllByEventOrderByPriceInCentsAsc(event);
+      List<PriceCategory> priceCategories =
+          priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(event);
       priceCategories.sort(Comparator.comparingInt(PriceCategory::getPriceInCents));
 
       int maxY = hall.getBoundaryPoint().getCoordinateY();

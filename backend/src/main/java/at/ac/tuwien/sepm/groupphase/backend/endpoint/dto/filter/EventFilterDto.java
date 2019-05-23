@@ -7,9 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 
 @ApiModel(value = "PerformanceFilterDto", description = "A DTO for filtering events")
 public class EventFilterDto {
@@ -69,6 +67,7 @@ public class EventFilterDto {
 
   public EventFilterDto() {}
 
+  /** Build the eventfilterdto by builder. */
   public EventFilterDto(Builder builder) {
     setName(builder.name);
     setEventCategory(builder.eventCategory);
@@ -92,7 +91,6 @@ public class EventFilterDto {
   public static Builder newBuilder() {
     return new Builder();
   }
-
 
   public LocalTime getStartAtTime() {
     return startAtTime;
@@ -230,7 +228,6 @@ public class EventFilterDto {
     this.locationPostalCode = locationPostalCode;
   }
 
-
   public static final class Builder {
 
     private String name;
@@ -251,8 +248,7 @@ public class EventFilterDto {
     private LocalDate startAtDate;
     private String performanceName;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder name(String val) {
       name = val;

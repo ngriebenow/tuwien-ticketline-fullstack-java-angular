@@ -127,21 +127,21 @@ public class EventSpecification {
       public Predicate toPredicate(
           Root<Event> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
-
         if (eventFilterDto.getArtistName() != null) {
 
           query.distinct(true);
           ListJoin<Event, Artist> eaJoin = root.join(Event_.artists, JoinType.LEFT);
 
           Predicate artistName =
-              criteriaBuilder.like(criteriaBuilder.lower(
-                  eaJoin.get("name")), "%" + eventFilterDto.getArtistName().toLowerCase() + "%");
+              criteriaBuilder.like(
+                  criteriaBuilder.lower(eaJoin.get("name")),
+                  "%" + eventFilterDto.getArtistName().toLowerCase() + "%");
           Predicate artistSurname =
-              criteriaBuilder.like(criteriaBuilder.lower(
-                  eaJoin.get("surname")), "%" + eventFilterDto.getArtistName().toLowerCase() + "%");
+              criteriaBuilder.like(
+                  criteriaBuilder.lower(eaJoin.get("surname")),
+                  "%" + eventFilterDto.getArtistName().toLowerCase() + "%");
 
-          return criteriaBuilder.or(artistName,artistSurname);
-
+          return criteriaBuilder.or(artistName, artistSurname);
         }
         return criteriaBuilder.and();
       }
@@ -161,16 +161,17 @@ public class EventSpecification {
 
           Root<PriceCategory> pc = subquery.from(PriceCategory.class);
 
-          subquery.where(criteriaBuilder.and(
-              criteriaBuilder.equal(pc.get("event").get("id"),root.get("id")),
-              criteriaBuilder.between(pc.get("priceInCents"),
-                  eventFilterDto.getPriceInCents() - PRICE_TOLERANCE,
-                  eventFilterDto.getPriceInCents() + PRICE_TOLERANCE)));
+          subquery.where(
+              criteriaBuilder.and(
+                  criteriaBuilder.equal(pc.get("event").get("id"), root.get("id")),
+                  criteriaBuilder.between(
+                      pc.get("priceInCents"),
+                      eventFilterDto.getPriceInCents() - PRICE_TOLERANCE,
+                      eventFilterDto.getPriceInCents() + PRICE_TOLERANCE)));
 
           subquery.select(pc);
 
           return criteriaBuilder.exists(subquery);
-
         }
         return criteriaBuilder.and();
       }
