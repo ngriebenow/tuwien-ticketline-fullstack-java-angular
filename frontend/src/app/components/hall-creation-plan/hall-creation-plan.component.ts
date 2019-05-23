@@ -18,8 +18,6 @@ import {RouterTestingModule} from '@angular/router/testing';
     RouterModule,
     RouterTestingModule,
   ],
-  /*declarations: [HallCreationPlanComponent],
-  exports: [HallCreationPlanComponent]*/
 })
 export class HallCreationPlanComponent implements OnInit {
 
@@ -134,14 +132,10 @@ export class HallCreationPlanComponent implements OnInit {
    * @return true if hallSize is valid
    */
   legalHallSize(): boolean {
-    if (this.hallSize.coordinateX <= this.maxHallSize.coordinateX &&
+    return (this.hallSize.coordinateX <= this.maxHallSize.coordinateX &&
       this.hallSize.coordinateY <= this.maxHallSize.coordinateY &&
       this.hallSize.coordinateX > 0 &&
       this.hallSize.coordinateY > 0
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    );
   }
 }
