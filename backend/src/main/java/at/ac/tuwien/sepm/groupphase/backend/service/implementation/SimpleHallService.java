@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SimpleHallService implements HallService {
@@ -50,6 +51,7 @@ public class SimpleHallService implements HallService {
     this.unitMapper = unitMapper;
   }
 
+  @Transactional
   @Override
   public HallDto getOneById(Long id) throws NotFoundException {
     LOGGER.info("Get hall with id " + id);
@@ -64,6 +66,7 @@ public class SimpleHallService implements HallService {
     );
   }
 
+  @Transactional
   @Override
   public HallDto create(HallRequestDto hallRequestDto) {
     LOGGER.info("Save hall");
@@ -99,12 +102,14 @@ public class SimpleHallService implements HallService {
     return hallMapper.hallToHallDto(savedHall);
   }
 
+  @Transactional
   @Override
   public HallDto update(HallRequestDto hallRequestDto) {
     LOGGER.info("Update hall with id " + hallRequestDto.getId());
     return null; // todo implement
   }
 
+  @Transactional
   @Override
   public List<UnitDto> getUnitsByHallId(Long id) {
     LOGGER.info("Get units of hall with id " + id);
