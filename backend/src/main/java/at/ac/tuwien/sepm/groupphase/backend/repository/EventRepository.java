@@ -12,5 +12,4 @@ import org.springframework.stereotype.Repository;
 public interface EventRepository
     extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
 
-  Page<Event> findAllOrderByNameAsc(Specification<Event> specification, Pageable pageable);
 }

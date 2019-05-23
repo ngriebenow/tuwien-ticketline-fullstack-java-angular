@@ -65,6 +65,10 @@ public class EventEndpointTest extends BaseIntegrationTest {
   private static Event E1;
   private static Event E2;
   private static Event E3;
+  
+  private static EventSearchResultDto E1_SR;
+  private static EventSearchResultDto E2_SR;
+  private static EventSearchResultDto E3_SR;
 
   private static Artist A1;
   private static Artist A2;
@@ -315,6 +319,13 @@ public class EventEndpointTest extends BaseIntegrationTest {
         .event(E3)
         .priceInCents(7000).build();
     PC6 = priceCategoryRepository.save(PC6);
+    
+    E1_SR = eventSearchResultMapper.eventToEventSearchResultDto(E1);
+    E1_SR.setPriceRange("20 €");
+    E2_SR = eventSearchResultMapper.eventToEventSearchResultDto(E2);
+    E2_SR.setPriceRange("30 - 40 €");
+    E3_SR = eventSearchResultMapper.eventToEventSearchResultDto(E3);
+    E3_SR.setPriceRange("50 - 70 €");
   }
 
   @After
@@ -418,8 +429,8 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(2));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+    Assert.assertTrue(retList.contains(E2_SR));
+    Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -441,7 +452,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(1));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E1)));
+    Assert.assertTrue(retList.contains(E1_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -463,7 +474,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(1));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
+    Assert.assertTrue(retList.contains(E2_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -485,8 +496,8 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(2));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+    Assert.assertTrue(retList.contains(E2_SR));
+    Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -529,7 +540,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(1));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E1)));
+    Assert.assertTrue(retList.contains(E1_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -551,8 +562,8 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(2));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+    Assert.assertTrue(retList.contains(E2_SR));
+    Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -574,7 +585,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(1));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+    Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -618,11 +629,11 @@ public class EventEndpointTest extends BaseIntegrationTest {
 
     Assert.assertThat(retList.size(),is(2));
 
-    EventSearchResultDto E1sR = eventSearchResultMapper.eventToEventSearchResultDto(E1);
-    EventSearchResultDto E2sR = eventSearchResultMapper.eventToEventSearchResultDto(E2);
+    EventSearchResultDto E1sR = E1_SR;
+    EventSearchResultDto E2sR = E2_SR;
 
-    EventSearchResultDto retE1sR = retList.get(0);
-    EventSearchResultDto retE2sR = retList.get(1);
+    EventSearchResultDto retE1sR = retList.get(retList.indexOf(E1sR));
+    EventSearchResultDto retE2sR = retList.get(retList.indexOf(E2sR));
 
     Assert.assertThat(retE1sR,equalTo(E1sR));
     Assert.assertThat(retE2sR,equalTo(E2sR));
