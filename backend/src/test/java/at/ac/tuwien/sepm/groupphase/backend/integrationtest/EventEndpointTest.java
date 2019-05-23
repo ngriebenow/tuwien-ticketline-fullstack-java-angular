@@ -246,7 +246,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P6 =
         new Performance.Builder()
             .name("1C")
-            .startAt(LocalDateTime.of(2000, 3, 15,8,29))
+            .startAt(LocalDateTime.of(2000, 3, 15,22,29))
             .event(E3)
             .build();
     P6 = performanceRepository.save(P6);
@@ -254,7 +254,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P7 =
         new Performance.Builder()
             .name("2C")
-            .startAt(LocalDateTime.of(2000, 6, 14,16,30))
+            .startAt(LocalDateTime.of(2000, 6, 14,22,30))
             .event(E3)
             .build();
     P7 = performanceRepository.save(P7);
@@ -650,6 +650,85 @@ public class EventEndpointTest extends BaseIntegrationTest {
     Assert.assertThat(retP1sR,equalTo(P1sR));
     Assert.assertThat(retP2sR,equalTo(P5sR));
 
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByTime2300_thenReturnE3P7P8E2P4() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtTime=23-00")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(2));
+
+    EventSearchResultDto retE2sR = retList.get(retList.indexOf(E2_SR));
+    EventSearchResultDto retE3sR = retList.get(retList.indexOf(E3_SR));
+
+    Assert.assertThat(retE3sR,equalTo(E3_SR));
+    Assert.assertThat(retE2sR,equalTo(E2_SR));
+
+    Assert.assertThat(retE3sR.getPerformances().size(),is(2));
+    Assert.assertThat(retE2sR.getPerformances().size(),is(1));
+
+
+
+    PerformanceSearchResultDto P7sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P7);
+    PerformanceSearchResultDto P8sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P8);
+    PerformanceSearchResultDto P4sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P4);
+
+    PerformanceSearchResultDto retP7sR = retE3sR.getPerformances().get(
+        retE3sR.getPerformances().indexOf(P7sR));
+
+    PerformanceSearchResultDto retP8sR = retE3sR.getPerformances().get(
+        retE3sR.getPerformances().indexOf(P8sR));
+
+
+    PerformanceSearchResultDto retP4sR = retE2sR.getPerformances().get(0);
+
+    Assert.assertThat(retP7sR,equalTo(P7sR));
+    Assert.assertThat(retP8sR,equalTo(P8sR));
+    Assert.assertThat(retP4sR,equalTo(P4sR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByTime2359_thenReturnE3P9() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtTime=23-59")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+
+    EventSearchResultDto retE3sR = retList.get(0);
+
+    Assert.assertThat(retE3sR,equalTo(E3_SR));
+    Assert.assertThat(retE3sR.getPerformances().size(),is(1));
+
+    PerformanceSearchResultDto P9sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P9);
+    PerformanceSearchResultDto retP9sR = retE3sR.getPerformances().get(0);
+
+    Assert.assertThat(retP9sR,equalTo(P9sR));
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
 
