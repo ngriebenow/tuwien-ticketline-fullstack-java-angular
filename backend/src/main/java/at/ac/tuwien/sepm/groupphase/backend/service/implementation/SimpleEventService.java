@@ -75,7 +75,7 @@ public class SimpleEventService implements EventService {
     specification = specification.and(EventSpecification.likeHallLocation(eventFilterDto));
     specification = specification.and(EventSpecification.likeArtist(eventFilterDto));
     specification = specification.and(EventSpecification.likePrice(eventFilterDto));
-    Page<Event> events = eventRepository.findAll(specification, pageable);
+    Page<Event> events = eventRepository.findAllOrderByNameAsc(specification, pageable);
 
     List<EventSearchResultDto> eventDtos = new ArrayList<>();
 
