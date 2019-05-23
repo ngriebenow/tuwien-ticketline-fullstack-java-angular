@@ -204,7 +204,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P1 =
         new Performance.Builder()
             .name("1A")
-            .startAt(LocalDateTime.of(2000, 1, 15,0,0))
+            .startAt(LocalDateTime.of(3000, 1, 15,0,0))
             .id(0L)
             .event(E1)
             .build();
@@ -213,7 +213,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P2 =
         new Performance.Builder()
             .name("2A")
-            .startAt(LocalDateTime.of(2000, 1, 15,8,0))
+            .startAt(LocalDateTime.of(3000, 1, 15,8,0))
             .id(1L)
             .event(E1)
             .build();
@@ -222,7 +222,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P3 =
         new Performance.Builder()
             .name("1B")
-            .startAt(LocalDateTime.of(2000, 2, 15,16,0))
+            .startAt(LocalDateTime.of(3000, 2, 15,16,0))
             .event(E2)
             .build();
     P3 = performanceRepository.save(P3);
@@ -230,7 +230,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P4 =
         new Performance.Builder()
             .name("2B")
-            .startAt(LocalDateTime.of(2000, 2, 15,23,0))
+            .startAt(LocalDateTime.of(3001, 2, 15,23,0))
             .event(E2)
             .build();
     P4 = performanceRepository.save(P4);
@@ -238,7 +238,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P5 =
         new Performance.Builder()
             .name("3B")
-            .startAt(LocalDateTime.of(2000, 3, 15,0,0))
+            .startAt(LocalDateTime.of(3000, 3, 15,0,0))
             .event(E2)
             .build();
     P5 = performanceRepository.save(P5);
@@ -246,7 +246,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P6 =
         new Performance.Builder()
             .name("1C")
-            .startAt(LocalDateTime.of(2000, 3, 15,22,29))
+            .startAt(LocalDateTime.of(3000, 3, 15,22,29))
             .event(E3)
             .build();
     P6 = performanceRepository.save(P6);
@@ -254,7 +254,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P7 =
         new Performance.Builder()
             .name("2C")
-            .startAt(LocalDateTime.of(2000, 6, 14,22,30))
+            .startAt(LocalDateTime.of(3000, 2, 14,22,30))
             .event(E3)
             .build();
     P7 = performanceRepository.save(P7);
@@ -262,7 +262,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P8 =
         new Performance.Builder()
             .name("3C")
-            .startAt(LocalDateTime.of(2000, 6, 15,22,31))
+            .startAt(LocalDateTime.of(3000, 6, 15,22,31))
             .event(E3)
             .build();
     P8 = performanceRepository.save(P8);
@@ -270,7 +270,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P9 =
         new Performance.Builder()
             .name("4C")
-            .startAt(LocalDateTime.of(2000, 12, 15,23,59))
+            .startAt(LocalDateTime.of(3000, 12, 15,23,59))
             .event(E3)
             .build();
     P9 = performanceRepository.save(P9);
@@ -731,5 +731,37 @@ public class EventEndpointTest extends BaseIntegrationTest {
     Assert.assertThat(retP9sR,equalTo(P9sR));
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
+
+  @Test
+  public void givenEvents_whenFilterByDate15023000_thenReturnE2P3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtDate=15.02.3000")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+
+    EventSearchResultDto retE2sR = retList.get(0);
+
+    Assert.assertThat(retE2sR,equalTo(E2_SR));
+    Assert.assertThat(retE2sR.getPerformances().size(),is(1));
+
+    PerformanceSearchResultDto P3sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P3);
+    PerformanceSearchResultDto retP3sR = retE2sR.getPerformances().get(0);
+
+    Assert.assertThat(retP3sR,equalTo(P3sR));
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+
 
 }
