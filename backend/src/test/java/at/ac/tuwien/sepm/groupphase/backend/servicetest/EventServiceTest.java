@@ -14,9 +14,11 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.Assert;
@@ -35,8 +37,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles(profiles = "unit-test")
 public class EventServiceTest {
 
-  @MockBean EventRepository eventRepository;
+  @MockBean private EventRepository eventRepository;
   @MockBean private PerformanceRepository performanceRepository;
+  @MockBean private PriceCategoryRepository priceCategoryRepository;
 
   @Autowired private EventService eventService;
 
@@ -99,6 +102,8 @@ public class EventServiceTest {
   @Test
   public void givenEvent_whenFindEventById_thenReturnEvent() {
     BDDMockito.given(eventRepository.findById(100L)).willReturn(Optional.of(E1));
+    BDDMockito.given(priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(E1))
+        .willReturn(new ArrayList<>());
     Event retE1 = eventMapper.eventDtoToEvent(eventService.getOneById(100L));
     Assert.assertThat(retE1, is(equalTo(E1)));
   }
