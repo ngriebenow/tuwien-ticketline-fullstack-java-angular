@@ -19,7 +19,7 @@ import {PriceCategory} from 'src/app/dtos/price-category';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    RouterTestingModule
+    RouterTestingModule,
   ]
 })
 export class HallViewingComponent implements OnInit {
