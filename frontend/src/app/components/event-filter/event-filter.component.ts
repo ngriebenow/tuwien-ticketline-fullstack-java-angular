@@ -40,9 +40,9 @@ export class EventFilterComponent implements OnInit {
 
   getColor(cat: boolean): string {
     if (cat) {
-      return "#334455";
+      return "#EAEAEA";
     } else {
-      return '#667788';
+      return '#8FBEFF';
     }
   }
 
