@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HallCreationPlanComponent } from './hall-creation-plan.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterModule} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
+import {Globals} from '../../global/globals';
 
 describe('HallCreationPlanComponent', () => {
   let component: HallCreationPlanComponent;
@@ -8,7 +13,17 @@ describe('HallCreationPlanComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HallCreationPlanComponent ]
+      declarations: [ HallCreationPlanComponent ],
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        RouterModule,
+        RouterTestingModule,
+        FormsModule,
+      ],
+      providers: [
+        Globals,
+      ]
     })
     .compileComponents();
   }));

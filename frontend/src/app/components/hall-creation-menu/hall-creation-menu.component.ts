@@ -1,15 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, NgModule, OnInit} from '@angular/core';
 import {HallCreationService} from '../../services/hall-creation.service';
 import {Point} from '../../dtos/Point';
 import {UnitType} from '../../enums/unit-type';
 import {Direction} from '../../enums/direction';
 import {Hall} from '../../dtos/hall';
 import {Unit} from '../../dtos/unit';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ActivatedRoute, RouterModule} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
 
 @Component({
   selector: 'app-hall-creation-menu',
   templateUrl: './hall-creation-menu.component.html',
   styleUrls: ['./hall-creation-menu.component.scss']
+})
+@NgModule({
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    RouterTestingModule,
+  ],
+  /*declarations: [HallCreationMenuComponent],
+  exports: [HallCreationMenuComponent]*/
 })
 export class HallCreationMenuComponent implements OnInit {
 
@@ -21,7 +34,7 @@ export class HallCreationMenuComponent implements OnInit {
 
   selectedSector: Unit;
 
-  constructor(private hallCreationService: HallCreationService) { }
+  constructor(private hallCreationService: HallCreationService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.hallSize = this.hallCreationService.getHallSize();

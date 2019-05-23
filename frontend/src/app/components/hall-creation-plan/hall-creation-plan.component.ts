@@ -1,12 +1,25 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgModule, OnInit} from '@angular/core';
 import {HallCreationService} from '../../services/hall-creation.service';
 import {Point} from '../../dtos/Point';
 import {Unit} from '../../dtos/unit';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ActivatedRoute, RouterModule} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
 
 @Component({
   selector: 'app-hall-creation-plan',
   templateUrl: './hall-creation-plan.component.html',
   styleUrls: ['./hall-creation-plan.component.scss']
+})
+@NgModule({
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    RouterTestingModule,
+  ],
+  /*declarations: [HallCreationPlanComponent],
+  exports: [HallCreationPlanComponent]*/
 })
 export class HallCreationPlanComponent implements OnInit {
 
@@ -16,7 +29,7 @@ export class HallCreationPlanComponent implements OnInit {
   sectors: Unit[];
   aisles: Point[];
 
-  constructor(private hallCreationService: HallCreationService) {
+  constructor(private hallCreationService: HallCreationService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
