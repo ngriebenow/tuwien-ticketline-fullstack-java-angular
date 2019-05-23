@@ -31,6 +31,18 @@ export class InvoiceFilterComponent implements OnInit {
     );
   }
 
+  private nextPage(): void {
+    this.page++;
+    this.loadInvoices();
+  }
+
+  private previousPage(): void {
+    if (this.page > 0) {
+      this.page--;
+      this.loadInvoices();
+    }
+  }
+
   private getClientFullName(invoice: Invoice): string {
     return `${invoice.client.name} ${invoice.client.surname}`;
   }
