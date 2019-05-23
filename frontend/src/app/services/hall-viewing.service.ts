@@ -7,8 +7,8 @@ import {PriceCategory} from '../dtos/price-category';
 import {Hall} from '../dtos/hall';
 import {Unit} from '../dtos/unit';
 import {Point} from '../dtos/Point';
-import {TicketingService} from "./ticketing.service";
-import {compileBaseDefFromMetadata} from "@angular/compiler";
+import {TicketingService} from './ticketing.service';
+import {compileBaseDefFromMetadata} from '@angular/compiler';
 
 
 @Injectable({
@@ -42,13 +42,13 @@ export class HallViewingService {
   }
 
   getHallSize(): Point {
-    //TODO for real!
+    // TODO for real!
     return new Point(10, 10);
   }
 
 
   getSeats(): Point[] {
-    //TODO for real!
+    // TODO for real!
     this.points[0] = new Point(1, 1);
     this.points[1] = new Point(2, 1);
     this.points[2] = new Point(4, 1);
@@ -81,7 +81,7 @@ export class HallViewingService {
   getCats(): PriceCategory[] {
     this.cats[0] = new PriceCategory(1, 10.90, 'Kategorie1', 0x0000FF);
     this.cats[1] = new PriceCategory(2, 11.20, 'Kategorie2', 0x008000);
-    //this.cats[2] = new PriceCategory(3, 12.50, 'Kategorie3', 0xFF00FF);
+    // this.cats[2] = new PriceCategory(3, 12.50, 'Kategorie3', 0xFF00FF);
     return this.cats;
   }
 
@@ -195,7 +195,7 @@ export class HallViewingService {
   }
 
   checkValue(value: number) {
-    if (value != null) {
+    if (value !== null) {
       const index = this.defUnits.indexOf(this.sectorSel);
       if (value > this.defUnits[index].free) {
         value = this.defUnits[index].free;
@@ -214,10 +214,10 @@ export class HallViewingService {
   }
 
   sectorDone(sectorNum: number) {
-    if (sectorNum != null) {
+    if (sectorNum !== null) {
       const index = this.defUnits.indexOf(this.sectorSel);
       this.selectedNum[index] = sectorNum;
-      if (sectorNum != 0) {
+      if (sectorNum !== 0) {
         this.selected[index] = true;
       } else {
         this.selected[index] = false;
@@ -227,8 +227,8 @@ export class HallViewingService {
   }
 
   endTransaction() {
-    let dunits: number[] = [];
-    let amount: number[] = [];
+    const dunits: number[] = [];
+    const amount: number[] = [];
     let tmp = 0;
     for (let i = 0; i < this.defUnits.length; i++) {
       if (this.selected[i]) {

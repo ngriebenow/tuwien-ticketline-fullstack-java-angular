@@ -215,7 +215,8 @@ export class HallViewingComponent implements OnInit {
     if (min === max) {
       return min * this.getUnitSize() - this.getUnitSize() + 60 + this.getSeatDistance() + ((this.getUnitSize()) / 4) + 'px';
     }
-    return (min * this.getUnitSize() - this.getUnitSize() + 60 + this.getSeatDistance() + ((this.getUnitSize() - this.getSeatDistance()) * (max - min) / 2)) + 'px';
+    return (min * this.getUnitSize() - this.getUnitSize() + 60 + this.getSeatDistance() + ((this.getUnitSize()
+      - this.getSeatDistance()) * (max - min) / 2)) + 'px';
   }
 
 
