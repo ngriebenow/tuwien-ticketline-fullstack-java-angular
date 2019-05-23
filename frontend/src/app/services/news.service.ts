@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {News} from '../dtos/news';
 import {Observable} from 'rxjs';
 import {Globals} from '../global/globals';
@@ -17,8 +17,13 @@ export class NewsService {
   /**
    * Loads all news from the backend
    */
-  getNews(): Observable<News[]> {
-    return this.httpClient.get<News[]>(this.newsBaseUri);
+  getNews(onlyNew: boolean): Observable<News[]> {
+    let params = new HttpParams();
+    if (onlyNew) {
+      params = params.set('onlyNew', onlyNew.toString());
+    }
+
+    return this.httpClient.get<News[]>(this.newsBaseUri, {params} );
   }
 
   /**

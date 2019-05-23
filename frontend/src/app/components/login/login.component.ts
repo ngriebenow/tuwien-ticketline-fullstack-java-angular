@@ -51,7 +51,8 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(authRequest).subscribe(
       () => {
         console.log('Successfully logged in user: ' + authRequest.username);
-        this.router.navigate(['/news']);
+        this.router.navigate(['/news'],
+          {queryParams: {onlyNew: true}});
       },
       error => {
         console.log('Could not log in due to: ' + error.message);

@@ -5,6 +5,7 @@ import {NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-news',
@@ -18,10 +19,12 @@ export class NewsComponent implements OnInit {
   newsForm: FormGroup;
   // After first submission attempt, form validation will start
   submitted = false;
+
+
   private news: News[];
 
   constructor(private newsService: NewsService, private ngbPaginationConfig: NgbPaginationConfig, private formBuilder: FormBuilder,
-              private cd: ChangeDetectorRef, private authService: AuthService) {
+              private cd: ChangeDetectorRef, private authService: AuthService, private route: ActivatedRoute) {
     this.newsForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       summary: ['', [Validators.required]],
@@ -30,7 +33,13 @@ export class NewsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadNews();
+    let onlyNew: boolean;
+    this.route
+    .queryParams
+    .subscribe(params => {
+      onlyNew = params['onlyNew'];
+    });
+    this.loadNews(onlyNew);
   }
 
   /**
@@ -67,7 +76,7 @@ export class NewsComponent implements OnInit {
   createNews(news: News) {
     this.newsService.createNews(news).subscribe(
       () => {
-        this.loadNews();
+        this.loadNews(false);
       },
       error => {
         this.defaultServiceErrorHandling(error);
@@ -115,9 +124,9 @@ export class NewsComponent implements OnInit {
   /**
    * Loads the specified page of news from the backend
    */
-  private loadNews() {
+  private loadNews(onlyNew: boolean) {
     // Backend pagination starts at page 0, therefore page must be reduced by 1
-    this.newsService.getNews().subscribe(
+    this.newsService.getNews(onlyNew).subscribe(
       (news: News[]) => {
         this.news = news;
       },
