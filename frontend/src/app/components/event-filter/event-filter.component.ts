@@ -23,7 +23,7 @@ export class EventFilterComponent implements OnInit {
   }
 
   myDatePickerOptions: IMyDpOptions = {
-    dateFormat: 'dd-mm-yyyy',
+    dateFormat: 'dd.mm.yyyy',
   };
 
   @Input() eventFilter: EventFilter = new EventFilter( '', '', '', null, '', '', '', '', '', '', '', '', '', '', '');

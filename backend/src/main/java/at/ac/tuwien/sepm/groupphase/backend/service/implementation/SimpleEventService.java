@@ -83,8 +83,14 @@ public class SimpleEventService implements EventService {
       EventSearchResultDto eventDto = eventSearchResultMapper.eventToEventSearchResultDto(e);
       List<PriceCategory> priceCategories = priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(e);
       eventDto.setPriceRange(formatPriceRange(priceCategories));
-      eventDtos.add(eventDto);
-      eventDto.setPerformances(getPerformancesFiltered(e.getId(), eventFilterDto));
+
+      List<PerformanceSearchResultDto> performanceSearchResultDtos = getPerformancesFiltered(e.getId(), eventFilterDto);
+
+      if (performanceSearchResultDtos.size() > 0) {
+        eventDtos.add(eventDto);
+        eventDto.setPerformances(getPerformancesFiltered(e.getId(), eventFilterDto));
+      }
+
     }
 
     return eventDtos;

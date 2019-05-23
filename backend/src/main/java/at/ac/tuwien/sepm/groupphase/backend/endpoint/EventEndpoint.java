@@ -112,7 +112,7 @@ public class EventEndpoint {
     }
     LocalDate date = null;
     if (startAtDate != null && !startAtDate.isEmpty()) {
-      date = LocalDate.parse(startAtDate, DateTimeFormatter.ofPattern("d-MM-yyyy"));
+      date = LocalDate.parse(startAtDate, DateTimeFormatter.ofPattern("d.MM.yyyy"));
     }
 
 
