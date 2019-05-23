@@ -26,7 +26,7 @@
     <div class="col-1">
 
       <select class="select-control"
-              [ngClass]="fstTime.selected===true ? 'first-selected' : 'other-selected'"
+              <!--[ngClass]="fstTime.selected===true ? 'first-selected' : 'other-selected'"-->
               (change)="loadEvents()"
               [(ngModel)]="eventFilter.startAtTime" >
         <option #fstTime value="" >(alle)</option>
@@ -76,7 +76,7 @@
     <div class="col-3"></div>
     <div class="col-2">
       <select class="select-control" (change)="loadEvents()"
-              [ngClass]="fstCountry.selected===true ? 'first-selected' : 'other-selected'"
+              <!--[ngClass]="fstCountry.selected===true ? 'first-selected' : 'other-selected'"-->
               [(ngModel)]="eventFilter.locationCountry" >
         <option #fstCountry value="">(alle)</option>
         <option value="Austria">Österreich</option>
@@ -108,7 +108,7 @@
     <div class="col-2">
        <select class="select-control" (change)="loadEvents()"
                [(ngModel)]="eventFilter.eventCategory"
-               [ngClass]="fstCategory.selected===true ? 'first-selected' : 'other-selected'">
+               [style.background]="fstCategory.selected===true ? getColor(true) : getColor(false)">
           <option #fstCategory value="">(alle)</option>
           <option value="CINEMA">Cinema</option>
           <option value="CONCERT">Concert</option>

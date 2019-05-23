@@ -30,11 +30,21 @@ export class EventFilterComponent implements OnInit {
 
   @Output() eventSearchResults: EventSearchResult[] = [];
 
+
+
   ngOnInit() {
     console.log('ngOnInit');
     this.loadEvents();
   }
 
+
+  getColor(cat: boolean): string {
+    if (cat) {
+      return "#334455";
+    } else {
+      return '#667788';
+    }
+  }
 
   onDateChanged(event: IMyDateModel) {
     this.eventFilter.startAtDate = event.formatted;
