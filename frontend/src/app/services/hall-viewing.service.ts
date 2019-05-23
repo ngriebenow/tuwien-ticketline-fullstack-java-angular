@@ -1,15 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
 import {DefinedUnit} from '../dtos/defined-unit';
-import {Event} from '../dtos/event';
-import {Performance} from '../dtos/performance';
 import {PriceCategory} from '../dtos/price-category';
-import {Hall} from '../dtos/hall';
-import {Unit} from '../dtos/unit';
 import {Point} from '../dtos/Point';
 import {TicketingService} from './ticketing.service';
-import {compileBaseDefFromMetadata} from '@angular/compiler';
-
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +23,7 @@ export class HallViewingService {
 
   clickSeat(seat: DefinedUnit): void {
     const index = this.defUnits.indexOf(seat);
-    if (this.selected[index] === false) {
-      this.selected[index] = true;
-    } else {
-      this.selected[index] = false;
-    }
+    this.selected[index] = !this.selected[index];
   }
 
   getBackColor(dunit: DefinedUnit) {
@@ -161,7 +150,7 @@ export class HallViewingService {
   }
 
   anySectorSelected() {
-    return this.sectorSel != null ? true : false;
+    return this.sectorSel != null;
   }
 
   getSelectedSectorName() {

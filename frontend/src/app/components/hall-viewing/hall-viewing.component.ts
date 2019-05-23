@@ -5,7 +5,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
 import {Point} from 'src/app/dtos/Point';
 import {DefinedUnit} from 'src/app/dtos/defined-unit';
-import {Performance} from 'src/app/dtos/performance';
 import {PriceCategory} from 'src/app/dtos/price-category';
 
 
