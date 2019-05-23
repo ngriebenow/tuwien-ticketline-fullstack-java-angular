@@ -10,14 +10,6 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Event.class)
 public abstract class Event_ {
 
-  public static volatile SingularAttribute<Event, Duration> duration;
-  public static volatile ListAttribute<Event, Artist> artists;
-  public static volatile SingularAttribute<Event, String> name;
-  public static volatile SingularAttribute<Event, Hall> hall;
-  public static volatile SingularAttribute<Event, Long> id;
-  public static volatile SingularAttribute<Event, EventCategory> category;
-  public static volatile SingularAttribute<Event, String> content;
-
   public static final String DURATION = "duration";
   public static final String ARTISTS = "artists";
   public static final String NAME = "name";
@@ -25,5 +17,11 @@ public abstract class Event_ {
   public static final String ID = "id";
   public static final String CATEGORY = "category";
   public static final String CONTENT = "content";
-
+  public static volatile SingularAttribute<Event, Duration> duration;
+  public static volatile ListAttribute<Event, Artist> artists;
+  public static volatile SingularAttribute<Event, String> name;
+  public static volatile SingularAttribute<Event, Hall> hall;
+  public static volatile SingularAttribute<Event, Long> id;
+  public static volatile SingularAttribute<Event, EventCategory> category;
+  public static volatile SingularAttribute<Event, String> content;
 }

@@ -2,16 +2,19 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
+import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
-import at.ac.tuwien.sepm.groupphase.backend.service.implementation.SimpleHeaderTokenAuthenticationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "events")
 public class EventEndpoint {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(EventEndpoint.class);
   private final EventService eventService;
-
-  private static final Logger LOGGER =
-      LoggerFactory.getLogger(EventEndpoint.class);
 
   public EventEndpoint(EventService eventService) {
     this.eventService = eventService;
@@ -45,7 +46,6 @@ public class EventEndpoint {
     LOGGER.info("getById " + id);
     return eventService.getOneById(id);
   }
-
 
   /** Return all performances which belong to a certain event. */
   @RequestMapping(value = "/{id}/performances", method = RequestMethod.GET)
@@ -92,10 +92,29 @@ public class EventEndpoint {
       @RequestParam(required = false) String locationCountry,
       @RequestParam(required = false) String locationStreet,
       @RequestParam(required = false) String locationPlace,
+      @RequestParam(required = false) String startAtTime,
+      @RequestParam(required = false) String startAtDate,
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) Integer count) {
 
-    Pageable p = getPageable(page,count);
+    LocalTime time = null;
+    if (startAtTime != null && !startAtTime.isEmpty()) {
+      try {
+        time = LocalTime.parse(startAtTime, DateTimeFormatter.ofPattern("H-mm"));
+      } catch (DateTimeParseException ex) {
+        throw new ValidationException("Could not parse time.");
+      }
+
+    }
+    LocalDate date = null;
+    if (startAtDate != null && !startAtDate.isEmpty()) {
+      try {
+        date = LocalDate.parse(startAtDate, DateTimeFormatter.ofPattern("d.MM.yyyy"));
+      } catch (DateTimeParseException ex) {
+        throw new ValidationException("Could not parse date.");
+      }
+
+    }
 
     EventFilterDto eventFilterDto =
         new EventFilterDto.Builder()
@@ -111,6 +130,8 @@ public class EventEndpoint {
             .locationCountry(locationCountry)
             .locationPlace(locationPlace)
             .locationStreet(locationStreet)
+            .startAtDate(date)
+            .startAtTime(time)
             .build();
 
     LOGGER.info("get with filter " + eventFilterDto);
@@ -119,6 +140,7 @@ public class EventEndpoint {
       eventFilterDto.setDuration(Duration.ofMinutes(duration));
     }
 
+    Pageable p = getPageable(page, count);
     return eventService.getEventsFiltered(eventFilterDto, p);
   }
 }
