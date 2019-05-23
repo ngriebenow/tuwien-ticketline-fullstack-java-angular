@@ -12,7 +12,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.swing.text.DateFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -92,10 +97,25 @@ public class EventEndpoint {
       @RequestParam(required = false) String locationCountry,
       @RequestParam(required = false) String locationStreet,
       @RequestParam(required = false) String locationPlace,
+      @RequestParam(required = false) String startAtTime,
+      @RequestParam(required = false) String startAtDate,
       @RequestParam(required = false) Integer page,
       @RequestParam(required = false) Integer count) {
 
     Pageable p = getPageable(page,count);
+
+
+
+    LocalTime time = null;
+    if (startAtTime != null && !startAtTime.isEmpty()) {
+      time = LocalTime.parse(startAtTime,DateTimeFormatter.ofPattern("H-mm"));
+    }
+    LocalDate date = null;
+    if (startAtDate != null && !startAtDate.isEmpty()) {
+      date = LocalDate.parse(startAtDate, DateTimeFormatter.ofPattern("d-MM-yyyy"));
+    }
+
+
 
     EventFilterDto eventFilterDto =
         new EventFilterDto.Builder()
@@ -111,6 +131,8 @@ public class EventEndpoint {
             .locationCountry(locationCountry)
             .locationPlace(locationPlace)
             .locationStreet(locationStreet)
+            .startAtDate(date)
+            .startAtTime(time)
             .build();
 
     LOGGER.info("get with filter " + eventFilterDto);

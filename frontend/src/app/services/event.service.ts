@@ -38,6 +38,16 @@ export class EventService {
       price = eventFilter.priceInEuro + '00';
     }
 
+    let time: string = "";
+    let date: string = "";
+    if (eventFilter.startAtDate != null) {
+      date = eventFilter.startAtDate;
+
+    }
+    if (eventFilter.startAtTime != null || true) {
+      time = eventFilter.startAtTime;
+    }
+
     const paramsHttp = new HttpParams()
       .set('name', eventFilter.name)
       .set('content', eventFilter.content)
@@ -52,19 +62,13 @@ export class EventService {
       .set('locationCountry', eventFilter.locationCountry)
       .set('locationStreet', eventFilter.locationStreet)
       .set('locationPlace', eventFilter.locationPlace)
-      .set('startAtDate', eventFilter.startAtDate)
-      .set('startAtTime', eventFilter.startAtTime)
+      .set('startAtDate', date)
+      .set('startAtTime', time)
       .set('page', '0')
       .set('count', '100');
 
-    /*
-    if (eventFilter.startsAtDate != null) {
-      paramsHttp.set('startsAtDate', eventFilter.startsAtDate.toDateString())
-    }
-    if (eventFilter.startsAtTime != null) {
-      paramsHttp.set('startsAtTime', eventFilter.startsAtTime.hours.toString() + ":" + eventFilter.startsAtTime.minutes.toString())
 
-    }*/
+
 
     console.log('getEventsFiltered: ' + paramsHttp);
 

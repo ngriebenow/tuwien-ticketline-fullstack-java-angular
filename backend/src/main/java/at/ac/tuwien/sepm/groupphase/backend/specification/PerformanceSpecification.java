@@ -49,16 +49,25 @@ public class PerformanceSpecification {
       public Predicate toPredicate(
           Root<Performance> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
-
         if (eventFilterDto.getStartAtTime() != null) {
-          return criteriaBuilder.between(
-              criteriaBuilder.function(
-                  "time", Time.class,root.get(Performance_.startAt)),
-              Time.valueOf(eventFilterDto.getStartAtTime().minusMinutes(TIME_TOLERANCE).toLocalTime()),
-              Time.valueOf(eventFilterDto.getStartAtTime().plusMinutes(TIME_TOLERANCE).toLocalTime()));
 
+          int totalDayMinutes = eventFilterDto.getStartAtTime().getHour() * 60
+              + eventFilterDto.getStartAtTime().getMinute();
+          int lowerBound = Math.max(0, totalDayMinutes - TIME_TOLERANCE);
+          int upperBound = Math.min(24 * 60, totalDayMinutes + TIME_TOLERANCE);
+
+          if (eventFilterDto.getStartAtTime() != null) {
+            return criteriaBuilder.between(
+                criteriaBuilder.sum(
+                    criteriaBuilder.prod(criteriaBuilder.function(
+                        "hour", Integer.class,root.get(Performance_.startAt)),60),
+                    criteriaBuilder.function("minute", Integer.class, root.get(Performance_.startAt))),
+                lowerBound,
+                upperBound);
+          }
 
         }
+
         return criteriaBuilder.and();
       }
     };
@@ -72,8 +81,8 @@ public class PerformanceSpecification {
         if (eventFilterDto.getStartAtDate() != null) {
           return criteriaBuilder.equal(
               criteriaBuilder.function(
-                  "date", Time.class,root.get(Performance_.startAt)),
-              Date.valueOf(eventFilterDto.getStartAtDate().toLocalDate()));
+                  "getdate", Date.class,root.get(Performance_.startAt)),
+              Date.valueOf(eventFilterDto.getStartAtDate()));
         }
         return criteriaBuilder.and();
       }

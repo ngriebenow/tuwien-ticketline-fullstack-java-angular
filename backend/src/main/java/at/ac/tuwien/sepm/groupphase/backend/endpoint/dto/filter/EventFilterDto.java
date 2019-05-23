@@ -1,10 +1,15 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 
 @ApiModel(value = "PerformanceFilterDto", description = "A DTO for filtering events")
 public class EventFilterDto {
@@ -51,47 +56,57 @@ public class EventFilterDto {
   @ApiModelProperty(required = false, name = "The location postal code")
   private String locationPostalCode;
 
+  @JsonFormat(shape = Shape.STRING, pattern = "hh:mm")
   @ApiModelProperty(required = false, name = "The time at which the performance should take place")
-  private LocalDateTime startAtTime;
+  private LocalTime startAtTime;
 
+  @JsonFormat(shape = Shape.STRING, pattern = "dd.mm.yyyy")
   @ApiModelProperty(required = false, name = "The date at which the performance should take place")
-  private LocalDateTime startAtDate;
+  private LocalDate startAtDate;
 
   @ApiModelProperty(required = false, name = "The name of the performance")
   private String performanceName;
 
   public EventFilterDto() {}
 
-  private EventFilterDto(Builder builder) {
-    name = builder.name;
-    eventCategory = builder.eventCategory;
-    artistName = builder.artistName;
-    priceInCents = builder.priceInCents;
-    content = builder.content;
-    duration = builder.duration;
-    hallId = builder.hallId;
-    hallName = builder.hallName;
-    locationId = builder.locationId;
-    locationName = builder.locationName;
-    locationPlace = builder.locationPlace;
-    locationCountry = builder.locationCountry;
-    locationStreet = builder.locationStreet;
-    locationPostalCode = builder.locationPostalCode;
+  public EventFilterDto(Builder builder) {
+    setName(builder.name);
+    setEventCategory(builder.eventCategory);
+    setArtistName(builder.artistName);
+    setPriceInCents(builder.priceInCents);
+    setContent(builder.content);
+    setDuration(builder.duration);
+    setHallId(builder.hallId);
+    setHallName(builder.hallName);
+    setLocationId(builder.locationId);
+    setLocationName(builder.locationName);
+    setLocationPlace(builder.locationPlace);
+    setLocationCountry(builder.locationCountry);
+    setLocationStreet(builder.locationStreet);
+    setLocationPostalCode(builder.locationPostalCode);
+    setStartAtTime(builder.startAtTime);
+    setStartAtDate(builder.startAtDate);
+    setPerformanceName(builder.performanceName);
   }
 
-  public LocalDateTime getStartAtTime() {
+  public static Builder newBuilder() {
+    return new Builder();
+  }
+
+
+  public LocalTime getStartAtTime() {
     return startAtTime;
   }
 
-  public void setStartAtTime(LocalDateTime startAtTime) {
+  public void setStartAtTime(LocalTime startAtTime) {
     this.startAtTime = startAtTime;
   }
 
-  public LocalDateTime getStartAtDate() {
+  public LocalDate getStartAtDate() {
     return startAtDate;
   }
 
-  public void setStartAtDate(LocalDateTime startAtDate) {
+  public void setStartAtDate(LocalDate startAtDate) {
     this.startAtDate = startAtDate;
   }
 
@@ -215,6 +230,7 @@ public class EventFilterDto {
     this.locationPostalCode = locationPostalCode;
   }
 
+
   public static final class Builder {
 
     private String name;
@@ -231,8 +247,12 @@ public class EventFilterDto {
     private String locationCountry;
     private String locationStreet;
     private String locationPostalCode;
+    private LocalTime startAtTime;
+    private LocalDate startAtDate;
+    private String performanceName;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder name(String val) {
       name = val;
@@ -301,6 +321,21 @@ public class EventFilterDto {
 
     public Builder locationPostalCode(String val) {
       locationPostalCode = val;
+      return this;
+    }
+
+    public Builder startAtTime(LocalTime val) {
+      startAtTime = val;
+      return this;
+    }
+
+    public Builder startAtDate(LocalDate val) {
+      startAtDate = val;
+      return this;
+    }
+
+    public Builder performanceName(String val) {
+      performanceName = val;
       return this;
     }
 
