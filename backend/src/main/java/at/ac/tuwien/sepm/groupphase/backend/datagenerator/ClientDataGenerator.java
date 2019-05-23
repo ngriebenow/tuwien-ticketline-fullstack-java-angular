@@ -17,11 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Profile("generateData")
 public class ClientDataGenerator implements DataGenerator<Client> {
 
-  private static Set<Class<?>> dependencies = new HashSet<>();
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-
   private static final int MAX_CLIENT_COUNT = 103;
-
+  private static Set<Class<?>> dependencies = new HashSet<>();
   private ClientRepository clientRepository;
 
   @Autowired
@@ -40,8 +38,7 @@ public class ClientDataGenerator implements DataGenerator<Client> {
           String.format(
               "%s@%s.%s",
               name.toLowerCase(), surName.toLowerCase(), FAKER.internet().domainSuffix());
-      generatedClients.add(
-          new Client.Builder().name(name).surname(surName).email(email).build());
+      generatedClients.add(new Client.Builder().name(name).surname(surName).email(email).build());
     }
     clientRepository.saveAll(generatedClients);
   }

@@ -1,6 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.Duration;
@@ -21,6 +23,7 @@ public class EventDto {
   @ApiModelProperty(name = "The content description of the event")
   private String content;
 
+  @JsonFormat(shape = Shape.NUMBER, pattern = "mm")
   @ApiModelProperty(required = true, name = "The duration of the event")
   private Duration duration;
 

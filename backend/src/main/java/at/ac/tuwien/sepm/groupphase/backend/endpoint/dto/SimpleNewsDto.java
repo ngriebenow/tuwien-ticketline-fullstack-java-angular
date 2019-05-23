@@ -9,7 +9,7 @@ import java.util.Objects;
 public class SimpleNewsDto {
 
   @ApiModelProperty(name = "The automatically generated database id")
-  private long id;
+  private Long id;
 
   @ApiModelProperty(required = true, name = "The date and time when the news entry was published")
   private LocalDateTime publishedAt;
@@ -24,11 +24,11 @@ public class SimpleNewsDto {
     return new NewsDtoBuilder();
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -82,7 +82,6 @@ public class SimpleNewsDto {
     }
     SimpleNewsDto that = (SimpleNewsDto) obj;
     return Objects.equals(id, that.id)
-        && Objects.equals(publishedAt, that.publishedAt)
         && Objects.equals(title, that.title)
         && Objects.equals(summary, that.summary);
   }
@@ -94,12 +93,12 @@ public class SimpleNewsDto {
 
   public static final class NewsDtoBuilder {
 
-    private long id;
+    private Long id;
     private LocalDateTime publishedAt;
     private String title;
     private String summary;
 
-    public NewsDtoBuilder id(long id) {
+    public NewsDtoBuilder id(Long id) {
       this.id = id;
       return this;
     }

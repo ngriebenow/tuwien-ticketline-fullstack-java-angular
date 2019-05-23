@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SimpleAccountService implements AccountService {
@@ -33,9 +34,7 @@ public class SimpleAccountService implements AccountService {
     this.userMapper = userMapper;
   }
 
-  /**
-   * Javadoc.
-   */
+  /** Javadoc. */
   private static Specification<User> likeUser(UserFilterDto userFilter) {
     return new Specification<User>() {
       @Override
@@ -73,6 +72,7 @@ public class SimpleAccountService implements AccountService {
     };
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<UserDto> findAll(UserFilterDto user) {
     if (user.getCount() == null) {
@@ -95,6 +95,7 @@ public class SimpleAccountService implements AccountService {
     return toret;
   }
 
+  @Transactional(readOnly = true)
   @Override
   public User findOne(String id) {
     User u = userRepository.findOneByUsername(id);
@@ -104,6 +105,7 @@ public class SimpleAccountService implements AccountService {
     return u;
   }
 
+  @Transactional
   @Override
   public UserDto saveUser(UserDto user) {
     try {
@@ -139,6 +141,7 @@ public class SimpleAccountService implements AccountService {
     return old;
   }
 
+  @Transactional
   @Override
   public UserDto editUser(UserDto user) {
     if (user.getUsername() == null) {
@@ -150,6 +153,7 @@ public class SimpleAccountService implements AccountService {
     return getOneById(user.getUsername());
   }
 
+  @Transactional(readOnly = true)
   @Override
   public UserDto getOneById(String id) {
     return userMapper.userToUserDto(findOne(id));

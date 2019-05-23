@@ -19,6 +19,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 public class SimplePerformanceService implements PerformanceService {
 
@@ -39,11 +40,13 @@ public class SimplePerformanceService implements PerformanceService {
     };
   }
 
+  @Transactional(readOnly = true)
   @Override
   public PerformanceDto getOneById(Long id) throws NotFoundException {
     return null;
   }
 
+  @Transactional(readOnly = true)
   @Override
   public List<PerformanceDto> getPerformancesFiltered(
       Specification<Performance> specification, Pageable pageable) {

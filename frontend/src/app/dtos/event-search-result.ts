@@ -1,4 +1,5 @@
 import {PerformanceSearchResult} from "./performance-search-result";
+import {Optional} from "@angular/core";
 
 export class EventSearchResult {
   constructor(
@@ -8,7 +9,8 @@ export class EventSearchResult {
     public hallName: string,
     public locationName: string,
     public locationPlace: string,
-    public priceCategories: string,
+    public duration: string,
+    public priceRange: string,
     public performances: PerformanceSearchResult[]
     ) {
 

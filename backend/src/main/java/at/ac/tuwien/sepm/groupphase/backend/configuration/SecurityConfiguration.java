@@ -13,7 +13,6 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -39,7 +38,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfiguration {
 
+  private final PasswordEncoder passwordEncoder;
   @Autowired private Environment env;
+
+  public SecurityConfiguration(PasswordEncoder passwordEncoder) {
+    this.passwordEncoder = passwordEncoder;
+  }
+
+  @Bean
+  public static PasswordEncoder configureDefaultPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
   /**
    * Creates new h2 datasource with properties read from the current profile.
@@ -53,17 +62,6 @@ public class SecurityConfiguration {
     dataSource.setUsername(env.getProperty("spring.datasource.username"));
     dataSource.setPassword(env.getProperty("spring.datasource.password"));
     return dataSource;
-  }
-
-  private final PasswordEncoder passwordEncoder;
-
-  public SecurityConfiguration(PasswordEncoder passwordEncoder) {
-    this.passwordEncoder = passwordEncoder;
-  }
-
-  @Bean
-  public static PasswordEncoder configureDefaultPasswordEncoder() {
-    return new BCryptPasswordEncoder();
   }
 
   /** TODO: Add JavaDoc. */
