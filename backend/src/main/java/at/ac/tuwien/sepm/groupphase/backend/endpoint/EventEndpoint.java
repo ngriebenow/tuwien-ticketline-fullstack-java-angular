@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
+import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +14,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,11 +99,21 @@ public class EventEndpoint {
 
     LocalTime time = null;
     if (startAtTime != null && !startAtTime.isEmpty()) {
-      time = LocalTime.parse(startAtTime, DateTimeFormatter.ofPattern("H-mm"));
+      try {
+        time = LocalTime.parse(startAtTime, DateTimeFormatter.ofPattern("H-mm"));
+      } catch (DateTimeParseException ex) {
+        throw new ValidationException("Could not parse time.");
+      }
+
     }
     LocalDate date = null;
     if (startAtDate != null && !startAtDate.isEmpty()) {
-      date = LocalDate.parse(startAtDate, DateTimeFormatter.ofPattern("d.MM.yyyy"));
+      try {
+        date = LocalDate.parse(startAtDate, DateTimeFormatter.ofPattern("d.MM.yyyy"));
+      } catch (DateTimeParseException ex) {
+        throw new ValidationException("Could not parse date.");
+      }
+
     }
 
     EventFilterDto eventFilterDto =

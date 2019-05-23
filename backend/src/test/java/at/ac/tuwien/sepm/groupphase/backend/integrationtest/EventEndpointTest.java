@@ -762,6 +762,38 @@ public class EventEndpointTest extends BaseIntegrationTest {
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
 
+  @Test
+  public void givenEvents_whenFilterByInvalidDate_thenBadRequest() {
 
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtDate=15-02.3000")
+            .then()
+            .extract()
+            .response();
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST.value()));
+
+  }
+
+  @Test
+  public void givenEvents_whenFilterByInvalidTime_thenBadRequest() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtDate=225-00")
+            .then()
+            .extract()
+            .response();
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST.value()));
+
+  }
 
 }
