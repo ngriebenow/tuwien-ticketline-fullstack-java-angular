@@ -8,8 +8,8 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Unit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.hall.HallMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.unit.UnitMapper;
-import at.ac.tuwien.sepm.groupphase.backend.exception.InvalidInputException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.HallRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UnitRepository;
@@ -81,7 +81,7 @@ public class SimpleHallService implements HallService {
     // validate units
     try {
       validUnits(units);
-    } catch (InvalidInputException e) {
+    } catch (ValidationException e) {
       LOGGER.error(e.getMessage());
       throw e;
     }
@@ -120,9 +120,9 @@ public class SimpleHallService implements HallService {
    * Validates all units for overlapping and correct boundary points.
    *
    * @param units != null
-   * @throws InvalidInputException if validation goes wrong
+   * @throws ValidationException if validation goes wrong
    */
-  private void validUnits(List<Unit> units) throws InvalidInputException {
+  private void validUnits(List<Unit> units) throws ValidationException {
     // separate units into seats and sectors
     List<Unit> seats = new ArrayList<>();
     List<Unit> sectors = new ArrayList<>();
@@ -132,7 +132,7 @@ public class SimpleHallService implements HallService {
       } else if (unit.getCapacity() > 1) {
         sectors.add(unit);
       } else {
-        throw new InvalidInputException("Unit capacity must be at least 1");
+        throw new ValidationException("Unit capacity must be at least 1");
       }
     }
     // validate seats
@@ -140,7 +140,7 @@ public class SimpleHallService implements HallService {
       if (seat.getUpperBoundary().getCoordinateX() != seat.getLowerBoundary().getCoordinateX()
           || seat.getUpperBoundary().getCoordinateY() != seat.getLowerBoundary().getCoordinateY()
       ) {
-        throw new InvalidInputException("Seat upper boundary must be same as seat lower boundary");
+        throw new ValidationException("Seat upper boundary must be same as seat lower boundary");
       }
     }
     // validate sectors
@@ -148,7 +148,7 @@ public class SimpleHallService implements HallService {
       if (sector.getUpperBoundary().getCoordinateX() > sector.getLowerBoundary().getCoordinateX()
           || sector.getUpperBoundary().getCoordinateY() > sector.getLowerBoundary().getCoordinateY()
       ) {
-        throw new InvalidInputException(
+        throw new ValidationException(
             "Sector lower boundary must not be above or left of upper boundary");
       }
     }
@@ -157,7 +157,7 @@ public class SimpleHallService implements HallService {
       Unit unit1 = units.get(i);
       for (int j = i + 1; j < units.size(); j++) {
         if (unitsOverlapping(unit1, units.get(j))) {
-          throw new InvalidInputException("Units must not overlap each other " + unit1.getName()
+          throw new ValidationException("Units must not overlap each other " + unit1.getName()
               + unit1.getUpperBoundary().getCoordinateX()
               + "/" + unit1.getUpperBoundary().getCoordinateY()
               + " / " + units.get(j).getName() + units.get(j).getUpperBoundary().getCoordinateX()
