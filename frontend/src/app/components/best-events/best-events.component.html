@@ -4,8 +4,12 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-12">
-    <select class="select-control" (change)="loadEventRankings()"
+  <div class="col-4"></div>
+  <div class="col-2">
+    <h2 class="float-right">Kategorie</h2>
+  </div>
+  <div class="col-2">
+    <select class="select-control category-selector" (change)="loadEventRankings()"
             [(ngModel)]="eventFilter.eventCategory"
             [style.background]="getColor(fstCategory.selected)">
       <option #fstCategory value="">(alle)</option>
@@ -14,14 +18,26 @@
       <option value="OTHER">Other</option>
     </select>
   </div>
+  <div class="col-4"></div>
 </div>
 <div class="row">
-  <div class="col-3">
-
-  </div>
-  <div class="col-9">
+  <div class="col-2">
+    <div class="vertical-space"></div>
     <div *ngFor="let r of eventRankings">
-      <button>{{r.eventName}}</button>
+      <button class="btn btn-primary event-button">{{r.eventName}}</button>
+    </div>
+    <div class="vertical-space"></div>
+  </div>
+  <div class="col-10">
+    <div class="graph-gray">
+      <div id="graph" class="graph-white">
+        <div *ngFor="let r of eventRankings; index as i" class="graph-bar"
+             [style.background]="getGraphColor(i===0)"
+             [ngStyle]="{'width': calcBarWidth(r), 'position':'absolute','top':calcVerticalOffset(i)}"></div>
+
+        <label *ngFor="let e of eventRankings.slice(0,4);index as mark" class="marking" [ngStyle]="{'position':'absolute','bottom':0,'left':calcVerticalOffsetMark(mark)}">| {{getMark(mark) | number : '1.0-0'}}</label>
+        <label class="marking" [ngStyle]="{'position':'absolute','bottom':0,'right':'30px'}">verkaufte Tickets</label>
+      </div>
     </div>
   </div>
 </div>
