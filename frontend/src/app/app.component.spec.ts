@@ -5,6 +5,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
+import {AlertComponent} from './components/alert/alert.component';
 import {Globals} from './global/globals';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
@@ -21,6 +22,7 @@ describe('AppComponent', () => {
         AppComponent,
         HeaderComponent,
         FooterComponent,
+        AlertComponent,
       ],
       providers: [
         Globals,

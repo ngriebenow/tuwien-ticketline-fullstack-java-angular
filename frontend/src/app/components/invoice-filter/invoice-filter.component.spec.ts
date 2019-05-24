@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {Globals} from '../../global/globals';
 import { InvoiceFilterComponent } from './invoice-filter.component';
@@ -13,6 +14,8 @@ describe('InvoiceFilterComponent', () => {
       declarations: [ InvoiceFilterComponent ],
       imports: [
         HttpClientTestingModule,
+        FormsModule,
+        ReactiveFormsModule,
       ],
       providers: [
         Globals,
