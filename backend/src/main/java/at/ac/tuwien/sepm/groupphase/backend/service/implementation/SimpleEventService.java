@@ -8,6 +8,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.DefinedUnit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventRanking;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Event_;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Invoice;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
@@ -84,7 +85,7 @@ public class SimpleEventService implements EventService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<EventRankingDto> getBestEvents(Integer limit) {
+  public List<EventRankingDto> getBestEvents(Integer limit, EventFilterDto eventFilterDto) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
     CriteriaQuery<EventRanking> events = cb.createQuery(EventRanking.class);
@@ -92,9 +93,17 @@ public class SimpleEventService implements EventService {
 
     Path<Event> path = nr.get("definedUnit").get("performance").get("event");
 
+    Predicate checkForCategory = cb.and();
+    if (eventFilterDto.getEventCategory() != null) {
+      checkForCategory = cb.equal(
+          path.get(Event_.category),eventFilterDto.getEventCategory());
+    }
+
     events.multiselect(cb.count(nr), path.get("id"), path.get("name"));
     events.groupBy(path.get("id"));
-    events.where(cb.equal(nr.get("isCancelled"),false));
+    events.where(cb.and(
+        cb.equal(nr.get("isCancelled"),false),
+        checkForCategory);
     events.orderBy(cb.desc(cb.count(nr)));
 
     TypedQuery<EventRanking> tq = entityManager.createQuery(events).setMaxResults(limit);
