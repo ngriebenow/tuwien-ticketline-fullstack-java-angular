@@ -14,10 +14,12 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.DefinedUnit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Invoice;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Unit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
@@ -53,6 +55,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ActiveProfiles(profiles = "serviceintegration-test")
@@ -89,12 +92,15 @@ public class EventTop10ServiceIntegrationTest {
   private DefinedUnit definedUnit2;
   private DefinedUnit definedUnit3;
   private DefinedUnit definedUnit4;
+  private Ticket ticket1;
+  private Invoice invoice1;
 
-  @Before
+  @Transactional
+  @BeforeEach
   public void setUp() {
     clientOne =
         new Client.Builder().name("Klaus").surname("Klauser").email("klaus@klausur.at").build();
-    clientRepository.save(clientOne);
+    clientOne = clientRepository.save(clientOne);
 
     clientTwo =
         new Client.Builder()
@@ -102,7 +108,7 @@ public class EventTop10ServiceIntegrationTest {
             .surname("Arabrabar")
             .email("rabarbara@arabrabar.at")
             .build();
-    clientRepository.save(clientTwo);
+    clientTwo = clientRepository.save(clientTwo);
 
     location =
         new Location.Builder()
@@ -112,7 +118,7 @@ public class EventTop10ServiceIntegrationTest {
             .street("Street 1")
             .country("Austria")
             .build();
-    locationRepository.save(location);
+    location = locationRepository.save(location);
 
     hall =
         new Hall.Builder()
@@ -121,10 +127,10 @@ public class EventTop10ServiceIntegrationTest {
             .boundaryPoint(new Point(10, 20))
             .version(1)
             .build();
-    hallRepository.save(hall);
+    hall = hallRepository.save(hall);
 
     artist = new Artist.Builder().name("Bob").surname("Dylan").build();
-    artistRepository.save(artist);
+    artist = artistRepository.save(artist);
 
     event =
         new Event.Builder()
@@ -135,7 +141,7 @@ public class EventTop10ServiceIntegrationTest {
             .hall(hall)
             .artists(Collections.singletonList(artist))
             .build();
-    eventRepository.save(event);
+    event = eventRepository.save(event);
 
     unit1 =
         new Unit.Builder()
@@ -145,7 +151,7 @@ public class EventTop10ServiceIntegrationTest {
             .capacity(1)
             .hall(hall)
             .build();
-    unitRepository.save(unit1);
+    unit1 = unitRepository.save(unit1);
 
     unit2 =
         new Unit.Builder()
@@ -155,7 +161,7 @@ public class EventTop10ServiceIntegrationTest {
             .capacity(3)
             .hall(hall)
             .build();
-    unitRepository.save(unit2);
+    unit2 = unitRepository.save(unit2);
 
     performance1 =
         new Performance.Builder()
@@ -163,7 +169,7 @@ public class EventTop10ServiceIntegrationTest {
             .event(event)
             .startAt(LocalDateTime.now().plusDays(3))
             .build();
-    performanceRepository.save(performance1);
+    performance1 = performanceRepository.save(performance1);
 
     performance2 =
         new Performance.Builder()
@@ -171,7 +177,7 @@ public class EventTop10ServiceIntegrationTest {
             .event(event)
             .startAt(LocalDateTime.now().plusDays(4))
             .build();
-    performanceRepository.save(performance2);
+    performance2 = performanceRepository.save(performance2);
 
     priceCategory1 =
         new PriceCategory.Builder()
@@ -180,7 +186,7 @@ public class EventTop10ServiceIntegrationTest {
             .color(new Color(0, 0, 0))
             .event(event)
             .build();
-    priceCategoryRepository.save(priceCategory1);
+    priceCategory1 = priceCategoryRepository.save(priceCategory1);
 
     priceCategory2 =
         new PriceCategory.Builder()
@@ -189,7 +195,7 @@ public class EventTop10ServiceIntegrationTest {
             .color(new Color(0, 0, 0))
             .event(event)
             .build();
-    priceCategoryRepository.save(priceCategory2);
+    priceCategory2 = priceCategoryRepository.save(priceCategory2);
 
     definedUnit1 =
         new DefinedUnit.Builder()
@@ -198,7 +204,7 @@ public class EventTop10ServiceIntegrationTest {
             .unit(unit1)
             .capacityFree(unit1.getCapacity())
             .build();
-    definedUnitRepository.save(definedUnit1);
+    definedUnit1 = definedUnitRepository.save(definedUnit1);
 
     definedUnit2 =
         new DefinedUnit.Builder()
@@ -207,7 +213,7 @@ public class EventTop10ServiceIntegrationTest {
             .unit(unit2)
             .capacityFree(unit2.getCapacity())
             .build();
-    definedUnitRepository.save(definedUnit2);
+    definedUnit2 = definedUnitRepository.save(definedUnit2);
 
     definedUnit3 =
         new DefinedUnit.Builder()
@@ -216,7 +222,7 @@ public class EventTop10ServiceIntegrationTest {
             .unit(unit1)
             .capacityFree(unit1.getCapacity())
             .build();
-    definedUnitRepository.save(definedUnit3);
+    definedUnit3 = definedUnitRepository.save(definedUnit3);
 
     definedUnit4 =
         new DefinedUnit.Builder()
@@ -225,13 +231,41 @@ public class EventTop10ServiceIntegrationTest {
             .unit(unit2)
             .capacityFree(unit2.getCapacity())
             .build();
-    definedUnitRepository.save(definedUnit4);
+    definedUnit4 =definedUnitRepository.save(definedUnit4);
+
+    invoice1 =
+        new Invoice.Builder()
+        .reservationCode("NIC")
+        .client(clientOne)
+        .build();
+    invoiceRepository.save(invoice1);
+
+    definedUnit1 = definedUnitRepository.findAll().get(0);
+
+    ticket1 =
+        new Ticket.Builder()
+            .definedUnit(definedUnit2)
+            .isCancelled(false)
+            .salt("pepper")
+            .build();
+    //ticket1 = ticketRepository.save(ticket1);
+
+    invoice1.addTicket(ticket1);
+
+
+    invoiceRepository.save(invoice1);
+
 
   }
 
 
-  @After
+  @AfterEach
   public void cleanUp() {
+    invoice1.removeTicket(ticket1);
+    invoiceRepository.save(invoice1);
+    invoiceRepository.deleteAll();
+    ticketRepository.deleteAll();
+    invoiceRepository.deleteAll();
     priceCategoryRepository.deleteAll();
     performanceRepository.deleteAll();
     eventRepository.deleteAll();
@@ -243,9 +277,7 @@ public class EventTop10ServiceIntegrationTest {
 
   @Test
   public void givenEvents_whenGetBestEvents_returnBestEvents() {
-
     eventService.getBestEvents(10);
-
   }
 
 }

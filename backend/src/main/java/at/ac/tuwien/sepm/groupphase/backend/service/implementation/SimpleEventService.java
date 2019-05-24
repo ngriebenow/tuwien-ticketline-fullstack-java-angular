@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.DefinedUnit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventRanking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Invoice;
@@ -95,6 +96,15 @@ public class SimpleEventService implements EventService {
 
 
 
+    CriteriaQuery<Ticket> qt = cb.createQuery(Ticket.class);
+    Root<Ticket> r = qt.from(Ticket.class);
+    qt.select(r);
+    TypedQuery<Ticket> q = entityManager.createQuery(qt);
+    List<Ticket> res = q.getResultList();
+
+    res.forEach(o -> System.out.println(o));
+
+
 
 
     //ticketCq.groupBy(ticketRoot.get("definedUnit").get("performance").get("event"));
@@ -109,24 +119,27 @@ public class SimpleEventService implements EventService {
     //Join<Ticket, Event> join = ticketRoot.join("definedUnit")
         //.join("performance").join("event");
 
-    CriteriaQuery<Event> events = cb.createQuery(Event.class);
+    CriteriaQuery<EventRanking> events = cb.createQuery(EventRanking.class);
     Root<Ticket> nr = events.from(Ticket.class);
 
     Path<Event> path = nr.get("definedUnit").get("performance").get("event");
 
-    events.groupBy(path);
+    //events.groupBy(path);
 
-    events.multiselect(cb.count(nr), path);
-    events.select(path);
-
-
-
-    TypedQuery<Event> tq = entityManager.createQuery(events);
-
-    List<?> evs = tq.getResultList();
+    events.multiselect(cb.count(nr), path.get("id"), path.get("name"));
+    //events.select(path);
 
 
-    evs.forEach(e -> LOGGER.info(e.toString()));
+
+    TypedQuery<EventRanking> tq = entityManager.createQuery(events);
+
+    List<EventRanking> evs = tq.getResultList();
+
+
+    for (EventRanking er: evs) {
+      LOGGER.info(er.toString());
+    }
+
 
 
     //erCq.multiselect(join,cb.count(ticketRoot));
