@@ -133,8 +133,7 @@ public class InvoiceServiceTest {
         new TicketDto.Builder()
             .id(TICKET_ID)
             .priceInCents(TICKET_PRICE)
-            .invoiceId(INVOICE_ID)
-            .performanceId(INVOICE_PERFORMANCE_ID)
+            .startAt(performanceOne.getStartAt())
             .build();
 
     clientDtoOne =

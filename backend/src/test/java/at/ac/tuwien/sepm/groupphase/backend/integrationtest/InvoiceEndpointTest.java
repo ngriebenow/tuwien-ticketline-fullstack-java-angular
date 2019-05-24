@@ -666,8 +666,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
-    assertThat(invoiceDtoPage.get(0).getTickets().get(0).getPerformanceId())
-        .isEqualTo(performance1.getId());
+    assertThat(invoiceDtoPage.get(0).getTickets().get(0).getPerformanceName())
+        .isEqualTo(performance1.getName());
   }
 
   @Test
