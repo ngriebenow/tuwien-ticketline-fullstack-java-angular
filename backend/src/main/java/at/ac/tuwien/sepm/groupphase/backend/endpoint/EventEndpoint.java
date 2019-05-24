@@ -52,6 +52,23 @@ public class EventEndpoint {
   @ApiOperation(
       value = "Get performances by event id",
       authorizations = {@Authorization(value = "apiKey")})
+  public List<PerformanceSearchResultDto> getBest(
+      @PathVariable Long id,
+      @RequestParam(required = true) Integer limit,
+      @RequestParam(required = false) EventCategory category) {
+    LOGGER.info("get best events by category " + category);
+
+    EventFilterDto eventFilterDto = new EventFilterDto();
+    eventFilterDto.setEventCategory(category);
+
+    return eventService.getBestEvents(limit,category);
+  }
+
+  /** Return all performances which belong to a certain event. */
+  @RequestMapping(value = "/{id}/performances", method = RequestMethod.GET)
+  @ApiOperation(
+      value = "Get performances by event id",
+      authorizations = {@Authorization(value = "apiKey")})
   public List<PerformanceSearchResultDto> getPerformancesById(
       @PathVariable Long id,
       @RequestParam(required = false) Integer page,
