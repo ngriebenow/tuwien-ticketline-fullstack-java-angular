@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
+import {Globals} from '../../global/globals';
 import { InvoiceFilterComponent } from './invoice-filter.component';
 
 describe('InvoiceFilterComponent', () => {
@@ -8,7 +10,13 @@ describe('InvoiceFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InvoiceFilterComponent ]
+      declarations: [ InvoiceFilterComponent ],
+      imports: [
+        HttpClientTestingModule,
+      ],
+      providers: [
+        Globals,
+      ]
     })
     .compileComponents();
   }));

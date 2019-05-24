@@ -10,7 +10,7 @@ import java.util.Objects;
 public class DetailedNewsDto {
 
   @ApiModelProperty(name = "The automatically generated database id")
-  private long id;
+  private Long id;
 
   @ApiModelProperty(name = "The date and time when the news entry was published")
   private LocalDateTime publishedAt;
@@ -31,11 +31,11 @@ public class DetailedNewsDto {
     return new NewsDtoBuilder();
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -109,11 +109,9 @@ public class DetailedNewsDto {
     }
     DetailedNewsDto that = (DetailedNewsDto) obj;
     return Objects.equals(id, that.id)
-        && Objects.equals(publishedAt, that.publishedAt)
         && Objects.equals(title, that.title)
         && Objects.equals(text, that.text)
-        && Objects.equals(summary, that.summary)
-        && Objects.equals(pictureIds, that.pictureIds);
+        && Objects.equals(summary, that.summary);
   }
 
   @Override
@@ -123,14 +121,14 @@ public class DetailedNewsDto {
 
   public static final class NewsDtoBuilder {
 
-    private long id;
+    private Long id;
     private LocalDateTime publishedAt;
     private String title;
     private String text;
     private String summary;
     private List<Long> pictureIds;
 
-    public NewsDtoBuilder id(long id) {
+    public NewsDtoBuilder id(Long id) {
       this.id = id;
       return this;
     }

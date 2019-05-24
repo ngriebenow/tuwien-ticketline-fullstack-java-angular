@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Globals} from '../global/globals';
 import {Observable} from 'rxjs';
 import {EventFilter} from '../dtos/event-filter';
-import {EventSearchResult} from "../dtos/event-search-result";
+import {EventSearchResult} from '../dtos/event-search-result';
 
 @Injectable({
   providedIn: 'root'
@@ -33,13 +33,28 @@ export class EventService {
 
     console.log('getEventsFiltered');
 
+    let price = '';
+    if (eventFilter.priceInEuro != null) {
+      price = eventFilter.priceInEuro + '00';
+    }
+
+    let time = '';
+    let date = '';
+    if (eventFilter.startAtDate != null) {
+      date = eventFilter.startAtDate;
+
+    }
+    if (eventFilter.startAtTime != null || true) {
+      time = eventFilter.startAtTime;
+    }
+
     const paramsHttp = new HttpParams()
       .set('name', eventFilter.name)
       .set('content', eventFilter.content)
       .set('duration', eventFilter.duration)
       .set('eventCategory', eventFilter.eventCategory)
       .set('artistName', eventFilter.artistName)
-      .set('priceInCents', eventFilter.priceInCents)
+      .set('priceInCents', price)
       .set('hallName', eventFilter.hallName)
       .set('hallId', eventFilter.hallId)
       .set('locationId', eventFilter.locationId)
@@ -47,10 +62,15 @@ export class EventService {
       .set('locationCountry', eventFilter.locationCountry)
       .set('locationStreet', eventFilter.locationStreet)
       .set('locationPlace', eventFilter.locationPlace)
+      .set('startAtDate', date)
+      .set('startAtTime', time)
       .set('page', '0')
       .set('count', '100');
 
-    console.log('getEventsFiltered: ' + eventFilter.name);
+
+
+
+    console.log('getEventsFiltered: ' + paramsHttp);
 
     return this.httpClient.get<EventSearchResult[]>(this.eventBaseUri, {params: paramsHttp});
 

@@ -14,6 +14,17 @@ public class ExceptionHandlingControllerAdvice {
 
   private static final String DEFAULT_CONSTRAINT_VIOLATION_MESSAGE = "Couldn't validate reqeust";
 
+  /** Strips the mehtod name and argument position from the properyPath if present. */
+  private static String getFieldName(String propertyPath) {
+    int pathPrefixLength = 2;
+    String fieldName = propertyPath;
+    String[] tokens = propertyPath.split("\\.");
+    if (tokens.length > pathPrefixLength) {
+      fieldName = String.join("", Arrays.copyOfRange(tokens, pathPrefixLength, tokens.length));
+    }
+    return fieldName;
+  }
+
   /** Turn failed validation, eg from `@Valid Entity entity` into 400 Responses. */
   @ExceptionHandler(ConstraintViolationException.class)
   public void handleConstraintViolationException(
@@ -27,16 +38,5 @@ public class ExceptionHandlingControllerAdvice {
       message = DEFAULT_CONSTRAINT_VIOLATION_MESSAGE;
     }
     response.sendError(HttpStatus.BAD_REQUEST.value(), message);
-  }
-
-  /** Strips the mehtod name and argument position from the properyPath if present. */
-  private static String getFieldName(String propertyPath) {
-    int pathPrefixLength = 2;
-    String fieldName = propertyPath;
-    String[] tokens = propertyPath.split("\\.");
-    if (tokens.length > pathPrefixLength) {
-      fieldName = String.join("", Arrays.copyOfRange(tokens, pathPrefixLength, tokens.length));
-    }
-    return fieldName;
   }
 }

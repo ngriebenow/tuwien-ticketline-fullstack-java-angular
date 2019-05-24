@@ -18,14 +18,17 @@ public class ReservationRequestDto {
       required = true)
   // TODO: require valid ticketRequests
   public List<@Valid TicketRequestDto> ticketRequests;
+
   @NotNull(message = "performanceId must be set")
   @ApiModelProperty(value = "The id of the performance to buy the tickets for", required = true)
   private Long performanceId;
+
   @NotNull(message = "clientId must be set")
   @ApiModelProperty(value = "The id of the client to buy the tickets for", required = true)
   private Long clientId;
 
-  public ReservationRequestDto() {}
+  public ReservationRequestDto() {
+  }
 
   private ReservationRequestDto(Builder builder) {
     setPerformanceId(builder.performanceId);

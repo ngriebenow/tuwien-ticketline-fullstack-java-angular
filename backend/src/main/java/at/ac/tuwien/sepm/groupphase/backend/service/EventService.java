@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
@@ -37,7 +36,6 @@ public interface EventService {
    * @return the list of events
    */
   List<EventSearchResultDto> getEventsFiltered(EventFilterDto eventFilterDto, Pageable pageable);
-
 
   /**
    * Get the performances of the event by its id.

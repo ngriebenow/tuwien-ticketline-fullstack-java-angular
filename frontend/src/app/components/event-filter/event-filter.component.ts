@@ -2,8 +2,8 @@ import {Component, Input, NgModule, OnInit, Output} from '@angular/core';
 import {EventFilter} from '../../dtos/event-filter';
 import {EventService} from '../../services/event.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {EventSearchResult} from "../../dtos/event-search-result";
-
+import {EventSearchResult} from '../../dtos/event-search-result';
+import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 @Component({
   selector: 'app-event-filter',
   templateUrl: './event-filter.component.html',
@@ -18,17 +18,38 @@ import {EventSearchResult} from "../../dtos/event-search-result";
 export class EventFilterComponent implements OnInit {
 
 
-  constructor(private eventService: EventService) { }
+  constructor(private eventService: EventService) {
 
+  }
 
+  myDatePickerOptions: IMyDpOptions = {
+    dateFormat: 'dd.mm.yyyy',
+  };
 
-  @Input() eventFilter: EventFilter = new EventFilter('', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  @Input() eventFilter: EventFilter = new EventFilter( '', '', '', null, '', '', '', '', '', '', '', '', '', '', '');
 
   @Output() eventSearchResults: EventSearchResult[] = [];
+
+
 
   ngOnInit() {
     console.log('ngOnInit');
     this.loadEvents();
+  }
+
+
+  getColor(cat: boolean): string {
+    if (cat) {
+      return '#EAEAEA';
+    } else {
+      return '#8FBEFF';
+    }
+  }
+
+  onDateChanged(event: IMyDateModel) {
+    this.eventFilter.startAtDate = event.formatted;
+    this.loadEvents();
+    // event properties are: event.date, event.jsdate, event.formatted and event.epoc
   }
 
 
@@ -40,5 +61,9 @@ export class EventFilterComponent implements OnInit {
     this.eventService.getEventsFiltered(this.eventFilter).subscribe(
       (events: EventSearchResult[]) => this.eventSearchResults = events);
   }
+
+
+
+
 
 }

@@ -1,0 +1,70 @@
+@import '../../../colors';
+
+.btn-seat {
+  background-color: $medium-gray;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.btn-seat:hover,
+.btn-seat:focus,
+.btn-seat:active{
+  background-color: darken($medium-gray, 10);
+}
+
+
+.btn-aisle {
+  background-color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.btn-aisle:hover,
+.btn-aisle:focus,
+.btn-aisle:active{
+  background-color: darken(white, 10);
+}
+
+
+.btn-sector {
+  background-color: $main-blue;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.btn-sector:hover,
+.btn-sector:focus,
+.btn-sector:active{
+  background-color: darken($main-blue, 10);
+}
+
+.row-padding {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+$cross-size: 120px;
+
+.cross {
+  width: $cross-size;
+  height: $cross-size;
+  position: relative;
+}
+
+.btn-cross {
+  background-color: $light-gray;
+  width: $cross-size / 3;
+  height: $cross-size / 3;
+  border-radius: 5px;
+  padding: 0px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.cross-icon {
+  font-size: $cross-size / 3;
+  color: $medium-gray;
+}

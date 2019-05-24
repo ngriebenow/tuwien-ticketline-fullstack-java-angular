@@ -1,8 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +27,10 @@ public class EventSearchResultDto {
   @ApiModelProperty(required = true, name = "The location name in which the event takes place")
   private String locationName;
 
+  @JsonFormat(shape = Shape.NUMBER, pattern = "mm")
+  @ApiModelProperty(required = true, name = "The duration of the event")
+  private Duration duration;
+
   @ApiModelProperty(required = true, name = "The location place in which the event takes place")
   private String locationPlace;
 
@@ -32,6 +39,14 @@ public class EventSearchResultDto {
 
   @ApiModelProperty(required = true, name = "The corresponding performances")
   private List<PerformanceSearchResultDto> performances;
+
+  public Duration getDuration() {
+    return duration;
+  }
+
+  public void setDuration(Duration duration) {
+    this.duration = duration;
+  }
 
   public Long getId() {
     return id;
