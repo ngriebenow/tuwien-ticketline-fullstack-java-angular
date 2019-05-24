@@ -35,8 +35,6 @@ export class HallCreationService {
     console.log('constructor');
     this.maxHallSize = new Point(27, 27); // set max hall size here
     this.createNewHall();
-    // this.loadExistingHall(1552);
-    // this.loadExistingHall(4752);
   }
 
   /**
@@ -215,8 +213,8 @@ export class HallCreationService {
       );
     } else {
       this.hallService.postHall(hallToSave).subscribe(
-        () => {
-          console.log('Saved hall successfully!');
+        savedHall => {
+          console.log('Saved hall successfully with id: ' + savedHall.id);
           this.backToMenu();
         },
         error => {

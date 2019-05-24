@@ -6,7 +6,7 @@ import {Direction} from '../../enums/direction';
 import {Hall} from '../../dtos/hall';
 import {Unit} from '../../dtos/unit';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ActivatedRoute, RouterModule} from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 
 @Component({
@@ -21,8 +21,6 @@ import {RouterTestingModule} from '@angular/router/testing';
     RouterModule,
     RouterTestingModule,
   ],
-  /*declarations: [HallCreationMenuComponent],
-  exports: [HallCreationMenuComponent]*/
 })
 export class HallCreationMenuComponent implements OnInit {
 
@@ -34,7 +32,11 @@ export class HallCreationMenuComponent implements OnInit {
 
   selectedSector: Unit;
 
-  constructor(private hallCreationService: HallCreationService, private route: ActivatedRoute) { }
+  // todo delete after locations are implemented
+  id = 1;
+
+  constructor(private hallCreationService: HallCreationService) {
+  }
 
   ngOnInit() {
     this.hallSize = this.hallCreationService.getHallSize();
@@ -110,7 +112,7 @@ export class HallCreationMenuComponent implements OnInit {
   }
 
   getHall(): void {
-    this.hall =  this.hallCreationService.getHall();
+    this.hall = this.hallCreationService.getHall();
   }
 
   getSelectedSector(): void {
@@ -123,5 +125,12 @@ export class HallCreationMenuComponent implements OnInit {
     } else if (this.selectedSector.capacity > Number.MAX_SAFE_INTEGER) {
       this.selectedSector.capacity = Number.MAX_SAFE_INTEGER;
     }
+  }
+
+  // todo delete after locations are implemented
+  loadHall() {
+    console.log(this.id);
+    this.hallCreationService.loadExistingHall(this.id);
+    // this.router.navigateByUrl('/hall-creation', {skipLocationChange: true});
   }
 }

@@ -6,5 +6,5 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PriceCategoryRepository extends JpaRepository<PriceCategory, Long> {
-  List<PriceCategory> findAllByEvent(Event event);
+  List<PriceCategory> findAllByEventOrderByPriceInCentsAsc(Event event);
 }
