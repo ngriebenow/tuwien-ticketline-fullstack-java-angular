@@ -4,6 +4,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 
 import {NewsComponent} from './news.component';
 import {Globals} from '../../global/globals';
+import {RouterTestingModule} from '@angular/router/testing';
+import {AuthGuard} from '../../guards/auth.guard';
 
 describe('NewsComponent', () => {
   let component: NewsComponent;
@@ -12,6 +14,7 @@ describe('NewsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule.withRoutes([{path: 'news', canActivate: [AuthGuard], component: NewsComponent}]),
         HttpClientTestingModule,
         ReactiveFormsModule,
       ],
