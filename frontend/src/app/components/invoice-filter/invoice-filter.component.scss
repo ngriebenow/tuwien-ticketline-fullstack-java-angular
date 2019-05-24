@@ -1,3 +1,16 @@
+@import '../../../colors';
+
+label:not(.btn) {
+  color: $main-blue;
+}
+
+.btn-group-toggle {
+  .active {
+    color: #fff;
+    background-color: $main-blue;
+  }
+}
+
 tbody tr {
   cursor: pointer;
 }

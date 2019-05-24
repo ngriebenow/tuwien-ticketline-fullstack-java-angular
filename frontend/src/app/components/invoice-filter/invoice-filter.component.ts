@@ -15,6 +15,7 @@ export class InvoiceFilterComponent implements OnInit {
   private invoices: Invoice[];
   private page = 0;
   private count = 20;
+  private queryParams = {};
 
   private searchForm = this.formBuilder.group({
     performanceName: [''],
@@ -26,18 +27,21 @@ export class InvoiceFilterComponent implements OnInit {
     isPaid: ['']
   });
 
+  private activeIsCancelled = '';
+  private activeIsPaid = '';
+
   constructor(private invoiceService: InvoiceService, private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
     this.loadInvoices();
-    this.onFormChange();
+    this.activateOnFormChange();
   }
 
-  private loadInvoices(queryParams: {} = {}): void {
-    queryParams['page'] = this.page;
-    queryParams['count'] = this.count;
-    this.invoiceService.getInvoices(queryParams).subscribe(
+  private loadInvoices(): void {
+    this.queryParams['page'] = this.page;
+    this.queryParams['count'] = this.count;
+    this.invoiceService.getInvoices(this.queryParams).subscribe(
       (invoices: Invoice[]) => {
         this.invoices = invoices;
       },
@@ -47,20 +51,22 @@ export class InvoiceFilterComponent implements OnInit {
     );
   }
 
-  private onFormChange(): void {
+  private activateOnFormChange(): void {
     this.searchForm.valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
     ).subscribe(values => {
-      const queryParams = {};
+      console.log(values);
+      this.queryParams = {};
         Object.entries<any>(values)
+        .filter(entry => entry[1] !== null)
         .map(entry => [entry[0], entry[1].toString().trim()])
         .filter(entry => !_.isEmpty(entry[1]))
         .forEach(entry => {
           const [key, val] = entry;
-          queryParams[key] = val;
+          this.queryParams[key] = val;
         });
-      this.loadInvoices(queryParams);
+      this.loadInvoices();
     });
   }
 
@@ -74,6 +80,21 @@ export class InvoiceFilterComponent implements OnInit {
       this.page--;
       this.loadInvoices();
     }
+  }
+
+  private resetSearchForm(): void {
+    this.page = 0;
+    this.activeIsPaid = '';
+    this.activeIsCancelled = '';
+    this.searchForm.reset({}, { emitEvent: true });
+  }
+
+  private setActiveIsCancelled(event: any): void {
+    this.activeIsCancelled = event.target.value;
+  }
+
+  private setActiveIsPaid(event: any): void {
+    this.activeIsPaid = event.target.value;
   }
 
   private getClientFullName(invoice: Invoice): string {
