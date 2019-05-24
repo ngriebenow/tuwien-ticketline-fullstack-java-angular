@@ -1,3 +1,25 @@
-<p>
-  best-events works!
-</p>
+<div class="row">
+  <div class="col-12">
+    <h1>Top 10 Veranstaltungen</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <select class="select-control" (change)="loadEvents()"
+            [(ngModel)]="eventFilter.eventCategory"
+            [style.background]="getColor(fstCategory.selected)">
+      <option #fstCategory value="">(alle)</option>
+      <option value="CINEMA">Cinema</option>
+      <option value="CONCERT">Concert</option>
+      <option value="OTHER">Other</option>
+    </select>
+  </div>
+</div>
+<div class="row">
+  <div class="col-3">
+
+  </div>
+  <div class="col-9">
+    <button></button>
+  </div>
+</div>
