@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-news',
@@ -19,12 +20,14 @@ export class NewsComponent implements OnInit {
   newsForm: FormGroup;
   // After first submission attempt, form validation will start
   submitted = false;
+  selectedNews: News;
 
 
   private news: News[];
 
   constructor(private newsService: NewsService, private ngbPaginationConfig: NgbPaginationConfig, private formBuilder: FormBuilder,
-              private cd: ChangeDetectorRef, private authService: AuthService, private route: ActivatedRoute) {
+              private cd: ChangeDetectorRef, private authService: AuthService, private route: ActivatedRoute,
+              private router: Router) {
     this.newsForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       summary: ['', [Validators.required]],
@@ -60,7 +63,8 @@ export class NewsComponent implements OnInit {
         this.newsForm.controls.title.value,
         this.newsForm.controls.summary.value,
         this.newsForm.controls.text.value,
-        new Date().toISOString()
+        new Date().toISOString(),
+        [] // TODO get ids of uploaded pictures
       );
       this.createNews(news);
       this.clearForm();
@@ -89,29 +93,22 @@ export class NewsComponent implements OnInit {
   }
 
   /**
-   * Shows the specified news details. If it is necessary, the details text will be loaded
+   * Shows the specified news details. If it is necessary, the details text and pictureIds will be loaded
    * @param id the id of the news which details should be shown
    */
-  getNewsDetails(id: number) {
-    if (_.isEmpty(this.news.find(x => x.id === id).text)) {
+  /*getNewsDetails(id: number) {
+    if (_.isEmpty(this.news.find(x => x.id === id).text)
+      || _.isEmpty(this.news.find(x => x.id === id).pictureIds)) {
       this.loadNewsDetails(id);
     }
-  }
+  }*/
 
   /**
-   * Loads the text of news and update the existing array of news
+   * Loads the text of news and pictureIds and update the existing array of news
    * @param id the id of the news which details should be loaded
    */
-  loadNewsDetails(id: number) {
-    this.newsService.getNewsById(id).subscribe(
-      (news: News) => {
-        const result = this.news.find(x => x.id === id);
-        result.text = news.text;
-      },
-      error => {
-        this.defaultServiceErrorHandling(error);
-      }
-    );
+  selectNewsDetails(id: number) {
+    this.router.navigate(['/news/' + id]);
   }
 
   /**
@@ -134,6 +131,10 @@ export class NewsComponent implements OnInit {
         this.defaultServiceErrorHandling(error);
       }
     );
+  }
+
+  onSelect(news: News): void {
+    this.selectedNews = news;
   }
 
 

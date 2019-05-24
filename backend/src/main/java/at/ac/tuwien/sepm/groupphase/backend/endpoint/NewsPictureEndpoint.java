@@ -9,6 +9,7 @@ import io.swagger.annotations.Authorization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,13 +38,14 @@ public class NewsPictureEndpoint {
    * @param id of the picture
    * @return the picture
    */
-  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET,
+      produces = MediaType.IMAGE_PNG_VALUE)
   @ApiOperation(
       value = "Get picture dto",
       authorizations = {@Authorization(value = "apiKey")})
-  public PictureDto get(@PathVariable Long id) throws NotFoundException {
+  public byte[] get(@PathVariable Long id) throws NotFoundException {
     LOGGER.info("get picture by id");
-    return pictureService.findOne(id);
+    return pictureService.findOne(id).getData();
   }
 
   /**
