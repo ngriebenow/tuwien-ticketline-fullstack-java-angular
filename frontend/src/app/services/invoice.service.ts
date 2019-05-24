@@ -19,11 +19,9 @@ export class InvoiceService {
     return this.httClient.get<Invoice>(`${this.invoiceBaseUri}/${id}`);
   }
 
-  // TODO: add search parameters
-  getInvoices(page: number, count: number): Observable<Invoice[]> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('count', count.toString());
+  getInvoices(queryParams: {} = {}): Observable<Invoice[]> {
+    let params = new HttpParams();
+    Object.keys(queryParams).forEach(key => params = params.set(key, queryParams[key]));
     return this.httClient.get<Invoice[]>(this.invoiceBaseUri, {params});
   }
 

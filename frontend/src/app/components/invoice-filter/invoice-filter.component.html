@@ -1,5 +1,31 @@
 <div class="row my-3">
   <div class="col-12">
+    <form [formGroup]="searchForm">
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" placeholder="Veranstaltung" formControlName="performanceName">
+          <input class="form-control" type="text" placeholder="Reservierungsnummer" formControlName="reservationCode">
+          <input class="form-control" type="text" placeholder="Rechnungnummer" formControlName="invoiceNumber">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="Kunde" formControlName="clientName">
+          <input class="form-control" type="text" placeholder="Email" formControlName="clientEmail">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="isCancelled" formControlName="isCancelled">
+            <label class="form-check-label" for="isCancelled">Storniert</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="isPaid" formControlName="isPaid">
+            <label class="form-check-label" for="isPaid">Bezahlt</label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="row my-3">
+  <div class="col-12">
     <table class="table table-striped table-hover">
       <thead class="thead-dark">
         <tr>
