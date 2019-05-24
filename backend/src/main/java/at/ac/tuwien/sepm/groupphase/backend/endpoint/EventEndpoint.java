@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
@@ -48,20 +49,19 @@ public class EventEndpoint {
   }
 
   /** Return all performances which belong to a certain event. */
-  @RequestMapping(value = "/{id}/performances", method = RequestMethod.GET)
+  @RequestMapping(value = "/best", method = RequestMethod.GET)
   @ApiOperation(
-      value = "Get performances by event id",
+      value = "Get best events by sold tickets",
       authorizations = {@Authorization(value = "apiKey")})
-  public List<PerformanceSearchResultDto> getBest(
-      @PathVariable Long id,
-      @RequestParam(required = true) Integer limit,
+  public List<EventRankingDto> getBest(
+      @RequestParam Integer limit,
       @RequestParam(required = false) EventCategory category) {
     LOGGER.info("get best events by category " + category);
 
     EventFilterDto eventFilterDto = new EventFilterDto();
     eventFilterDto.setEventCategory(category);
 
-    return eventService.getBestEvents(limit,category);
+    return eventService.getBestEvents(limit,eventFilterDto);
   }
 
   /** Return all performances which belong to a certain event. */

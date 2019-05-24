@@ -103,7 +103,7 @@ public class SimpleEventService implements EventService {
     events.groupBy(path.get("id"));
     events.where(cb.and(
         cb.equal(nr.get("isCancelled"),false),
-        checkForCategory);
+        checkForCategory));
     events.orderBy(cb.desc(cb.count(nr)));
 
     TypedQuery<EventRanking> tq = entityManager.createQuery(events).setMaxResults(limit);
