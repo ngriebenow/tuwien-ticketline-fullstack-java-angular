@@ -267,6 +267,10 @@ input:not(:placeholder-shown){
   color: white !important;
 }
 
+input:placeholder-shown{
+  background-color: $light-gray !important;
+  color: white !important;
+}
 
 /*
   for read-only (e.g. Reservirung)
@@ -318,7 +322,3 @@ option{
   </div>
 */
 
-.myDatePickerOptions{
-  background-color: aqua !important;
-  color: white !important;
-}
