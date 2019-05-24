@@ -1,18 +1,32 @@
 @import "../../../colors";
 
 .event-button {
+  height: 38px;
   width: 100%;
-  height: 30px;
+  margin-bottom: 0px;
+}
+
+.event-place {
+  margin-bottom: 3px;
+}
+
+.event-grouping {
+  width: 100%;
+  height: 38px;
   margin-bottom: 15px;
+}
+
+.category-h2 {
+  padding-right: 15px;
 }
 
 .category-selector {
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 38px;
 }
 
 .vertical-space {
-  margin-bottom: 30px;
+  margin-bottom: 38px;
 }
 
 .marking {
@@ -40,5 +54,14 @@
 
 .graph-bar {
   background-color: $medium-gray;
-  height: 30px;
+  height: 38px;
 }
+
+.col-2 {
+  padding: 0px;
+}
+
+.col-8 {
+  padding: 0px;
+}
+

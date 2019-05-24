@@ -6,7 +6,7 @@
 <div class="row">
   <div class="col-4"></div>
   <div class="col-2">
-    <h2 class="float-right">Kategorie</h2>
+    <h2 class="float-right category-h2">Kategorie</h2>
   </div>
   <div class="col-2">
     <select class="select-control category-selector" (change)="loadEventRankings()"
@@ -21,14 +21,21 @@
   <div class="col-4"></div>
 </div>
 <div class="row">
-  <div class="col-2">
+  <div class="col-3">
     <div class="vertical-space"></div>
-    <div *ngFor="let r of eventRankings">
-      <button class="btn btn-primary event-button">{{r.eventName}}</button>
+    <div *ngFor="let r of eventRankings;index as i">
+      <div class="row event-grouping">
+        <div class="col-4">
+          <h2 class="float-right event-place">{{i+1}}</h2>
+        </div>
+        <div class="col-8">
+          <button class="btn btn-primary float-right event-button">{{r.eventName}}</button>
+        </div>
+      </div>
     </div>
     <div class="vertical-space"></div>
   </div>
-  <div class="col-10">
+  <div class="col-9">
     <div class="graph-gray">
       <div id="graph" class="graph-white">
         <div *ngFor="let r of eventRankings; index as i" class="graph-bar"

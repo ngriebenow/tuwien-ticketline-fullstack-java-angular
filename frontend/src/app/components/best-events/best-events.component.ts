@@ -62,7 +62,7 @@ export class BestEventsComponent implements OnInit {
 
 
   calcVerticalOffset(index: number): string {
-    let offset: number = index * 45 + 30;
+    let offset: number = index * 53 + 38;
     return offset.toString() + "px";
   }
 
