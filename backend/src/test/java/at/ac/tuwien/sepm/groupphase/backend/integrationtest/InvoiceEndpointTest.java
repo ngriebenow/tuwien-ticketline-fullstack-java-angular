@@ -487,6 +487,30 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   }
 
   @Test
+  public void givenTwoInvoices_whenFilterInvoiceNumberOne_thenInvoiceOneReturned() {
+    Long invoiceNumberOne =
+        postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne)
+            .body()
+            .as(InvoiceDto.class)
+            .getNumber();
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("invoiceNumber", invoiceNumberOne.toString());
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().response().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(1L);
+    assertThat(invoiceDtoPage.get(0).getNumber()).isEqualTo(invoiceNumberOne);
+  }
+
+  @Test
   public void givenTwoInvoices_whenFilterReservationCodeOne_thenInvoiceOneReturned() {
     String reservationCodeOne =
         postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne)

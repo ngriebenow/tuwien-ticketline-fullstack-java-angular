@@ -41,6 +41,10 @@ public class InvoiceSpecification {
                           ilike(reservationCode))));
 
       invoiceFilterDto
+          .getInvoiceNumber()
+          .ifPresent(number -> predicates.add(criteriaBuilder.equal(root.get("number"), number)));
+
+      invoiceFilterDto
           .getClientName()
           .ifPresent(
               clientName -> predicates.add(likeClientName(clientName, root, criteriaBuilder)));
