@@ -13,6 +13,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventRankingMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.pricecategory.PriceCategoryMapper;
@@ -60,6 +61,7 @@ public class SimpleEventService implements EventService {
   @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
   @Autowired private EventSearchResultMapper eventSearchResultMapper;
   @Autowired private PriceCategoryMapper priceCategoryMapper;
+  @Autowired private EventRankingMapper eventRankingMapper;
 
   @PersistenceContext
   EntityManager entityManager;
@@ -83,77 +85,24 @@ public class SimpleEventService implements EventService {
   @Transactional(readOnly = true)
   @Override
   public List<EventRankingDto> getBestEvents(Integer limit) {
-
-
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-
-    //CriteriaQuery<Event> cq = cb.createQuery(Event.class);
-    //Root<Event> root = cq.from(Event.class);
-
-
-    CriteriaQuery<Ticket> ticketCq = cb.createQuery(Ticket.class);
-    Root<Ticket> ticketRoot = ticketCq.from(Ticket.class);
-
-
-
-    CriteriaQuery<Ticket> qt = cb.createQuery(Ticket.class);
-    Root<Ticket> r = qt.from(Ticket.class);
-    qt.select(r);
-    TypedQuery<Ticket> q = entityManager.createQuery(qt);
-    List<Ticket> res = q.getResultList();
-
-    res.forEach(o -> System.out.println(o));
-
-
-
-
-    //ticketCq.groupBy(ticketRoot.get("definedUnit").get("performance").get("event"));
-
-
-
-
-
-
-    //CriteriaQuery<EventRanking> erCq = cb.createQuery(EventRanking.class);
-
-    //Join<Ticket, Event> join = ticketRoot.join("definedUnit")
-        //.join("performance").join("event");
 
     CriteriaQuery<EventRanking> events = cb.createQuery(EventRanking.class);
     Root<Ticket> nr = events.from(Ticket.class);
 
     Path<Event> path = nr.get("definedUnit").get("performance").get("event");
 
-    //events.groupBy(path);
-
     events.multiselect(cb.count(nr), path.get("id"), path.get("name"));
-    //events.select(path);
+    events.groupBy(path.get("id"));
+    events.where(cb.equal(nr.get("isCancelled"),false));
+    events.orderBy(cb.desc(cb.count(nr)));
 
-
-
-    TypedQuery<EventRanking> tq = entityManager.createQuery(events);
+    TypedQuery<EventRanking> tq = entityManager.createQuery(events).setMaxResults(limit);
 
     List<EventRanking> evs = tq.getResultList();
 
-
-    for (EventRanking er: evs) {
-      LOGGER.info(er.toString());
-    }
-
-
-
-    //erCq.multiselect(join,cb.count(ticketRoot));
-
-
-
-    //List<EventRanking> eventRankings = entityManager.createQuery(erCq).getResultList();
-
-
-
-    //eventRankings.forEach(e -> LOGGER.info(e.toString()));
-
-
-    return null;
+    return evs.stream().map(e -> eventRankingMapper.eventRankingToEventRankingDto(e)).collect(
+        Collectors.toList());
   }
 
   @Transactional(readOnly = true)

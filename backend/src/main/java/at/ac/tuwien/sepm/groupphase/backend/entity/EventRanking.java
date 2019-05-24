@@ -8,10 +8,14 @@ public class EventRanking {
 
   private String eventName;
 
+  /** Build an event ranking by sold tickets. */
   public EventRanking(Long soldTickets, Long eventId, String eventName) {
     this.soldTickets = soldTickets;
     this.eventId = eventId;
     this.eventName = eventName;
+  }
+
+  public EventRanking() {
   }
 
   public Long getSoldTickets() {

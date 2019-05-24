@@ -18,4 +18,6 @@ public class EventRankingDto {
   @ApiModelProperty(required = true, name = "The tickets sold in total of the event")
   private Long soldTickets;
 
+  public EventRankingDto() {
+  }
 }
