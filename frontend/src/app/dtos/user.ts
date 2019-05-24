@@ -3,7 +3,7 @@ export class User {
     public username: number,
     public password: number,
     public isLocked: boolean,
-    public isAdmon: boolean
+    public isAdmin: boolean
   ) {
   }
 }
