@@ -80,4 +80,11 @@ export class InvoiceFilterComponent implements OnInit {
     return `${invoice.client.name} ${invoice.client.surname}`;
   }
 
+  private getPerformanceTitle(invoice: Invoice): string {
+    if (invoice.tickets.length < 1) {
+      return '';
+    }
+    const ticket = invoice.tickets[0];
+    return `${ticket.eventName}: ${ticket.performanceName}`;
+  }
 }
