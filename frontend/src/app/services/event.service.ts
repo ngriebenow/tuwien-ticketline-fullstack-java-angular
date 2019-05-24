@@ -4,6 +4,7 @@ import {Globals} from '../global/globals';
 import {Observable} from 'rxjs';
 import {EventFilter} from '../dtos/event-filter';
 import {EventSearchResult} from "../dtos/event-search-result";
+import {EventRanking} from "../dtos/event-ranking";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import {EventSearchResult} from "../dtos/event-search-result";
 export class EventService {
 
   private eventBaseUri: string = this.globals.backendUri + '/events';
+  private besteventsUri: string = '/best';
 
   constructor(private httpClient: HttpClient, private globals: Globals) {
   }
@@ -27,6 +29,17 @@ export class EventService {
   getEventById(id: number): Observable<Event> {
     console.log('Load event for ' + id);
     return this.httpClient.get<Event>(this.eventBaseUri + '/' + id);
+  }
+
+  getBestEvents(eventFilter: EventFilter): Observable<EventRanking[]> {
+    const paramsHttp = new HttpParams()
+      .set('eventCategory', eventFilter.eventCategory);
+
+
+    console.log('getBestEvents: ' + paramsHttp);
+
+    return this.httpClient.get<EventRanking[]>(this.eventBaseUri + this.besteventsUri, {params: paramsHttp});
+
   }
 
   getEventsFiltered(eventFilter: EventFilter): Observable<EventSearchResult[]> {
