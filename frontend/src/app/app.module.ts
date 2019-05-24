@@ -9,7 +9,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
-import {MessageComponent} from './components/message/message.component';
+import {NewsComponent} from './components/news/news.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {httpInterceptorProviders} from './interceptors';
 import {Globals} from './global/globals';
@@ -30,7 +30,7 @@ import {HallViewingComponent} from './components/hall-viewing/hall-viewing.compo
     FooterComponent,
     HomeComponent,
     LoginComponent,
-    MessageComponent,
+    NewsComponent,
     HallCreationComponent,
     HallCreationMenuComponent,
     HallCreationPlanComponent,

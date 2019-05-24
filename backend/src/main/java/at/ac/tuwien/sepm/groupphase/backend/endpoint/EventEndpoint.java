@@ -92,6 +92,7 @@ public class EventEndpoint {
       @RequestParam(required = false) String locationCountry,
       @RequestParam(required = false) String locationStreet,
       @RequestParam(required = false) String locationPlace,
+      @RequestParam(required = false) String locationPostalCode,
       @RequestParam(required = false) String startAtTime,
       @RequestParam(required = false) String startAtDate,
       @RequestParam(required = false) Integer page,
@@ -130,6 +131,7 @@ public class EventEndpoint {
             .locationCountry(locationCountry)
             .locationPlace(locationPlace)
             .locationStreet(locationStreet)
+            .locationPostalCode(locationPostalCode)
             .startAtDate(date)
             .startAtTime(time)
             .build();

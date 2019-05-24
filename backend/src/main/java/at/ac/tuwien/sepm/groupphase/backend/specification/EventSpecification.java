@@ -62,7 +62,15 @@ public class EventSpecification {
               criteriaBuilder.like(
                   criteriaBuilder.lower(root.get("hall").get("location").get("place")),
                   "%" + eventFilterDto.getLocationPlace().toLowerCase() + "%");
-          expressions.add(locationPlace);
+          Predicate locationPostalCode =
+              criteriaBuilder.like(
+                  criteriaBuilder.lower(root.get("hall").get("location").get("postalCode")),
+                  "%" + eventFilterDto.getLocationPlace().toLowerCase() + "%");
+
+          Predicate combinedPlacePostalCode =
+              criteriaBuilder.or(locationPlace, locationPostalCode);
+
+          expressions.add(combinedPlacePostalCode);
         }
         if (eventFilterDto.getLocationCountry() != null) {
           Predicate locationCountry =
@@ -82,7 +90,7 @@ public class EventSpecification {
           Predicate locationPostalCode =
               criteriaBuilder.like(
                   criteriaBuilder.lower(root.get("hall").get("location").get("postalCode")),
-                  "%" + eventFilterDto.getLocationId() + "%");
+                  "%" + eventFilterDto.getLocationPostalCode() + "%");
           expressions.add(locationPostalCode);
         }
 
