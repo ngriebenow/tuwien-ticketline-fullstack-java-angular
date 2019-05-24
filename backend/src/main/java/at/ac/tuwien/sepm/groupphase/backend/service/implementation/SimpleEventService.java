@@ -6,8 +6,11 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.EventRanking;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Invoice;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
@@ -22,6 +25,19 @@ import at.ac.tuwien.sepm.groupphase.backend.specification.PerformanceSpecificati
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.ListJoin;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +60,9 @@ public class SimpleEventService implements EventService {
   @Autowired private EventSearchResultMapper eventSearchResultMapper;
   @Autowired private PriceCategoryMapper priceCategoryMapper;
 
+  @PersistenceContext
+  EntityManager entityManager;
+
   @Transactional(readOnly = true)
   @Override
   public EventDto getOneById(Long id) throws NotFoundException {
@@ -63,6 +82,64 @@ public class SimpleEventService implements EventService {
   @Transactional(readOnly = true)
   @Override
   public List<EventRankingDto> getBestEvents(Integer limit) {
+
+
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+    //CriteriaQuery<Event> cq = cb.createQuery(Event.class);
+    //Root<Event> root = cq.from(Event.class);
+
+
+    CriteriaQuery<Ticket> ticketCq = cb.createQuery(Ticket.class);
+    Root<Ticket> ticketRoot = ticketCq.from(Ticket.class);
+
+
+
+
+
+    //ticketCq.groupBy(ticketRoot.get("definedUnit").get("performance").get("event"));
+
+
+
+
+
+
+    //CriteriaQuery<EventRanking> erCq = cb.createQuery(EventRanking.class);
+
+    //Join<Ticket, Event> join = ticketRoot.join("definedUnit")
+        //.join("performance").join("event");
+
+    CriteriaQuery<Event> events = cb.createQuery(Event.class);
+    Root<Ticket> nr = events.from(Ticket.class);
+
+    Path<Event> path = nr.get("definedUnit").get("performance").get("event");
+
+    events.groupBy(path);
+
+    events.multiselect(cb.count(nr), path);
+    events.select(path);
+
+
+
+    TypedQuery<Event> tq = entityManager.createQuery(events);
+
+    List<?> evs = tq.getResultList();
+
+
+    evs.forEach(e -> LOGGER.info(e.toString()));
+
+
+    //erCq.multiselect(join,cb.count(ticketRoot));
+
+
+
+    //List<EventRanking> eventRankings = entityManager.createQuery(erCq).getResultList();
+
+
+
+    //eventRankings.forEach(e -> LOGGER.info(e.toString()));
+
+
     return null;
   }
 
