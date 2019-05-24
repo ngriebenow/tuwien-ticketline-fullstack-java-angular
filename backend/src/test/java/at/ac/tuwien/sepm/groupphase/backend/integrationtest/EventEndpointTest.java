@@ -103,8 +103,6 @@ public class EventEndpointTest extends BaseIntegrationTest {
   private PriceCategory PC5;
   private PriceCategory PC6;
 
-  private static int PRICE_TOLERANCE = 1000;
-
 
   @Before
   public void initialize() {
@@ -189,7 +187,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .version(1)
             .name("Hall Wolkenstein")
             .boundaryPoint(new Point.Builder().coordinateX(0).coordinateY(0).build())
-            .location(L1)
+            .location(L2)
             .build();
     hallRepository.save(H3);
 
@@ -796,4 +794,157 @@ public class EventEndpointTest extends BaseIntegrationTest {
 
   }
 
+  @Test
+  public void givenEvents_whenFilterByLocationName_thenReturnE3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?locationName=Loc xyz")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(E3_SR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByStreet_thenReturnE3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?locationStreet=street 3")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(E3_SR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByPostalCode_thenReturnE3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?locationPostalCode=1111")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(E3_SR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByLocationPlaceAsPostalCode_thenReturnE3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?locationPlace=1111")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(E3_SR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByCountry_thenReturnE3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?locationCountry=Germany")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(E3_SR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByPlace_thenReturnE3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?locationPlace=Steinfurt")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(E3_SR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByHallName_thenReturnE2() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?hallName=SCHILLER")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(E2_SR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
 }
