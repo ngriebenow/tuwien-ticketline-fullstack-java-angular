@@ -248,14 +248,10 @@ public class EventTop10ServiceIntegrationTest {
             .isCancelled(false)
             .salt("pepper")
             .build();
-    //ticket1 = ticketRepository.save(ticket1);
 
     invoice1.addTicket(ticket1);
 
-
     invoiceRepository.save(invoice1);
-
-
   }
 
 
@@ -263,9 +259,10 @@ public class EventTop10ServiceIntegrationTest {
   public void cleanUp() {
     invoice1.removeTicket(ticket1);
     invoiceRepository.save(invoice1);
-    invoiceRepository.deleteAll();
     ticketRepository.deleteAll();
     invoiceRepository.deleteAll();
+    definedUnitRepository.deleteAll();
+    unitRepository.deleteAll();
     priceCategoryRepository.deleteAll();
     performanceRepository.deleteAll();
     eventRepository.deleteAll();
@@ -277,7 +274,7 @@ public class EventTop10ServiceIntegrationTest {
 
   @Test
   public void givenEvents_whenGetBestEvents_returnBestEvents() {
-    eventService.getBestEvents(10);
+    eventService.getBestEvents(10,new EventFilterDto());
   }
 
 }
