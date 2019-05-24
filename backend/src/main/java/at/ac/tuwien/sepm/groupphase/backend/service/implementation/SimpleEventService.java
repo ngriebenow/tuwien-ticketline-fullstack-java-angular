@@ -86,6 +86,8 @@ public class SimpleEventService implements EventService {
   @Transactional(readOnly = true)
   @Override
   public List<EventRankingDto> getBestEvents(Integer limit, EventFilterDto eventFilterDto) {
+    LOGGER.info("getBestEvents with filter " + eventFilterDto);
+
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
     CriteriaQuery<EventRanking> events = cb.createQuery(EventRanking.class);
@@ -110,8 +112,11 @@ public class SimpleEventService implements EventService {
 
     List<EventRanking> evs = tq.getResultList();
 
-    return evs.stream().map(e -> eventRankingMapper.eventRankingToEventRankingDto(e)).collect(
+    List<EventRankingDto> eventRankingDtos = evs.stream().map(
+        e -> eventRankingMapper.eventRankingToEventRankingDto(e)).collect(
         Collectors.toList());
+
+    return eventRankingDtos;
   }
 
   @Transactional(readOnly = true)

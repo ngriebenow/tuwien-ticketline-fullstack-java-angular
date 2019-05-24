@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {EventFilter} from '../dtos/event-filter';
 import {EventSearchResult} from "../dtos/event-search-result";
 import {EventRanking} from "../dtos/event-ranking";
+import set = Reflect.set;
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,8 @@ export class EventService {
 
   getBestEvents(eventFilter: EventFilter): Observable<EventRanking[]> {
     const paramsHttp = new HttpParams()
-      .set('eventCategory', eventFilter.eventCategory);
+      .set('category', eventFilter.eventCategory)
+      .set('limit', '10');
 
 
     console.log('getBestEvents: ' + paramsHttp);

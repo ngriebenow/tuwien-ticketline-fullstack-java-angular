@@ -5,7 +5,7 @@
 </div>
 <div class="row">
   <div class="col-12">
-    <select class="select-control" (change)="loadEvents()"
+    <select class="select-control" (change)="loadEventRankings()"
             [(ngModel)]="eventFilter.eventCategory"
             [style.background]="getColor(fstCategory.selected)">
       <option #fstCategory value="">(alle)</option>
@@ -20,6 +20,8 @@
 
   </div>
   <div class="col-9">
-    <button></button>
+    <div *ngFor="let r of eventRankings">
+      <button>{{r.eventName}}</button>
+    </div>
   </div>
 </div>

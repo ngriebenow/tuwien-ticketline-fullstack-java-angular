@@ -21,7 +21,6 @@ import { EventFilterComponent } from './components/event-filter/event-filter.com
 import { MyDatePickerModule } from 'mydatepicker';
 import {IMyDpOptions} from 'mydatepicker';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
-import { EventTopTenComponent } from './components/event-top-ten/event-top-ten.component';
 import { BestEventsComponent } from './components/best-events/best-events.component';
 
 @NgModule({
@@ -38,7 +37,6 @@ import { BestEventsComponent } from './components/best-events/best-events.compon
     EventComponent,
     EventFilterComponent,
     HallViewingComponent,
-    EventTopTenComponent,
     BestEventsComponent,
   ],
   imports: [
