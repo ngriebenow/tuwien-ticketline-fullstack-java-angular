@@ -22,6 +22,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import {IMyDpOptions} from 'mydatepicker';
 import { InvoiceFilterComponent } from './components/invoice-filter/invoice-filter.component';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {HallViewingComponent} from './components/hall-viewing/hall-viewing.compo
     EventFilterComponent,
     InvoiceFilterComponent,
     HallViewingComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
