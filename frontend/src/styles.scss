@@ -3,5 +3,9 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 body {
-  background-color: whitesmoke;
+  background-color: white;
+}
+
+.container{
+  max-width: 75vw;
 }

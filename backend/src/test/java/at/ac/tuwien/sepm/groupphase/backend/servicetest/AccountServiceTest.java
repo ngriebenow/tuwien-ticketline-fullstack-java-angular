@@ -31,6 +31,8 @@ public class AccountServiceTest {
 
   @Before
   public void setUp() {
+    userRepository.deleteAll();
+
     u1 = new UserDto();
     u1.setUsername("U1");
     u1.setPassword(somePasswd); // Doesnt matter in this test -> never returned from service

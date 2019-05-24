@@ -14,6 +14,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
+import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
@@ -24,11 +25,14 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.HallRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,6 +56,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
   @Autowired private LocationRepository locationRepository;
   @Autowired private ArtistRepository artistRepository;
   @Autowired private EventRepository eventRepository;
+  @Autowired private PriceCategoryRepository priceCategoryRepository;
 
   @Autowired private EventMapper eventMapper;
   @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
@@ -60,6 +65,10 @@ public class EventEndpointTest extends BaseIntegrationTest {
   private static Event E1;
   private static Event E2;
   private static Event E3;
+  
+  private static EventSearchResultDto E1_SR;
+  private static EventSearchResultDto E2_SR;
+  private static EventSearchResultDto E3_SR;
 
   private static Artist A1;
   private static Artist A2;
@@ -84,6 +93,17 @@ public class EventEndpointTest extends BaseIntegrationTest {
   private static Performance P7;
   private static Performance P8;
   private static Performance P9;
+
+  private PriceCategory PC1;
+  private PriceCategory PC2;
+
+  private PriceCategory PC3;
+  private PriceCategory PC4;
+
+  private PriceCategory PC5;
+  private PriceCategory PC6;
+
+  private static int PRICE_TOLERANCE = 1000;
 
 
   @Before
@@ -184,7 +204,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P1 =
         new Performance.Builder()
             .name("1A")
-            .startAt(LocalDate.of(2000, 1, 15).atStartOfDay())
+            .startAt(LocalDateTime.of(3000, 1, 15,0,0))
             .id(0L)
             .event(E1)
             .build();
@@ -193,7 +213,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P2 =
         new Performance.Builder()
             .name("2A")
-            .startAt(LocalDate.of(2000, 2, 15).atStartOfDay())
+            .startAt(LocalDateTime.of(3000, 1, 15,8,0))
             .id(1L)
             .event(E1)
             .build();
@@ -202,7 +222,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P3 =
         new Performance.Builder()
             .name("1B")
-            .startAt(LocalDate.of(2000, 3, 15).atStartOfDay())
+            .startAt(LocalDateTime.of(3000, 2, 15,16,0))
             .event(E2)
             .build();
     P3 = performanceRepository.save(P3);
@@ -210,7 +230,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P4 =
         new Performance.Builder()
             .name("2B")
-            .startAt(LocalDate.of(2000, 4, 15).atStartOfDay())
+            .startAt(LocalDateTime.of(3001, 2, 15,23,0))
             .event(E2)
             .build();
     P4 = performanceRepository.save(P4);
@@ -218,7 +238,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P5 =
         new Performance.Builder()
             .name("3B")
-            .startAt(LocalDate.of(2000, 5, 15).atStartOfDay())
+            .startAt(LocalDateTime.of(3000, 3, 15,0,0))
             .event(E2)
             .build();
     P5 = performanceRepository.save(P5);
@@ -226,7 +246,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P6 =
         new Performance.Builder()
             .name("1C")
-            .startAt(LocalDate.of(2000, 6, 15).atStartOfDay())
+            .startAt(LocalDateTime.of(3000, 3, 15,22,29))
             .event(E3)
             .build();
     P6 = performanceRepository.save(P6);
@@ -234,7 +254,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P7 =
         new Performance.Builder()
             .name("2C")
-            .startAt(LocalDate.of(2000, 7, 15).atStartOfDay())
+            .startAt(LocalDateTime.of(3000, 2, 14,22,30))
             .event(E3)
             .build();
     P7 = performanceRepository.save(P7);
@@ -242,7 +262,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P8 =
         new Performance.Builder()
             .name("3C")
-            .startAt(LocalDate.of(2000, 8, 15).atStartOfDay())
+            .startAt(LocalDateTime.of(3000, 6, 15,22,31))
             .event(E3)
             .build();
     P8 = performanceRepository.save(P8);
@@ -250,14 +270,67 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P9 =
         new Performance.Builder()
             .name("4C")
-            .startAt(LocalDate.of(2000, 9, 15).atStartOfDay())
+            .startAt(LocalDateTime.of(3000, 12, 15,23,59))
             .event(E3)
             .build();
     P9 = performanceRepository.save(P9);
+
+
+
+    PC1 = new PriceCategory.Builder()
+        .name("PC1")
+        .color(Color.BLACK)
+        .event(E1)
+        .priceInCents(2000).build();
+    PC1 = priceCategoryRepository.save(PC1);
+    
+
+    PC2 = new PriceCategory.Builder()
+        .name("PC2")
+        .color(Color.BLACK)
+        .event(E2)
+        .priceInCents(3000).build();
+    PC2 = priceCategoryRepository.save(PC2);
+
+    PC3 = new PriceCategory.Builder()
+        .name("PC3")
+        .color(Color.BLACK)
+        .event(E2)
+        .priceInCents(4000).build();
+    PC3 = priceCategoryRepository.save(PC3);
+
+    PC4 = new PriceCategory.Builder()
+        .name("PC4")
+        .color(Color.BLACK)
+        .event(E3)
+        .priceInCents(5000).build();
+    PC4 = priceCategoryRepository.save(PC4);
+
+    PC5 = new PriceCategory.Builder()
+        .name("PC5")
+        .color(Color.BLACK)
+        .event(E3)
+        .priceInCents(6000).build();
+    PC5 = priceCategoryRepository.save(PC5);
+
+    PC6 = new PriceCategory.Builder()
+        .name("PC6")
+        .color(Color.BLACK)
+        .event(E3)
+        .priceInCents(7000).build();
+    PC6 = priceCategoryRepository.save(PC6);
+    
+    E1_SR = eventSearchResultMapper.eventToEventSearchResultDto(E1);
+    E1_SR.setPriceRange("20 €");
+    E2_SR = eventSearchResultMapper.eventToEventSearchResultDto(E2);
+    E2_SR.setPriceRange("30 - 40 €");
+    E3_SR = eventSearchResultMapper.eventToEventSearchResultDto(E3);
+    E3_SR.setPriceRange("50 - 70 €");
   }
 
   @After
   public void cleanUp() {
+    priceCategoryRepository.deleteAll();
     performanceRepository.deleteAll();
     eventRepository.deleteAll();
     hallRepository.deleteAll();
@@ -356,8 +429,8 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(2));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+    Assert.assertTrue(retList.contains(E2_SR));
+    Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -379,7 +452,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(1));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E1)));
+    Assert.assertTrue(retList.contains(E1_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -401,7 +474,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(1));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
+    Assert.assertTrue(retList.contains(E2_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -423,9 +496,304 @@ public class EventEndpointTest extends BaseIntegrationTest {
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
     Assert.assertThat(retList.size(),is(2));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E2)));
-    Assert.assertTrue(retList.contains(eventSearchResultMapper.eventToEventSearchResultDto(E3)));
+    Assert.assertTrue(retList.contains(E2_SR));
+    Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
+
+  @Test
+  public void givenEvents_whenFilterByPrice0_thenReturnNoEvents() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?priceInCents=0")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(0));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByPrice1000_thenReturnE1() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?priceInCents=1000")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(E1_SR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByPrice4000_thenReturnE2E3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?priceInCents=4000")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(2));
+    Assert.assertTrue(retList.contains(E2_SR));
+    Assert.assertTrue(retList.contains(E3_SR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByPrice8000_thenReturnE3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?priceInCents=8000")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+    Assert.assertTrue(retList.contains(E3_SR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByPrice8001_thenReturnNoEvents() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?priceInCents=8001")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(0));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByTime0000_thenReturnE1P1E2P5() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtTime=00-00")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(2));
+
+    EventSearchResultDto E1sR = E1_SR;
+    EventSearchResultDto E2sR = E2_SR;
+
+    EventSearchResultDto retE1sR = retList.get(retList.indexOf(E1sR));
+    EventSearchResultDto retE2sR = retList.get(retList.indexOf(E2sR));
+
+    Assert.assertThat(retE1sR,equalTo(E1sR));
+    Assert.assertThat(retE2sR,equalTo(E2sR));
+    
+    Assert.assertThat(retE1sR.getPerformances().size(),is(1));
+    Assert.assertThat(retE2sR.getPerformances().size(),is(1));
+    
+    PerformanceSearchResultDto retP1sR = retE1sR.getPerformances().get(0);
+    PerformanceSearchResultDto retP2sR = retE2sR.getPerformances().get(0);
+    
+    PerformanceSearchResultDto P1sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P1);
+    PerformanceSearchResultDto P5sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P5);
+
+    Assert.assertThat(retP1sR,equalTo(P1sR));
+    Assert.assertThat(retP2sR,equalTo(P5sR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByTime2300_thenReturnE3P7P8E2P4() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtTime=23-00")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(2));
+
+    EventSearchResultDto retE2sR = retList.get(retList.indexOf(E2_SR));
+    EventSearchResultDto retE3sR = retList.get(retList.indexOf(E3_SR));
+
+    Assert.assertThat(retE3sR,equalTo(E3_SR));
+    Assert.assertThat(retE2sR,equalTo(E2_SR));
+
+    Assert.assertThat(retE3sR.getPerformances().size(),is(2));
+    Assert.assertThat(retE2sR.getPerformances().size(),is(1));
+
+
+
+    PerformanceSearchResultDto P7sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P7);
+    PerformanceSearchResultDto P8sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P8);
+    PerformanceSearchResultDto P4sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P4);
+
+    PerformanceSearchResultDto retP7sR = retE3sR.getPerformances().get(
+        retE3sR.getPerformances().indexOf(P7sR));
+
+    PerformanceSearchResultDto retP8sR = retE3sR.getPerformances().get(
+        retE3sR.getPerformances().indexOf(P8sR));
+
+
+    PerformanceSearchResultDto retP4sR = retE2sR.getPerformances().get(0);
+
+    Assert.assertThat(retP7sR,equalTo(P7sR));
+    Assert.assertThat(retP8sR,equalTo(P8sR));
+    Assert.assertThat(retP4sR,equalTo(P4sR));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByTime2359_thenReturnE3P9() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtTime=23-59")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+
+    EventSearchResultDto retE3sR = retList.get(0);
+
+    Assert.assertThat(retE3sR,equalTo(E3_SR));
+    Assert.assertThat(retE3sR.getPerformances().size(),is(1));
+
+    PerformanceSearchResultDto P9sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P9);
+    PerformanceSearchResultDto retP9sR = retE3sR.getPerformances().get(0);
+
+    Assert.assertThat(retP9sR,equalTo(P9sR));
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByDate15023000_thenReturnE2P3() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtDate=15.02.3000")
+            .then()
+            .extract()
+            .response();
+
+
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(1));
+
+    EventSearchResultDto retE2sR = retList.get(0);
+
+    Assert.assertThat(retE2sR,equalTo(E2_SR));
+    Assert.assertThat(retE2sR.getPerformances().size(),is(1));
+
+    PerformanceSearchResultDto P3sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P3);
+    PerformanceSearchResultDto retP3sR = retE2sR.getPerformances().get(0);
+
+    Assert.assertThat(retP3sR,equalTo(P3sR));
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+  }
+
+  @Test
+  public void givenEvents_whenFilterByInvalidDate_thenBadRequest() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtDate=15-02.3000")
+            .then()
+            .extract()
+            .response();
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST.value()));
+
+  }
+
+  @Test
+  public void givenEvents_whenFilterByInvalidTime_thenBadRequest() {
+
+    Response response =
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when()
+            .get(EVENT_ENDPOINT + "?startAtDate=225-00")
+            .then()
+            .extract()
+            .response();
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST.value()));
+
+  }
+
 }

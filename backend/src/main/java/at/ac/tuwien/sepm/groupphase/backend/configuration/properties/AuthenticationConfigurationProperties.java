@@ -15,10 +15,8 @@ public class AuthenticationConfigurationProperties {
 
   @NotNull private SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
   @NotNull private String secret;
-  @NotNull
-  private Duration validityDuration = Duration.of(6L, ChronoUnit.HOURS);
-  @NotNull
-  private Duration overlapDuration = Duration.of(3L, ChronoUnit.MINUTES);
+  @NotNull private Duration validityDuration = Duration.of(6L, ChronoUnit.HOURS);
+  @NotNull private Duration overlapDuration = Duration.of(3L, ChronoUnit.MINUTES);
 
   public SignatureAlgorithm getSignatureAlgorithm() {
     return signatureAlgorithm;
