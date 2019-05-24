@@ -2,24 +2,24 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 public class EventRanking {
 
-  private Long count;
+  private Long soldTickets;
 
   private Long eventId;
 
   private String eventName;
 
-  public EventRanking(Long count, Long eventId, String eventName) {
-    this.count = count;
+  public EventRanking(Long soldTickets, Long eventId, String eventName) {
+    this.soldTickets = soldTickets;
     this.eventId = eventId;
     this.eventName = eventName;
   }
 
-  public Long getCount() {
-    return count;
+  public Long getSoldTickets() {
+    return soldTickets;
   }
 
-  public void setCount(Long count) {
-    this.count = count;
+  public void setSoldTickets(Long soldTickets) {
+    this.soldTickets = soldTickets;
   }
 
   public Long getEventId() {
