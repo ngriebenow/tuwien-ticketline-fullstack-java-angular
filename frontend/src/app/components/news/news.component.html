@@ -3,9 +3,10 @@
   <div class="mt-4 container">
     <ng-container *ngFor="let news of getNews()">
       <div class="news-entry-panel">
-          <div class="space"></div>
-          <div class="title"><h5>{{news.title}}</h5></div>
-          <div class="summary">{{news.summary}}</div>
+        <div class="space"></div>
+        <div class="title"><h5>{{news.title}}</h5></div>
+        <div class="puplishedAt">{{news.publishedAt | date: 'short'}}</div>
+        <div class="summary">{{news.summary}}</div>
         <div class="details">
           <button (click)="selectNewsDetails(news.id)" type="button" class="btn btn-primary">Details</button>
         </div>

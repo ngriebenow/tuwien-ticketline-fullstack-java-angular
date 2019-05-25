@@ -9,15 +9,16 @@ import {PictureTransferService} from '../../services/picture-transfer.service';
 })
 export class PictureUploadComponent implements OnInit {
 
-  fieldDisabled = false;
   constructor(private pictureService: PictureService,
               private pictureTransferService: PictureTransferService) { }
   ngOnInit() {
   }
   onFileSelected(event) {
-    this.fieldDisabled = true;
-    this.pictureService.uploadPicture(event.target.files[0])
+    if (event.target.files[0].size > 1048576) {
+      alert('Error, file too big');
+    } else {
+      this.pictureService.uploadPicture(event.target.files[0])
       .subscribe(res => this.pictureTransferService.appendData(res));
+    }
   }
-
 }
