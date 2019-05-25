@@ -356,10 +356,10 @@ public class EventServiceIntegrationTest {
   }
 
   @Test
-  public void givenInvalidEventId_whenFindPerformancesByEventId_thenThrowNotFoundException() {
-    Assertions.assertThrows(
-        NotFoundException.class,
-        () -> eventService.getPerformancesByEventId(-1L, Pageable.unpaged()));
+  public void givenInvalidEventId_whenFindPerformancesByEventId_thenReturnNoPerformances() {
+    List<PerformanceSearchResultDto> retList =
+        eventService.getPerformancesByEventId(-1L, Pageable.unpaged());
+    Assert.assertThat(retList.size(),is(equalTo(0)));
   }
 
   @Test
