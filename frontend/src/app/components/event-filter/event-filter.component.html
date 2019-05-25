@@ -17,7 +17,8 @@
     <div class="col-2">
       <select class="select-control" (change)="loadEvents()"
               [(ngModel)]="eventFilter.eventCategory"
-              [style.background]="getColor(fstCategory.selected)">
+              [style.background]="getColor(fstCategory.selected)"
+              [style.color] = "getTextColor(fstCategory.selected)">
         <option #fstCategory value="">(alle)</option>
         <option value="CINEMA">Cinema</option>
         <option value="CONCERT">Concert</option>
@@ -39,6 +40,7 @@
 
       <select class="select-control" (change)="loadEvents()"
               [style.background]="getColor(fstTime.selected)"
+              [style.color] = "getTextColor(fstCategory.selected)"
               [(ngModel)]="eventFilter.startAtTime" >
         <option #fstTime value="" >(alle)</option>
         <option *ngFor = "let item of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]"
@@ -140,7 +142,8 @@
     </div>
     <div class="col-2">
       <select class="select-control" (change)="loadEvents()" [(ngModel)]="eventFilter.locationCountry"
-              [style.background]="getColor(fstCountry.selected)" >
+              [style.background]="getColor(fstCountry.selected)"
+              [style.color] = "getTextColor(fstCategory.selected)">
         <option #fstCountry value="">(alle)</option>
         <option value="Austria">Österreich</option>
         <option value="Germany">Deutschland</option>

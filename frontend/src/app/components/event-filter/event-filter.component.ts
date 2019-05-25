@@ -46,6 +46,14 @@ export class EventFilterComponent implements OnInit {
     }
   }
 
+  getTextColor(cat: boolean): string {
+    if (cat) {
+      return "#CFCFCF";
+    } else {
+      return '#FFFFFF';
+    }
+  }
+
   onDateChanged(event: IMyDateModel) {
     this.eventFilter.startAtDate = event.formatted;
     this.loadEvents();
