@@ -26,6 +26,14 @@ export class BestEventsComponent implements OnInit {
     }
   }
 
+  getTextColor(cat: boolean): string {
+    if (cat) {
+      return "#CFCFCF";
+    } else {
+      return '#FFFFFF';
+    }
+  }
+
   getGraphColor(first: boolean): string {
     if (first) {
       return "#FF9824";
