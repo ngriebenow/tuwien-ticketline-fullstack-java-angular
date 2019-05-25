@@ -50,19 +50,24 @@ public class SimpleAccountService implements AccountService {
         }
         if (userFilter.getRole() != null) {
           String rolestr = "";
-          if (userFilter.getRole().toLowerCase().equals("admin")) {
+          if (userFilter.getRole().toLowerCase().contains("admin")) {
             rolestr = "ROLE_ADMIN";
-          } else if (userFilter.getRole().toLowerCase().equals("user")) {
+          } else if (userFilter.getRole().toLowerCase().contains("user")) {
             rolestr = "ROLE_USER";
           } else {
             throw new InvalidInputException("Undefined role: " + userFilter.getRole());
           }
-          Predicate role = criteriaBuilder.like(root.get("authority"), rolestr);
+          Predicate role = criteriaBuilder.like(root.get("authority"), "%" + rolestr + "%");
           expressions.add(role);
         }
         if (userFilter.getLocked() != null) {
-          Predicate enabled = criteriaBuilder.equal(root.get("enabled"), !userFilter.getLocked());
-          expressions.add(enabled);
+          if (userFilter.getLocked().toLowerCase().contains("true")) {
+            Predicate enabled = criteriaBuilder.equal(root.get("enabled"), false);
+            expressions.add(enabled);
+          } else if (userFilter.getLocked().toLowerCase().contains("false")) {
+            Predicate enabled = criteriaBuilder.equal(root.get("enabled"), true);
+            expressions.add(enabled);
+          }
         }
 
         Predicate[] predicates = expressions.toArray(new Predicate[expressions.size()]);
@@ -81,12 +86,22 @@ public class SimpleAccountService implements AccountService {
     if (user.getPage() == null) {
       user.setPage(0);
     }
-    if (user.getCount() < 0) {
+    if (user.getCount() <= 0) {
       throw new InvalidInputException("Count must be >0");
     }
     if (user.getPage() < 0) {
       throw new InvalidInputException("Page must be >0");
     }
+    if (user.getUsername() != null && user.getUsername().isEmpty()) {
+      user.setUsername(null);
+    }
+    if (user.getRole() != null && user.getRole().isEmpty()) {
+      user.setRole(null);
+    }
+    if (user.getLocked() != null && user.getLocked().isEmpty()) {
+      user.setLocked(null);
+    }
+
     Pageable pageable = PageRequest.of(user.getPage(), user.getCount());
     Specification<User> userSpecification = likeUser(user);
     Page<User> users = userRepository.findAll(userSpecification, pageable);
