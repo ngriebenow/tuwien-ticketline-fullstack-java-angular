@@ -37,7 +37,10 @@ export class EventFilterComponent implements OnInit {
     this.loadEvents();
   }
 
-
+  /**
+   * Returns the color for the selctor
+   * @param first: true if it is the first option
+   */
   getColor(cat: boolean): string {
     if (cat) {
       return '#EAEAEA';
@@ -46,6 +49,22 @@ export class EventFilterComponent implements OnInit {
     }
   }
 
+  /**
+   * Returns the text color for the selctor
+   * @param first: true if it is the first option
+   */
+  getTextColor(cat: boolean): string {
+    if (cat) {
+      return "#CFCFCF";
+    } else {
+      return '#FFFFFF';
+    }
+  }
+
+  /**
+   * Reloads the event whenever the date has changed
+   * @param event: the event
+   */
   onDateChanged(event: IMyDateModel) {
     this.eventFilter.startAtDate = event.formatted;
     this.loadEvents();
@@ -61,9 +80,6 @@ export class EventFilterComponent implements OnInit {
     this.eventService.getEventsFiltered(this.eventFilter).subscribe(
       (events: EventSearchResult[]) => this.eventSearchResults = events);
   }
-
-
-
 
 
 }

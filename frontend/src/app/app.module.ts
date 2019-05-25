@@ -24,6 +24,7 @@ import { InvoiceFilterComponent } from './components/invoice-filter/invoice-filt
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { InvoiceDetailComponent } from './components/invoice-detail/invoice-detail.component';
+import { BestEventsComponent } from './components/best-events/best-events.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { InvoiceDetailComponent } from './components/invoice-detail/invoice-deta
     HallViewingComponent,
     AlertComponent,
     InvoiceDetailComponent,
+    BestEventsComponent,
   ],
   imports: [
     BrowserModule,

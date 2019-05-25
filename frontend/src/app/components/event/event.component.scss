@@ -27,7 +27,12 @@ $theme-colors:(
   width: 100% !important;
 }
 
+.row-separator {
+  height: 25px;
+}
+
 textarea{
+  padding-top: 5px;
   background-color: $light-gray !important;
   border-radius: 0px !important;
   color: $dark-gray !important;
@@ -36,30 +41,35 @@ textarea{
   height: 100%;
 }
 
-.col-md-1 {
-  padding: 2px !important;
+textarea.form-control {
+  padding-top: 12px;
 }
 
-.col-md-2 {
-  padding: 2px !important;
+
+.col-1 {
+  padding: 5px;
 }
 
-.col-md-3 {
-  padding: 2px !important;
+.col-2 {
+  padding: 5px;
 }
 
-.col-md-4 {
-  padding: 2px !important;
+.col-3 {
+  padding: 5px;
 }
 
-.col-md-10 {
-  padding: 2px !important;
+.col-4 {
+  padding: 5px;
 }
 
-.col-md-9 {
-  padding: 2px !important;
+.col-10 {
+  padding: 5px;
 }
 
-.col-md-6 {
-  padding: 2px !important;
+.col-9 {
+  padding: 5px;
+}
+
+.col-6 {
+  padding: 5px;
 }
