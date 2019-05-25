@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-12">
+    <h1>Top 10 Veranstaltungen</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-2">
+    <h2 class="float-right category-h2">Kategorie</h2>
+  </div>
+  <div class="col-2">
+    <select class="select-control category-selector" (change)="loadEventRankings()"
+            [(ngModel)]="eventFilter.eventCategory"
+            [style.background]="getColor(fstCategory.selected)"
+            [style.color] = "getTextColor(fstCategory.selected)">
+      <option #fstCategory value="">(alle)</option>
+      <option value="CINEMA">Cinema</option>
+      <option value="CONCERT">Concert</option>
+      <option value="OTHER">Other</option>
+    </select>
+  </div>
+  <div class="col-4"></div>
+</div>
+<div class="row">
+  <div class="col-3">
+    <div class="vertical-space"></div>
+    <div *ngFor="let r of eventRankings;index as i">
+      <div class="row event-grouping">
+        <div class="col-4">
+          <h2 class="float-right event-place">{{i+1}}</h2>
+        </div>
+        <div class="col-8">
+          <button routerLink="/events/{{r.eventId}}" class="btn btn-primary float-right event-button">{{r.eventName}}</button>
+        </div>
+      </div>
+    </div>
+    <div class="vertical-space-bottom"></div>
+  </div>
+  <div class="col-9">
+    <div class="graph-gray">
+      <div id="graph" class="graph-white">
+        <div *ngFor="let r of eventRankings; index as i" class="graph-bar"
+             [style.background]="getGraphColor(i===0)"
+             [ngStyle]="{'width': calcBarWidth(r), 'position':'absolute','top':calcVerticalOffset(i)}"></div>
+
+        <div class="marking-div" *ngFor="let e of eventRankings.slice(0,4);index as mark" [ngStyle]="{'position':'absolute','bottom':'25px','left':calcVerticalOffsetMark(mark)}">
+          <label  class="marking" >| <br> {{getMark(mark) | number : '1.0-0'}}</label>
+        </div>
+        <div class="marking-div" [ngStyle]="{'position':'absolute','bottom':'25px','right':'30px'}">
+          <label class="marking">verkaufte <br> Tickets</label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bottom-right">
+  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+</div>

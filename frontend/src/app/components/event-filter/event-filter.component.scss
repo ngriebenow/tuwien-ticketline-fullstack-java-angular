@@ -1,5 +1,9 @@
 @import "../../../colors";
 
+h2 {
+  padding-right: 5px;
+}
+
 .form-control {
   width: 100% !important;
 }
@@ -17,7 +21,7 @@
 }
 
 .col-2 {
-  padding: 2px !important;
+  padding: 5px !important;
 }
 
 .col-3 {
@@ -25,7 +29,7 @@
 }
 
 .col-4 {
-  padding: 2px !important;
+  padding: 5px !important;
 }
 
 .col-6 {
@@ -38,6 +42,14 @@
 
 .col-10 {
   padding: 2px !important;
+}
+
+.row {
+  padding-bottom: 0;
+}
+
+.row-separator {
+  height: 25px;
 }
 
 .card {

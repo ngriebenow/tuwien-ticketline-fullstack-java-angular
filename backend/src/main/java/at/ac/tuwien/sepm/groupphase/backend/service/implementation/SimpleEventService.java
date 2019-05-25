@@ -6,9 +6,11 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.EventRanking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventRankingMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.pricecategory.PriceCategoryMapper;
@@ -43,6 +45,9 @@ public class SimpleEventService implements EventService {
   @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
   @Autowired private EventSearchResultMapper eventSearchResultMapper;
   @Autowired private PriceCategoryMapper priceCategoryMapper;
+  @Autowired private EventRankingMapper eventRankingMapper;
+
+
 
   @Transactional(readOnly = true)
   @Override
@@ -62,36 +67,45 @@ public class SimpleEventService implements EventService {
 
   @Transactional(readOnly = true)
   @Override
-  public List<EventRankingDto> getBestEvents(Integer limit) {
-    return null;
+  public List<EventRankingDto> getBest(Integer limit, EventFilterDto eventFilterDto) {
+    LOGGER.info("getBest with filter " + eventFilterDto);
+
+    List<EventRanking> evs = eventRepository.getBest(limit, eventFilterDto);
+
+    return evs.stream().map(
+        e -> eventRankingMapper.eventRankingToEventRankingDto(e)).collect(
+        Collectors.toList());
   }
 
   @Transactional(readOnly = true)
   @Override
-  public List<EventSearchResultDto> getEventsFiltered(
+  public List<EventSearchResultDto> getFiltered(
       EventFilterDto eventFilterDto, Pageable pageable) {
-    LOGGER.info("getEventsFiltered " + eventFilterDto);
+    LOGGER.info("getFiltered " + eventFilterDto);
 
     Specification<Event> specification = EventSpecification.getEventSpecification(eventFilterDto);
     specification = specification.and(EventSpecification.likeHallLocation(eventFilterDto));
     specification = specification.and(EventSpecification.likeArtist(eventFilterDto));
     specification = specification.and(EventSpecification.likePrice(eventFilterDto));
+
     Page<Event> events = eventRepository.findAll(specification, pageable);
 
     List<EventSearchResultDto> eventDtos = new ArrayList<>();
 
     for (Event e : events) {
+      LOGGER.info("Found event " + e);
       EventSearchResultDto eventDto = eventSearchResultMapper.eventToEventSearchResultDto(e);
       List<PriceCategory> priceCategories =
           priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(e);
       eventDto.setPriceRange(formatPriceRange(priceCategories));
 
       List<PerformanceSearchResultDto> performanceSearchResultDtos =
-          getPerformancesFiltered(e.getId(), eventFilterDto);
+          getPerformancesFiltered(e.getId(), eventFilterDto, Pageable.unpaged());
 
       if (performanceSearchResultDtos.size() > 0) {
+        LOGGER.info("Performances found. Add event to event list.");
         eventDtos.add(eventDto);
-        eventDto.setPerformances(getPerformancesFiltered(e.getId(), eventFilterDto));
+        eventDto.setPerformances(performanceSearchResultDtos);
       }
     }
 
@@ -99,15 +113,12 @@ public class SimpleEventService implements EventService {
   }
 
   private String formatPriceRange(List<PriceCategory> priceCategories) {
-    String price = "";
-
+    String price;
     if (priceCategories.size() > 0) {
       price = String.format("%.0f", priceCategories.get(0).getPriceInCents() / 100.);
 
       if (priceCategories.size() > 1) {
-        price +=
-            " - "
-                + String.format(
+        price +=  " - " + String.format(
                     "%.0f",
                     priceCategories.get(priceCategories.size() - 1).getPriceInCents() / 100.);
       }
@@ -120,39 +131,23 @@ public class SimpleEventService implements EventService {
   }
 
   private List<PerformanceSearchResultDto> getPerformancesFiltered(
-      Long id, EventFilterDto eventFilterDto) throws NotFoundException {
-    LOGGER.info("getPerformancesFiltered " + id);
-
-    List<PerformanceSearchResultDto> performanceDtos = new ArrayList<>();
+      Long id, EventFilterDto eventFilterDto, Pageable pageable) throws NotFoundException {
+    LOGGER.info("getPerformancesFiltered with id " + id + " and filter " + eventFilterDto);
 
     Specification<Performance> specification = PerformanceSpecification.like(id, eventFilterDto);
 
-    performanceRepository
-        .findAll(specification)
-        .forEach(
-            p ->
-                performanceDtos.add(
-                    performanceSearchResultMapper.performanceToPerformanceSearchResultDto(p)));
-
-    return performanceDtos;
+    return performanceRepository
+        .findAll(specification, pageable)
+        .stream().map(
+          p -> performanceSearchResultMapper.performanceToPerformanceSearchResultDto(p))
+        .collect(Collectors.toList());
   }
 
   @Transactional(readOnly = true)
   @Override
-  public List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, Pageable pageable)
+  public List<PerformanceSearchResultDto> getPerformancesByEventId(Long id, Pageable pageable)
       throws NotFoundException {
     LOGGER.info("getPerformancesOfEvent " + id);
-
-    Event event = eventRepository.findById(id).orElseThrow(NotFoundException::new);
-    List<PerformanceSearchResultDto> performanceDtos = new ArrayList<>();
-
-    performanceRepository
-        .findAllByEvent(event, pageable)
-        .forEach(
-            p ->
-                performanceDtos.add(
-                    performanceSearchResultMapper.performanceToPerformanceSearchResultDto(p)));
-
-    return performanceDtos;
+    return getPerformancesFiltered(id,new EventFilterDto(),pageable);
   }
 }

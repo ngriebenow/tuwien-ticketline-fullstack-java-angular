@@ -3,7 +3,9 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Globals} from '../global/globals';
 import {Observable} from 'rxjs';
 import {EventFilter} from '../dtos/event-filter';
-import {EventSearchResult} from '../dtos/event-search-result';
+import {EventSearchResult} from "../dtos/event-search-result";
+import {EventRanking} from "../dtos/event-ranking";
+import set = Reflect.set;
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +13,15 @@ import {EventSearchResult} from '../dtos/event-search-result';
 export class EventService {
 
   private eventBaseUri: string = this.globals.backendUri + '/events';
+  private besteventsUri: string = '/best';
 
   constructor(private httpClient: HttpClient, private globals: Globals) {
   }
 
+  /**
+   * Loads specific performances by event id from the backend
+   * @param id of event to load
+   */
   getPerformancesById(id: number): Observable<Performance[]> {
     console.log('Load performances for event ' + id);
     return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances');
@@ -29,17 +36,37 @@ export class EventService {
     return this.httpClient.get<Event>(this.eventBaseUri + '/' + id);
   }
 
+  /**
+   * Loads the best events from the backend
+   * @param eventFilter which the events must fulfill
+   */
+  getBestEvents(eventFilter: EventFilter): Observable<EventRanking[]> {
+    const paramsHttp = new HttpParams()
+      .set('category', eventFilter.eventCategory)
+      .set('limit', '10');
+
+
+    console.log('getBestEvents: ' + paramsHttp);
+
+    return this.httpClient.get<EventRanking[]>(this.eventBaseUri + this.besteventsUri, {params: paramsHttp});
+
+  }
+
+  /**
+   * Loads events from the backend
+   * @param eventFilter which the events must fulfill
+   */
   getEventsFiltered(eventFilter: EventFilter): Observable<EventSearchResult[]> {
 
     console.log('getEventsFiltered');
 
-    let price = '';
+    let price: string = "";
     if (eventFilter.priceInEuro != null) {
       price = eventFilter.priceInEuro + '00';
     }
 
-    let time = '';
-    let date = '';
+    let time: string = "";
+    let date: string = "";
     if (eventFilter.startAtDate != null) {
       date = eventFilter.startAtDate;
 
