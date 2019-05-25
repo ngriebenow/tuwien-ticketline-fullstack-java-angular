@@ -51,58 +51,15 @@ export class NewsComponent implements OnInit {
   isAdmin(): boolean {
     return this.authService.getUserRole() === 'ADMIN';
   }
-
-  /**
-   * Starts form validation and builds a news dto for sending a creation request if the form is valid.
-   * If the procedure was successful, the form will be cleared.
-   */
-  addNews() {
-    this.submitted = true;
-    if (this.newsForm.valid) {
-      const news: News = new News(null,
-        this.newsForm.controls.title.value,
-        this.newsForm.controls.summary.value,
-        this.newsForm.controls.text.value,
-        new Date().toISOString(),
-        [] // TODO get ids of uploaded pictures
-      );
-      this.createNews(news);
-      this.clearForm();
-    } else {
-      console.log('Invalid input');
-    }
-  }
-
   /**
    * Sends news creation request
-   * @param news the news which should be created
    */
-  createNews(news: News) {
-    this.newsService.createNews(news).subscribe(
-      () => {
-        this.loadNews(false);
-      },
-      error => {
-        this.defaultServiceErrorHandling(error);
-      }
-    );
+  addNews() {
+    this.router.navigate(['/news-add']);
   }
-
   getNews(): News[] {
     return this.news;
   }
-
-  /**
-   * Shows the specified news details. If it is necessary, the details text and pictureIds will be loaded
-   * @param id the id of the news which details should be shown
-   */
-  /*getNewsDetails(id: number) {
-    if (_.isEmpty(this.news.find(x => x.id === id).text)
-      || _.isEmpty(this.news.find(x => x.id === id).pictureIds)) {
-      this.loadNewsDetails(id);
-    }
-  }*/
-
   /**
    * Loads the text of news and pictureIds and update the existing array of news
    * @param id the id of the news which details should be loaded
@@ -132,12 +89,6 @@ export class NewsComponent implements OnInit {
       }
     );
   }
-
-  onSelect(news: News): void {
-    this.selectedNews = news;
-  }
-
-
   private defaultServiceErrorHandling(error: any) {
     console.log(error);
     this.error = true;
@@ -146,10 +97,5 @@ export class NewsComponent implements OnInit {
     } else {
       this.errorMessage = error.error.error;
     }
-  }
-
-  private clearForm() {
-    this.newsForm.reset();
-    this.submitted = false;
   }
 }

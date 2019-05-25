@@ -19,4 +19,10 @@ export class PictureService {
     console.log('Load picture with id ' + id);
     return this.httpClient.get(this.newsPicturesBaseUri + '/' + id, { responseType: 'blob' });
   }
+  uploadPicture(picture: File) {
+    console.log('Upload picture');
+    const fd = new FormData();
+    fd.append('picture', picture, picture.name);
+    return this.httpClient.post(this.newsPicturesBaseUri, fd);
+  }
 }

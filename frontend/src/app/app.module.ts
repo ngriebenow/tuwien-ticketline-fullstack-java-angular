@@ -23,6 +23,8 @@ import {IMyDpOptions} from 'mydatepicker';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 import { PictureDisplayComponent } from './components/picture-display/picture-display.component';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
+import { NewsAddComponent } from './components/news-add/news-add.component';
+import { PictureUploadComponent } from './components/picture-upload/picture-upload.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { NewsDetailComponent } from './components/news-detail/news-detail.compon
     HallViewingComponent,
     PictureDisplayComponent,
     NewsDetailComponent,
+    NewsAddComponent,
+    PictureUploadComponent,
   ],
   imports: [
     BrowserModule,
