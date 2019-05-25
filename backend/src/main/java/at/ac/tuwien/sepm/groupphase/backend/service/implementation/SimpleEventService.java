@@ -7,10 +7,8 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResult
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventRanking;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Event_;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventRankingMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
@@ -26,14 +24,6 @@ import at.ac.tuwien.sepm.groupphase.backend.specification.PerformanceSpecificati
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +47,7 @@ public class SimpleEventService implements EventService {
   @Autowired private PriceCategoryMapper priceCategoryMapper;
   @Autowired private EventRankingMapper eventRankingMapper;
 
-  @PersistenceContext
-  EntityManager entityManager;
+
 
   @Transactional(readOnly = true)
   @Override
@@ -81,30 +70,7 @@ public class SimpleEventService implements EventService {
   public List<EventRankingDto> getBest(Integer limit, EventFilterDto eventFilterDto) {
     LOGGER.info("getBest with filter " + eventFilterDto);
 
-    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-
-    CriteriaQuery<EventRanking> events = cb.createQuery(EventRanking.class);
-    Root<Ticket> nr = events.from(Ticket.class);
-
-    Path<Event> path = nr.get("definedUnit").get("performance").get("event");
-
-    Predicate checkForCategory = cb.and();
-    if (eventFilterDto.getEventCategory() != null) {
-      LOGGER.info("Add event category filter with " + eventFilterDto.getEventCategory());
-      checkForCategory = cb.equal(
-          path.get(Event_.category),eventFilterDto.getEventCategory());
-    }
-
-    events.multiselect(cb.count(nr), path.get("id"), path.get("name"));
-    events.groupBy(path.get("id"));
-    events.where(cb.and(
-        cb.equal(nr.get("isCancelled"),false),
-        checkForCategory));
-    events.orderBy(cb.desc(cb.count(nr)));
-
-    TypedQuery<EventRanking> tq = entityManager.createQuery(events).setMaxResults(limit);
-
-    List<EventRanking> evs = tq.getResultList();
+    List<EventRanking> evs = eventRepository.getBest(limit, eventFilterDto);
 
     return evs.stream().map(
         e -> eventRankingMapper.eventRankingToEventRankingDto(e)).collect(
@@ -173,7 +139,7 @@ public class SimpleEventService implements EventService {
     return performanceRepository
         .findAll(specification, pageable)
         .stream().map(
-        p -> performanceSearchResultMapper.performanceToPerformanceSearchResultDto(p))
+          p -> performanceSearchResultMapper.performanceToPerformanceSearchResultDto(p))
         .collect(Collectors.toList());
   }
 
