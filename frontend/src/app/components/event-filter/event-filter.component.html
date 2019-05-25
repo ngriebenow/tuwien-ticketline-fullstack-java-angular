@@ -8,7 +8,7 @@
 
 
   <div class="row">
-    <div class="col-3">
+    <div class="col-2">
       <h2 class="float-right">Veranstaltung</h2>
     </div>
     <div class="col-2">
@@ -35,7 +35,7 @@
                         required></my-date-picker>
       </form>
     </div>
-    <div class="col-1">
+    <div class="col-2">
 
       <select class="select-control" (change)="loadEvents()"
               [style.background]="getColor(fstTime.selected)"
@@ -64,7 +64,7 @@
 
 
   <div class="row">
-    <div class="col-3">
+    <div class="col-2">
     </div>
     <div class="col-2">
       <input class="form-control" placeholder="Künstler" (change)="loadEvents()" [(ngModel)]="eventFilter.artistName" type="text"/>
@@ -87,7 +87,7 @@
         </div>
       </div>
     </div>
-    <div class="col-1">
+    <div class="col-2">
       <div style="margin: 0" class="row">
         <div class="col-9">
           <input class="form-control" placeholder="Preis" (change)="loadEvents()" type="number" [(ngModel)]="eventFilter.priceInEuro" value=""/>
@@ -103,12 +103,12 @@
 
 
 
-  <div class="row mt-3"></div>
+  <div class="row mt-2"></div>
 
 
 
   <div class="row">
-    <div class="col-3">
+    <div class="col-2">
       <h2 class="float-right">Adresse</h2>
     </div>
 
@@ -122,7 +122,7 @@
     </div>
 
 
-    <div class="col-3">
+    <div class="col-4">
       <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.locationName" type="text"/>
     </div>
 
@@ -133,7 +133,7 @@
 
 
   <div class="row">
-    <div class="col-3"></div>
+    <div class="col-2"></div>
 
     <div class="col-2">
       <input class="form-control" placeholder="Ortsname, PLZ" (change)="loadEvents()" [(ngModel)]="eventFilter.locationPlace" type="text"/>
@@ -152,26 +152,11 @@
     <div class="col-2"></div>
 
 
-    <div class="col-2">
+    <div class="col-4">
       <input class="form-control" placeholder="Saalname" (change)="loadEvents()" [(ngModel)]="eventFilter.hallName"  type="text"/>
     </div>
 
-
-
   </div>
-
-  <div class="row">
-    <div class="col-3"></div>
-
-    <div class="col-2"></div>
-    <div class="col-2"></div>
-    <div class="col-2"></div>
-  </div>
-
-
-
-
-
 
 
 
