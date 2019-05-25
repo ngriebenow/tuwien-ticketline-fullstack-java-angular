@@ -120,7 +120,7 @@
           <div class="col-6 align-self-center">
             <h2 class="float-right" style="font-size: 20px">Saal</h2>
           </div>
-          <div class="col-4 align-self-center">
+          <div class="col-5 align-self-center">
             <input readonly class="form-control" type="text" value="{{getHallName()}}">
           </div>
         </div>
@@ -128,8 +128,16 @@
           <div class="col-6 align-self-center">
             <h2 class="float-right" style="font-size: 20px">Uhrzeit</h2>
           </div>
-          <div class="col-4 align-self-center">
-            <input readonly class="form-control" type="text" value="{{getStartAt()}}">
+          <div class="col-5 align-self-center">
+            <input readonly class="form-control" type="text" value="{{ getStartAt() | date:'HH:mm' }}">
+          </div>
+        </div>
+        <div class="row row-padding">
+          <div class="col-6 align-self-center">
+            <h2 class="float-right" style="font-size: 20px">Datum</h2>
+          </div>
+          <div class="col-5 align-self-center">
+            <input readonly class="form-control" type="text" value="{{ getStartAt() | date:'dd-MM-yyyy' }}">
           </div>
         </div>
         <div class="row row-padding" style="padding-top: 50px">

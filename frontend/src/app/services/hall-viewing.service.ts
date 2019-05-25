@@ -31,13 +31,11 @@ export class HallViewingService {
   }
 
   getHallSize(): Point {
-    // TODO for real!
-    return new Point(10, 10);
+    return this.ticketingService.getHallSize();
   }
 
-
+  // TODO!!!!!!!!
   getSeats(): Point[] {
-    // TODO for real!
     this.points[0] = new Point(1, 1);
     this.points[1] = new Point(2, 1);
     this.points[2] = new Point(4, 1);
@@ -59,14 +57,14 @@ export class HallViewingService {
   }
 
   getEventName(): String {
-    return this.eventName;
+    return this.ticketingService.getEventName();
   }
 
   getPerformanceName(): String {
     return this.performanceName;
   }
 
-
+  // TODO!!!!!!!
   getCats(): PriceCategory[] {
     this.cats[0] = new PriceCategory(1, 10.90, 'Kategorie1', 0x0000FF);
     this.cats[1] = new PriceCategory(2, 11.20, 'Kategorie2', 0x008000);
@@ -74,6 +72,7 @@ export class HallViewingService {
     return this.cats;
   }
 
+  // TODO!!!!!!
   getDefUnits(): DefinedUnit[] {
     this.defUnits[0] = new DefinedUnit(1, 'something', 1, 1, new Point(1, 1), new Point(1, 1), 1);
     this.defUnits[1] = new DefinedUnit(2, 'something', 1, 1, new Point(2, 1), new Point(2, 1), 1);
@@ -113,11 +112,11 @@ export class HallViewingService {
   }
 
   getHallName() {
-    return 'Halle 1';
+    return this.ticketingService.getHallName();
   }
 
   getStartAt() {
-    return '12:30';
+    return this.ticketingService.getPerformanceStart();
   }
 
   selectionNotEmpty() {

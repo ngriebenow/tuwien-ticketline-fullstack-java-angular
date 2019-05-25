@@ -15,7 +15,6 @@ import {Client} from '../dtos/client';
 export class TicketingService {
 
   event: Event;
-  hall: Hall;
   performance: Performance;
   reservationRequest: ReservationRequest;
   ticketRequests: TicketRequest[];
@@ -38,7 +37,7 @@ export class TicketingService {
   }
 
   setHall(hall: Hall) {
-    this.hall = hall;
+    this.event.hall = hall;
   }
 
   setTicketRequests(dunitIds: number[], amount: number[], dunits: DefinedUnit[], cats: PriceCategory[]) {
@@ -61,8 +60,16 @@ export class TicketingService {
     return this.performance.startAt;
   }
 
+  getEventName() {
+    return this.event.name;
+  }
+
   getHallName() {
-    return this.hall.name;
+    return this.event.hall.name;
+  }
+
+  getHallSize() {
+    return this.event.hall.boundaryPoint;
   }
 
   getClientName() {
