@@ -13,11 +13,11 @@ import {UserFilter} from '../../dtos/user-filter';
 })
 export class UserFilterComponent implements OnInit {
 
-  private users: User[];
+  public users: User[];
   private page = 0;
   private count = 20;
   private queryParams: UserFilter;
-  private isEnabled = null;
+  private isEnabled: boolean;
 
   private searchForm = this.formBuilder.group({
     userName: [''],
@@ -26,6 +26,8 @@ export class UserFilterComponent implements OnInit {
   });
 
   constructor(private userService: UserService, private formBuilder: FormBuilder) {
+    this.queryParams = new UserFilter('', '', false);
+    this.isEnabled = true;
   }
 
   ngOnInit() {
@@ -52,7 +54,6 @@ export class UserFilterComponent implements OnInit {
       distinctUntilChanged(),
     ).subscribe(values => {
       console.log(values);
-      this.queryParams = new UserFilter(null, null, null);
       Object.entries<any>(values)
         .filter(entry => entry[1] !== null)
         .map(entry => [entry[0], entry[1].toString().trim()])
