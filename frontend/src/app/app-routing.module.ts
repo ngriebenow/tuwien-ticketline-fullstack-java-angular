@@ -11,7 +11,7 @@ import {InvoiceFilterComponent} from './components/invoice-filter/invoice-filter
 import {InvoiceDetailComponent} from './components/invoice-detail/invoice-detail.component';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 import {UserFilterComponent} from './components/user-filter/user-filter.component';
-import {BestEventsComponent} from "./components/best-events/best-events.component";
+import {BestEventsComponent} from './components/best-events/best-events.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -24,7 +24,7 @@ const routes: Routes = [
   {path: 'invoice-filter', canActivate: [AuthGuard], component: InvoiceFilterComponent},
   {path: 'invoices/:id', canActivate: [AuthGuard], component: InvoiceDetailComponent},
   {path: 'finalize-transaction', canActivate: [AuthGuard], component: InvoiceDetailComponent},
-  {path: 'hall-viewing', canActivate: [AuthGuard], component: HallViewingComponent}
+  {path: 'hall-viewing', canActivate: [AuthGuard], component: HallViewingComponent},
   {path: 'user-filter', canActivate: [AuthGuard], component: UserFilterComponent}
 ];
 
