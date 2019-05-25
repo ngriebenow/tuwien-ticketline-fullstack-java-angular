@@ -9,6 +9,13 @@ import {TicketRequest} from '../../dtos/ticket-request';
 import {Invoice} from '../../dtos/invoice';
 import {Ticket} from '../../dtos/ticket';
 
+enum State {
+  Transient,
+  Reserved,
+  Bought,
+  Cancelled
+}
+
 @Component({
   selector: 'app-invoice-detail',
   templateUrl: './invoice-detail.component.html',
@@ -16,7 +23,7 @@ import {Ticket} from '../../dtos/ticket';
 })
 export class InvoiceDetailComponent implements OnInit {
 
-  private invoice: Invoice;
+  invoice: Invoice;
   private state: State;
   private selectedTickets: Ticket[] = [];
 
@@ -58,17 +65,15 @@ export class InvoiceDetailComponent implements OnInit {
   }
 
   private initState(): void {
-    let state: State;
     if (this.invoice.id === null) {
-      state = State.Transient;
+      this.state = State.Transient;
     } else if (this.invoice.cancelled) {
-      state = State.Cancelled;
+      this.state = State.Cancelled;
     } else if (this.invoice.paid) {
-      state = State.Bought;
+      this.state = State.Bought;
     } else {
-      state = State.Reserved;
+      this.state = State.Reserved;
     }
-    this.state = state;
   }
 
   private getTitle(): string {
@@ -256,27 +261,20 @@ export class InvoiceDetailComponent implements OnInit {
     this.alertService.info('Implementierung dieses Features folg demnächst');
   }
 
-  private isTransient(): boolean {
+  isTransient(): boolean {
     return this.state === State.Transient;
   }
 
-  private isReserved(): boolean {
+  isReserved(): boolean {
     return this.state === State.Reserved;
   }
 
-  private isBought(): boolean {
+  isBought(): boolean {
     return this.state === State.Bought;
   }
 
-  private isCancelled(): boolean {
+  isCancelled(): boolean {
     return this.state === State.Cancelled;
   }
 
-}
-
-enum State {
-  Transient,
-  Reserved,
-  Bought,
-  Cancelled
 }

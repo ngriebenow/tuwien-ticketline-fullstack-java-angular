@@ -14,12 +14,12 @@ import {Invoice} from '../../dtos/invoice';
 })
 export class InvoiceFilterComponent implements OnInit {
 
-  private invoices: Invoice[] = [];
-  private page = 0;
+  invoices: Invoice[] = [];
+  page = 0;
   private count = 20;
   private queryParams = {};
 
-  private searchForm = this.formBuilder.group({
+  searchForm = this.formBuilder.group({
     performanceName: [''],
     reservationCode: [''],
     invoiceNumber: [''],
@@ -29,8 +29,8 @@ export class InvoiceFilterComponent implements OnInit {
     isPaid: ['']
   });
 
-  private activeIsCancelled = '';
-  private activeIsPaid = '';
+  activeIsCancelled = '';
+  activeIsPaid = '';
 
   constructor(
     private invoiceService: InvoiceService,
@@ -86,18 +86,18 @@ export class InvoiceFilterComponent implements OnInit {
     }
   }
 
-  private resetSearchForm(): void {
+  resetSearchForm(): void {
     this.page = 0;
     this.activeIsPaid = '';
     this.activeIsCancelled = '';
     this.searchForm.reset({}, { emitEvent: true });
   }
 
-  private setActiveIsCancelled(event: any): void {
+  setActiveIsCancelled(event: any): void {
     this.activeIsCancelled = event.target.value;
   }
 
-  private setActiveIsPaid(event: any): void {
+  setActiveIsPaid(event: any): void {
     this.activeIsPaid = event.target.value;
   }
 

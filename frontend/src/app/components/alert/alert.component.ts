@@ -9,7 +9,7 @@ import {Alert, AlertType} from '../../dtos/alert';
 })
 export class AlertComponent implements OnInit {
 
-  private alerts: Alert[] = [];
+  alerts: Alert[] = [];
 
   constructor(private alertService: AlertService) { }
 

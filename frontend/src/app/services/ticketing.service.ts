@@ -100,7 +100,7 @@ export class TicketingService {
   getTransientInvoice(): Invoice {
     const tickets: Ticket[] = this.ticketRequests
       .map(ticReq => this.getTransientTickets(ticReq))
-      .reduce((prev, current) => prev.concat(current));
+      .reduce((prev, current) => prev.concat(current), []);
 
     return new Invoice(
       null,
