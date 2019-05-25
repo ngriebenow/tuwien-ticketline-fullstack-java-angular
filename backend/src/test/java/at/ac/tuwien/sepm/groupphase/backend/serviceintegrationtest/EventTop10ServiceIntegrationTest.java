@@ -1,12 +1,10 @@
 package at.ac.tuwien.sepm.groupphase.backend.serviceintegrationtest;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TicketRequestDto;
+import static org.hamcrest.CoreMatchers.equalTo;
+
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Client;
@@ -21,10 +19,6 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Unit;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
-import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.DefinedUnitRepository;
@@ -39,21 +33,16 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.UnitRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.awt.Color;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,18 +70,24 @@ public class EventTop10ServiceIntegrationTest {
   private Location location;
   private Artist artist;
   private Hall hall;
-  private Event event;
+  private Event event1;
+  private Event event2;
   private Unit unit1;
   private Unit unit2;
   private Performance performance1;
   private Performance performance2;
+  private Performance performance3;
   private PriceCategory priceCategory1;
   private PriceCategory priceCategory2;
+  private PriceCategory priceCategory3;
   private DefinedUnit definedUnit1;
   private DefinedUnit definedUnit2;
   private DefinedUnit definedUnit3;
   private DefinedUnit definedUnit4;
+  private DefinedUnit definedUnit5;
   private Ticket ticket1;
+  private Ticket ticket2;
+  private Ticket ticket3;
   private Invoice invoice1;
 
   @Transactional
@@ -132,7 +127,7 @@ public class EventTop10ServiceIntegrationTest {
     artist = new Artist.Builder().name("Bob").surname("Dylan").build();
     artist = artistRepository.save(artist);
 
-    event =
+    event1 =
         new Event.Builder()
             .name("Freuden der Freizeit")
             .duration(Duration.ofMinutes(90L))
@@ -141,7 +136,18 @@ public class EventTop10ServiceIntegrationTest {
             .hall(hall)
             .artists(Collections.singletonList(artist))
             .build();
-    event = eventRepository.save(event);
+    event1 = eventRepository.save(event1);
+
+    event2 =
+        new Event.Builder()
+            .name("Nicos Zugtreff")
+            .duration(Duration.ofMinutes(90L))
+            .content("Willst du die neuen Zuggarnituren der ÖBB kennenlernen? Sichere dir exklusive VIP-Tickets!")
+            .category(EventCategory.OTHER)
+            .hall(hall)
+            .artists(Collections.singletonList(artist))
+            .build();
+    event2 = eventRepository.save(event2);
 
     unit1 =
         new Unit.Builder()
@@ -166,7 +172,7 @@ public class EventTop10ServiceIntegrationTest {
     performance1 =
         new Performance.Builder()
             .name("Sonntagskrunch")
-            .event(event)
+            .event(event1)
             .startAt(LocalDateTime.now().plusDays(3))
             .build();
     performance1 = performanceRepository.save(performance1);
@@ -174,17 +180,25 @@ public class EventTop10ServiceIntegrationTest {
     performance2 =
         new Performance.Builder()
             .name("Luftballonkochkurz")
-            .event(event)
+            .event(event1)
             .startAt(LocalDateTime.now().plusDays(4))
             .build();
     performance2 = performanceRepository.save(performance2);
+
+    performance3 =
+        new Performance.Builder()
+            .name("Taurus Hobbyfahren")
+            .event(event2)
+            .startAt(LocalDateTime.now().plusDays(4))
+            .build();
+    performance3 = performanceRepository.save(performance3);
 
     priceCategory1 =
         new PriceCategory.Builder()
             .name("Kategorie 1")
             .priceInCents(3200)
             .color(new Color(0, 0, 0))
-            .event(event)
+            .event(event1)
             .build();
     priceCategory1 = priceCategoryRepository.save(priceCategory1);
 
@@ -193,9 +207,18 @@ public class EventTop10ServiceIntegrationTest {
             .name("Kategorie 2")
             .priceInCents(1700)
             .color(new Color(0, 0, 0))
-            .event(event)
+            .event(event1)
             .build();
     priceCategory2 = priceCategoryRepository.save(priceCategory2);
+
+    priceCategory3 =
+        new PriceCategory.Builder()
+            .name("Kategorie 3")
+            .priceInCents(1700)
+            .color(new Color(0, 0, 0))
+            .event(event1)
+            .build();
+    priceCategory3 = priceCategoryRepository.save(priceCategory3);
 
     definedUnit1 =
         new DefinedUnit.Builder()
@@ -233,23 +256,48 @@ public class EventTop10ServiceIntegrationTest {
             .build();
     definedUnit4 =definedUnitRepository.save(definedUnit4);
 
+    definedUnit5 =
+        new DefinedUnit.Builder()
+            .performance(performance3)
+            .priceCategory(priceCategory3)
+            .unit(unit2)
+            .capacityFree(unit2.getCapacity())
+            .build();
+    definedUnit5 =definedUnitRepository.save(definedUnit5);
+
     invoice1 =
         new Invoice.Builder()
         .reservationCode("NIC")
         .client(clientOne)
         .build();
     invoiceRepository.save(invoice1);
+    
 
     definedUnit1 = definedUnitRepository.findAll().get(0);
 
     ticket1 =
         new Ticket.Builder()
+            .definedUnit(definedUnit1)
+            .isCancelled(false)
+            .salt("pepper")
+            .build();
+    invoice1.addTicket(ticket1);
+
+    ticket2 =
+        new Ticket.Builder()
             .definedUnit(definedUnit2)
             .isCancelled(false)
             .salt("pepper")
             .build();
+    invoice1.addTicket(ticket2);
 
-    invoice1.addTicket(ticket1);
+    ticket3 =
+        new Ticket.Builder()
+            .definedUnit(definedUnit5)
+            .isCancelled(false)
+            .salt("pepper")
+            .build();
+    invoice1.addTicket(ticket3);
 
     invoiceRepository.save(invoice1);
   }
@@ -274,7 +322,22 @@ public class EventTop10ServiceIntegrationTest {
 
   @Test
   public void givenEvents_whenGetBestEvents_returnBestEvents() {
-    eventService.getBestEvents(10,new EventFilterDto());
+    
+    List<EventRankingDto> eventRankingDtoList = 
+        eventService.getBestEvents(10,new EventFilterDto());
+
+    Assert.assertThat(eventRankingDtoList.size(),is(equalTo(2)));
+
+    EventRankingDto first = eventRankingDtoList.get(0);
+    Assert.assertThat(first.getEventId(),is(equalTo(event1.getId())));
+    Assert.assertThat(first.getEventName(),is(equalTo(event1.getName())));
+    Assert.assertThat(first.getSoldTickets(),is(equalTo(2L)));
+
+    EventRankingDto second = eventRankingDtoList.get(1);
+    Assert.assertThat(second.getEventId(),is(equalTo(event2.getId())));
+    Assert.assertThat(second.getEventName(),is(equalTo(event2.getName())));
+    Assert.assertThat(second.getSoldTickets(),is(equalTo(1L)));
+    
   }
 
 }
