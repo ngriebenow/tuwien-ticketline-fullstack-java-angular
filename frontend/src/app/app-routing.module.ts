@@ -10,6 +10,7 @@ import {EventFilterComponent} from './components/event-filter/event-filter.compo
 import {InvoiceFilterComponent} from './components/invoice-filter/invoice-filter.component';
 import {InvoiceDetailComponent} from './components/invoice-detail/invoice-detail.component';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
+import {UserFilterComponent} from './components/user-filter/user-filter.component';
 import {BestEventsComponent} from "./components/best-events/best-events.component";
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   {path: 'invoices/:id', canActivate: [AuthGuard], component: InvoiceDetailComponent},
   {path: 'finalize-transaction', canActivate: [AuthGuard], component: InvoiceDetailComponent},
   {path: 'hall-viewing', canActivate: [AuthGuard], component: HallViewingComponent}
+  {path: 'user-filter', canActivate: [AuthGuard], component: UserFilterComponent}
 ];
 
 @NgModule({
