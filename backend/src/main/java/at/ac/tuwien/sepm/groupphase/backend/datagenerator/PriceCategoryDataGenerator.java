@@ -54,7 +54,7 @@ public class PriceCategoryDataGenerator implements DataGenerator<PriceCategory> 
                 FAKER.random().nextInt(256));
         generatedPriceCategories.add(
             new PriceCategory.Builder()
-                .name(String.format("Category %d", i + 1))
+                .name(String.format("Kategorie %d", i + 1))
                 .color(color)
                 .priceInCents((int) (basePrice - i * BASE_PRICE_DECREASE_FACTOR * basePrice))
                 .event(event)
