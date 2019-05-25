@@ -11,32 +11,37 @@
         <div class="col-4">
           <div class="form-group">
             <label>Benutzername</label>
-            <input class="form-control" type="text" placeholder="Benutzername" formControlName="userName">
+            <input class="form-control" type="text" placeholder="Benutzername" formControlName="userName"
+                   (change)="update()" [(ngModel)]="queryParams.username">
           </div>
           <div class="form-group">
             <label>Rolle</label>
-            <input class="form-control" type="text" placeholder="Admin oder User" formControlName="userRole">
+            <input class="form-control" type="text" placeholder="Admin oder User" formControlName="userRole"
+                   (change)="update()" [(ngModel)]="queryParams.role">
           </div>
         </div>
         <div class="col-4">
           <div class="row">
             <div class="form-group">
-              <label>Aktiviert</label>
+              <label>Gesperrt</label>
               <br/>
               <div class="btn-group btn-group-toggle">
                 <label class="btn btn-light"
-                       (click)="setIsEnabledToTrue()">
-                  <input type="radio" formControlName="isEnabled" value="true">
+                       (click)="setIsLockedToTrue()">
+                  <input type="radio" formControlName="isEnabled" value="true" (change)="update()"
+                         [(ngModel)]="queryParams.locked">
                   <i class="fas fa-check"></i>
                 </label>
                 <label class="btn btn-light"
-                       (click)="setIsEnabledToFalse()">
-                  <input type="radio" formControlName="isEnabled" value="false">
+                       (click)="setIsLockedToFalse()">
+                  <input type="radio" formControlName="isEnabled" value="false" (change)="update()"
+                         [(ngModel)]="queryParams.locked">
                   <i class="fas fa-times"></i>
                 </label>
                 <label class="btn btn-light"
-                       (click)="setIsEnabledToNull()">
-                  <input type="radio" formControlName="isEnabled" value="">
+                       (click)="setIsLockedToNull()">
+                  <input type="radio" formControlName="isEnabled" value="" (change)="update()"
+                         [(ngModel)]="queryParams.locked">
                   <i class="fas fa-question"></i>
                 </label>
               </div>
@@ -64,14 +69,16 @@
       <tr>
         <th scope="col">Benutzername</th>
         <th scope="col">Administrator</th>
-        <th scope="col">Gesperrt</th>
+        <th scope="col">Aktiviert</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let user of users">
         <td>{{ user.username }}</td>
-        <td>{{ user.isAdmin }}</td>
-        <td>{{ user.isLocked }}</td>
+        <td *ngIf="user.admin">Ja</td>
+        <td *ngIf="!user.admin">Nein</td>
+        <td *ngIf="user.enabled">Ja</td>
+        <td *ngIf="!user.enabled">Nein</td>
       </tr>
       </tbody>
     </table>

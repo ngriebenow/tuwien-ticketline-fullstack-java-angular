@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import * as _ from 'lodash';
 import {UserService} from '../../services/user.service';
 import {User} from '../../dtos/user';
 import {UserFilter} from '../../dtos/user-filter';
@@ -17,7 +15,7 @@ export class UserFilterComponent implements OnInit {
   private page = 0;
   private count = 20;
   private queryParams: UserFilter;
-  private isEnabled: boolean;
+  private isLocked: string;
 
   private searchForm = this.formBuilder.group({
     userName: [''],
@@ -26,58 +24,28 @@ export class UserFilterComponent implements OnInit {
   });
 
   constructor(private userService: UserService, private formBuilder: FormBuilder) {
-    this.queryParams = new UserFilter('', '', false);
-    this.isEnabled = true;
+    this.queryParams = new UserFilter('', '', '', 0, 20);
+    this.isLocked = '';
   }
 
   ngOnInit() {
     this.loadUsers();
-    this.activateOnFormChange();
   }
 
   private loadUsers(): void {
-    this.queryParams['page'] = this.page;
-    this.queryParams['count'] = this.count;
+    this.queryParams.page = this.page;
+    this.queryParams.count = this.count;
     this.userService.getUsersFiltered(this.queryParams).subscribe(
       (user: User[]) => {
         this.users = user;
+        this.users.forEach(function (value) {
+          console.log(value);
+        });
       },
       error => {
         // TODO: error handling
       }
     );
-  }
-
-  private activateOnFormChange(): void {
-    this.searchForm.valueChanges.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-    ).subscribe(values => {
-      console.log(values);
-      Object.entries<any>(values)
-        .filter(entry => entry[1] !== null)
-        .map(entry => [entry[0], entry[1].toString().trim()])
-        .filter(entry => !_.isEmpty(entry[1]))
-        .forEach(entry => {
-          const [key, val] = entry;
-          if (key === 'userName') {
-            this.queryParams.username = val;
-          }
-          if (key === 'userRole') {
-            this.queryParams.role = val;
-          }
-          if (key === 'isEnabled') {
-            if (val === 'true') {
-              this.queryParams.locked = false;
-            }
-            if (val === 'false') {
-              this.queryParams.locked = true;
-            }
-          }
-        });
-      this.queryParams.locked = !this.isEnabled;
-      this.loadUsers();
-    });
   }
 
   private nextPage(): void {
@@ -94,20 +62,24 @@ export class UserFilterComponent implements OnInit {
 
   private resetSearchForm(): void {
     this.page = 0;
-    this.setIsEnabledToNull();
+    this.setIsLockedToNull();
     this.searchForm.reset({}, {emitEvent: true});
   }
 
-  private setIsEnabledToTrue(): void {
-    this.isEnabled = true;
+  private setIsLockedToTrue(): void {
+    this.isLocked = 'true';
   }
 
-  private setIsEnabledToFalse(): void {
-    this.isEnabled = false;
+  private setIsLockedToFalse(): void {
+    this.isLocked = 'false';
   }
 
-  private setIsEnabledToNull(): void {
-    this.isEnabled = null;
+  private setIsLockedToNull(): void {
+    this.isLocked = '';
+  }
+
+  public update(): void {
+    this.loadUsers();
   }
 
 
