@@ -2,7 +2,7 @@ import {Component, Input, NgModule, OnInit, Output} from '@angular/core';
 import {EventFilter} from '../../dtos/event-filter';
 import {EventService} from '../../services/event.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {EventSearchResult} from "../../dtos/event-search-result";
+import {EventSearchResult} from '../../dtos/event-search-result';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 @Component({
   selector: 'app-event-filter',
@@ -40,7 +40,7 @@ export class EventFilterComponent implements OnInit {
 
   getColor(cat: boolean): string {
     if (cat) {
-      return "#EAEAEA";
+      return '#EAEAEA';
     } else {
       return '#8FBEFF';
     }

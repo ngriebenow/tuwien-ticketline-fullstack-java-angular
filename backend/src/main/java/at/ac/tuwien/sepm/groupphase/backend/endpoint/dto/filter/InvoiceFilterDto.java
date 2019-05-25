@@ -11,6 +11,7 @@ public class InvoiceFilterDto {
   private Optional<String> clientEmail;
   private Optional<String> customerEmail;
   private Optional<String> performanceName;
+  private Optional<Long> invoiceNumber;
 
   private InvoiceFilterDto(Builder builder) {
     setReservationCode(builder.reservationCode);
@@ -20,6 +21,7 @@ public class InvoiceFilterDto {
     setClientEmail(builder.clientEmail);
     setCustomerEmail(builder.customerEmail);
     setPerformanceName(builder.performanceName);
+    setInvoiceNumber(builder.invoiceNumber);
   }
 
   public Optional<String> getReservationCode() {
@@ -78,6 +80,14 @@ public class InvoiceFilterDto {
     this.performanceName = Optional.ofNullable(performanceName);
   }
 
+  public Optional<Long> getInvoiceNumber() {
+    return invoiceNumber;
+  }
+
+  public void setInvoiceNumber(Long invoiceNumber) {
+    this.invoiceNumber = Optional.ofNullable(invoiceNumber);
+  }
+
 
   public static final class Builder {
 
@@ -88,6 +98,7 @@ public class InvoiceFilterDto {
     private String clientEmail;
     private String customerEmail;
     private String performanceName;
+    private Long invoiceNumber;
 
     public Builder() {
     }
@@ -117,13 +128,13 @@ public class InvoiceFilterDto {
       return this;
     }
 
-    public Builder customerEmail(String val) {
-      customerEmail = val;
+    public Builder performanceName(String val) {
+      performanceName = val;
       return this;
     }
 
-    public Builder perfomanceName(String val) {
-      performanceName = val;
+    public Builder invoiceNumber(Long val) {
+      invoiceNumber = val;
       return this;
     }
 

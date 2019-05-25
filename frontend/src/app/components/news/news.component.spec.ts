@@ -2,21 +2,24 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 
-import {MessageComponent} from './message.component';
+import {NewsComponent} from './news.component';
 import {Globals} from '../../global/globals';
+import {RouterTestingModule} from '@angular/router/testing';
+import {AuthGuard} from '../../guards/auth.guard';
 
-describe('MessageComponent', () => {
-  let component: MessageComponent;
-  let fixture: ComponentFixture<MessageComponent>;
+describe('NewsComponent', () => {
+  let component: NewsComponent;
+  let fixture: ComponentFixture<NewsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        RouterTestingModule.withRoutes([{path: 'news', canActivate: [AuthGuard], component: NewsComponent}]),
         HttpClientTestingModule,
         ReactiveFormsModule,
       ],
       declarations: [
-        MessageComponent,
+        NewsComponent,
       ],
       providers: [
         Globals,
@@ -26,7 +29,7 @@ describe('MessageComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MessageComponent);
+    fixture = TestBed.createComponent(NewsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

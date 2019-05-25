@@ -10,10 +10,14 @@ import org.mapstruct.Mappings;
 public interface TicketMapper {
 
   @Mappings({
-      @Mapping(target = "priceInCents", source = "ticket.definedUnit.priceCategory.priceInCents"),
       @Mapping(target = "title", source = "ticket.definedUnit.unit.name"),
-      @Mapping(target = "invoiceId", source = "ticket.invoice.id"),
-      @Mapping(target = "performanceId", source = "ticket.definedUnit.performance.id")
+      @Mapping(target = "eventName", source = "ticket.definedUnit.performance.event.name"),
+      @Mapping(target = "performanceName", source = "ticket.definedUnit.performance.name"),
+      @Mapping(target = "startAt", source = "ticket.definedUnit.performance.startAt"),
+      @Mapping(target = "priceCategoryName", source = "ticket.definedUnit.priceCategory.name"),
+      @Mapping(target = "priceInCents", source = "ticket.definedUnit.priceCategory.priceInCents"),
+      @Mapping(target = "locationName", source = "ticket.definedUnit.unit.hall.location.name"),
+      @Mapping(target = "hallName", source = "ticket.definedUnit.unit.hall.name"),
   })
   TicketDto ticketToTicketDto(Ticket ticket);
 }

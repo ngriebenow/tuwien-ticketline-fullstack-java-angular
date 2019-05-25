@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Globals} from '../global/globals';
 import {Observable} from 'rxjs';
 import {EventFilter} from '../dtos/event-filter';
-import {EventSearchResult} from "../dtos/event-search-result";
+import {EventSearchResult} from '../dtos/event-search-result';
 
 @Injectable({
   providedIn: 'root'
@@ -33,13 +33,13 @@ export class EventService {
 
     console.log('getEventsFiltered');
 
-    let price: string = "";
+    let price = '';
     if (eventFilter.priceInEuro != null) {
       price = eventFilter.priceInEuro + '00';
     }
 
-    let time: string = "";
-    let date: string = "";
+    let time = '';
+    let date = '';
     if (eventFilter.startAtDate != null) {
       date = eventFilter.startAtDate;
 

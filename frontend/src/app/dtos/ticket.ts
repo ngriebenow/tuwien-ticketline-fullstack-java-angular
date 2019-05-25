@@ -1,13 +1,14 @@
 export class Ticket {
   constructor(
-    public unitName: string,
-    public salt: string,
-    public invoiceId: number,
-    public clientName: string,
-    public clientSurname: string,
     public id: number,
+    public title: string,
+    public eventName: string,
+    public performanceName: string,
+    public startAt: string,
+    public priceCategoryName: string,
     public priceInCents: number,
-    public isCanclled: boolean
+    public locationName: string,
+    public hallName: string
   ) {
   }
 }
