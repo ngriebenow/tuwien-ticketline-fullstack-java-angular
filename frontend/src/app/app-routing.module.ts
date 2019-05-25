@@ -8,6 +8,7 @@ import {HallCreationComponent} from './components/hall-creation/hall-creation.co
 import {EventComponent} from './components/event/event.component';
 import {EventFilterComponent} from './components/event-filter/event-filter.component';
 import {InvoiceFilterComponent} from './components/invoice-filter/invoice-filter.component';
+import {InvoiceDetailComponent} from './components/invoice-detail/invoice-detail.component';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 
 const routes: Routes = [
@@ -19,6 +20,8 @@ const routes: Routes = [
   {path: 'events/:id', canActivate: [AuthGuard], component: EventComponent},
   {path: 'event-filter', canActivate: [AuthGuard], component: EventFilterComponent},
   {path: 'invoice-filter', canActivate: [AuthGuard], component: InvoiceFilterComponent},
+  {path: 'invoices/:id', canActivate: [AuthGuard], component: InvoiceDetailComponent},
+  {path: 'finalize-transaction', canActivate: [AuthGuard], component: InvoiceDetailComponent},
   {path: 'hall-viewing', canActivate: [AuthGuard], component: HallViewingComponent}
 ];
 

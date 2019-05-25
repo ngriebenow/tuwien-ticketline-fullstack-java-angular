@@ -8,6 +8,8 @@ import {ReservationRequest} from '../dtos/reservation-request';
 import {TicketRequest} from '../dtos/ticket-request';
 import {PriceCategory} from '../dtos/price-category';
 import {Client} from '../dtos/client';
+import {Invoice} from '../dtos/invoice';
+import {Ticket} from '../dtos/ticket';
 
 @Injectable({
   providedIn: 'root'
@@ -89,6 +91,50 @@ export class TicketingService {
     this.reservationRequest.clientId = this.client.id;
     this.reservationRequest.performanceId = this.performance.id;
     return this.reservationRequest;
+  }
+
+  /**
+   * Generate an unsaved Invoice to be payed later or make a reservation from.
+   * It is constructed from the set data in this service.
+   */
+  getTransientInvoice(): Invoice {
+    const tickets: Ticket[] = this.ticketRequests
+      .map(ticReq => this.getTransientTickets(ticReq))
+      .reduce((prev, current) => prev.concat(current));
+
+    return new Invoice(
+      null,
+      null,
+      null,
+      false,
+      false,
+      null,
+      this.client,
+      tickets
+    );
+  }
+
+  /**
+   * Generate a list of Tickets from a single TicketRequest.
+   */
+  private getTransientTickets(ticketRequest: TicketRequest): Ticket[] {
+    const definedUnit = this.dunits.find(dUnit => dUnit.id === ticketRequest.definedUnitId);
+    const priceCategory = this.categories.find(pCat => pCat.id === definedUnit.priceCategory);
+
+    return Array(ticketRequest.amount).map(_ => new Ticket(
+        null,
+        definedUnit.name,
+        this.event.name,
+        this.performance.name,
+        this.performance.startAt,
+        priceCategory.name,
+        priceCategory.priceInCent,
+        this.hall.location.name,
+        this.hall.name,
+        definedUnit.id,
+        this.performance.id
+      )
+    );
   }
 }
 

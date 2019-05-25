@@ -131,6 +131,13 @@ $theme-colors:(
   height: 50px !important;
 }
 
+.btn-xl {
+  padding: .75rem 1.25rem !important;
+  font-size: 1.75rem !important;
+  line-height: 1.75 !important;
+  border-radius: .6rem !important;
+}
+
 /*
   if the text in a button is too large, apply this!
 */

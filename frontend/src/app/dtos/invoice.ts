@@ -8,7 +8,7 @@ export class Invoice {
     public number: number,
     public cancelled: boolean,
     public paid: boolean,
-    public paidAt: string, // TODO: can we convert this to a date right here? do we need to?
+    public paidAt: string,
     public client: Client,
     public tickets: Ticket[]
   ) {
