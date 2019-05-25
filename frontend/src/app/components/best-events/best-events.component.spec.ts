@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BestEventsComponent } from './best-events.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterModule} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
+import {Globals} from '../../global/globals';
 
 describe('BestEventsComponent', () => {
   let component: BestEventsComponent;
@@ -8,7 +13,17 @@ describe('BestEventsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BestEventsComponent ]
+      declarations: [ BestEventsComponent ],
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        RouterModule,
+        RouterTestingModule
+      ],
+      providers: [
+        Globals,
+      ]
     })
     .compileComponents();
   }));
