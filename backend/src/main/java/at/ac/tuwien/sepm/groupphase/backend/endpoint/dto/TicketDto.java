@@ -35,6 +35,9 @@ public class TicketDto {
   @ApiModelProperty("The name of the hall the performance is held in")
   private String hallName;
 
+  @ApiModelProperty("The id of the defined unit reserved by this ticket")
+  private Long definedUnitId;
+
   public TicketDto() {}
 
   private TicketDto(Builder builder) {
@@ -47,6 +50,7 @@ public class TicketDto {
     setPriceInCents(builder.priceInCents);
     setLocationName(builder.locationName);
     setHallName(builder.hallName);
+    setDefinedUnitId(builder.definedUnitId);
   }
 
   public Long getId() {
@@ -121,6 +125,14 @@ public class TicketDto {
     this.hallName = hallName;
   }
 
+  public Long getDefinedUnitId() {
+    return definedUnitId;
+  }
+
+  public void setDefinedUnitId(Long definedUnitId) {
+    this.definedUnitId = definedUnitId;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) {
@@ -138,7 +150,8 @@ public class TicketDto {
         && Objects.equal(startAt, ticketDto.startAt)
         && Objects.equal(priceCategoryName, ticketDto.priceCategoryName)
         && Objects.equal(locationName, ticketDto.locationName)
-        && Objects.equal(hallName, ticketDto.hallName);
+        && Objects.equal(hallName, ticketDto.hallName)
+        && Objects.equal(definedUnitId, ticketDto.definedUnitId);
   }
 
   @Override
@@ -152,7 +165,8 @@ public class TicketDto {
         priceCategoryName,
         priceInCents,
         locationName,
-        hallName);
+        hallName,
+        definedUnitId);
   }
 
   @Override
@@ -182,6 +196,9 @@ public class TicketDto {
         + ", hallName='"
         + hallName
         + '\''
+        + ", definedUnitId='"
+        + definedUnitId
+        + '\''
         + '}';
   }
 
@@ -196,6 +213,7 @@ public class TicketDto {
     private int priceInCents;
     private String locationName;
     private String hallName;
+    private Long definedUnitId;
 
     public Builder() {
     }
@@ -242,6 +260,11 @@ public class TicketDto {
 
     public Builder hallName(String val) {
       hallName = val;
+      return this;
+    }
+
+    public Builder definedUnitId(Long val) {
+      definedUnitId = val;
       return this;
     }
 

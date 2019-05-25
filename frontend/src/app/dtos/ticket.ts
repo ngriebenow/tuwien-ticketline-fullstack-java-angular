@@ -8,7 +8,8 @@ export class Ticket {
     public priceCategoryName: string,
     public priceInCents: number,
     public locationName: string,
-    public hallName: string
+    public hallName: string,
+    public definedUnitId: number
   ) {
   }
 }

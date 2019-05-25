@@ -134,6 +134,7 @@ public class InvoiceServiceTest {
             .id(TICKET_ID)
             .priceInCents(TICKET_PRICE)
             .startAt(performanceOne.getStartAt())
+            .definedUnitId(TICKET_DEFINED_UNIT_ID)
             .build();
 
     clientDtoOne =
