@@ -7,9 +7,12 @@ import {NewsComponent} from './components/news/news.component';
 import {HallCreationComponent} from './components/hall-creation/hall-creation.component';
 import {EventComponent} from './components/event/event.component';
 import {EventFilterComponent} from './components/event-filter/event-filter.component';
+import {InvoiceFilterComponent} from './components/invoice-filter/invoice-filter.component';
+import {InvoiceDetailComponent} from './components/invoice-detail/invoice-detail.component';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 import {NewsDetailComponent} from './components/news-detail/news-detail.component';
 import {NewsAddComponent} from './components/news-add/news-add.component';
+import {BestEventsComponent} from "./components/best-events/best-events.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -18,9 +21,12 @@ const routes: Routes = [
   {path: 'news/:id', canActivate: [AuthGuard], component: NewsDetailComponent},
   {path: 'news-add', canActivate: [AuthGuard], component: NewsAddComponent},
   {path: 'hall-creation', canActivate: [AuthGuard], component: HallCreationComponent},
-  {path: 'events', canActivate: [AuthGuard], component: EventComponent},
   {path: 'events/:id', canActivate: [AuthGuard], component: EventComponent},
   {path: 'event-filter', canActivate: [AuthGuard], component: EventFilterComponent},
+  {path: 'best-events', canActivate: [AuthGuard], component: BestEventsComponent},
+  {path: 'invoice-filter', canActivate: [AuthGuard], component: InvoiceFilterComponent},
+  {path: 'invoices/:id', canActivate: [AuthGuard], component: InvoiceDetailComponent},
+  {path: 'finalize-transaction', canActivate: [AuthGuard], component: InvoiceDetailComponent},
   {path: 'hall-viewing', canActivate: [AuthGuard], component: HallViewingComponent}
 ];
 

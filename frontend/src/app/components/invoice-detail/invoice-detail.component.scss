@@ -1,0 +1,19 @@
+@import '../../../colors';
+
+.total,
+.ticket {
+  padding: .375rem .75rem;
+
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $light-gray;
+      border-radius: .8rem;
+    }
+  }
+}
+
+.strike-through {
+  text-decoration: line-through;
+}

@@ -29,11 +29,11 @@ public class InvoiceDto {
   @ApiModelProperty("The date this invoice was payed")
   private LocalDate paidAt;
 
-  @ApiModelProperty("The id of the client who issued this invoice")
-  private Long clientId;
+  @ApiModelProperty("The client who issued this invoice")
+  private ClientDto client;
 
   // TODO: Implement as soon as michis user persistence part is done
-  // private Long selleId;
+  // private UserDto user;
 
   @ApiModelProperty(value = "The tickets reserved and bought by this invoice")
   private List<TicketDto> tickets;
@@ -47,7 +47,7 @@ public class InvoiceDto {
     setReservationCode(builder.reservationCode);
     setNumber(builder.number);
     setPaidAt(builder.paidAt);
-    setClientId(builder.clientId);
+    setClient(builder.client);
     setTickets(builder.tickets);
   }
 
@@ -99,12 +99,12 @@ public class InvoiceDto {
     this.paidAt = paidAt;
   }
 
-  public Long getClientId() {
-    return clientId;
+  public ClientDto getClient() {
+    return client;
   }
 
-  public void setClientId(Long clientId) {
-    this.clientId = clientId;
+  public void setClient(ClientDto client) {
+    this.client = client;
   }
 
   public List<TicketDto> getTickets() {
@@ -130,12 +130,12 @@ public class InvoiceDto {
         && Objects.equal(reservationCode, that.reservationCode)
         && Objects.equal(number, that.number)
         && Objects.equal(paidAt, that.paidAt)
-        && Objects.equal(clientId, that.clientId);
+        && Objects.equal(client, that.client);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, number, paidAt, clientId);
+    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, number, paidAt, client);
   }
 
   @Override
@@ -154,8 +154,8 @@ public class InvoiceDto {
         + number
         + ", paidAt="
         + paidAt
-        + ", clientId="
-        + clientId
+        + ", client="
+        + client
         + '}';
   }
 
@@ -167,7 +167,7 @@ public class InvoiceDto {
     private String reservationCode;
     private Long number;
     private LocalDate paidAt;
-    private Long clientId;
+    private ClientDto client;
     private List<TicketDto> tickets;
 
     public Builder() {}
@@ -202,8 +202,8 @@ public class InvoiceDto {
       return this;
     }
 
-    public Builder clientId(Long val) {
-      clientId = val;
+    public Builder client(ClientDto val) {
+      client = val;
       return this;
     }
 

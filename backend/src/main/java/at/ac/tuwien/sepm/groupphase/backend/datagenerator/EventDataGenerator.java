@@ -67,7 +67,7 @@ public class EventDataGenerator implements DataGenerator<Event> {
 
       generatedEvents.add(
           new Event.Builder()
-              .name(FAKER.lorem().characters(5, 10))
+            .name(FAKER.rockBand().name())
               .category(categories.get(FAKER.random().nextInt(categories.size())))
               .duration(
                   Duration.ofHours(FAKER.random().nextInt(MIN_EVENT_DURATION, MAX_EVENT_DURATION)))

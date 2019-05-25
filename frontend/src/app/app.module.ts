@@ -20,11 +20,15 @@ import { EventComponent } from './components/event/event.component';
 import { EventFilterComponent } from './components/event-filter/event-filter.component';
 import { MyDatePickerModule } from 'mydatepicker';
 import {IMyDpOptions} from 'mydatepicker';
+import { InvoiceFilterComponent } from './components/invoice-filter/invoice-filter.component';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 import { PictureDisplayComponent } from './components/picture-display/picture-display.component';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 import { NewsAddComponent } from './components/news-add/news-add.component';
 import { PictureUploadComponent } from './components/picture-upload/picture-upload.component';
+import { AlertComponent } from './components/alert/alert.component';
+import { InvoiceDetailComponent } from './components/invoice-detail/invoice-detail.component';
+import { BestEventsComponent } from './components/best-events/best-events.component';
 
 @NgModule({
   declarations: [
@@ -39,11 +43,15 @@ import { PictureUploadComponent } from './components/picture-upload/picture-uplo
     HallCreationPlanComponent,
     EventComponent,
     EventFilterComponent,
+    InvoiceFilterComponent,
     HallViewingComponent,
     PictureDisplayComponent,
     NewsDetailComponent,
     NewsAddComponent,
     PictureUploadComponent,
+    AlertComponent,
+    InvoiceDetailComponent,
+    BestEventsComponent,
   ],
   imports: [
     BrowserModule,

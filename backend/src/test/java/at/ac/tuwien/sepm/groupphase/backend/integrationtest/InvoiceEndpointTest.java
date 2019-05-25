@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ClientDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.InvoiceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TicketRequestDto;
@@ -384,7 +385,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     InvoiceDto invoiceDto = response.as(InvoiceDto.class);
 
     assertThat(invoiceDto.getTickets().size()).isEqualTo(requestedTicketCount);
-    assertThat(invoiceDto.getClientId()).isEqualTo(reservationRequestDtoOne.getClientId());
+    assertThat(invoiceDto.getClient().getId()).isEqualTo(reservationRequestDtoOne.getClientId());
     assertThat(invoiceDto.getReservationCode()).isNotBlank();
     assertThat(invoiceDto.getId()).isNotNull();
     assertThat(invoiceDto.isCancelled()).isFalse();
@@ -486,6 +487,30 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   }
 
   @Test
+  public void givenTwoInvoices_whenFilterInvoiceNumberOne_thenInvoiceOneReturned() {
+    Long invoiceNumberOne =
+        postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne)
+            .body()
+            .as(InvoiceDto.class)
+            .getNumber();
+    postResponse(INVOICE_ENDPOINT, reservationRequestDtoTwo);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("invoiceNumber", invoiceNumberOne.toString());
+    params.put("page", "0");
+    params.put("count", "20");
+
+    ValidatableResponse response = get(INVOICE_ENDPOINT, params);
+
+    assertThat(response.extract().response().statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
+
+    assertThat(invoiceDtoPage.size()).isEqualTo(1L);
+    assertThat(invoiceDtoPage.get(0).getNumber()).isEqualTo(invoiceNumberOne);
+  }
+
+  @Test
   public void givenTwoInvoices_whenFilterReservationCodeOne_thenInvoiceOneReturned() {
     String reservationCodeOne =
         postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne)
@@ -553,7 +578,9 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
-    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+
+    ClientDto client = invoiceDtoPage.get(0).getClient();
+    assertThat(client.getId()).isEqualTo(clientOne.getId());
   }
 
   @Test
@@ -573,7 +600,9 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
-    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+
+    ClientDto client = invoiceDtoPage.get(0).getClient();
+    assertThat(client.getId()).isEqualTo(clientOne.getId());
   }
 
   @Test
@@ -593,7 +622,9 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
-    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+
+    ClientDto client = invoiceDtoPage.get(0).getClient();
+    assertThat(client.getId()).isEqualTo(clientOne.getId());
   }
 
   @Test
@@ -613,7 +644,9 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
-    assertThat(invoiceDtoPage.get(0).getClientId()).isEqualTo(clientOne.getId());
+
+    ClientDto client = invoiceDtoPage.get(0).getClient();
+    assertThat(client.getId()).isEqualTo(clientOne.getId());
   }
 
   @Test
@@ -633,8 +666,8 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     List<InvoiceDto> invoiceDtoPage = listFromResponse(response, InvoiceDto.class);
 
     assertThat(invoiceDtoPage.size()).isEqualTo(1);
-    assertThat(invoiceDtoPage.get(0).getTickets().get(0).getPerformanceId())
-        .isEqualTo(performance1.getId());
+    assertThat(invoiceDtoPage.get(0).getTickets().get(0).getPerformanceName())
+        .isEqualTo(performance1.getName());
   }
 
   @Test

@@ -55,7 +55,7 @@ public class PerformanceDto {
   public PerformanceDto build() {
     PerformanceDto performanceDto = new PerformanceDto();
     performanceDto.setId(id);
-    // performanceDto.setEvent(event);
+    // performanceDto.setId(event);
     performanceDto.setName(name);
     performanceDto.setStartAt(startAt);
     return performanceDto;

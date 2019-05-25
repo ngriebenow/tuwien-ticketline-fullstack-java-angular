@@ -24,9 +24,10 @@ public interface EventService {
    * Get the best events according to the total tickets sold.
    *
    * @param limit the number of events which should be returned
+   * @param eventFilterDto the search criteria by which the best events should be evaluated.
    * @return ordered event ranking list each consisting of the event, the sold tickets and the rank
    */
-  List<EventRankingDto> getBestEvents(Integer limit);
+  List<EventRankingDto> getBest(Integer limit, EventFilterDto eventFilterDto);
 
   /**
    * Get all events which satisfy the given constraints in specification.
@@ -35,7 +36,7 @@ public interface EventService {
    * @param pageable the pageable for determing the page
    * @return the list of events
    */
-  List<EventSearchResultDto> getEventsFiltered(EventFilterDto eventFilterDto, Pageable pageable);
+  List<EventSearchResultDto> getFiltered(EventFilterDto eventFilterDto, Pageable pageable);
 
   /**
    * Get the performances of the event by its id.
@@ -44,5 +45,5 @@ public interface EventService {
    * @param pageable the pageable for determing the page
    * @return the list of performances which belong to the event
    */
-  List<PerformanceSearchResultDto> getPerformancesFiltered(Long id, Pageable pageable);
+  List<PerformanceSearchResultDto> getPerformancesByEventId(Long id, Pageable pageable);
 }
