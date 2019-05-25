@@ -9,33 +9,54 @@ import {PictureService} from '../../services/picture.service';
 })
 export class PictureDisplayComponent implements OnInit {
   @Input() ids: number[];
-  pictures: any[];
+  pictures: Picture[];
   constructor(private pictureService: PictureService) {
     this.pictures = new Array();
   }
   ngOnInit() {
+    this.loadAllPictures();
+  }
+  /**
+   * load all pictures with ids, one by one from service.
+   */
+  loadAllPictures() {
     for (const id of this.ids) {
-      this.getPictureFromService(id);
+      this.loadPictureById(id);
     }
   }
-  createPictureFromBlob(picture: Blob) {
+  /**
+   * load a picture with given id from service and append it to pictures.
+   * @param id of the picture
+   */
+  loadPictureById(id: number) {
+    console.log('Load picture with id ' + id);
+    this.pictureService.getPicture(id).subscribe(data => {
+      this.appendPictureFromBlob(id, data);
+    }, error => {
+      console.log(error);
+    });
+  }
+  /**
+   * convert the blob from db and append the result to pictures.
+   * @param id of the picture.
+   * @param picture the loaded blob from db.
+   */
+  appendPictureFromBlob(id: number, picture: Blob) {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      this.pictures.push(reader.result);
+      this.pictures.push(new Picture(id, reader.result));
     }, false);
 
     if (picture) {
       reader.readAsDataURL(picture);
     }
   }
-
-  getPictureFromService(id: number) {
-    console.log('Load picture with id ' + id);
-    this.pictureService.getPicture(id).subscribe(data => {
-      this.createPictureFromBlob(data);
-    }, error => {
-      console.log(error);
-    });
+  /**
+   * return sorted pictures array.
+   * @return picture array sorted by id ascending
+   */
+  getPicturesSortedById(): Picture[] {
+    return this.pictures.sort((a, b) => a.id - b.id);
   }
 
 }
