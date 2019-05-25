@@ -4,6 +4,8 @@ import {Globals} from '../global/globals';
 import {Observable} from 'rxjs';
 import {EventFilter} from '../dtos/event-filter';
 import {EventSearchResult} from '../dtos/event-search-result';
+import {Event} from '../dtos/event';
+import {Performance} from '../dtos/performance';
 
 @Injectable({
   providedIn: 'root'

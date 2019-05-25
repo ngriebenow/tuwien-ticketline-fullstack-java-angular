@@ -1,30 +1,27 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DefinedUnitDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PriceCategoryDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import java.util.List;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 public interface PerformanceService {
 
   /**
-   * Get the performance by id.
+   * Get all defined units of a performance.
    *
-   * @param id the id of the per
-   * @return the performance
-   * @throws NotFoundException if the id could not be found
+   * @param performance containing only the performance id
+   * @return a list with all defined units of this performance
    */
-  PerformanceDto getOneById(Long id) throws NotFoundException;
+  List<DefinedUnitDto> getDefinedUnitsByPerformanceId(Performance performance) throws NotFoundException;
 
   /**
-   * Get all performances which satisfy the given constraints in specification.
+   * Get all price categories of an event.
    *
-   * @param specification the search criteria which all returned performances fulfill
-   * @param pageable the pageable for determing the page
-   * @return the list of performances
+   * @param event containing only the event id
+   * @return a list with all price categories of this event
    */
-  List<PerformanceDto> getPerformancesFiltered(
-      Specification<Performance> specification, Pageable pageable);
+  List<PriceCategoryDto> getPriceCategoriesByEventId(Event event) throws NotFoundException;
 }

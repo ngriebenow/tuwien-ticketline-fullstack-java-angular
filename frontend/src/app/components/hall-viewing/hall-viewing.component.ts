@@ -6,6 +6,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {Point} from 'src/app/dtos/Point';
 import {DefinedUnit} from 'src/app/dtos/defined-unit';
 import {PriceCategory} from 'src/app/dtos/price-category';
+import {Performance} from "../../dtos/performance";
 
 
 @Component({
@@ -24,21 +25,26 @@ import {PriceCategory} from 'src/app/dtos/price-category';
 export class HallViewingComponent implements OnInit {
 
   hallSize: Point;
-  seats: Point[];
   defUnits: DefinedUnit[];
   cats: PriceCategory[];
   sectorNum: number;
 
   constructor(private route: ActivatedRoute,
               private hallViewingService: HallViewingService) {
-    this.cats = this.hallViewingService.getCats();
-    this.seats = this.hallViewingService.getSeats();
-    this.defUnits = this.hallViewingService.getDefUnits();
   }
 
   ngOnInit() {
+    this.getDefinedUnitsComp();
+    this.getCategoriesComp();
     this.getHallSize();
-    this.getSeats();
+  }
+
+  getDefinedUnitsComp(): void {
+    this.defUnits = this.hallViewingService.getDefinedUnitsComp();
+  }
+
+  getCategoriesComp(): void {
+    this.cats = this.hallViewingService.getCategoriesComp();
   }
 
   clickSeat(seat: DefinedUnit) {
@@ -68,10 +74,6 @@ export class HallViewingComponent implements OnInit {
 
   getHallSize(): void {
     this.hallSize = this.hallViewingService.getHallSize();
-  }
-
-  getSeats(): void {
-    this.hallViewingService.getSeats();
   }
 
   selectionNotEmpty() {
@@ -215,7 +217,7 @@ export class HallViewingComponent implements OnInit {
       return min * this.getUnitSize() - this.getUnitSize() + 60 + this.getSeatDistance() + ((this.getUnitSize()) / 4) + 'px';
     }
     return (min * this.getUnitSize() - this.getUnitSize() + 60 + this.getSeatDistance() + ((this.getUnitSize()
-      - this.getSeatDistance()) * (max - min) / 2)) + 'px';
+      + this.getSeatDistance()) * (max - min) / 2)) + 'px';
   }
 
 

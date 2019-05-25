@@ -19,7 +19,7 @@ const routes: Routes = [
   {path: 'events/:id', canActivate: [AuthGuard], component: EventComponent},
   {path: 'event-filter', canActivate: [AuthGuard], component: EventFilterComponent},
   {path: 'invoice-filter', canActivate: [AuthGuard], component: InvoiceFilterComponent},
-  {path: 'hall-viewing', canActivate: [AuthGuard], component: HallViewingComponent}
+  {path: 'events/:id/performances/:pid/hall-viewing', canActivate: [AuthGuard], component: HallViewingComponent}
 ];
 
 @NgModule({

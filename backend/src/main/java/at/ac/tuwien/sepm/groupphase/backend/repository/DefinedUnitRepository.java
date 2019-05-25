@@ -20,4 +20,12 @@ public interface DefinedUnitRepository extends JpaRepository<DefinedUnit, Long> 
    * @return the filtered list of DefinedUnits.
    */
   List<DefinedUnit> findAllByPerformanceAndIdIn(Performance performance, List<Long> ids);
+
+  /**
+   * Return a list of the defined units form this performance.
+   *
+   * @param performance contains only the id of the performance
+   * @return the list of the defined units
+   */
+  List<DefinedUnit> findAllByPerformanceIsLike(Performance performance);
 }

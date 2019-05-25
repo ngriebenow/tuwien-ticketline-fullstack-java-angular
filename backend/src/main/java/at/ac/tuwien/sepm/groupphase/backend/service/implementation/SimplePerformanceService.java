@@ -1,63 +1,57 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DefinedUnitDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PriceCategoryDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.definedunit.DefinedUnitMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.pricecategory.PriceCategoryMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
-import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.DefinedUnitRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
-import at.ac.tuwien.sepm.groupphase.backend.specification.UserSpecification;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class SimplePerformanceService implements PerformanceService {
 
-  @Autowired private PerformanceRepository performanceRepository;
+  private static final Logger LOGGER = LoggerFactory.getLogger(SimplePerformanceService.class);
+  @Autowired private DefinedUnitRepository definedUnitRepository;
+  @Autowired private DefinedUnitMapper definedUnitMapper;
+  @Autowired private PriceCategoryMapper priceCategoryMapper;
+  @Autowired private PriceCategoryRepository priceCategoryRepo;
 
-  @Autowired private PerformanceMapper performanceMapper;
-
-  @Autowired private EntityManager em;
-
-  /** Javadoc. */
-  public static Specification<Performance> perfName(String name) {
-    return new Specification<Performance>() {
-      @Override
-      public Predicate toPredicate(
-          Root<Performance> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        return criteriaBuilder.equal(root.get("name"), name);
-      }
-    };
+  @Transactional(readOnly = true)
+  @Override
+  public List<DefinedUnitDto> getDefinedUnitsByPerformanceId(Performance performance) throws NotFoundException {
+    LOGGER.info("getDefinedUnitsByPerformanceId " + performance.getId());
+    List<DefinedUnitDto> definedUnitDtos = new ArrayList<>();
+    try {
+      definedUnitRepository.findAllByPerformanceIsLike(performance).forEach
+          (e -> definedUnitDtos.add(definedUnitMapper.definedUnitToDto(e)));
+    } catch (NotFoundException e){
+      LOGGER.error(e.getMessage());
+    }
+    return definedUnitDtos;
   }
 
   @Transactional(readOnly = true)
   @Override
-  public PerformanceDto getOneById(Long id) throws NotFoundException {
-    return null;
-  }
-
-  @Transactional(readOnly = true)
-  @Override
-  public List<PerformanceDto> getPerformancesFiltered(
-      Specification<Performance> specification, Pageable pageable) {
-
-    Specification<Performance> spec;
-    spec = UserSpecification.startsAt("startsAt", LocalDateTime.now(), Duration.ofDays(1));
-
-    List<PerformanceDto> performanceDtos = new ArrayList<>();
-    performanceRepository
-        .findAll(spec, pageable)
-        .forEach(e -> performanceDtos.add(performanceMapper.performanceToPerformanceDto(e)));
-    return performanceDtos;
+  public List<PriceCategoryDto> getPriceCategoriesByEventId(Event event) throws NotFoundException {
+    LOGGER.info("getPriceCategoriesByEventId " + event.getId());
+    List<PriceCategoryDto> priceCategoryDtos = new ArrayList<>();
+    try {
+      priceCategoryRepo.findAllByEventOrderByPriceInCentsAsc(event).forEach(
+          e -> priceCategoryDtos.add(priceCategoryMapper.priceCategoryToPriceCategoryDto(e)));
+    } catch (NotFoundException e) {
+      LOGGER.error(e.getMessage());
+    }
+    return priceCategoryDtos;
   }
 }

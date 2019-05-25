@@ -3,6 +3,9 @@ import {EventService} from '../../services/event.service';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
+import {TicketingService} from '../../services/ticketing.service';
+import {Event} from '../../dtos/event';
+import {Performance} from '../../dtos/performance';
 
 @Component({
   selector: 'app-event',
@@ -21,7 +24,8 @@ export class EventComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private eventService: EventService) {}
+    private eventService: EventService,
+    private ticketingService: TicketingService) {}
 
   @Output() event: Event;
   @Output() performances: Performance[] = [];
@@ -29,6 +33,16 @@ export class EventComponent implements OnInit {
 
   ngOnInit() {
     this.getEvent();
+  }
+
+  savePerformance(id: number) {
+    this.ticketingService.setEvent(this.event);
+    console.log("details: " + id);
+    for (let i = 0; i < this.performances.length; i++) {
+      if(this.performances[i].id == id){
+        this.ticketingService.setPerformance(this.performances[i]);
+      }
+    }
   }
 
 

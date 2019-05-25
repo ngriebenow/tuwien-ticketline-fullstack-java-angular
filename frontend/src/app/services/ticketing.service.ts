@@ -17,16 +17,12 @@ export class TicketingService {
   event: Event;
   performance: Performance;
   reservationRequest: ReservationRequest;
-  ticketRequests: TicketRequest[];
-  categories: PriceCategory[];
-  dunits: DefinedUnit[];
+  ticketRequests: TicketRequest[] = [];
+  categories: PriceCategory[] = [];
+  dunits: DefinedUnit[] = [];
   client: Client;
 
-  constructor() {
-    this.ticketRequests = [];
-    this.categories = [];
-    this.dunits = [];
-  }
+  constructor() {}
 
   setEvent(event: Event) {
     this.event = event;
@@ -34,10 +30,6 @@ export class TicketingService {
 
   setPerformance(performance: Performance) {
     this.performance = performance;
-  }
-
-  setHall(hall: Hall) {
-    this.event.hall = hall;
   }
 
   setTicketRequests(dunitIds: number[], amount: number[], dunits: DefinedUnit[], cats: PriceCategory[]) {
@@ -50,6 +42,14 @@ export class TicketingService {
 
   setClient(client: Client) {
     this.client = client;
+  }
+
+  getEvent() {
+    return this.event;
+  }
+
+  getPerformance() {
+    return this.performance;
   }
 
   getPerformanceName() {

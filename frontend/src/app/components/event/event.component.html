@@ -97,7 +97,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let x of performances">
+    <tr *ngFor="let x of performances" (click)="savePerformance(x.id)" [routerLink]="['/events', event.id ,'performances', x.id, 'hall-viewing']">
       <td>{{ x.name }}</td>
       <td>{{ x.startAt | date:'dd.mm.yyyy' }}</td>
       <td>{{ x.startAt | date:'HH:MM' }}</td>

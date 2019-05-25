@@ -23,6 +23,7 @@ import {IMyDpOptions} from 'mydatepicker';
 import { InvoiceFilterComponent } from './components/invoice-filter/invoice-filter.component';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 import { AlertComponent } from './components/alert/alert.component';
+import {TicketingService} from "./services/ticketing.service";
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import { AlertComponent } from './components/alert/alert.component';
     FormsModule,
     MyDatePickerModule
   ],
-  providers: [httpInterceptorProviders, Globals],
+  providers: [httpInterceptorProviders, Globals, TicketingService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
