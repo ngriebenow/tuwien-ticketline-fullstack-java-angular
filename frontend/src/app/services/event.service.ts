@@ -18,6 +18,10 @@ export class EventService {
   constructor(private httpClient: HttpClient, private globals: Globals) {
   }
 
+  /**
+   * Loads specific performances by event id from the backend
+   * @param id of event to load
+   */
   getPerformancesById(id: number): Observable<Performance[]> {
     console.log('Load performances for event ' + id);
     return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances');
@@ -32,6 +36,10 @@ export class EventService {
     return this.httpClient.get<Event>(this.eventBaseUri + '/' + id);
   }
 
+  /**
+   * Loads the best events from the backend
+   * @param eventFilter which the events must fulfill
+   */
   getBestEvents(eventFilter: EventFilter): Observable<EventRanking[]> {
     const paramsHttp = new HttpParams()
       .set('category', eventFilter.eventCategory)
@@ -44,6 +52,10 @@ export class EventService {
 
   }
 
+  /**
+   * Loads events from the backend
+   * @param eventFilter which the events must fulfill
+   */
   getEventsFiltered(eventFilter: EventFilter): Observable<EventSearchResult[]> {
 
     console.log('getEventsFiltered');

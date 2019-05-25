@@ -18,6 +18,10 @@ export class BestEventsComponent implements OnInit {
 
   @Output() eventRankings: EventRanking[] = [];
 
+  /**
+   * Returns the color for the selctor
+   * @param first: true if it is the first option
+   */
   getColor(cat: boolean): string {
     if (cat) {
       return "#EAEAEA";
@@ -26,6 +30,10 @@ export class BestEventsComponent implements OnInit {
     }
   }
 
+  /**
+   * Returns the text color for the selctor
+   * @param first: true if it is the first option
+   */
   getTextColor(cat: boolean): string {
     if (cat) {
       return "#CFCFCF";
@@ -34,6 +42,10 @@ export class BestEventsComponent implements OnInit {
     }
   }
 
+  /**
+   * Returns the color for the graph
+   * @param first: true if it is the first option
+   */
   getGraphColor(first: boolean): string {
     if (first) {
       return "#FF9824";
@@ -42,6 +54,10 @@ export class BestEventsComponent implements OnInit {
     }
   }
 
+  /**
+   * Calculates the vertical offset for the ticks on the x axis
+   * @param index the index-th tick on the x axis
+   */
   calcVerticalOffsetMark(index: number): string {
     let width = document.getElementById('graph').offsetWidth;
     let maxwidth = width * 0.8;
@@ -51,6 +67,10 @@ export class BestEventsComponent implements OnInit {
 
   }
 
+  /**
+   * Calculates the number of sold tickets which represents the index-th mark
+   * @param index the index-th tick on the x axis
+   */
   getMark(index: number): number {
     let maxtickets = this.eventRankings[0].soldTickets;
     let marking = maxtickets * index / 4;
@@ -68,12 +88,19 @@ export class BestEventsComponent implements OnInit {
   }
 
 
-
+  /**
+   * Calculates the vertical offset for the event bars
+   * @param index the index-th ranking starting from the top
+   */
   calcVerticalOffset(index: number): string {
     let offset: number = index * 53 + 38;
     return offset.toString() + "px";
   }
 
+  /**
+   * Calculates the bar width of one event ranking
+   * @param ranking: the event ranking
+   */
   calcBarWidth(ranking: EventRanking): string {
     let width = document.getElementById('graph').offsetWidth;
     let maxwidth = width/this.eventRankings[0].soldTickets * 0.9;
