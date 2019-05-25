@@ -61,7 +61,7 @@ public class EventEndpoint {
     EventFilterDto eventFilterDto = new EventFilterDto();
     eventFilterDto.setEventCategory(category);
 
-    return eventService.getBestEvents(limit,eventFilterDto);
+    return eventService.getBest(limit,eventFilterDto);
   }
 
   /** Return all performances which belong to a certain event. */
@@ -77,7 +77,7 @@ public class EventEndpoint {
 
     Pageable p = getPageable(page, count);
 
-    return eventService.getPerformancesFiltered(id, p);
+    return eventService.getPerformancesByEventId(id, p);
   }
 
   private Pageable getPageable(Integer page, Integer count) {
@@ -160,6 +160,6 @@ public class EventEndpoint {
     }
 
     Pageable p = getPageable(page, count);
-    return eventService.getEventsFiltered(eventFilterDto, p);
+    return eventService.getFiltered(eventFilterDto, p);
   }
 }

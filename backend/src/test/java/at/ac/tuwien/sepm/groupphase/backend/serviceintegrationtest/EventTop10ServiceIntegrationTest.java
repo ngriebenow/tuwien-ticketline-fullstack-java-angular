@@ -38,7 +38,6 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -324,7 +323,7 @@ public class EventTop10ServiceIntegrationTest {
   public void givenEvents_whenGetBestEvents_returnBestEvents() {
     
     List<EventRankingDto> eventRankingDtoList = 
-        eventService.getBestEvents(10,new EventFilterDto());
+        eventService.getBest(10,new EventFilterDto());
 
     Assert.assertThat(eventRankingDtoList.size(),is(equalTo(2)));
 

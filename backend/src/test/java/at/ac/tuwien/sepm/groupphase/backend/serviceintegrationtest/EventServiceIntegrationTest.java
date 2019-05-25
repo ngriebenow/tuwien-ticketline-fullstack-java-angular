@@ -3,9 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.serviceintegrationtest;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
 
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
@@ -18,7 +16,6 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
@@ -31,27 +28,15 @@ import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.awt.Color;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
@@ -363,7 +348,7 @@ public class EventServiceIntegrationTest {
   @Test
   public void givenEventId_whenFindPerformancesByEventId_thenReturnPerformances() {
     List<PerformanceSearchResultDto> retList =
-        eventService.getPerformancesFiltered(E1.getId(), Pageable.unpaged());
+        eventService.getPerformancesByEventId(E1.getId(), Pageable.unpaged());
 
     Assert.assertTrue(retList.contains(performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P1)));
     Assert.assertTrue(retList.contains(performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P2)));
@@ -374,7 +359,7 @@ public class EventServiceIntegrationTest {
   public void givenInvalidEventId_whenFindPerformancesByEventId_thenThrowNotFoundException() {
     Assertions.assertThrows(
         NotFoundException.class,
-        () -> eventService.getPerformancesFiltered(-1L, Pageable.unpaged()));
+        () -> eventService.getPerformancesByEventId(-1L, Pageable.unpaged()));
   }
 
   @Test
@@ -383,7 +368,7 @@ public class EventServiceIntegrationTest {
     EventFilterDto filterDto = new EventFilterDto();
     filterDto.setName("D");
 
-    List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+    List<EventSearchResultDto> retList = eventService.getFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(2));
     Assert.assertTrue(retList.contains(E2_SR));
@@ -397,7 +382,7 @@ public class EventServiceIntegrationTest {
     EventFilterDto filterDto = new EventFilterDto();
     filterDto.setEventCategory(EventCategory.CONCERT);
 
-    List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+    List<EventSearchResultDto> retList = eventService.getFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E2_SR));
@@ -409,7 +394,7 @@ public class EventServiceIntegrationTest {
     EventFilterDto filterDto = new EventFilterDto();
     filterDto.setArtistName("abcd");
 
-    List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+    List<EventSearchResultDto> retList = eventService.getFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(2));
     Assert.assertTrue(retList.contains(E1_SR));
@@ -422,7 +407,7 @@ public class EventServiceIntegrationTest {
     EventFilterDto filterDto = new EventFilterDto();
     filterDto.setArtistName("F");
 
-    List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+    List<EventSearchResultDto> retList = eventService.getFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(2));
     Assert.assertTrue(retList.contains(E2_SR));
@@ -435,7 +420,7 @@ public class EventServiceIntegrationTest {
     EventFilterDto filterDto = new EventFilterDto();
     filterDto.setArtistName("abcd");
 
-    List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+    List<EventSearchResultDto> retList = eventService.getFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(2));
     Assert.assertTrue(retList.contains(E1_SR));
@@ -448,7 +433,7 @@ public class EventServiceIntegrationTest {
     EventFilterDto filterDto = new EventFilterDto();
     filterDto.setArtistName("w");
 
-    List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+    List<EventSearchResultDto> retList = eventService.getFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(3));
     Assert.assertTrue(retList.contains(E1_SR));
@@ -462,7 +447,7 @@ public class EventServiceIntegrationTest {
     EventFilterDto filterDto = new EventFilterDto();
     filterDto.setArtistName("W3");
 
-    List<EventSearchResultDto> retList = eventService.getEventsFiltered(filterDto, Pageable.unpaged());
+    List<EventSearchResultDto> retList = eventService.getFiltered(filterDto, Pageable.unpaged());
 
     Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E2_SR));
