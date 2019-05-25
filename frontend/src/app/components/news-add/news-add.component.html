@@ -33,8 +33,9 @@
       </small>
     </div>
   </div>
-
-  <button type="button" (click)="addNews()" class="btn btn-success float-right">Neuer Eintrag</button>
-
 </form>
 <app-picture-upload></app-picture-upload>
+<button type="button" class="btn-font-size-reduced btn-lg btn-primary" (click)="addNews()">Speichern</button>
+<div class="bottom-right">
+  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+</div>

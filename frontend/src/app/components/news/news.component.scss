@@ -1,0 +1,31 @@
+@import "../../../colors";
+.news-container {
+  width: 1470px;
+  height: 800px;
+  overflow: scroll;
+  background-color: $light-gray;
+}
+.news-entry-panel {
+  margin-top: 30px;
+  width: 1357px;
+  height: 186px;
+  word-break: normal;
+  background-color: white !important;
+}
+.title {
+  margin-top: 20px;
+  margin-left: 30px;
+}
+.summary {
+  margin-top: 20px;
+  margin-left: 50px;
+}
+
+.details{
+  margin-left: 1200px;
+}
+
+.space{
+  width:auto;
+  height: 5px;
+}

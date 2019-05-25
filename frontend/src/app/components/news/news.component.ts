@@ -18,10 +18,6 @@ export class NewsComponent implements OnInit {
   error = false;
   errorMessage = '';
   newsForm: FormGroup;
-  // After first submission attempt, form validation will start
-  submitted = false;
-  selectedNews: News;
-
 
   private news: News[];
 
@@ -36,13 +32,16 @@ export class NewsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadNews(this.onlyNew());
+  }
+  onlyNew() {
     let onlyNew: boolean;
     this.route
     .queryParams
     .subscribe(params => {
       onlyNew = params['onlyNew'];
     });
-    this.loadNews(onlyNew);
+    return onlyNew;
   }
 
   /**
@@ -66,6 +65,10 @@ export class NewsComponent implements OnInit {
    */
   selectNewsDetails(id: number) {
     this.router.navigate(['/news/' + id]);
+  }
+
+  navigateMainMenu() {
+    this.router.navigate(['/']);
   }
 
   /**

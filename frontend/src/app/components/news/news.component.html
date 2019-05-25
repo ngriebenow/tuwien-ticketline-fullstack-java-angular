@@ -1,20 +1,24 @@
 <h1>News</h1>
-
-<button *ngIf="isAdmin()" type="button" (click)="addNews()">Neuer Eintrag</button>
-<div class="mt-4 container">
-  <div class="row p-2 mb-4">
-    <ul class="news">
-      <li *ngFor="let news of getNews()">
-        <div><span>title: </span> {{news.title}}</div>
-        <div><span>id: </span>{{news.id}}</div>
-        <div><span>title: </span>{{news.title}}</div>
-        <div><span>summary: </span>{{news.summary}}</div>
-        <button type="button" (click)="selectNewsDetails(news.id)">Details</button>
-      </li>
-    </ul>
+<div class="news-container">
+  <div class="mt-4 container">
+    <ng-container *ngFor="let news of getNews()">
+      <div class="news-entry-panel">
+          <div class="space"></div>
+          <div class="title"><h5>{{news.title}}</h5></div>
+          <div class="summary">{{news.summary}}</div>
+        <div class="details">
+          <button (click)="selectNewsDetails(news.id)" type="button" class="btn btn-primary">Details</button>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>
-
+<div class="bottom-right-above-1">
+  <button class="btn-font-size-reduced btn btn-secondary btn-lg " (click)="addNews()" *ngIf="isAdmin()" type="button">Neuer Eintrag</button>
+</div>
 <div class="bottom-right">
-  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+  <button class="btn btn-secondary btn-lg" onclick="history.back(-1)"  *ngIf="!onlyNew()" type="button">Zurück</button>
+</div>
+<div class="bottom-right">
+  <button class="btn-font-size-reduced btn btn-secondary btn-lg" (click)="navigateMainMenu()"  *ngIf="onlyNew()" type="button">Hauptmenü</button>
 </div>
