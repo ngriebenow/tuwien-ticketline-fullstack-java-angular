@@ -38,6 +38,9 @@ public class TicketDto {
   @ApiModelProperty("The id of the defined unit reserved by this ticket")
   private Long definedUnitId;
 
+  @ApiModelProperty("The id of this tickets performance")
+  private Long performanceId;
+
   public TicketDto() {}
 
   private TicketDto(Builder builder) {
@@ -51,6 +54,7 @@ public class TicketDto {
     setLocationName(builder.locationName);
     setHallName(builder.hallName);
     setDefinedUnitId(builder.definedUnitId);
+    setPerformanceId(builder.performanceId);
   }
 
   public Long getId() {
@@ -151,7 +155,8 @@ public class TicketDto {
         && Objects.equal(priceCategoryName, ticketDto.priceCategoryName)
         && Objects.equal(locationName, ticketDto.locationName)
         && Objects.equal(hallName, ticketDto.hallName)
-        && Objects.equal(definedUnitId, ticketDto.definedUnitId);
+        && Objects.equal(definedUnitId, ticketDto.definedUnitId)
+        && Objects.equal(performanceId, ticketDto.performanceId);
   }
 
   @Override
@@ -166,7 +171,8 @@ public class TicketDto {
         priceInCents,
         locationName,
         hallName,
-        definedUnitId);
+        definedUnitId,
+        performanceId);
   }
 
   @Override
@@ -199,7 +205,18 @@ public class TicketDto {
         + ", definedUnitId='"
         + definedUnitId
         + '\''
+        + ", performanceId='"
+        + performanceId
+        + '\''
         + '}';
+  }
+
+  public Long getPerformanceId() {
+    return performanceId;
+  }
+
+  public void setPerformanceId(Long performanceId) {
+    this.performanceId = performanceId;
   }
 
   public static final class Builder {
@@ -214,9 +231,9 @@ public class TicketDto {
     private String locationName;
     private String hallName;
     private Long definedUnitId;
+    private Long performanceId;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder id(Long val) {
       id = val;
@@ -265,6 +282,11 @@ public class TicketDto {
 
     public Builder definedUnitId(Long val) {
       definedUnitId = val;
+      return this;
+    }
+
+    public Builder performanceId(Long val) {
+      performanceId = val;
       return this;
     }
 
