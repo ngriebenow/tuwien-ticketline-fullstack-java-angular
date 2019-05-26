@@ -33,10 +33,10 @@ export class TicketingService {
   initialization() {
     this.event = JSON.parse(localStorage.getItem('event'));
     this.performance = JSON.parse(localStorage.getItem('performance'));
-    if(this.event != null){
+    if (this.event != null) {
       this.hall = this.event.hall;
       this.categories = this.event.priceCategories;
-      console.log("First category: " + this.categories[0].toString())
+      console.log('First category: ' + this.categories[0].toString());
     }
     this.dunits = JSON.parse(localStorage.getItem('definedUnits'));
     this.client = JSON.parse(localStorage.getItem('client'));
@@ -45,14 +45,14 @@ export class TicketingService {
 
     if (this.dunits != null) {
       for (let i = 0; i < this.dunits.length; i++) {
-        let tr: TicketRequest = new TicketRequest(this.dunits[i].id, this.dunits[i].num);
-        if (this.dunits[i].num > 0){
-          console.log("Import ticketrequest: " + tr.amount + " " + tr.definedUnitId);
+        const tr: TicketRequest = new TicketRequest(this.dunits[i].id, this.dunits[i].num);
+        if (this.dunits[i].num > 0) {
+          console.log('Import ticketrequest: ' + tr.amount + ' ' + tr.definedUnitId);
           this.ticketRequests.push(tr);
         }
       }
     }
-    console.log("ticketrequest length: " + this.ticketRequests.length);
+    console.log('ticketrequest length: ' + this.ticketRequests.length);
   }
 
   getClientName() {

@@ -6,7 +6,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {Point} from 'src/app/dtos/Point';
 import {DefinedUnit} from 'src/app/dtos/defined-unit';
 import {PriceCategory} from 'src/app/dtos/price-category';
-import {Performance} from "../../dtos/performance";
+import {Performance} from '../../dtos/performance';
 import {Event} from '../../dtos/event';
 import {AlertService} from '../../services/alert.service';
 
@@ -61,13 +61,13 @@ export class HallViewingComponent implements OnInit {
   }
 
   clickSeat(seat: DefinedUnit) {
-    if(seat.selected) {
+    if (seat.selected) {
       seat.num = 0;
     } else {
       seat.num = 1;
     }
     seat.selected = !seat.selected;
-    console.log("SeatNum: " + seat.num + " Selected: " + seat.selected);
+    console.log('SeatNum: ' + seat.num + ' Selected: ' + seat.selected);
   }
 
   getBackColor(dunit: DefinedUnit) {
@@ -92,7 +92,7 @@ export class HallViewingComponent implements OnInit {
   }
 
   selectionNotEmpty() {
-    let any:boolean = false
+    let any = false;
     this.defUnits.forEach(
       x => any = any || x.selected
     );

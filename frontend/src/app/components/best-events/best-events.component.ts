@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
-import {EventFilter} from "../../dtos/event-filter";
-import {EventRanking} from "../../dtos/event-ranking";
-import {EventService} from "../../services/event.service";
+import {EventFilter} from '../../dtos/event-filter';
+import {EventRanking} from '../../dtos/event-ranking';
+import {EventService} from '../../services/event.service';
 
 @Component({
   selector: 'app-best-events',
@@ -24,7 +24,7 @@ export class BestEventsComponent implements OnInit {
    */
   getColor(cat: boolean): string {
     if (cat) {
-      return "#EAEAEA";
+      return '#EAEAEA';
     } else {
       return '#8FBEFF';
     }
@@ -36,7 +36,7 @@ export class BestEventsComponent implements OnInit {
    */
   getTextColor(cat: boolean): string {
     if (cat) {
-      return "#CFCFCF";
+      return '#CFCFCF';
     } else {
       return '#FFFFFF';
     }
@@ -48,7 +48,7 @@ export class BestEventsComponent implements OnInit {
    */
   getGraphColor(first: boolean): string {
     if (first) {
-      return "#FF9824";
+      return '#FF9824';
     } else {
       return '#CFCFCF';
     }
@@ -59,10 +59,10 @@ export class BestEventsComponent implements OnInit {
    * @param index the index-th tick on the x axis
    */
   calcVerticalOffsetMark(index: number): string {
-    let width = document.getElementById('graph').offsetWidth;
-    let maxwidth = width * 0.8;
-    let indexwidth = maxwidth*index/3. + 30;
-    return indexwidth.toString() + "px";
+    const width = document.getElementById('graph').offsetWidth;
+    const maxwidth = width * 0.8;
+    const indexwidth = maxwidth * index / 3. + 30;
+    return indexwidth.toString() + 'px';
 
 
   }
@@ -72,8 +72,8 @@ export class BestEventsComponent implements OnInit {
    * @param index the index-th tick on the x axis
    */
   getMark(index: number): number {
-    let maxtickets = this.eventRankings[0].soldTickets;
-    let marking = maxtickets * index / 4;
+    const maxtickets = this.eventRankings[0].soldTickets;
+    const marking = maxtickets * index / 4;
     return marking;
   }
 
@@ -93,8 +93,8 @@ export class BestEventsComponent implements OnInit {
    * @param index the index-th ranking starting from the top
    */
   calcVerticalOffset(index: number): string {
-    let offset: number = index * 53 + 38;
-    return offset.toString() + "px";
+    const offset: number = index * 53 + 38;
+    return offset.toString() + 'px';
   }
 
   /**
@@ -102,10 +102,10 @@ export class BestEventsComponent implements OnInit {
    * @param ranking: the event ranking
    */
   calcBarWidth(ranking: EventRanking): string {
-    let width = document.getElementById('graph').offsetWidth;
-    let maxwidth = width/this.eventRankings[0].soldTickets * 0.9;
-    let barwidth = maxwidth*ranking.soldTickets;
-    return barwidth.toString() + "px";
+    const width = document.getElementById('graph').offsetWidth;
+    const maxwidth = width / this.eventRankings[0].soldTickets * 0.9;
+    const barwidth = maxwidth * ranking.soldTickets;
+    return barwidth.toString() + 'px';
   }
 
 

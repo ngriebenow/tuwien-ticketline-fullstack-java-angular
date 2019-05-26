@@ -6,8 +6,8 @@ import {EventSearchResult} from '../../dtos/event-search-result';
 import {Performance} from '../../dtos/performance';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 import {AlertService} from '../../services/alert.service';
-import {PerformanceSearchResult} from "../../dtos/performance-search-result";
-import {Router} from "@angular/router";
+import {PerformanceSearchResult} from '../../dtos/performance-search-result';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-event-filter',
@@ -66,7 +66,7 @@ export class EventFilterComponent implements OnInit {
    */
   getTextColor(cat: boolean): string {
     if (cat) {
-      return "#CFCFCF";
+      return '#CFCFCF';
     } else {
       return '#FFFFFF';
     }
@@ -97,13 +97,13 @@ export class EventFilterComponent implements OnInit {
 
   showHall(esr: EventSearchResult, p: PerformanceSearchResult) {
 
-    let per: Performance = new Performance(p.id,p.startAt,p.name,null);
+    const per: Performance = new Performance(p.id, p.startAt, p.name, null);
 
     localStorage.setItem('performance', JSON.stringify(per));
 
     this.eventService.getEventById(esr.id).subscribe(
-      e => localStorage.setItem("event",JSON.stringify(e))
-    ).add( () => this.eventLoaded(esr.id,p.id));
+      e => localStorage.setItem('event', JSON.stringify(e))
+    ).add( () => this.eventLoaded(esr.id, p.id));
 
 
   }
@@ -124,7 +124,7 @@ export class EventFilterComponent implements OnInit {
 
     console.log('loadEvents with page ' + this.page + ' and count ' + this.count);
 
-    this.eventService.getEventsFiltered(this.eventFilter,this.queryParams).subscribe(
+    this.eventService.getEventsFiltered(this.eventFilter, this.queryParams).subscribe(
       (events: EventSearchResult[]) => {
         this.eventSearchResults = events;
       },
