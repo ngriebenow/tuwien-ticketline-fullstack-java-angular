@@ -12,12 +12,12 @@ import {UserFilter} from '../../dtos/user-filter';
 export class UserFilterComponent implements OnInit {
 
   public users: User[];
-  private page = 0;
-  private count = 20;
-  private queryParams: UserFilter;
-  private isLocked: string;
+  public page = 0;
+  public count = 20;
+  public queryParams: UserFilter;
+  public isLocked: string;
 
-  private searchForm = this.formBuilder.group({
+  public searchForm = this.formBuilder.group({
     userName: [''],
     userRole: [''],
     isEnabled: ['']
