@@ -26,9 +26,7 @@ public class SimplePerformanceService implements PerformanceService {
   private static final Logger LOGGER = LoggerFactory.getLogger(SimplePerformanceService.class);
   @Autowired private DefinedUnitRepository definedUnitRepository;
   @Autowired private DefinedUnitMapper definedUnitMapper;
-  @Autowired private PriceCategoryMapper priceCategoryMapper;
   @Autowired private PointMapper pointMapper;
-  @Autowired private PriceCategoryRepository priceCategoryRepo;
 
   @Transactional(readOnly = true)
   @Override
@@ -63,19 +61,5 @@ public class SimplePerformanceService implements PerformanceService {
       LOGGER.error("Could not get defined units " + e.getMessage());
     }
     return definedUnitDtos;
-  }
-
-  @Transactional(readOnly = true)
-  @Override
-  public List<PriceCategoryDto> getPriceCategoriesByEventId(Event event) throws NotFoundException {
-    LOGGER.info("getPriceCategoriesByEventId " + event.getId());
-    List<PriceCategoryDto> priceCategoryDtos = new ArrayList<>();
-    try {
-      priceCategoryRepo.findAllByEventOrderByPriceInCentsAsc(event).forEach(
-          e -> priceCategoryDtos.add(priceCategoryMapper.priceCategoryToPriceCategoryDto(e)));
-    } catch (NotFoundException e) {
-      LOGGER.error("Could not get price categories " + e.getMessage());
-    }
-    return priceCategoryDtos;
   }
 }

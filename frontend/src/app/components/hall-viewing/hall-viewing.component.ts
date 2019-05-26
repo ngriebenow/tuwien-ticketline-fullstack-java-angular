@@ -7,6 +7,7 @@ import {Point} from 'src/app/dtos/Point';
 import {DefinedUnit} from 'src/app/dtos/defined-unit';
 import {PriceCategory} from 'src/app/dtos/price-category';
 import {Performance} from "../../dtos/performance";
+import {Event} from '../../dtos/event';
 
 
 @Component({
@@ -25,63 +26,82 @@ import {Performance} from "../../dtos/performance";
 export class HallViewingComponent implements OnInit {
 
   hallSize: Point;
-  defUnits: DefinedUnit[];
-  cats: PriceCategory[];
+  defUnits: DefinedUnit[] = [];
+  cats: PriceCategory[] = [];
   sectorNum: number;
+  event: Event;
+  performance: Performance;
 
   constructor(private route: ActivatedRoute,
               private hallViewingService: HallViewingService) {
   }
 
   ngOnInit() {
-    this.getCategoriesComp();
-    this.getDefinedUnitsComp();
-    this.getHallSize();
+    this.event = this.hallViewingService.getEvent();
+    this.performance = this.hallViewingService.getPerformance();
+
+    this.cats = this.event.priceCategories;
+    this.getDefinedUnits();
+    this.hallSize = this.event.hall.boundaryPoint;
   }
 
-  getDefinedUnitsComp(): void {
-    this.defUnits = this.hallViewingService.getDefinedUnitsComp();
-  }
-
-  getCategoriesComp(): void {
-    this.cats = this.hallViewingService.getCategoriesComp();
+  getDefinedUnits(): void {
+    this.hallViewingService.getDefinedUnits(this.performance).subscribe(
+      defUnits => this.defUnits = defUnits as DefinedUnit[]);
   }
 
   clickSeat(seat: DefinedUnit) {
-    this.hallViewingService.clickSeat(seat);
+    seat.selected = !seat.selected;
   }
 
   getBackColor(dunit: DefinedUnit) {
-    return this.hallViewingService.getBackColor(dunit);
+    return dunit.selected ? '#FF9824' : '#CFCFCF';
   }
 
 
   getEventName(): String {
-    return this.hallViewingService.getEventName();
+    return this.event.name;
   }
 
   getPerformanceName(): String {
-    return this.hallViewingService.getPerformanceName();
+    return this.performance.name;
   }
 
   getHallName() {
-    return this.hallViewingService.getHallName();
+    return this.event.hall.name;
   }
 
   getStartAt() {
-    return this.hallViewingService.getStartAt();
-  }
-
-  getHallSize(): void {
-    this.hallSize = this.hallViewingService.getHallSize();
+    return this.performance.startAt;
   }
 
   selectionNotEmpty() {
-    return this.hallViewingService.selectionNotEmpty();
+    let any:boolean = false
+    this.defUnits.forEach(
+      x => any = any || x.selected
+    );
+    return any;
   }
 
   getTicketSum() {
-    return this.hallViewingService.getTicketSum();
+    let ticketSum = 0;
+    let num = 1;
+    let cat = 0;
+    for (let i = 0; i < this.defUnits.length; i++) {
+      if (this.defUnits[i].selected) {
+        cat = this.defUnits[i].priceCategoryId;
+        for (let j = 0; j < this.cats.length; j++) {
+          if (cat === this.cats[j].id) {
+            if (this.defUnits[i].capacity > 1) {
+              num = this.defUnits[i].num;
+            }
+            ticketSum += (this.cats[j].priceInCents * num);
+            num = 1;
+          }
+        }
+      }
+    }
+    return ticketSum;
   }
 
   sectorSelected(dunit: DefinedUnit) {
@@ -113,7 +133,7 @@ export class HallViewingComponent implements OnInit {
   }
 
   getChosenNum(dunit: DefinedUnit) {
-    return this.hallViewingService.getChosenNum(dunit);
+    return this.defUnits[this.defUnits.indexOf(dunit)].num;
   }
 
   checkValue() {
@@ -121,7 +141,7 @@ export class HallViewingComponent implements OnInit {
   }
 
   sectorIsSelected(dunit: DefinedUnit) {
-    return this.hallViewingService.sectorIsSelected(dunit);
+    return dunit.selected;
   }
 
   sectorDone() {
@@ -137,7 +157,8 @@ export class HallViewingComponent implements OnInit {
     for (let i = 0; i < this.cats.length; i++) {
       if (this.cats[i].id === id) {
         tmp = this.cats[i].color + 0x1000000;
-        return '#' + tmp.toString(16).substr(1);
+        console.log("Int: " + this.cats[i].color + " Color: " +'#' + tmp.toString(16));
+        return '#' + tmp.toString(16);
       }
     }
   }

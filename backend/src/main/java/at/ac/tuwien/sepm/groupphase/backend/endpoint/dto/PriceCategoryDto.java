@@ -17,7 +17,7 @@ public class PriceCategoryDto {
   private String name;
 
   @ApiModelProperty(readOnly = true, name = "The color of the category")
-  private Color color;
+  private Integer color;
 
   public Long getId() {
     return id;
@@ -43,20 +43,13 @@ public class PriceCategoryDto {
     this.name = name;
   }
 
-  public Color getColor() {
+  public Integer getColor() {
     return color;
   }
 
-  public void setColor(Color color) {
+  public void setColor(Integer color) {
     this.color = color;
   }
 
-  /** Build the PriceCategory dto. */
-  public PriceCategoryDto build() {
-    PriceCategoryDto priceCategoryDto = new PriceCategoryDto();
-    priceCategoryDto.setColor(color);
-    priceCategoryDto.setId(id);
-    priceCategoryDto.setPriceInCents(priceInCents);
-    return priceCategoryDto;
-  }
+
 }

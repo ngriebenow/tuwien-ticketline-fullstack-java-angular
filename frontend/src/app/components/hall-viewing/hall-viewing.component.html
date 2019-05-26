@@ -2,13 +2,13 @@
   <h1 style="padding-bottom: 0px; margin: 0px;">{{ getEventName() }} - {{ getPerformanceName() }}</h1>
   <div class="row full-width h-100">
     <div class="col-3 no-padding my-auto">
-      <div class="container-fluid key-bg" style="padding-top: 70px; padding-left: 100px">
+      <div class="container-fluid key-bg" style="padding-top: 70px;">
         <div class="row row-padding" *ngFor="let cat of cats">
           <div class="col-6 align-self-center">
             <h2 class="float-right" style="font-size:20px">{{ cat.name }}</h2>
           </div>
           <div class="col-4 align-self-center">
-            <input readonly class="form-control" type="text" value="{{cat.priceInCents.toFixed(2)}} €">
+            <input readonly class="form-control" type="text" value="{{cat.priceInCents/100 | currency:'EUR'}}">
           </div>
         </div>
         <div class="row row-padding" style="padding-top: 25px" *ngIf="anySectorSelected()">
@@ -62,7 +62,7 @@
             <h2 class="float-right" style="font-size: 20px">Gesamtpreis</h2>
           </div>
           <div class="col-4 align-self-center">
-            <input readonly class="form-control" type="text" value="{{getTicketSum().toFixed(2)}} €">
+            <input readonly class="form-control" type="text" value="{{getTicketSum()/100 | currency:'EUR'}}">
           </div>
         </div>
       </div>
@@ -74,12 +74,12 @@
           <div *ngIf="dunit.capacity == 1">
             <div *ngIf="dunit.free > 0">
               <button type="button" (click)="clickSeat(dunit)" [style.background-color]="getBackColor(dunit)"
-                      [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}"
+                      [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
                       class="btn btn-seat"></button>
             </div>
             <div *ngIf="dunit.free == 0">
               <button type="button"
-                      [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1), 'font-size':calcFontSize(), 'line-height': calcLineHeight()}"
+                      [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary), 'font-size':calcFontSize(), 'line-height': calcLineHeight()}"
                       class="btn btn-reserved disabled">X
               </button>
             </div>
@@ -87,19 +87,19 @@
           <div *ngIf="dunit.capacity > 1">
             <div *ngIf="dunit.free > 0 && sectorIsSelected(dunit) == false">
               <button (click)="sectorSelected(dunit)"
-                      [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}"
+                      [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
                       class="btn btn-sector text-truncate align-middle"><h4 *ngIf="showName(dunit) > 50">
                {{ dunit.name }}</h4><h4>{{ dunit.free }}</h4></button>
             </div>
             <div *ngIf="dunit.free == 0 && sectorIsSelected(dunit) == false">
               <button
-                [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}"
+                [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
                 class="btn btn-sector-zero text-truncate"><h4 class="zero" *ngIf="showName(dunit) > 50">
                {{ dunit.name }}</h4><h4 class="zero">{{ dunit.free }}</h4></button>
             </div>
             <div *ngIf="sectorIsSelected(dunit) == true">
               <button (click)="sectorSelected(dunit)"
-                      [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.point1),'top':calcPositionTop(dunit.point1)}"
+                      [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
                       class="btn btn-sector-zero-selected text-truncate"><h4 *ngIf="showName(dunit) > 50">
                {{ dunit.name }}</h4><h4>{{ getChosenNum(dunit) }}/{{ dunit.free }}</h4></button>
             </div>
@@ -115,7 +115,7 @@
       </div>
     </div>
     <div class="col-3 no-padding my-auto">
-      <div class="container-fluid key-bg" style="padding-top: 70px; padding-right: 100px">
+      <div class="container-fluid key-bg" style="padding-top: 70px;">
         <div class="row row-padding">
           <div class="col-6 align-self-center">
             <h2 class="float-right" style="font-size: 20px">Saal</h2>

@@ -1,8 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DefinedUnitDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PriceCategoryDto;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
 import io.swagger.annotations.Api;
@@ -37,16 +35,5 @@ public class PerformanceEndpoint {
     Performance performance = new Performance();
     performance.setId(id);
     return performanceService.getDefinedUnitsByPerformanceId(performance);
-  }
-
-  @RequestMapping(value = "/hall-viewing/price-categories/{id}", method = RequestMethod.GET)
-  @ApiOperation(
-      value = "Get price categories by event id",
-      authorizations = {@Authorization(value = "apiKey")})
-  public List<PriceCategoryDto> getPriceCategoriesByEventId(@PathVariable Long id) {
-    LOGGER.info("getPriceCategoriesByEventId " + id);
-    Event event = new Event();
-    event.setId(id);
-    return performanceService.getPriceCategoriesByEventId(event);
   }
 }
