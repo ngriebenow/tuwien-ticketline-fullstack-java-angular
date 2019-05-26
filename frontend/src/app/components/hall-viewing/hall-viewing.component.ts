@@ -8,6 +8,7 @@ import {DefinedUnit} from 'src/app/dtos/defined-unit';
 import {PriceCategory} from 'src/app/dtos/price-category';
 import {Performance} from "../../dtos/performance";
 import {Event} from '../../dtos/event';
+import {EventService} from "../../services/event.service";
 
 
 @Component({
@@ -34,20 +35,23 @@ export class HallViewingComponent implements OnInit {
   sectorSel: DefinedUnit;
 
   constructor(private route: ActivatedRoute,
+              private eventService: EventService,
               private hallViewingService: HallViewingService) {
   }
 
   ngOnInit() {
+
     this.event = this.hallViewingService.getEvent();
     this.performance = this.hallViewingService.getPerformance();
 
-    if (this.event != null) {
+    if (this.event != null && this.performance != null) {
       this.cats = this.event.priceCategories;
       this.hallSize = this.event.hall.boundaryPoint;
-    }
 
-    this.getDefinedUnits();
+      this.getDefinedUnits();
+    }
   }
+
 
   getDefinedUnits(): void {
     this.hallViewingService.getDefinedUnits(this.performance).subscribe(

@@ -200,7 +200,7 @@
 
         <div class="row event-body">
         <div class="col-2" *ngFor="let p of event.performances">
-          <div class="card card-performance" (click)="$event.stopPropagation(); ">
+          <div class="card card-performance" (click)="$event.stopPropagation();showHall(event,p)">
             <div class="card-performance-body">
               <div class="col-12">
                 <h6 class="card-performance-title float-none">{{ p.startAt | date:'HH:mm, dd.MM.yyyy' }}</h6>
