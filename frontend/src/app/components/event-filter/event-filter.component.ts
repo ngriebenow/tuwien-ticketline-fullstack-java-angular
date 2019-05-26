@@ -5,6 +5,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EventSearchResult} from '../../dtos/event-search-result';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 import {AlertService} from '../../services/alert.service';
+import {Event} from '../../dtos/event';
+import {Performance} from '../../dtos/performance';
+import {analyzeFileForInjectables} from "@angular/compiler";
+import {takeWhile} from "rxjs/operators";
+import {PerformanceSearchResult} from "../../dtos/performance-search-result";
 
 @Component({
   selector: 'app-event-filter',
@@ -88,6 +93,34 @@ export class EventFilterComponent implements OnInit {
       this.page--;
       this.loadEvents();
     }
+  }
+
+
+  showHall(e: EventSearchResult, p: PerformanceSearchResult) {
+
+    let ev: Event;
+    let pe: Performance;
+
+    for (let i = 0; i < 50; i++) {
+      this.eventService.getEventById(e.id).subscribe(
+        x => ev = x);
+      this.eventService.getPerformancesById(p.id).subscribe(
+        x => pe = x.find(y => y.id === p.id));
+      setTimeout(() => {while (true){}}, 100);
+      if (ev != null && pe != null) {
+        break;
+      }
+    }
+    if (ev == null || pe == null) {
+      this.alertService.error("Es ist ein Problem beim Laden aufgetreten. Versuchen Sie es später erneut.");
+      return;
+    }
+
+    //= this.eventService.getEventById(e.id).to
+
+    localStorage.setItem('event', JSON.stringify(ev));
+    localStorage.setItem('performance', JSON.stringify(pe));
+
   }
 
 
