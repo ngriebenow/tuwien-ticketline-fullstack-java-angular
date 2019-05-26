@@ -79,6 +79,7 @@ export class HallCreationMenuComponent implements OnInit {
   }
 
   cancelHallCreation(): void {
+    this.hallCreationService.cancelHallCreation();
   }
 
   updatePlan(): void {
