@@ -34,8 +34,8 @@ export class HallViewingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDefinedUnitsComp();
     this.getCategoriesComp();
+    this.getDefinedUnitsComp();
     this.getHallSize();
   }
 

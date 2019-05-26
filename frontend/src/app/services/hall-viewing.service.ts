@@ -14,11 +14,13 @@ import {Event} from "../dtos/event";
 })
 export class HallViewingService {
 
-  selected: Boolean[] = [];
-  selectedNum: number[] = [];
+  //selected: Boolean[] = [];
+  //selectedNum: number[] = [];
   defUnits: DefinedUnit[] = [];
   cats: PriceCategory[] = [];
   sectorSel: DefinedUnit;
+  event: Event;
+  performance: Performance;
 
   private hallViewingUri: string = this.globals.backendUri + '/performances/hall-viewing';
 
@@ -27,12 +29,11 @@ export class HallViewingService {
   }
 
   clickSeat(seat: DefinedUnit): void {
-    const index = this.defUnits.indexOf(seat);
-    this.selected[index] = !this.selected[index];
+    seat.selected = !seat.selected;
   }
 
   getBackColor(dunit: DefinedUnit) {
-    return this.selected[this.defUnits.indexOf(dunit)] ? '#FF9824' : '#CFCFCF';
+    return dunit.selected ? '#FF9824' : '#CFCFCF';
   }
 
   getHallSize(): Point {
@@ -40,27 +41,35 @@ export class HallViewingService {
   }
 
   getPerformance() {
-    return this.ticketingService.getPerformance();
+    this.performance = this.ticketingService.getPerformance();
+    return performance;
   }
 
   getEventName(): String {
-    return this.ticketingService.getEventName();
+    return this.event.name;
   }
 
   getPerformanceName(): String {
-    return this.ticketingService.getPerformanceName();
+    return this.performance.name;
   }
 
   getEvent() {
-    return this.ticketingService.getEvent();
+    this.event = this.ticketingService.getEvent();
+    return this.event;
   }
 
   getCategoriesComp() {
     const event = this.ticketingService.getEvent();
-    this.getCategories(event).subscribe(
-      cats => this.cats = cats as PriceCategory[]);
 
-    return this.cats;
+    event.priceCategories.forEach(
+      pc => console.log("found pc " + pc.name.toString())
+    );
+
+
+    /*this.getCategories(event).subscribe(
+      cats => this.cats = cats as PriceCategory[]);
+    */
+    return event.priceCategories;
   }
 
   getCategories(event: Event) {
@@ -83,16 +92,6 @@ export class HallViewingService {
     return this.defUnits;
   }
 
-  /*initializeArrays() {
-    for (let i = 0; i < this.defUnits.length; i++) {
-      this.selected[i] = false;
-    }
-
-    for (let i = 0; i < this.defUnits.length; i++) {
-      this.selectedNum[i] = 0;
-    }
-  }*/
-
   getHallName() {
     return this.ticketingService.getHallName();
   }
@@ -102,22 +101,26 @@ export class HallViewingService {
   }
 
   selectionNotEmpty() {
-    return this.selected.includes(true);
+    let any:boolean = false
+    this.defUnits.forEach(
+      x => any = any || x.selected
+    );
+    return any;
   }
 
   getTicketSum() {
     let ticketSum = 0;
     let num = 1;
     let cat = 0;
-    for (let i = 0; i < this.selected.length; i++) {
-      if (this.selected[i]) {
+    for (let i = 0; i < this.defUnits.length; i++) {
+      if (this.defUnits[i].selected) {
         cat = this.defUnits[i].priceCategoryId;
         for (let j = 0; j < this.cats.length; j++) {
           if (cat === this.cats[j].id) {
             if (this.defUnits[i].capacity > 1) {
-              num = this.selectedNum[i];
+              num = this.defUnits[i].num;
             }
-            ticketSum += (this.cats[j].priceInCent * num);
+            ticketSum += (this.cats[j].priceInCents * num);
             num = 1;
           }
         }
@@ -145,23 +148,23 @@ export class HallViewingService {
   getSelectedSectorFree() {
     let num = this.sectorSel.free;
     const index = this.defUnits.indexOf(this.sectorSel);
-    if (this.selected[index] && this.sectorSel.free === 0) {
-      num = this.selectedNum[index];
+    if (this.defUnits[index].selected && this.sectorSel.free === 0) {
+      num = this.defUnits[index].num;
     }
     return num;
   }
 
   updateSelectedNum(sectorNum: number) {
-    this.selectedNum[this.defUnits.indexOf(this.sectorSel)] = sectorNum;
+    this.defUnits[this.defUnits.indexOf(this.sectorSel)].num = sectorNum;
   }
 
   getNumOfSelectedSec() {
     const index = this.defUnits.indexOf(this.sectorSel);
-    return this.selectedNum[index] > 0 ? this.selectedNum[index] : 0;
+    return this.getDefinedUnitsComp()[index].num > 0 ? this.defUnits[index].num : 0;
   }
 
   getChosenNum(dunit: DefinedUnit) {
-    return this.selectedNum[this.defUnits.indexOf(dunit)];
+    return this.defUnits[this.defUnits.indexOf(dunit)].num;
   }
 
   checkValue(value: number) {
@@ -180,17 +183,17 @@ export class HallViewingService {
   }
 
   sectorIsSelected(dunit: DefinedUnit) {
-    return this.selected[this.defUnits.indexOf(dunit)];
+    return dunit.selected;
   }
 
   sectorDone(sectorNum: number) {
     if (sectorNum !== null) {
       const index = this.defUnits.indexOf(this.sectorSel);
-      this.selectedNum[index] = sectorNum;
+      this.defUnits[index].num = sectorNum;
       if (sectorNum !== 0) {
-        this.selected[index] = true;
+        this.defUnits[index].selected = true;
       } else {
-        this.selected[index] = false;
+        this.defUnits[index].selected = false;
       }
     }
     this.sectorSel = null;
@@ -202,11 +205,11 @@ export class HallViewingService {
     const amount: number[] = [];
     let tmp = 0;
     for (let i = 0; i < this.defUnits.length; i++) {
-      if (this.selected[i]) {
+      if (this.defUnits[i].selected) {
         dunitIds[tmp] = this.defUnits[i].id;
         dunits[tmp] = this.defUnits[i];
         if (this.defUnits[i].capacity > 1) {
-          amount[tmp] = this.selectedNum[i];
+          amount[tmp] = this.defUnits[i].num;
         } else {
           amount[tmp] = 1;
         }

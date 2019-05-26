@@ -23,7 +23,9 @@ import {IMyDpOptions} from 'mydatepicker';
 import { InvoiceFilterComponent } from './components/invoice-filter/invoice-filter.component';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 import { AlertComponent } from './components/alert/alert.component';
-import {TicketingService} from "./services/ticketing.service";
+import {TicketingService} from './services/ticketing.service';
+import { StorageServiceModule } from 'ngx-webstorage-service';
+import {TicketingLocalStorageService} from './services/ticketing-local-storage.service';
 
 @NgModule({
   declarations: [
@@ -50,8 +52,9 @@ import {TicketingService} from "./services/ticketing.service";
     NgbModule,
     FormsModule,
     MyDatePickerModule,
+    StorageServiceModule,
   ],
-  providers: [httpInterceptorProviders, Globals, TicketingService],
+  providers: [httpInterceptorProviders, Globals, TicketingLocalStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,7 +1,7 @@
 export class PriceCategory {
   constructor(
     public id: number,
-    public priceInCent: number,
+    public priceInCents: number,
     public name: string,
     public color: number
   ) {

@@ -9,6 +9,7 @@ import {TicketRequest} from '../dtos/ticket-request';
 import {PriceCategory} from '../dtos/price-category';
 import {Client} from '../dtos/client';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,13 +25,26 @@ export class TicketingService {
 
   constructor() {}
 
-  setEvent(event: Event) {
+/*  setEvent(event: Event) {
+
+
+    this.event.name = event.name;
+    this.event.id = event.id;
+    this.event.hall = event.hall;
+
+    console.log("setEvent with pc " + event.priceCategories.length);
+
+    event.priceCategories.forEach(
+      x => this.event.priceCategories.push(x)
+    );
+
     this.event = event;
+
   }
 
   setPerformance(performance: Performance) {
     this.performance = performance;
-  }
+  }*/
 
   setTicketRequests(dunitIds: number[], amount: number[], dunits: DefinedUnit[], cats: PriceCategory[]) {
     this.dunits = dunits;
@@ -45,11 +59,11 @@ export class TicketingService {
   }
 
   getEvent() {
-    return this.event;
+    return JSON.parse(localStorage.getItem('event'));
   }
 
   getPerformance() {
-    return this.performance;
+    return JSON.parse(localStorage.getItem('performance'));
   }
 
   getPerformanceName() {
@@ -85,7 +99,7 @@ export class TicketingService {
     for (let i = 0; i < this.dunits.length; i++) {
       for (let j = 0; j < this.categories.length; j++) {
        if (this.dunits[i].priceCategoryId === this.categories[j].id) {
-         sum += this.categories[j].priceInCent * this.ticketRequests[i].amount;
+         sum += this.categories[j].priceInCents * this.ticketRequests[i].amount;
        }
       }
     }

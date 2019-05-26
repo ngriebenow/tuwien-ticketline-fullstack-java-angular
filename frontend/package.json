@@ -32,6 +32,7 @@
     "jwt-decode": "latest",
     "lodash": "^4.17.11",
     "mydatepicker": "^2.6.6",
+    "ngx-webstorage-service": "^4.0.1",
     "rxjs": "~6.3.3",
     "tiny-date-picker": "^3.2.8",
     "zone.js": "~0.8.26"

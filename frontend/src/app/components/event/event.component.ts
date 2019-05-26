@@ -6,6 +6,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {TicketingService} from '../../services/ticketing.service';
 import {Event} from '../../dtos/event';
 import {Performance} from '../../dtos/performance';
+//import {TicketingLocalStorageService} from '../../services/ticketing-local-storage.service';
 
 @Component({
   selector: 'app-event',
@@ -25,7 +26,9 @@ export class EventComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
-    private ticketingService: TicketingService) {}
+    private ticketingService: TicketingService,
+    ) {}
+    //private ticketinLocalStorage: TicketingLocalStorageService
 
   @Output() event: Event;
   @Output() performances: Performance[] = [];
@@ -33,14 +36,22 @@ export class EventComponent implements OnInit {
 
   ngOnInit() {
     this.getEvent();
+    /*const newToDo = 'newtodo';
+    this.ticketinLocalStorage.storeOnLocalStorage(newToDo);
+    */
   }
 
   savePerformance(id: number) {
-    this.ticketingService.setEvent(this.event);
+    console.log("savePerformance with first price category " + this.event.priceCategories[0].priceInCents);
+
+    localStorage.setItem('event', JSON.stringify(this.event));
+
+    //this.ticketingService.setEvent(this.event);
     console.log("details: " + id);
     for (let i = 0; i < this.performances.length; i++) {
       if(this.performances[i].id == id){
-        this.ticketingService.setPerformance(this.performances[i]);
+        localStorage.setItem('performance', JSON.stringify(this.performances[i]));
+        //this.ticketingService.setPerformance(this.performances[i]);
       }
     }
   }
