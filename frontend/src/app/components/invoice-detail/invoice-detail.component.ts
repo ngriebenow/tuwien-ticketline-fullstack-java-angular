@@ -228,10 +228,10 @@ export class InvoiceDetailComponent implements OnInit {
   private buyTickets(): void {
     if (!this.isTransient()) {
       return;
-      return;
     }
     if (this.selectedTickets.length === 0) {
       this.alertService.warning('Bitte wählen Sie zumindest ein Ticket aus');
+      return;
     }
     this.invoiceService.buyTickets(this.buildReservationRequest()).subscribe(
       invoice => {
