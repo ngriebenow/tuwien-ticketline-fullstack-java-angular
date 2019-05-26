@@ -53,19 +53,20 @@ h2 {
 }
 
 .card {
+  background-color: white;
   width: 100%;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .card-body {
   padding-right: 30px;
   padding-top: 10px;
   padding-left: 30px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 
 .card-performance {
-  background-color: $light-gray;
+  background-color: $main-blue;
   border: $main-blue;
   border-style: solid;
   border-width: thin;
@@ -74,10 +75,14 @@ h2 {
 
 .card-performance h5{
   color: $dark-gray;
+  margin-bottom: 0;
 }
 
 .card-performance h6{
-  color: $dark-gray;
+  text-align: center;
+  font-size: 18px;
+  color: white;
+  margin-bottom: 0;
 }
 
 .card-performance-body {
@@ -111,6 +116,10 @@ h2 {
 
 .performance-subtitle {
   font-size: 12px;
+}
+
+.event-body {
+  margin-top: 20px;
 }
 
 

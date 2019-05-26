@@ -198,12 +198,14 @@
       </div>
       <div>
 
-        <div class="row">
+        <div class="row event-body">
         <div class="col-2" *ngFor="let p of event.performances">
           <div class="card card-performance" (click)="$event.stopPropagation(); ">
             <div class="card-performance-body">
-              <h5 class="card-performance-title">{{ p.startAt | date:'HH:mm, dd.MM.yyyy' }}</h5>
-              <h6 class="card-performance-subtitle">{{ p.name }}</h6>
+              <div class="col-12">
+                <h6 class="card-performance-title float-none">{{ p.startAt | date:'HH:mm, dd.MM.yyyy' }}</h6>
+              </div>
+              <!--<h6 class="card-performance-subtitle">{{ p.name }}</h6>-->
             </div>
           </div>
         </div>
