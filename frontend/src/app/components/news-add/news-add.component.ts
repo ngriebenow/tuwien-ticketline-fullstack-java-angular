@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {News} from '../../dtos/news';
 import {Router} from '@angular/router';
 import {NewsService} from '../../services/news.service';
+import {NewsComponent} from '../../components/news/news.component';
 import {PictureTransferService} from '../../services/picture-transfer.service';
 
 @Component({

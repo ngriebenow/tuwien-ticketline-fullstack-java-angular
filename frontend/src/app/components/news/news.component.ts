@@ -1,12 +1,13 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, NgModule, OnInit} from '@angular/core';
 import {NewsService} from '../../services/news.service';
 import {News} from '../../dtos/news';
 import {NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Router} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
 
 @Component({
   selector: 'app-news',

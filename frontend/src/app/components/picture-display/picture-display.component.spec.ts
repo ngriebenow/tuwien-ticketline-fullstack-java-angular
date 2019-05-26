@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PictureDisplayComponent } from './picture-display.component';
+import {RouterTestingModule} from '@angular/router/testing';
+import {AuthGuard} from '../../guards/auth.guard';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {Globals} from '../../global/globals';
 
 describe('PictureDisplayComponent', () => {
   let component: PictureDisplayComponent;
@@ -8,7 +13,16 @@ describe('PictureDisplayComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PictureDisplayComponent ]
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+      ],
+      declarations: [
+        PictureDisplayComponent,
+      ],
+      providers: [
+        Globals,
+      ],
     })
     .compileComponents();
   }));

@@ -8,7 +8,7 @@ import {PictureService} from '../../services/picture.service';
   styleUrls: ['./picture-display.component.scss']
 })
 export class PictureDisplayComponent implements OnInit {
-  @Input() ids: number[];
+  @Input() ids: number[] = new Array();
   pictures: Picture[];
   constructor(private pictureService: PictureService) {
     this.pictures = new Array();

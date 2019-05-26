@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PictureUploadComponent } from './picture-upload.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {Globals} from '../../global/globals';
 
 describe('PictureUploadComponent', () => {
   let component: PictureUploadComponent;
@@ -8,7 +11,16 @@ describe('PictureUploadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PictureUploadComponent ]
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+      ],
+      declarations: [
+        PictureUploadComponent,
+      ],
+      providers: [
+        Globals,
+      ],
     })
     .compileComponents();
   }));
