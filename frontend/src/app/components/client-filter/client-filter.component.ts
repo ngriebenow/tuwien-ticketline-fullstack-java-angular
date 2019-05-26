@@ -12,11 +12,11 @@ import {ClientService} from '../../services/client.service';
 export class ClientFilterComponent implements OnInit {
 
   public clients: Client[];
-  private page = 0;
-  private count = 20;
-  private queryParams: ClientFilter;
+  public page = 0;
+  public count = 20;
+  public queryParams: ClientFilter;
 
-  private searchForm = this.formBuilder.group({
+  public searchForm = this.formBuilder.group({
     clientName: [''],
     clientSurname: [''],
     clientEmail: ['']
@@ -30,7 +30,7 @@ export class ClientFilterComponent implements OnInit {
     this.loadClients();
   }
 
-  private loadClients(): void {
+  public loadClients(): void {
     this.queryParams.page = this.page;
     this.queryParams.count = this.count;
     this.clientService.getClientsFiltered(this.queryParams).subscribe(
@@ -46,12 +46,12 @@ export class ClientFilterComponent implements OnInit {
     );
   }
 
-  private nextPage(): void {
+  public nextPage(): void {
     this.page++;
     this.loadClients();
   }
 
-  private previousPage(): void {
+  public previousPage(): void {
     if (this.page > 0) {
       this.page--;
       this.loadClients();

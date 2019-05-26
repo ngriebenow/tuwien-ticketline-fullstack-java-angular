@@ -3,6 +3,8 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {Globals} from '../../global/globals';
 import {ClientFilterComponent} from './client-filter.component';
+import {RouterTestingModule} from '@angular/router/testing';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 describe('ClientFilterComponent', () => {
   let component: ClientFilterComponent;
@@ -12,7 +14,10 @@ describe('ClientFilterComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ClientFilterComponent],
       imports: [
+        RouterTestingModule,
         HttpClientTestingModule,
+        FormsModule,
+        ReactiveFormsModule,
       ],
       providers: [
         Globals,
