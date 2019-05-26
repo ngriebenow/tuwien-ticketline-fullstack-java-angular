@@ -25,6 +25,7 @@ import { AlertComponent } from './components/alert/alert.component';
 import { InvoiceDetailComponent } from './components/invoice-detail/invoice-detail.component';
 import { BestEventsComponent } from './components/best-events/best-events.component';
 import {UserFilterComponent} from './components/user-filter/user-filter.component';
+import {ClientFilterComponent} from './components/client-filter/client-filter.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import {UserFilterComponent} from './components/user-filter/user-filter.componen
     InvoiceDetailComponent,
     BestEventsComponent,
     UserFilterComponent,
+    ClientFilterComponent,
   ],
   imports: [
     BrowserModule,
