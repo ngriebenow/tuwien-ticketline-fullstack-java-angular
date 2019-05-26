@@ -4,34 +4,45 @@
   </div>
 </div>
 
+<div class="container">
 <div class="row mt-3">
   <div class="col-12">
     <form [formGroup]="searchForm">
-      <div class="row">
-        <div class="col-4">
-          <div class="form-group">
-            <label>Vorname</label>
-            <input class="form-control" type="text" placeholder="Vorname" formControlName="clientName"
-                   (change)="update()" [(ngModel)]="queryParams.name">
-          </div>
-          <div class="form-group">
-            <label>Nachname</label>
-            <input class="form-control" type="text" placeholder="Nachname" formControlName="clientSurname"
-                   (change)="update()" [(ngModel)]="queryParams.surname">
-          </div>
+      <div class="row justify-content-md-center" style="padding-bottom: 15px !important;">
+        <div class="col-2 align-self-center">
+          <h2 class="float-right" style="font-size: 24px">Kunden-ID</h2>
         </div>
-        <div class="col-2">
-          <div class="form-group">
-            <label>E-Mail</label>
-            <input class="form-control" type="text" placeholder="E-Mail" formControlName="clientEmail"
-                   (change)="update()" [(ngModel)]="queryParams.email">
-          </div>
-          <div></div>
-          <div></div>
+        <div class="col-3 align-self-center">
+          <input class="form-control" type="text" placeholder="Kundennummer" formControlName="clientName"
+                 (change)="update()" [(ngModel)]="queryParams.name">
+        </div>
+        <div class="col-2 align-self-center">
+          <h2 class="float-right" style="font-size: 24px !important;">Nachname</h2>
+        </div>
+        <div class="col-3 align-self-center">
+          <input class="form-control" type="text" placeholder="Nachname" formControlName="clientSurname"
+                 (change)="update()" [(ngModel)]="queryParams.surname">
+        </div>
+      </div>
+      <div class="row justify-content-md-center" style="padding-bottom: 15px;">
+        <div class="col-2 align-self-center">
+          <h2 class="float-right" style="font-size: 24px !important;">Vorname</h2>
+        </div>
+        <div class="col-3 align-self-center">
+          <input class="form-control" type="text" placeholder="Vorname" formControlName="clientName"
+                 (change)="update()" [(ngModel)]="queryParams.name">
+        </div>
+        <div class="col-2 align-self-center">
+          <h2 class="float-right" style="font-size: 24px !important;">E-Mail</h2>
+        </div>
+        <div class="col-3 align-self-center">
+          <input class="form-control" type="text" placeholder="E-Mail" formControlName="clientEmail"
+                 (change)="update()" [(ngModel)]="queryParams.email">
         </div>
       </div>
     </form>
   </div>
+</div>
 </div>
 
 <div class="row mt-3">
