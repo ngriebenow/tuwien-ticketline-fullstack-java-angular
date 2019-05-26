@@ -2,11 +2,11 @@ import {Injectable, Optional} from '@angular/core';
 import {DefinedUnit} from '../dtos/defined-unit';
 import {PriceCategory} from '../dtos/price-category';
 import {Point} from '../dtos/Point';
-import {Globals} from "../global/globals";
+import {Globals} from '../global/globals';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from "rxjs";
-import {Performance} from "../dtos/performance";
-import {Event} from "../dtos/event";
+import {Observable} from 'rxjs';
+import {Performance} from '../dtos/performance';
+import {Event} from '../dtos/event';
 
 @Injectable({
   providedIn: 'root'

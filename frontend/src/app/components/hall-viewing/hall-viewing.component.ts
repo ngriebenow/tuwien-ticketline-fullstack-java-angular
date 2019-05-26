@@ -41,9 +41,12 @@ export class HallViewingComponent implements OnInit {
     this.event = this.hallViewingService.getEvent();
     this.performance = this.hallViewingService.getPerformance();
 
-    this.cats = this.event.priceCategories;
+    if (this.event != null) {
+      this.cats = this.event.priceCategories;
+      this.hallSize = this.event.hall.boundaryPoint;
+    }
+
     this.getDefinedUnits();
-    this.hallSize = this.event.hall.boundaryPoint;
   }
 
   getDefinedUnits(): void {
