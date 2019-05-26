@@ -83,6 +83,24 @@ export class EventFilterComponent implements OnInit {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
   }
 
+  getPriceRange(esr: EventSearchResult): string {
+
+    let price: string;
+    if (esr.priceCategories.length > 0) {
+      price = (esr.priceCategories[0].priceInCents / 100.).toString();
+
+      if (esr.priceCategories.length > 1) {
+        price += " - " + (esr.priceCategories[esr.priceCategories.length - 1].priceInCents / 100.).toString();
+      }
+      price += " €";
+    } else {
+      price = "kein Preis";
+    }
+
+    return price;
+
+  }
+
   nextPage(): void {
     this.page++;
     this.loadEvents();

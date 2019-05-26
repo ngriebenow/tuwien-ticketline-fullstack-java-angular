@@ -1,4 +1,5 @@
 import {PerformanceSearchResult} from './performance-search-result';
+import {PriceCategory} from "./price-category";
 
 export class EventSearchResult {
   constructor(
@@ -9,7 +10,7 @@ export class EventSearchResult {
     public locationName: string,
     public locationPlace: string,
     public duration: string,
-    public priceRange: string,
+    public priceCategories: PriceCategory[],
     public performances: PerformanceSearchResult[]
     ) {
 
