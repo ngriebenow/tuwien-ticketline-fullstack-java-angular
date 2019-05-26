@@ -62,7 +62,9 @@ public class SimpleInvoiceService implements InvoiceService {
 
   private final InvoiceMapper invoiceMapper;
 
-  /** Create a new InvoiceService. */
+  /**
+   * Create a new InvoiceService.
+   */
   @Autowired
   public SimpleInvoiceService(
       InvoiceRepository invoiceRepository,
@@ -229,7 +231,7 @@ public class SimpleInvoiceService implements InvoiceService {
    * @param performance the performance to create tickets for.
    * @param invoice the invoice created for these tickets.
    * @param ticketRequestDtos the list of definedUnitIds with the amount of tickets to create for
-   *     each.
+   *        each.
    * @return a list of the generated tickets.
    */
   private void createTickets(
@@ -276,7 +278,9 @@ public class SimpleInvoiceService implements InvoiceService {
         });
   }
 
-  /** Mark the invoice as paid by setting all the needed attributes. */
+  /**
+   * Mark the invoice as paid by setting all the needed attributes.
+   */
   private Invoice markPaid(Invoice invoice) {
     invoice.setPaid(true);
     invoice.setNumber(invoiceNumberSequenceGenerator.getNext());
@@ -284,7 +288,9 @@ public class SimpleInvoiceService implements InvoiceService {
     return invoice;
   }
 
-  /** Remove tickets from their invoice, delete them and release their defined units. */
+  /**
+   * Remove tickets from their invoice, delete them and release their defined units.
+   */
   private void deleteTickets(List<Ticket> tickets) {
     tickets.forEach(
         tic -> {
@@ -296,18 +302,24 @@ public class SimpleInvoiceService implements InvoiceService {
     ticketRepository.deleteAll(tickets);
   }
 
-  /** Return an object of type T or log an error and throw a NotFoundException. */
+  /**
+   * Return an object of type T or log an error and throw a NotFoundException.
+   */
   private <T> T getOrThrowNotFound(Optional<T> optional, String msg) {
     return optional.orElseThrow(() -> notFound(msg));
   }
 
-  /** Log an error message and return a not found exception. */
+  /**
+   * Log an error message and return a not found exception.
+   */
   private NotFoundException notFound(String msg) {
     LOGGER.error(msg);
     throw new NotFoundException(msg);
   }
 
-  /** Log an error message and return a not validation exception. */
+  /**
+   * Log an error message and return a not validation exception.
+   */
   private ValidationException invalid(String msg) {
     LOGGER.error(msg);
     throw new ValidationException(msg);

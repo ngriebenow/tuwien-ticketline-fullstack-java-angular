@@ -48,7 +48,9 @@ public class InvoiceEndpoint {
     return invoiceService.getOneById(id);
   }
 
-  /** Add JavaDoc. */
+  /**
+   * Add JavaDoc.
+   */
   @GetMapping
   @ApiOperation(
       value = "Get filtered invoices",
@@ -79,7 +81,9 @@ public class InvoiceEndpoint {
     return invoiceService.getFiltered(invoiceFilterDto, pageable);
   }
 
-  /** Buy tickets for the specified performance. */
+  /**
+   * Buy tickets for the specified performance.
+   */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @ApiOperation(
@@ -91,7 +95,9 @@ public class InvoiceEndpoint {
     return invoiceService.buyTickets(reservationRequestDto);
   }
 
-  /** Reserve tickets for the specified performance. */
+  /**
+   * Reserve tickets for the specified performance.
+   */
   @PostMapping("/reserve")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiOperation(

@@ -37,7 +37,9 @@ public class TicketDataGenerator implements DataGenerator<Ticket> {
   private PerformanceRepository performanceRepository;
   private InvoiceRepository invoiceRepository;
 
-  /** Create a new TicketDataGenerator. */
+  /**
+   * Create a new TicketDataGenerator.
+   */
   @Autowired
   public TicketDataGenerator(
       TicketRepository ticketRepository,

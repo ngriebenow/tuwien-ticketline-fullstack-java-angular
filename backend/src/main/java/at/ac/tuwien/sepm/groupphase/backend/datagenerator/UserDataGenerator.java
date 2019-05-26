@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Profile("generateData")
 public class UserDataGenerator implements DataGenerator<User> {
+
   private final Set<Class<?>> dependencies = new HashSet<>();
   private AccountService accountService;
 

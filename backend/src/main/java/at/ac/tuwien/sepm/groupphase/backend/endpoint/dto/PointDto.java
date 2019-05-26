@@ -37,7 +37,9 @@ public class PointDto {
     this.coordinateY = coordinateY;
   }
 
-  /** Build the point dto. */
+  /**
+   * Build the point dto.
+   */
   public PointDto build() {
     PointDto pointDto = new PointDto();
     pointDto.setCoordinateX(coordinateX);

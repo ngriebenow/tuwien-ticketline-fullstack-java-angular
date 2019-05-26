@@ -87,7 +87,9 @@ public class HallRequestDto {
     this.units = units;
   }
 
-  /** Build the hallRequest dto. */
+  /**
+   * Build the hallRequest dto.
+   */
   public HallRequestDto build() {
     HallRequestDto hallRequestDto = new HallRequestDto();
     hallRequestDto.setId(id);

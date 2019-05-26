@@ -9,7 +9,9 @@ import java.util.Set;
  */
 public interface DataGenerator<E> {
 
-  /** Generate and persist data for Entity E. */
+  /**
+   * Generate and persist data for Entity E.
+   */
   void execute();
 
   /**

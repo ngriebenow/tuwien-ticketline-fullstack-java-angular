@@ -12,7 +12,8 @@ public class ClientDto {
 
   private String email;
 
-  public ClientDto() {}
+  public ClientDto() {
+  }
 
   private ClientDto(Builder builder) {
     setId(builder.id);
@@ -97,7 +98,8 @@ public class ClientDto {
     private String surname;
     private String email;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

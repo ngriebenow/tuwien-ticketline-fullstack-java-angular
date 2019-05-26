@@ -48,7 +48,9 @@ public class EventEndpoint {
     return eventService.getOneById(id);
   }
 
-  /** Return all performances which belong to a certain event. */
+  /**
+   * Return all performances which belong to a certain event.
+   */
   @RequestMapping(value = "/best", method = RequestMethod.GET)
   @ApiOperation(
       value = "Get best events by sold tickets",
@@ -61,10 +63,12 @@ public class EventEndpoint {
     EventFilterDto eventFilterDto = new EventFilterDto();
     eventFilterDto.setEventCategory(category);
 
-    return eventService.getBest(limit,eventFilterDto);
+    return eventService.getBest(limit, eventFilterDto);
   }
 
-  /** Return all performances which belong to a certain event. */
+  /**
+   * Return all performances which belong to a certain event.
+   */
   @RequestMapping(value = "/{id}/performances", method = RequestMethod.GET)
   @ApiOperation(
       value = "Get performances by event id",
@@ -90,7 +94,9 @@ public class EventEndpoint {
     return p;
   }
 
-  /** Return the filtered events according to the specified search criteria. */
+  /**
+   * Return the filtered events according to the specified search criteria.
+   */
   @RequestMapping(method = RequestMethod.GET)
   @ApiOperation(
       value = "Get filtered events",

@@ -12,7 +12,9 @@ public class HeaderTokenAuthenticationProvider implements AuthenticationProvider
 
   private final HeaderTokenAuthenticationService headerTokenAuthenticationService;
 
-  /** TODO: Add JavaDoc. */
+  /**
+   * TODO: Add JavaDoc.
+   */
   public HeaderTokenAuthenticationProvider(
       HeaderTokenAuthenticationService headerTokenAuthenticationService) {
     Assert.notNull(

@@ -31,8 +31,11 @@ public class Performance {
   @JoinColumn(nullable = false)
   private Event event;
 
-  /** Construct the event. */
-  public Performance() {}
+  /**
+   * Construct the event.
+   */
+  public Performance() {
+  }
 
   private Performance(Builder builder) {
     setId(builder.id);
@@ -107,7 +110,8 @@ public class Performance {
     private String name;
     private Event event;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

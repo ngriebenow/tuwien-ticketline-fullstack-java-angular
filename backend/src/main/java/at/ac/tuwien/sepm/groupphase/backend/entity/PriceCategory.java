@@ -33,7 +33,8 @@ public class PriceCategory {
   @JoinColumn(nullable = false)
   private Event event;
 
-  public PriceCategory() {}
+  public PriceCategory() {
+  }
 
   private PriceCategory(Builder builder) {
     setId(builder.id);
@@ -112,7 +113,8 @@ public class PriceCategory {
     private String name;
     private Event event;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

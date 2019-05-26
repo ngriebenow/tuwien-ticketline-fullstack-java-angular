@@ -3,11 +3,9 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DetailedNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.SimpleNewsDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
-import at.ac.tuwien.sepm.groupphase.backend.security.AuthenticationConstants;
 import at.ac.tuwien.sepm.groupphase.backend.service.AccountService;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import at.ac.tuwien.sepm.groupphase.backend.service.PictureService;
-import at.ac.tuwien.sepm.groupphase.backend.service.implementation.SimpleHeaderTokenAuthenticationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -16,19 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping(value = "/news")
@@ -67,6 +62,7 @@ public class NewsEndpoint {
 
   /**
    * Get all (recent) news entries.
+   *
    * @param onlyNew if not specified then false
    * @param page the number of page
    * @param count the size of a page
@@ -85,7 +81,7 @@ public class NewsEndpoint {
     if (onlyNew) {
       LOGGER.info("get all unread news");
       return newsService.findAllNew(getUser(), p);
-    }  else {
+    } else {
       LOGGER.info("get all news");
       return newsService.findAll(getUser(), p);
     }

@@ -15,7 +15,9 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class InvoiceSpecification {
 
-  /** Return a specification containing all the criteria of not null filter attributes. */
+  /**
+   * Return a specification containing all the criteria of not null filter attributes.
+   */
   public static Specification<Invoice> buildFilterSpecification(InvoiceFilterDto invoiceFilterDto) {
     return (root, query, criteriaBuilder) -> {
       Predicate conjunction = criteriaBuilder.conjunction();

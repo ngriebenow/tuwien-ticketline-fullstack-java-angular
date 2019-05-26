@@ -36,7 +36,8 @@ public class DefinedUnit {
   @JoinColumn(nullable = false)
   private Performance performance;
 
-  public DefinedUnit() {}
+  public DefinedUnit() {
+  }
 
   private DefinedUnit(Builder builder) {
     setId(builder.id);
@@ -131,7 +132,8 @@ public class DefinedUnit {
     private PriceCategory priceCategory;
     private Performance performance;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

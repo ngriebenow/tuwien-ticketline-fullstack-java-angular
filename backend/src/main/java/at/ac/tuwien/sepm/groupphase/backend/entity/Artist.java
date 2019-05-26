@@ -22,7 +22,8 @@ public class Artist {
   @Column(nullable = false)
   private String name;
 
-  public Artist() {}
+  public Artist() {
+  }
 
   private Artist(Builder builder) {
     setId(builder.id);
@@ -79,7 +80,8 @@ public class Artist {
     private String surname;
     private String name;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

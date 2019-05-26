@@ -37,16 +37,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class SimpleEventService implements EventService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SimpleEventService.class);
-  @Autowired private EventRepository eventRepository;
-  @Autowired private PerformanceRepository performanceRepository;
-  @Autowired private PriceCategoryRepository priceCategoryRepository;
+  @Autowired
+  private EventRepository eventRepository;
+  @Autowired
+  private PerformanceRepository performanceRepository;
+  @Autowired
+  private PriceCategoryRepository priceCategoryRepository;
 
-  @Autowired private EventMapper eventMapper;
-  @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
-  @Autowired private EventSearchResultMapper eventSearchResultMapper;
-  @Autowired private PriceCategoryMapper priceCategoryMapper;
-  @Autowired private EventRankingMapper eventRankingMapper;
-
+  @Autowired
+  private EventMapper eventMapper;
+  @Autowired
+  private PerformanceSearchResultMapper performanceSearchResultMapper;
+  @Autowired
+  private EventSearchResultMapper eventSearchResultMapper;
+  @Autowired
+  private PriceCategoryMapper priceCategoryMapper;
+  @Autowired
+  private EventRankingMapper eventRankingMapper;
 
 
   @Transactional(readOnly = true)
@@ -118,9 +125,9 @@ public class SimpleEventService implements EventService {
       price = String.format("%.0f", priceCategories.get(0).getPriceInCents() / 100.);
 
       if (priceCategories.size() > 1) {
-        price +=  " - " + String.format(
-                    "%.0f",
-                    priceCategories.get(priceCategories.size() - 1).getPriceInCents() / 100.);
+        price += " - " + String.format(
+            "%.0f",
+            priceCategories.get(priceCategories.size() - 1).getPriceInCents() / 100.);
       }
       price += " €";
     } else {
@@ -139,7 +146,7 @@ public class SimpleEventService implements EventService {
     return performanceRepository
         .findAll(specification, pageable)
         .stream().map(
-          p -> performanceSearchResultMapper.performanceToPerformanceSearchResultDto(p))
+            p -> performanceSearchResultMapper.performanceToPerformanceSearchResultDto(p))
         .collect(Collectors.toList());
   }
 
@@ -148,6 +155,6 @@ public class SimpleEventService implements EventService {
   public List<PerformanceSearchResultDto> getPerformancesByEventId(Long id, Pageable pageable)
       throws NotFoundException {
     LOGGER.info("getPerformancesOfEvent " + id);
-    return getPerformancesFiltered(id,new EventFilterDto(),pageable);
+    return getPerformancesFiltered(id, new EventFilterDto(), pageable);
   }
 }

@@ -65,9 +65,12 @@ public class EventFilterDto {
   @ApiModelProperty(required = false, name = "The name of the performance")
   private String performanceName;
 
-  public EventFilterDto() {}
+  public EventFilterDto() {
+  }
 
-  /** Build the eventfilterdto by builder. */
+  /**
+   * Build the eventfilterdto by builder.
+   */
   public EventFilterDto(Builder builder) {
     setName(builder.name);
     setEventCategory(builder.eventCategory);
@@ -248,7 +251,8 @@ public class EventFilterDto {
     private LocalDate startAtDate;
     private String performanceName;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder name(String val) {
       name = val;

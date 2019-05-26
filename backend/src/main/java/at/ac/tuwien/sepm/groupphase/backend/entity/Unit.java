@@ -29,22 +29,22 @@ public class Unit {
 
   @AttributeOverrides({
       @AttributeOverride(
-        name = "coordinateX",
-        column = @Column(name = "lower_coordinatex", nullable = false)),
+          name = "coordinateX",
+          column = @Column(name = "lower_coordinatex", nullable = false)),
       @AttributeOverride(
-        name = "coordinateY",
-        column = @Column(name = "lower_coordinatey", nullable = false)),
+          name = "coordinateY",
+          column = @Column(name = "lower_coordinatey", nullable = false)),
   })
   @Embedded
   private Point lowerBoundary;
 
   @AttributeOverrides({
       @AttributeOverride(
-        name = "coordinateX",
-        column = @Column(name = "upper_coordinatex", nullable = false)),
+          name = "coordinateX",
+          column = @Column(name = "upper_coordinatex", nullable = false)),
       @AttributeOverride(
-        name = "coordinateY",
-        column = @Column(name = "upper_coordinatey", nullable = false)),
+          name = "coordinateY",
+          column = @Column(name = "upper_coordinatey", nullable = false)),
   })
   private Point upperBoundary;
 
@@ -55,7 +55,8 @@ public class Unit {
   @JoinColumn(nullable = false)
   private Hall hall;
 
-  public Unit() {}
+  public Unit() {
+  }
 
   private Unit(Builder builder) {
     setId(builder.id);
@@ -164,7 +165,8 @@ public class Unit {
     private int capacity;
     private Hall hall;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

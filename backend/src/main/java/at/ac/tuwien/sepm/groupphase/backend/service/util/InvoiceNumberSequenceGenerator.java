@@ -27,7 +27,9 @@ public class InvoiceNumberSequenceGenerator {
     }
   }
 
-  /** Return the next unassigned value of the sequence and increment it by one. */
+  /**
+   * Return the next unassigned value of the sequence and increment it by one.
+   */
   @Transactional
   public Long getNext() {
     Sequence sequence = sequenceRepository.getOne(ID);

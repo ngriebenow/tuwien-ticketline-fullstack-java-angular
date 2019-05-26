@@ -5,11 +5,15 @@ import java.util.Objects;
 
 
 public class UserNewsKey implements Serializable {
+
   private String user;
   private Long news;
 
-  /** Construct the user news key entry. */
-  public UserNewsKey() {}
+  /**
+   * Construct the user news key entry.
+   */
+  public UserNewsKey() {
+  }
 
   private UserNewsKey(Builder builder) {
     setUser(builder.user);

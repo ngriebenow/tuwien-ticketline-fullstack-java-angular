@@ -65,7 +65,9 @@ public class HallDto {
     this.boundaryPoint = boundaryPoint;
   }
 
-  /** Build the hall dto. */
+  /**
+   * Build the hall dto.
+   */
   public HallDto build() {
     HallDto hallDto = new HallDto();
     hallDto.setId(id);

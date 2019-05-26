@@ -9,6 +9,7 @@ public interface PictureRepository extends JpaRepository<Picture, Long> {
 
   /**
    * Find all pictures for given news entry.
+   *
    * @param news entry to find pictures for.
    * @return list of all picture ids
    */

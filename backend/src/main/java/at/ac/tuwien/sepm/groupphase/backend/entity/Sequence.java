@@ -13,7 +13,8 @@ public class Sequence {
   @Column(nullable = false)
   private Long nextValue;
 
-  public Sequence() {}
+  public Sequence() {
+  }
 
   private Sequence(Builder builder) {
     setName(builder.name);

@@ -11,7 +11,9 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification<T> implements Specification<T> {
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   public static <T> Specification<T> contains(String name, String key) {
     return new Specification<T>() {
       @Override
@@ -23,7 +25,9 @@ public class UserSpecification<T> implements Specification<T> {
     };
   }
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   public static <T> Specification<T> startsAt(
       String name, LocalDateTime dateTime, Duration tolerance) {
     return new Specification<T>() {
@@ -40,7 +44,9 @@ public class UserSpecification<T> implements Specification<T> {
     };
   }
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   public static <T> Specification<T> endures(String name, Duration duration, Duration tolerance) {
     return new Specification<T>() {
       @Override
@@ -56,7 +62,9 @@ public class UserSpecification<T> implements Specification<T> {
     };
   }
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   public static <T> Specification<T> belongsTo(String name, EventCategory eventCategory) {
     return new Specification<T>() {
       @Override
@@ -68,7 +76,9 @@ public class UserSpecification<T> implements Specification<T> {
     };
   }
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   public static <T> Specification<T> alwaysTrue() {
     return new Specification<T>() {
       @Override

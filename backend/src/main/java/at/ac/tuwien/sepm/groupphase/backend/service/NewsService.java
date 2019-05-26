@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 public interface NewsService {
+
   /**
    * Find all news entries.
    *
@@ -25,6 +26,7 @@ public interface NewsService {
    * @return list of all simple news entries
    */
   List<SimpleNewsDto> findAllNew(User user, Pageable pageable);
+
   /**
    * Find a single detailed news entry by id.
    *

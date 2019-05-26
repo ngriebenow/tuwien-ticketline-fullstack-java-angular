@@ -33,7 +33,9 @@ public class SwaggerConfiguration {
     acp = applicationConfigurationProperties;
   }
 
-  /** TODO: Add JavaDoc. */
+  /**
+   * TODO: Add JavaDoc.
+   */
   @Bean
   public Docket backendApiDocket() {
     return new Docket(DocumentationType.SWAGGER_2)

@@ -34,7 +34,9 @@ public class InvoiceDataGenerator implements DataGenerator<Invoice> {
   private InvoiceRepository invoiceRepository;
   private InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator;
 
-  /** Construct a new InvoceGenerator. */
+  /**
+   * Construct a new InvoceGenerator.
+   */
   @Autowired
   public InvoiceDataGenerator(
       ClientRepository clientRepository,

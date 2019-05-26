@@ -39,7 +39,9 @@ public class ArtistDto {
     this.surname = surname;
   }
 
-  /** Build the artist dto. */
+  /**
+   * Build the artist dto.
+   */
   public ArtistDto build() {
     ArtistDto artistDto = new ArtistDto();
     artistDto.setId(id);

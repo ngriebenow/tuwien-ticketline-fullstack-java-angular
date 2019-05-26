@@ -27,7 +27,8 @@ public class Client {
   @Column(nullable = false)
   private String email;
 
-  public Client() {}
+  public Client() {
+  }
 
   private Client(Builder builder) {
     setId(builder.id);
@@ -112,7 +113,8 @@ public class Client {
     private String name;
     private String email;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

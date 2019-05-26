@@ -13,7 +13,9 @@ public class PerformanceSpecification {
 
   private static final int TIME_TOLERANCE = 30;
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   public static Specification<Performance> like(long eventId, EventFilterDto eventFilterDto) {
 
     Specification<Performance> eventSpecification =

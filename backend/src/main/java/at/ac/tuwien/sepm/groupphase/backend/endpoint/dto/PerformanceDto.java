@@ -51,7 +51,9 @@ public class PerformanceDto {
     this.name = name;
   }
 
-  /** Build the performance dto. */
+  /**
+   * Build the performance dto.
+   */
   public PerformanceDto build() {
     PerformanceDto performanceDto = new PerformanceDto();
     performanceDto.setId(id);

@@ -41,13 +41,13 @@ public class EventRepositoryImpl implements CustomEventRepository {
     if (eventFilterDto.getEventCategory() != null) {
       LOGGER.info("Add event category filter with " + eventFilterDto.getEventCategory());
       checkForCategory = cb.equal(
-          path.get(Event_.category),eventFilterDto.getEventCategory());
+          path.get(Event_.category), eventFilterDto.getEventCategory());
     }
 
     events.multiselect(cb.count(nr), path.get("id"), path.get("name"));
     events.groupBy(path.get("id"));
     events.where(cb.and(
-        cb.equal(nr.get("isCancelled"),false),
+        cb.equal(nr.get("isCancelled"), false),
         checkForCategory));
     events.orderBy(cb.desc(cb.count(nr)));
 

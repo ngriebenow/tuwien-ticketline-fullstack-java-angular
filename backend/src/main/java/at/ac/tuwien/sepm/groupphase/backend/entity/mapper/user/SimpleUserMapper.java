@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleUserMapper implements UserMapper {
+
   private BCryptPasswordEncoder encoder;
 
   public SimpleUserMapper() {

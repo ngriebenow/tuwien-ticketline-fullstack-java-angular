@@ -31,8 +31,11 @@ public class Location {
   @Column(nullable = false)
   private String country;
 
-  /** Construct the event. */
-  public Location() {}
+  /**
+   * Construct the event.
+   */
+  public Location() {
+  }
 
   private Location(Builder builder) {
     setId(builder.id);
@@ -122,7 +125,8 @@ public class Location {
     private String place;
     private String country;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

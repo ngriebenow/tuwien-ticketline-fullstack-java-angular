@@ -47,8 +47,11 @@ public class Event {
   @Size(min = 1)
   private List<Artist> artists;
 
-  /** Construct the event. */
-  public Event() {}
+  /**
+   * Construct the event.
+   */
+  public Event() {
+  }
 
   private Event(Builder builder) {
     setId(builder.id);
@@ -148,7 +151,8 @@ public class Event {
     private Hall hall;
     private @Size(min = 1) List<Artist> artists;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

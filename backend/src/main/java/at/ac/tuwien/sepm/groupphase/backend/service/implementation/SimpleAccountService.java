@@ -34,7 +34,9 @@ public class SimpleAccountService implements AccountService {
     this.userMapper = userMapper;
   }
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   private static Specification<User> likeUser(UserFilterDto userFilter) {
     return new Specification<User>() {
       @Override

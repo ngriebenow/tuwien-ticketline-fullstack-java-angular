@@ -100,7 +100,9 @@ public class EventDto {
     this.priceCategories = priceCategories;
   }
 
-  /** Build the event dto. */
+  /**
+   * Build the event dto.
+   */
   public EventDto build() {
     EventDto eventDto = new EventDto();
     eventDto.setId(id);

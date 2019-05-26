@@ -23,8 +23,11 @@ public class NewsRead {
   private News news;
 
 
-  /** Construct the newsRead instance. */
-  public NewsRead() {}
+  /**
+   * Construct the newsRead instance.
+   */
+  public NewsRead() {
+  }
 
   private NewsRead(Builder builder) {
     setUser(builder.user);
@@ -69,7 +72,8 @@ public class NewsRead {
     private User user;
     private News news;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder user(User val) {
       user = val;

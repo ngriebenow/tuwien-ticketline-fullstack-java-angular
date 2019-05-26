@@ -39,7 +39,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class SecurityConfiguration {
 
   private final PasswordEncoder passwordEncoder;
-  @Autowired private Environment env;
+  @Autowired
+  private Environment env;
 
   public SecurityConfiguration(PasswordEncoder passwordEncoder) {
     this.passwordEncoder = passwordEncoder;
@@ -64,7 +65,9 @@ public class SecurityConfiguration {
     return dataSource;
   }
 
-  /** TODO: Add JavaDoc. */
+  /**
+   * TODO: Add JavaDoc.
+   */
   @Bean
   public ErrorAttributes errorAttributes() {
     return new DefaultErrorAttributes() {
@@ -78,7 +81,9 @@ public class SecurityConfiguration {
     };
   }
 
-  /** TODO: Add JavaDoc. */
+  /**
+   * TODO: Add JavaDoc.
+   */
   @Autowired
   public void configureGlobal(
       AuthenticationManagerBuilder auth, List<AuthenticationProvider> providerList)
@@ -102,7 +107,9 @@ public class SecurityConfiguration {
     providerList.forEach(auth::authenticationProvider);
   }
 
-  /** TODO: Add JavaDoc. */
+  /**
+   * TODO: Add JavaDoc.
+   */
   @Bean
   public WebMvcConfigurer corsConfigurer() {
     return new WebMvcConfigurerAdapter() {
@@ -123,7 +130,8 @@ public class SecurityConfiguration {
     private final String h2ConsolePath;
     private final String h2AccessMatcher;
 
-    @Autowired private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public WebSecurityConfiguration(
         H2ConsoleConfigurationProperties h2ConsoleConfigurationProperties) {

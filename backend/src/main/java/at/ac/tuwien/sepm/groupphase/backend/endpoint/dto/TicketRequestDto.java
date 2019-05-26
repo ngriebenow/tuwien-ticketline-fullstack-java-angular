@@ -19,7 +19,8 @@ public class TicketRequestDto {
   @ApiModelProperty(value = "The amount of tickets to request", required = true)
   private int amount;
 
-  public TicketRequestDto() {}
+  public TicketRequestDto() {
+  }
 
   private TicketRequestDto(Builder builder) {
     setDefinedUnitId(builder.definedUnitId);
@@ -47,7 +48,8 @@ public class TicketRequestDto {
     private Long definedUnitId;
     private int amount;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder definedUnitId(Long val) {
       definedUnitId = val;

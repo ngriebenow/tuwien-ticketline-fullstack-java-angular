@@ -13,5 +13,6 @@ public interface PerformanceService {
    * @param performance containing only the performance id
    * @return a list with all defined units of this performance
    */
-  List<DefinedUnitDto> getDefinedUnitsByPerformanceId(Performance performance) throws NotFoundException;
+  List<DefinedUnitDto> getDefinedUnitsByPerformanceId(Performance performance)
+      throws NotFoundException;
 }

@@ -29,8 +29,11 @@ public class News {
   @Column(nullable = false, length = 10_000)
   private String text;
 
-  /** Construct the news entry. */
-  public News() {}
+  /**
+   * Construct the news entry.
+   */
+  public News() {
+  }
 
   private News(Builder builder) {
     setId(builder.id);
@@ -112,7 +115,8 @@ public class News {
     private String summary;
     private String text;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

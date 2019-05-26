@@ -35,7 +35,9 @@ public class EventDataGenerator implements DataGenerator<Event> {
   private ArtistRepository artistRepository;
   private HallRepository hallRepository;
 
-  /** Create a new EventDataGenerator. */
+  /**
+   * Create a new EventDataGenerator.
+   */
   @Autowired
   public EventDataGenerator(
       EventRepository eventRepository,
@@ -67,7 +69,7 @@ public class EventDataGenerator implements DataGenerator<Event> {
 
       generatedEvents.add(
           new Event.Builder()
-            .name(FAKER.rockBand().name())
+              .name(FAKER.rockBand().name())
               .category(categories.get(FAKER.random().nextInt(categories.size())))
               .duration(
                   Duration.ofHours(FAKER.random().nextInt(MIN_EVENT_DURATION, MAX_EVENT_DURATION)))

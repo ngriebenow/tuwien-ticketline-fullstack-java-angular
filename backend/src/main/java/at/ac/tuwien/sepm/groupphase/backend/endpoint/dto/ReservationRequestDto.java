@@ -66,7 +66,8 @@ public class ReservationRequestDto {
     private Long clientId;
     private List<TicketRequestDto> ticketRequests;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder performanceId(Long val) {
       performanceId = val;

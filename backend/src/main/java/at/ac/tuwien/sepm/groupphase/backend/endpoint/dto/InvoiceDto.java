@@ -38,7 +38,8 @@ public class InvoiceDto {
   @ApiModelProperty(value = "The tickets reserved and bought by this invoice")
   private List<TicketDto> tickets;
 
-  public InvoiceDto() {}
+  public InvoiceDto() {
+  }
 
   private InvoiceDto(Builder builder) {
     setId(builder.id);
@@ -170,7 +171,8 @@ public class InvoiceDto {
     private ClientDto client;
     private List<TicketDto> tickets;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

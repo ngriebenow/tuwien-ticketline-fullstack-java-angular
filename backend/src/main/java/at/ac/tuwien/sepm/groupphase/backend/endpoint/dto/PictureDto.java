@@ -47,7 +47,9 @@ public class PictureDto {
     return Objects.hash(id, data);
   }
 
-  /** Build the picture dto. */
+  /**
+   * Build the picture dto.
+   */
   public PictureDto build() {
     PictureDto pictureDto = new PictureDto();
     pictureDto.setId(id);

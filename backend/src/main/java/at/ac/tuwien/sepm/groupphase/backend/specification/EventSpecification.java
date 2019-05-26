@@ -21,7 +21,9 @@ public class EventSpecification {
 
   private static final int PRICE_TOLERANCE = 1000;
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   public static Specification<Event> likeHallLocation(EventFilterDto eventFilterDto) {
     return new Specification<Event>() {
       @Override
@@ -101,7 +103,9 @@ public class EventSpecification {
     };
   }
 
-  /** Get the general specification for an event. */
+  /**
+   * Get the general specification for an event.
+   */
   public static Specification<Event> getEventSpecification(EventFilterDto eventFilterDto) {
     Specification<Event> specification = UserSpecification.alwaysTrue();
     if (eventFilterDto.getName() != null) {
@@ -128,7 +132,9 @@ public class EventSpecification {
     return specification;
   }
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   public static Specification<Event> likeArtist(EventFilterDto eventFilterDto) {
     return new Specification<Event>() {
       @Override
@@ -156,7 +162,9 @@ public class EventSpecification {
     };
   }
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   public static Specification<Event> likePrice(EventFilterDto eventFilterDto) {
     return new Specification<Event>() {
       @Override

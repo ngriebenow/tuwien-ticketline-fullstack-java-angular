@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/users")
 @Api(value = "users")
 public class AccountEndpoint {
+
   private AccountService accountService;
 
   public AccountEndpoint(AccountService accountService) {

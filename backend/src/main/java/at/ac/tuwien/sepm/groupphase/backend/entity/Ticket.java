@@ -36,7 +36,8 @@ public class Ticket {
   @JoinColumn(nullable = false)
   private DefinedUnit definedUnit;
 
-  public Ticket() {}
+  public Ticket() {
+  }
 
   private Ticket(Builder builder) {
     setId(builder.id);
@@ -131,7 +132,8 @@ public class Ticket {
     private Invoice invoice;
     private DefinedUnit definedUnit;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

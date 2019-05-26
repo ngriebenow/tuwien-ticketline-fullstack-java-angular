@@ -51,7 +51,8 @@ public class Invoice {
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Ticket> tickets;
 
-  public Invoice() {}
+  public Invoice() {
+  }
 
   private Invoice(Builder builder) {
     setId(builder.id);
@@ -209,7 +210,8 @@ public class Invoice {
     private Client client;
     private List<Ticket> tickets = new ArrayList<>();
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

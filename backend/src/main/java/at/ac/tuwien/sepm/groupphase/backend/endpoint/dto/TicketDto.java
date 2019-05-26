@@ -41,7 +41,8 @@ public class TicketDto {
   @ApiModelProperty("The id of this tickets performance")
   private Long performanceId;
 
-  public TicketDto() {}
+  public TicketDto() {
+  }
 
   private TicketDto(Builder builder) {
     setId(builder.id);
@@ -233,7 +234,8 @@ public class TicketDto {
     private Long definedUnitId;
     private Long performanceId;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

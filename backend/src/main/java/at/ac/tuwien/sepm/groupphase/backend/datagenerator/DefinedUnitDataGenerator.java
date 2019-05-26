@@ -40,7 +40,9 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
   private UnitRepository unitRepository;
   private DefinedUnitRepository definedUnitRepository;
 
-  /** Create a new DefinedUnitDataGenerator. */
+  /**
+   * Create a new DefinedUnitDataGenerator.
+   */
   @Autowired
   public DefinedUnitDataGenerator(
       PerformanceRepository performanceRepository,

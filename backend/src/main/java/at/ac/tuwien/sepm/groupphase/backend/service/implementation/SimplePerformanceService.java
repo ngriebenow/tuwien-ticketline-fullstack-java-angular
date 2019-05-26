@@ -1,16 +1,12 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DefinedUnitDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PriceCategoryDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.DefinedUnit;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.definedunit.DefinedUnitMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.point.PointMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.pricecategory.PriceCategoryMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.DefinedUnitRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,20 +20,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class SimplePerformanceService implements PerformanceService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SimplePerformanceService.class);
-  @Autowired private DefinedUnitRepository definedUnitRepository;
-  @Autowired private DefinedUnitMapper definedUnitMapper;
-  @Autowired private PointMapper pointMapper;
+  @Autowired
+  private DefinedUnitRepository definedUnitRepository;
+  @Autowired
+  private DefinedUnitMapper definedUnitMapper;
+  @Autowired
+  private PointMapper pointMapper;
 
   @Transactional(readOnly = true)
   @Override
-  public List<DefinedUnitDto> getDefinedUnitsByPerformanceId(Performance performance) throws NotFoundException {
+  public List<DefinedUnitDto> getDefinedUnitsByPerformanceId(Performance performance)
+      throws NotFoundException {
     LOGGER.info("getDefinedUnitsByPerformanceId " + performance.getId());
     List<DefinedUnitDto> definedUnitDtos = new ArrayList<>();
     try {
 
       List<DefinedUnit> definedUnits =
           definedUnitRepository.findAllByPerformanceIsLike(performance);
-      for (DefinedUnit definedUnit: definedUnits) {
+      for (DefinedUnit definedUnit : definedUnits) {
 
         DefinedUnitDto definedUnitDto = definedUnitMapper.definedUnitToDto(definedUnit);
         definedUnitDto.setLowerBoundary(
@@ -57,7 +57,7 @@ public class SimplePerformanceService implements PerformanceService {
 
         definedUnitDtos.add(definedUnitDto);
       }
-    } catch (NotFoundException e){
+    } catch (NotFoundException e) {
       LOGGER.error("Could not get defined units " + e.getMessage());
     }
     return definedUnitDtos;

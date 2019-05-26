@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.awt.Color;
 
 @ApiModel(value = "PriceCategoryDto", description = "A DTO for a price category via rest")
 public class PriceCategoryDto {

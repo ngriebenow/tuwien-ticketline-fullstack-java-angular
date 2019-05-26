@@ -14,7 +14,9 @@ public class ExceptionHandlingControllerAdvice {
 
   private static final String DEFAULT_CONSTRAINT_VIOLATION_MESSAGE = "Couldn't validate reqeust";
 
-  /** Strips the mehtod name and argument position from the properyPath if present. */
+  /**
+   * Strips the mehtod name and argument position from the properyPath if present.
+   */
   private static String getFieldName(String propertyPath) {
     int pathPrefixLength = 2;
     String fieldName = propertyPath;
@@ -25,7 +27,9 @@ public class ExceptionHandlingControllerAdvice {
     return fieldName;
   }
 
-  /** Turn failed validation, eg from `@Valid Entity entity` into 400 Responses. */
+  /**
+   * Turn failed validation, eg from `@Valid Entity entity` into 400 Responses.
+   */
   @ExceptionHandler(ConstraintViolationException.class)
   public void handleConstraintViolationException(
       ConstraintViolationException exc, HttpServletResponse response) throws IOException {

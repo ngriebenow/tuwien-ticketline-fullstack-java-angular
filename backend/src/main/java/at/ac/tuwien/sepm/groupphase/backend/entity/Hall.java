@@ -26,15 +26,19 @@ public class Hall {
   @Column(nullable = false)
   private String name;
 
-  @Embedded private Point boundaryPoint;
+  @Embedded
+  private Point boundaryPoint;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(nullable = false)
   private Location location;
 
-  public Hall() {}
+  public Hall() {
+  }
 
-  /** Construct the event. */
+  /**
+   * Construct the event.
+   */
   private Hall(Builder builder) {
     setId(builder.id);
     setVersion(builder.version);
@@ -112,7 +116,8 @@ public class Hall {
     private Point boundaryPoint;
     private Location location;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

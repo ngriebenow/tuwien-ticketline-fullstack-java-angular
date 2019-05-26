@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface PointMapper {
 
-  Point pointDtoToPoint(PointDto PointDto);
+  Point pointDtoToPoint(PointDto pointDto);
 
-  PointDto pointToPointDto(Point Point);
+  PointDto pointToPointDto(Point point);
 }

@@ -72,7 +72,9 @@ public class LocationDto {
     this.country = country;
   }
 
-  /** Build the location dto. */
+  /**
+   * Build the location dto.
+   */
   public LocationDto build() {
     LocationDto locationDto = new LocationDto();
     locationDto.setCountry(country);

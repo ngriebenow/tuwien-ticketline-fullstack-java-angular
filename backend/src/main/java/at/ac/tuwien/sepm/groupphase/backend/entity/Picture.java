@@ -26,8 +26,11 @@ public class Picture {
   @JoinColumn
   private News news;
 
-  /** Construct the picture. */
-  public Picture() {}
+  /**
+   * Construct the picture.
+   */
+  public Picture() {
+  }
 
   private Picture(Builder builder) {
     setId(builder.id);
@@ -82,7 +85,8 @@ public class Picture {
     private byte[] data;
     private News news;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder id(Long val) {
       id = val;

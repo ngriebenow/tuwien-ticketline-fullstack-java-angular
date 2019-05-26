@@ -58,7 +58,9 @@ public class SimpleHeaderTokenAuthenticationService
   private final Duration overlapDuration;
   private UserRepository userRepository;
 
-  /** TODO: Add JavaDoc. */
+  /**
+   * TODO: Add JavaDoc.
+   */
   public SimpleHeaderTokenAuthenticationService(
       @Lazy AuthenticationManager authenticationManager,
       AuthenticationConfigurationProperties authenticationConfigurationProperties,
@@ -136,7 +138,8 @@ public class SimpleHeaderTokenAuthenticationService
       authoritiesWrapper =
           objectMapper.readValue(
               claims.get(AuthenticationConstants.JWT_CLAIM_AUTHORITY, String.class),
-              new TypeReference<List<String>>() {});
+              new TypeReference<List<String>>() {
+              });
     } catch (IOException e) {
       LOGGER.error("Failed to unwrap roles", e);
     }

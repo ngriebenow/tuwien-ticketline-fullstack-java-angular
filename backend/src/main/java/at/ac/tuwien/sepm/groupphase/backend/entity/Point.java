@@ -10,7 +10,8 @@ public class Point {
 
   private int coordinateY;
 
-  public Point() {}
+  public Point() {
+  }
 
   private Point(Builder builder) {
     setCoordinateX(builder.coordinateX);
@@ -60,7 +61,8 @@ public class Point {
     private int coordinateX;
     private int coordinateY;
 
-    public Builder() {}
+    public Builder() {
+    }
 
     public Builder coordinateX(int val) {
       coordinateX = val;

@@ -22,15 +22,16 @@ public class PerformanceEndpoint {
   private static final Logger LOGGER = LoggerFactory.getLogger(PerformanceEndpoint.class);
   private final PerformanceService performanceService;
 
-  public PerformanceEndpoint(PerformanceService performanceService){
+  public PerformanceEndpoint(PerformanceService performanceService) {
     this.performanceService = performanceService;
   }
 
+  /** Javadoc. */
   @RequestMapping(value = "/hall-viewing/defined-units/{id}", method = RequestMethod.GET)
   @ApiOperation(
       value = "Get defined units by performance id",
       authorizations = {@Authorization(value = "apiKey")})
-  public List<DefinedUnitDto> getDefinedUnitsByPerformanceId(@PathVariable Long id){
+  public List<DefinedUnitDto> getDefinedUnitsByPerformanceId(@PathVariable Long id) {
     LOGGER.info("getDefinedUnitsByPerformanceId " + id);
     Performance performance = new Performance();
     performance.setId(id);

@@ -35,7 +35,7 @@ public interface InvoiceService {
    * client.
    *
    * @param reservationRequestDto an object containing information about performance, client and
-   *     tickets.
+   *        tickets.
    * @return the paid invoice.
    */
   InvoiceDto buyTickets(@Valid ReservationRequestDto reservationRequestDto);
@@ -44,7 +44,7 @@ public interface InvoiceService {
    * Issue a new reservation for the specified defined units of one performance for a client.
    *
    * @param reservationRequestDto an object containing information about performance, client and
-   *     tickets.
+   *        tickets.
    * @return the unpaid invoice for the reservation.
    */
   InvoiceDto reserveTickets(@Valid ReservationRequestDto reservationRequestDto);
