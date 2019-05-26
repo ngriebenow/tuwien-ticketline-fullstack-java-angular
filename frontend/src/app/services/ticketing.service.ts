@@ -26,14 +26,32 @@ export class TicketingService {
   client: Client;
 
   constructor() {
+    this.initialization();
+  }
+
+  initialization() {
     this.event = JSON.parse(localStorage.getItem('event'));
     this.performance = JSON.parse(localStorage.getItem('performance'));
     if(this.event != null){
       this.hall = this.event.hall;
       this.categories = this.event.priceCategories;
+      console.log("First category: " + this.categories[0].toString())
     }
     this.dunits = JSON.parse(localStorage.getItem('definedUnits'));
     this.client = JSON.parse(localStorage.getItem('client'));
+
+    this.ticketRequests = [];
+
+    if (this.dunits != null) {
+      for (let i = 0; i < this.dunits.length; i++) {
+        let tr: TicketRequest = new TicketRequest(this.dunits[i].id, this.dunits[i].num);
+        if (this.dunits[i].num > 0){
+          console.log("Import ticketrequest: " + tr.amount + " " + tr.definedUnitId);
+          this.ticketRequests.push(tr);
+        }
+      }
+    }
+    console.log("ticketrequest length: " + this.ticketRequests.length);
   }
 
   getClientName() {
@@ -55,9 +73,14 @@ export class TicketingService {
    * It is constructed from the set data in this service.
    */
   getTransientInvoice(): Invoice {
+    this.initialization();
     const tickets: Ticket[] = this.ticketRequests
       .map(ticReq => this.getTransientTickets(ticReq))
       .reduce((prev, current) => prev.concat(current), []);
+
+    for (let i = 0; i < tickets.length; i++) {
+      console.log("ticket " + tickets[i].priceCategoryName);
+    }
 
     return new Invoice(
       null,
@@ -78,7 +101,31 @@ export class TicketingService {
     const definedUnit = this.dunits.find(dUnit => dUnit.id === ticketRequest.definedUnitId);
     const priceCategory = this.categories.find(pCat => pCat.id === definedUnit.priceCategoryId);
 
-    return Array(ticketRequest.amount).map(_ => new Ticket(
+    console.log("getTransientTickets " + priceCategory.name + " " + definedUnit.toString());
+
+    let ret: Ticket[] = [];
+
+    for (let i = 0; i < ticketRequest.amount; i++) {
+      ret.push(
+        new Ticket(
+          null,
+          definedUnit.name,
+          this.event.name,
+          this.performance.name,
+          this.performance.startAt,
+          priceCategory.name,
+          priceCategory.priceInCents,
+          this.hall.location.name,
+          this.hall.name,
+          definedUnit.id,
+          this.performance.id
+        )
+      );
+    }
+
+    // TODO: DOES NOT WORK?
+    /*
+    let arr = Array(ticketRequest.amount).map(_ => new Ticket(
         null,
         definedUnit.name,
         this.event.name,
@@ -91,7 +138,9 @@ export class TicketingService {
         definedUnit.id,
         this.performance.id
       )
-    );
+    );*/
+
+    return ret;
   }
 }
 

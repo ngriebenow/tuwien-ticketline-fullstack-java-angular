@@ -22,12 +22,15 @@ export class HallViewingService {
   }
 
   getPerformance() {
-    return JSON.parse(localStorage.getItem('performance'));
-
+    const performance = JSON.parse(localStorage.getItem('performance'));
+    localStorage.setItem('performance', JSON.stringify(performance));
+    return performance;
   }
 
   getEvent() {
-    return JSON.parse(localStorage.getItem('event'));
+    const event = JSON.parse(localStorage.getItem('event'));
+    localStorage.setItem('event', JSON.stringify(event));
+    return event;
   }
 
   getDefinedUnits(performance: Performance): Observable<DefinedUnit[]>{

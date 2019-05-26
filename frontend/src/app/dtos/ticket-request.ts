@@ -1,7 +1,7 @@
 export class TicketRequest {
   constructor(
     public definedUnitId: number,
-    public amount: number
+    public amount: number = 0
   ) {
   }
 }

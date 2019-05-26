@@ -46,7 +46,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let client of clients">
+      <tr *ngFor="let client of clients" (click)="selectUser(client)" [routerLink]="['/finalize-transaction']">
         <td>{{ client.id }}</td>
         <td>{{ client.surname }}</td>
         <td>{{ client.name }}</td>
@@ -62,6 +62,14 @@
     </button>
     <button class="btn btn-primary" (click)="nextPage()"><i class="fas fa-chevron-right"></i></button>
   </div>
+</div>
+
+<div class="bottom-right-above-2">
+  <button type="button" class="btn btn-primary btn-lg btn-font-size-reduced">Anonymer Kunde</button>
+</div>
+
+<div class="bottom-right-above-1">
+  <button type="button" class="btn btn-primary btn-lg btn-font-size-reduced">Erstellen</button>
 </div>
 
 <div class="bottom-right">

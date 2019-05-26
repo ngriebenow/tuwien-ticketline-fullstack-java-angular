@@ -120,23 +120,28 @@ export class InvoiceDetailComponent implements OnInit {
   }
 
   private getPerformanceName(): string {
-    return this.getFirstTicket().performanceName;
+    //return this.getFirstTicket().performanceName;
+    return this.ticketingService.performance.name;
   }
 
   private getEventName(): string {
-    return this.getFirstTicket().eventName;
+    //return this.getFirstTicket().eventName;
+    return this.ticketingService.event.name;
   }
 
   private getPeformanceStart(): string {
-    return this.getFirstTicket().startAt;
+    //return this.getFirstTicket().startAt;
+    return this.ticketingService.performance.startAt;
   }
 
   private getLocationName(): string {
-    return this.getFirstTicket().locationName;
+    //return this.getFirstTicket().locationName;
+    return this.ticketingService.hall.location.name;
   }
 
   private getHallName(): string {
-    return this.getFirstTicket().hallName;
+    //return this.getFirstTicket().hallName;
+    return this.ticketingService.hall.name;
   }
 
   private centsToEuros(cents: number): number {

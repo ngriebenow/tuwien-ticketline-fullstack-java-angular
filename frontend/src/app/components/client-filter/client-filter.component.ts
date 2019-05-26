@@ -3,6 +3,7 @@ import {FormBuilder} from '@angular/forms';
 import {ClientFilter} from '../../dtos/client-filter';
 import {Client} from '../../dtos/client';
 import {ClientService} from '../../services/client.service';
+import {stringify} from "postcss";
 
 @Component({
   selector: 'app-user-filter',
@@ -62,5 +63,8 @@ export class ClientFilterComponent implements OnInit {
     this.loadClients();
   }
 
+  selectUser(client: Client): void {
+    localStorage.setItem('client', JSON.stringify(client));
+  }
 
 }
