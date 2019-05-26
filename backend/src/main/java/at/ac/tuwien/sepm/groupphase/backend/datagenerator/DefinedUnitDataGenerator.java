@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
@@ -75,10 +77,46 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
       for (Performance performance :
           performanceRepository.findAllByEvent(event, Pageable.unpaged())) {
         generatedDefinedUnits.clear();
+
+
+        int[] adherings = new int[hall.getBoundaryPoint().getCoordinateY()];
+        IntStream.range(0,adherings.length).forEach(x -> adherings[x] = x);
+
+        for (Unit unit: units) {
+          if (unit.getLowerBoundary() != unit.getUpperBoundary()) {
+            IntStream.range(unit.getLowerBoundary().getCoordinateY()-1,
+                unit.getUpperBoundary().getCoordinateY() - 1 + 1)
+                .forEach(x -> adherings[x] = adherings[unit.getLowerBoundary().getCoordinateY()-1]);
+          }
+        }
+
+        while (List.of(adherings).stream().distinct().count() > priceCategories.size()) {
+
+          int lastP = 0;
+          int pindex = 0;
+          for (int k = 0; k < adherings.length; k++) {
+            if (adherings[k] != lastP) {
+              lastP = adherings[k];
+              adherings[k] = ++pindex;
+            } else {
+              adherings[k] = pindex;
+            }
+          }
+
+          int toMerge2 = FAKER.random().nextInt(1,adherings[adherings.length - 1]);
+          int toMerge1 = toMerge2 - 1;
+
+          for (int k = 0; k < adherings.length; k++) {
+            if (adherings[k] == toMerge1) {
+              adherings[k] = toMerge2;
+            }
+          }
+        }
+
         for (Unit unit : units) {
-          int categoryIdx = unit.getLowerBoundary().getCoordinateY() / step;
+          int categoryIdx = adherings[unit.getLowerBoundary().getCoordinateY() - 1];
           PriceCategory category =
-              priceCategories.get(Math.min(priceCategories.size() - 1, categoryIdx));
+              priceCategories.get(categoryIdx);
 
           generatedDefinedUnits.add(
               new DefinedUnit.Builder()
