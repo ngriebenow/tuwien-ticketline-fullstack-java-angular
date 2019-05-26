@@ -40,7 +40,7 @@ export class EventService {
    * Loads the best events from the backend
    * @param eventFilter which the events must fulfill
    */
-  getBestEvents(eventFilter: EventFilter): Observable<EventRanking[]> {
+  getBestEvents(eventFilter: EventFilter,queryParams: {} = {}): Observable<EventRanking[]> {
     const paramsHttp = new HttpParams()
       .set('category', eventFilter.eventCategory)
       .set('limit', '10');
@@ -56,7 +56,7 @@ export class EventService {
    * Loads events from the backend
    * @param eventFilter which the events must fulfill
    */
-  getEventsFiltered(eventFilter: EventFilter): Observable<EventSearchResult[]> {
+  getEventsFiltered(eventFilter: EventFilter,queryParams: {}): Observable<EventSearchResult[]> {
 
     console.log('getEventsFiltered');
 
@@ -75,7 +75,7 @@ export class EventService {
       time = eventFilter.startAtTime;
     }
 
-    const paramsHttp = new HttpParams()
+    let paramsHttp = new HttpParams()
       .set('name', eventFilter.name)
       .set('content', eventFilter.content)
       .set('duration', eventFilter.duration)
@@ -91,10 +91,9 @@ export class EventService {
       .set('locationPlace', eventFilter.locationPlace)
       .set('startAtDate', date)
       .set('startAtTime', time)
-      .set('page', '0')
-      .set('count', '100');
 
 
+    Object.keys(queryParams).forEach(key => paramsHttp = paramsHttp.set(key, queryParams[key]));
 
 
     console.log('getEventsFiltered: ' + paramsHttp);

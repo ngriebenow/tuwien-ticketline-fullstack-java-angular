@@ -4,6 +4,9 @@ import {EventService} from '../../services/event.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EventSearchResult} from '../../dtos/event-search-result';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
+import {AlertService} from '../../services/alert.service';
+import {queriesFromFields} from "@angular/compiler-cli/src/ngtsc/annotations/src/directive";
+
 @Component({
   selector: 'app-event-filter',
   templateUrl: './event-filter.component.html',
@@ -18,9 +21,14 @@ import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 export class EventFilterComponent implements OnInit {
 
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService,
+              private alertService: AlertService) {
 
   }
+
+  page = 0;
+  private count = 20;
+  private queryParams = {};
 
   myDatePickerOptions: IMyDpOptions = {
     dateFormat: 'dd.mm.yyyy',
@@ -71,14 +79,38 @@ export class EventFilterComponent implements OnInit {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
   }
 
+  private nextPage(): void {
+    this.page++;
+    this.loadEvents();
+  }
+
+  private previousPage(): void {
+    if (this.page > 0) {
+      this.page--;
+      this.loadEvents();
+    }
+  }
+
 
   /**
    * Loads the events
    */
   loadEvents(): void {
-    console.log('loadEvents');
-    this.eventService.getEventsFiltered(this.eventFilter).subscribe(
-      (events: EventSearchResult[]) => this.eventSearchResults = events);
+
+
+    this.queryParams['page'] = this.page;
+    this.queryParams['count'] = this.count;
+
+    console.log('loadEvents with page ' + this.page + ' and count ' + this.count);
+
+    this.eventService.getEventsFiltered(this.eventFilter,this.queryParams).subscribe(
+      (events: EventSearchResult[]) => {
+        this.eventSearchResults = events;
+      },
+          error => {
+          this.alertService.error('Ladefehler, bitte versuchen Sie es etwas später noch ein mal');
+      }
+    );
   }
 
 
