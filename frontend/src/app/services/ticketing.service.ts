@@ -84,7 +84,7 @@ export class TicketingService {
     let sum = 0;
     for (let i = 0; i < this.dunits.length; i++) {
       for (let j = 0; j < this.categories.length; j++) {
-       if (this.dunits[i].priceCategory === this.categories[j].id) {
+       if (this.dunits[i].priceCategoryId === this.categories[j].id) {
          sum += this.categories[j].priceInCent * this.ticketRequests[i].amount;
        }
       }

@@ -143,7 +143,7 @@ export class HallViewingComponent implements OnInit {
   }
 
   showName(dunit: DefinedUnit) {
-    let tmp = dunit.point2.coordinateY - dunit.point1.coordinateY;
+    let tmp = dunit.upperBoundary.coordinateY - dunit.lowerBoundary.coordinateY;
     if (tmp === 0) {
       tmp = 1;
     }
@@ -159,12 +159,12 @@ export class HallViewingComponent implements OnInit {
     let max = 0;
     let num = 0;
     for (let y = 0; y < this.defUnits.length; y++) {
-      if (this.defUnits[y].priceCategory === id) {
-        if (this.defUnits[y].point1.coordinateY < min) {
-          min = this.defUnits[y].point1.coordinateY;
+      if (this.defUnits[y].priceCategoryId === id) {
+        if (this.defUnits[y].lowerBoundary.coordinateY < min) {
+          min = this.defUnits[y].lowerBoundary.coordinateY;
         }
-        if (this.defUnits[y].point1.coordinateY > max) {
-          max = this.defUnits[y].point1.coordinateY;
+        if (this.defUnits[y].lowerBoundary.coordinateY > max) {
+          max = this.defUnits[y].lowerBoundary.coordinateY;
         }
       }
     }
@@ -186,9 +186,9 @@ export class HallViewingComponent implements OnInit {
   calcCatPosition(id: number) {
     let min = 27;
     for (let y = 0; y < this.defUnits.length; y++) {
-      if (this.defUnits[y].priceCategory === id) {
-        if (this.defUnits[y].point1.coordinateY < min) {
-          min = this.defUnits[y].point1.coordinateY;
+      if (this.defUnits[y].priceCategoryId === id) {
+        if (this.defUnits[y].lowerBoundary.coordinateY < min) {
+          min = this.defUnits[y].lowerBoundary.coordinateY;
         }
       }
     }
@@ -204,12 +204,12 @@ export class HallViewingComponent implements OnInit {
     let min = 27;
     let max = 0;
     for (let y = 0; y < this.defUnits.length; y++) {
-      if (this.defUnits[y].priceCategory === id) {
-        if (this.defUnits[y].point1.coordinateY < min) {
-          min = this.defUnits[y].point1.coordinateY;
+      if (this.defUnits[y].priceCategoryId === id) {
+        if (this.defUnits[y].lowerBoundary.coordinateY < min) {
+          min = this.defUnits[y].lowerBoundary.coordinateY;
         }
-        if (this.defUnits[y].point1.coordinateY > max) {
-          max = this.defUnits[y].point1.coordinateY;
+        if (this.defUnits[y].lowerBoundary.coordinateY > max) {
+          max = this.defUnits[y].lowerBoundary.coordinateY;
         }
       }
     }
@@ -281,7 +281,7 @@ export class HallViewingComponent implements OnInit {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   calcSectorSizeX(sector: DefinedUnit) {
-    return ((sector.point2.coordinateX - sector.point1.coordinateX + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
+    return ((sector.upperBoundary.coordinateX - sector.lowerBoundary.coordinateX + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
   }
 
   /**
@@ -289,7 +289,7 @@ export class HallViewingComponent implements OnInit {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   calcSectorSizeY(sector: DefinedUnit) {
-    return ((sector.point2.coordinateY - sector.point1.coordinateY + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
+    return ((sector.upperBoundary.coordinateY - sector.lowerBoundary.coordinateY + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
   }
 
 }

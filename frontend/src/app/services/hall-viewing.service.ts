@@ -80,6 +80,10 @@ export class HallViewingService {
     this.getDefinedUnits(performance).subscribe(
       defUnits => this.defUnits = defUnits as DefinedUnit[]);
 
+    return this.defUnits;
+  }
+
+  /*initializeArrays() {
     for (let i = 0; i < this.defUnits.length; i++) {
       this.selected[i] = false;
     }
@@ -87,9 +91,7 @@ export class HallViewingService {
     for (let i = 0; i < this.defUnits.length; i++) {
       this.selectedNum[i] = 0;
     }
-
-    return this.defUnits;
-  }
+  }*/
 
   getHallName() {
     return this.ticketingService.getHallName();
@@ -109,7 +111,7 @@ export class HallViewingService {
     let cat = 0;
     for (let i = 0; i < this.selected.length; i++) {
       if (this.selected[i]) {
-        cat = this.defUnits[i].priceCategory;
+        cat = this.defUnits[i].priceCategoryId;
         for (let j = 0; j < this.cats.length; j++) {
           if (cat === this.cats[j].id) {
             if (this.defUnits[i].capacity > 1) {

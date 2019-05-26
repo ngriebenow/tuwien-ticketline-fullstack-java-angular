@@ -2,17 +2,19 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 public class DefinedUnitDto {
 
+  private String name;
+
   private Long id;
 
   private int free;
+
+  private int capacity;
 
   private PointDto lowerBoundary;
 
   private PointDto upperBoundary;
 
   private Long priceCategoryId;
-
-  private PriceCategoryDto priceCategoryDto;
 
   public Long getId() {
     return id;
@@ -54,11 +56,19 @@ public class DefinedUnitDto {
     this.priceCategoryId = priceCategoryId;
   }
 
-  public PriceCategoryDto getPriceCategoryDto() {
-    return priceCategoryDto;
+  public int getCapacity() {
+    return capacity;
   }
 
-  public void setPriceCategoryDto(PriceCategoryDto priceCategoryDto) {
-    this.priceCategoryDto = priceCategoryDto;
+  public void setCapacity(int capacity) {
+    this.capacity = capacity;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 }
