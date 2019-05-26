@@ -3,7 +3,6 @@ import {EventFilter} from '../../dtos/event-filter';
 import {EventService} from '../../services/event.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EventSearchResult} from '../../dtos/event-search-result';
-import {Event} from '../../dtos/event';
 import {Performance} from '../../dtos/performance';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 import {AlertService} from '../../services/alert.service';
@@ -96,15 +95,15 @@ export class EventFilterComponent implements OnInit {
   }
 
 
-  showHall(e: EventSearchResult, p: PerformanceSearchResult) {
+  showHall(esr: EventSearchResult, p: PerformanceSearchResult) {
 
     let per: Performance = new Performance(p.id,p.startAt,p.name,null);
 
     localStorage.setItem('performance', JSON.stringify(per));
 
-    this.eventService.getEventById(e.id).subscribe(
+    this.eventService.getEventById(esr.id).subscribe(
       e => localStorage.setItem("event",JSON.stringify(e))
-    ).add( () => this.eventLoaded(e.id,p.id));
+    ).add( () => this.eventLoaded(esr.id,p.id));
 
 
   }

@@ -8,6 +8,7 @@ import {DefinedUnit} from 'src/app/dtos/defined-unit';
 import {PriceCategory} from 'src/app/dtos/price-category';
 import {Performance} from "../../dtos/performance";
 import {Event} from '../../dtos/event';
+import {AlertService} from '../../services/alert.service';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class HallViewingComponent implements OnInit {
   sectorSel: DefinedUnit;
 
   constructor(private route: ActivatedRoute,
+              private alertService: AlertService,
               private hallViewingService: HallViewingService) {
   }
 
