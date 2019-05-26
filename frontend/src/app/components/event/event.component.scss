@@ -45,6 +45,17 @@ textarea.form-control {
   padding-top: 12px;
 }
 
+tr {
+  cursor: pointer;
+}
+
+table > tbody > tr:hover > td {
+  background: $main-orange;
+  color: white;
+}
+
+
+
 
 .col-1 {
   padding: 5px;

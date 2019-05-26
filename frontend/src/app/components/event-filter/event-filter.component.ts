@@ -3,8 +3,11 @@ import {EventFilter} from '../../dtos/event-filter';
 import {EventService} from '../../services/event.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EventSearchResult} from '../../dtos/event-search-result';
+import {Performance} from '../../dtos/performance';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 import {AlertService} from '../../services/alert.service';
+import {PerformanceSearchResult} from "../../dtos/performance-search-result";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-filter',
@@ -20,7 +23,8 @@ import {AlertService} from '../../services/alert.service';
 export class EventFilterComponent implements OnInit {
 
 
-  constructor(private eventService: EventService,
+  constructor(private router: Router,
+              private eventService: EventService,
               private alertService: AlertService) {
 
   }
@@ -88,6 +92,24 @@ export class EventFilterComponent implements OnInit {
       this.page--;
       this.loadEvents();
     }
+  }
+
+
+  showHall(esr: EventSearchResult, p: PerformanceSearchResult) {
+
+    let per: Performance = new Performance(p.id,p.startAt,p.name,null);
+
+    localStorage.setItem('performance', JSON.stringify(per));
+
+    this.eventService.getEventById(esr.id).subscribe(
+      e => localStorage.setItem("event",JSON.stringify(e))
+    ).add( () => this.eventLoaded(esr.id,p.id));
+
+
+  }
+
+  eventLoaded(eid: number, pid: number) {
+    this.router.navigate(['/events', eid, 'performances', pid, 'hall-viewing']);
   }
 
 

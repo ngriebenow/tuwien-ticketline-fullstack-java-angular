@@ -20,9 +20,12 @@
               [style.background]="getColor(fstCategory.selected)"
               [style.color] = "getTextColor(fstCategory.selected)">
         <option #fstCategory value="">(alle)</option>
-        <option value="CINEMA">Cinema</option>
-        <option value="CONCERT">Concert</option>
-        <option value="OTHER">Other</option>
+        <option value="CINEMA">Kino</option>
+        <option value="CONCERT">Konzert</option>
+        <option value="CONFERENCE">Konferenz</option>
+        <option value="CHILDREN">Kinder</option>
+        <option value="EXHIBITION">Ausstellung</option>
+        <option value="OTHER">Andere</option>
       </select>
     </div>
 
@@ -42,7 +45,7 @@
 
       <div style="margin: 0" class="row">
         <div class="col-10">
-          <input class="form-control" placeholder="Dauer" (change)="loadEvents()" [(ngModel)]="eventFilter.duration" type="text" value="">
+          <input class="form-control" placeholder="Dauer" (change)="loadEvents()" [(ngModel)]="eventFilter.duration" type="number" value="">
         </div>
         <div class="col-2" style="padding-left: 0">
           <div class="align-content-end">
@@ -143,7 +146,15 @@
         <option #fstCountry value="">(alle)</option>
         <option value="Austria">Österreich</option>
         <option value="Germany">Deutschland</option>
-        <option value="Asgardlandistan">Asgardlandistan</option>
+        <option value="Hungary">Ungarn</option>
+        <option value="Italy">Italien</option>
+        <option value="Liechtenstein">Lichtenstein</option>
+        <option value="Slovakia">Slovakei</option>
+        <option value="Slovenia">Slovenian</option>
+        <option value="Switzerland">Schweiz</option>
+        <option value="Czech">Tschechien</option>
+        <option value="Europe">Europa</option>
+        <option value="World">Welt</option>
       </select>
     </div>
 
@@ -200,7 +211,7 @@
 
         <div class="row event-body">
         <div class="col-2" *ngFor="let p of event.performances">
-          <div class="card card-performance" (click)="$event.stopPropagation(); ">
+          <div class="card card-performance" (click)="$event.stopPropagation();showHall(event,p)">
             <div class="card-performance-body">
               <div class="col-12">
                 <h6 class="card-performance-title float-none">{{ p.startAt | date:'HH:mm, dd.MM.yyyy' }}</h6>
