@@ -84,10 +84,15 @@ export class EventService {
       time = eventFilter.startAtTime;
     }
 
+    let duration: string = "";
+    if (eventFilter.duration != null && eventFilter.duration != "null") {
+      duration = eventFilter.duration;
+    }
+
     let paramsHttp = new HttpParams()
       .set('name', eventFilter.name)
       .set('content', eventFilter.content)
-      .set('duration', eventFilter.duration)
+      .set('duration', duration)
       .set('eventCategory', eventFilter.eventCategory)
       .set('artistName', eventFilter.artistName)
       .set('priceInCents', price)
