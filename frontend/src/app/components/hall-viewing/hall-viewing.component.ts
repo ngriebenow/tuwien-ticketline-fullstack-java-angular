@@ -31,6 +31,7 @@ export class HallViewingComponent implements OnInit {
   sectorNum: number;
   event: Event;
   performance: Performance;
+  sectorSel: DefinedUnit;
 
   constructor(private route: ActivatedRoute,
               private hallViewingService: HallViewingService) {
@@ -51,7 +52,13 @@ export class HallViewingComponent implements OnInit {
   }
 
   clickSeat(seat: DefinedUnit) {
+    if(seat.selected) {
+      seat.num = 0;
+    } else {
+      seat.num = 1;
+    }
     seat.selected = !seat.selected;
+    console.log("SeatNum: " + seat.num + " Selected: " + seat.selected);
   }
 
   getBackColor(dunit: DefinedUnit) {
@@ -104,52 +111,77 @@ export class HallViewingComponent implements OnInit {
     return ticketSum;
   }
 
-  sectorSelected(dunit: DefinedUnit) {
-    this.hallViewingService.sectorSelected(dunit);
-  }
-
-  anySectorSelected() {
-    return this.hallViewingService.anySectorSelected();
-  }
-
-  getSelectedSectorName() {
-    return this.hallViewingService.getSelectedSectorName();
-  }
-
-  getSelectedSectorCap() {
-    return this.hallViewingService.getSelectedSectorCap();
-  }
-
-  getSelectedSectorFree() {
-    return this.hallViewingService.getSelectedSectorFree();
-  }
-
-  updateSelectedNum() {
-    this.hallViewingService.updateSelectedNum(this.sectorNum);
-  }
-
-  getNumOfSelectedSec() {
-    return this.hallViewingService.getNumOfSelectedSec();
-  }
-
   getChosenNum(dunit: DefinedUnit) {
     return this.defUnits[this.defUnits.indexOf(dunit)].num;
-  }
-
-  checkValue() {
-    this.sectorNum = this.sectorNum = this.hallViewingService.checkValue(this.sectorNum);
   }
 
   sectorIsSelected(dunit: DefinedUnit) {
     return dunit.selected;
   }
 
+  sectorSelected(dunit: DefinedUnit) {
+    this.sectorSel = dunit;
+  }
+
+  anySectorSelected() {
+    return this.sectorSel != null;
+  }
+
+  getSelectedSectorName() {
+    return this.sectorSel.name;
+  }
+
+  getSelectedSectorCap() {
+    return this.sectorSel.capacity;
+  }
+
+  getSelectedSectorFree() {
+    let num = this.sectorSel.free;
+    const index = this.defUnits.indexOf(this.sectorSel);
+    if (this.defUnits[index].selected && this.sectorSel.free === 0) {
+      num = this.defUnits[index].num;
+    }
+    return num;
+  }
+
+  updateSelectedNum() {
+    this.defUnits[this.defUnits.indexOf(this.sectorSel)].num = this.sectorNum;
+  }
+
+  getNumOfSelectedSec() {
+    const index = this.defUnits.indexOf(this.sectorSel);
+    return this.defUnits[index].num > 0 ? this.defUnits[index].num : 0;
+  }
+
+  checkValue() {
+    if (this.sectorNum !== null) {
+      const index = this.defUnits.indexOf(this.sectorSel);
+      if (this.sectorNum > this.defUnits[index].free) {
+        this.sectorNum = this.defUnits[index].free;
+      }
+      if (this.sectorNum < 0) {
+        this.sectorNum = 0;
+      }
+      return this.sectorNum;
+    }
+    return 0;
+  }
+
   sectorDone() {
-    this.hallViewingService.sectorDone(this.sectorNum);
+    if (this.sectorNum !== null) {
+      const index = this.defUnits.indexOf(this.sectorSel);
+      this.defUnits[index].num = this.sectorNum;
+      if (this.sectorNum !== 0) {
+        this.defUnits[index].selected = true;
+      } else {
+        this.defUnits[index].selected = false;
+      }
+    }
+    this.sectorSel = null;
   }
 
   endTransaction() {
-    this.hallViewingService.endTransaction();
+    localStorage.setItem('definedUnits', JSON.stringify(this.defUnits));
   }
 
   getCatColor(id: number) {
@@ -157,7 +189,6 @@ export class HallViewingComponent implements OnInit {
     for (let i = 0; i < this.cats.length; i++) {
       if (this.cats[i].id === id) {
         tmp = this.cats[i].color + 0x1000000;
-        console.log("Int: " + this.cats[i].color + " Color: " +'#' + tmp.toString(16));
         return '#' + tmp.toString(16);
       }
     }

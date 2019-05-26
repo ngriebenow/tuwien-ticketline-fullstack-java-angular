@@ -14,8 +14,6 @@ import {Event} from "../dtos/event";
 export class HallViewingService {
 
   defUnits: DefinedUnit[] = [];
-  cats: PriceCategory[] = [];
-  sectorSel: DefinedUnit;
 
   private hallViewingUri: string = this.globals.backendUri + '/performances/hall-viewing';
 
@@ -37,67 +35,4 @@ export class HallViewingService {
     console.log("getDefinedUnits " + performance.id + " with url " + url);
     return this.httpClient.get<DefinedUnit[]>(url);
   }
-
-  sectorSelected(dunit: DefinedUnit) {
-    this.sectorSel = dunit;
-  }
-
-  anySectorSelected() {
-    return this.sectorSel != null;
-  }
-
-  getSelectedSectorName() {
-    return this.sectorSel.name;
-  }
-
-  getSelectedSectorCap() {
-    return this.sectorSel.capacity;
-  }
-
-  getSelectedSectorFree() {
-    let num = this.sectorSel.free;
-    const index = this.defUnits.indexOf(this.sectorSel);
-    if (this.defUnits[index].selected && this.sectorSel.free === 0) {
-      num = this.defUnits[index].num;
-    }
-    return num;
-  }
-
-  updateSelectedNum(sectorNum: number) {
-    this.defUnits[this.defUnits.indexOf(this.sectorSel)].num = sectorNum;
-  }
-
-  getNumOfSelectedSec() {
-    const index = this.defUnits.indexOf(this.sectorSel);
-    return this.defUnits[index].num > 0 ? this.defUnits[index].num : 0;
-  }
-
-  checkValue(value: number) {
-    if (value !== null) {
-      const index = this.defUnits.indexOf(this.sectorSel);
-      if (value > this.defUnits[index].free) {
-        value = this.defUnits[index].free;
-      }
-      if (value < 0) {
-        value = 0;
-      }
-      return value;
-    }
-    return 0;
-  }
-
-  sectorDone(sectorNum: number) {
-    if (sectorNum !== null) {
-      const index = this.defUnits.indexOf(this.sectorSel);
-      this.defUnits[index].num = sectorNum;
-      if (sectorNum !== 0) {
-        this.defUnits[index].selected = true;
-      } else {
-        this.defUnits[index].selected = false;
-      }
-    }
-    this.sectorSel = null;
-  }
-
-  endTransaction() {}
 }
