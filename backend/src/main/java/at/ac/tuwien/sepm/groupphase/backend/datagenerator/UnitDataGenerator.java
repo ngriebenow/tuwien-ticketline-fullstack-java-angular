@@ -62,18 +62,22 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
 
           if (!occupied[i][j]) {
 
-            boolean feasible = false;
-            for (int k = i; k < i + sectorSizeX; k++) {
-              for(int l = 0; l < j + sectorSizeY; l++) {
-                feasible |= occupied[k][l];
+            boolean feasible = true;
+            for (int k = i; k < i + sectorSizeX && feasible; k++) {
+              for(int l = 0; l < j + sectorSizeY && feasible; l++) {
+                if (k >= hall.getBoundaryPoint().getCoordinateX()
+                    || l >= hall.getBoundaryPoint().getCoordinateY()
+                    || occupied[k][l]) {
+                  feasible = false;
+                }
               }
             }
 
-            if (feasible && FAKER.random().nextInt(-500,500) < -200) {
+            if (feasible && FAKER.random().nextInt(-500,500) < -450) {
 
               for (int k = i; k < i + sectorSizeX; k++) {
                 for(int l = 0; l < j + sectorSizeY; l++) {
-                  occupied[k][l] = true;
+                  occupied[k][l] = false;
                 }
               }
 
