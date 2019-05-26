@@ -20,6 +20,9 @@ public class SimpleNewsDto {
   @ApiModelProperty(required = true, name = "The summary of the news entry")
   private String summary;
 
+  @ApiModelProperty(required = false, name = "The information if the news is read by user")
+  private Boolean read = true;
+
   public static NewsDtoBuilder builder() {
     return new NewsDtoBuilder();
   }
@@ -56,6 +59,14 @@ public class SimpleNewsDto {
     this.summary = summary;
   }
 
+  public Boolean getRead() {
+    return read;
+  }
+
+  public void setRead(Boolean read) {
+    this.read = read;
+  }
+
   @Override
   public String toString() {
     return "SimpleNewsDto{"
@@ -68,6 +79,8 @@ public class SimpleNewsDto {
         + '\''
         + ", summary='"
         + summary
+        + ", read="
+        + read
         + '\''
         + '}';
   }
@@ -88,7 +101,7 @@ public class SimpleNewsDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, publishedAt, title, summary);
+    return Objects.hash(id, publishedAt, title, summary, read);
   }
 
   public static final class NewsDtoBuilder {
@@ -97,6 +110,7 @@ public class SimpleNewsDto {
     private LocalDateTime publishedAt;
     private String title;
     private String summary;
+    private Boolean read;
 
     public NewsDtoBuilder id(Long id) {
       this.id = id;
@@ -118,6 +132,11 @@ public class SimpleNewsDto {
       return this;
     }
 
+    public NewsDtoBuilder read(Boolean read) {
+      this.read = read;
+      return this;
+    }
+
     /**
      * Build a SimpleNewsDto.
      *
@@ -129,6 +148,7 @@ public class SimpleNewsDto {
       newsDto.setPublishedAt(publishedAt);
       newsDto.setTitle(title);
       newsDto.setSummary(summary);
+      newsDto.setRead(read);
       return newsDto;
     }
   }

@@ -1,0 +1,30 @@
+@import "../../../colors";
+.news-container {
+  width: 1470px;
+  height: 800px;
+  overflow: scroll;
+  background-color: $light-gray;
+}
+.news-entry-panel {
+  margin-top: 30px;
+  width: 1357px;
+  height: 186px;
+  word-break: normal;
+  background-color: white !important;
+}
+.space{
+  width:auto;
+  height: 15px;
+}
+.not-read-marker{
+  width:5px;
+  height: 186px;
+  margin-right: 25px;
+  background-color: $main-orange;
+}
+.read-marker{
+  width:5px;
+  height: 186px;
+  margin-right: 25px;
+  background-color: white;
+}

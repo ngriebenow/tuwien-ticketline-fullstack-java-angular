@@ -37,8 +37,8 @@ public class PictureDataGenerator implements DataGenerator<Picture> {
   private static final Faker FAKER = new Faker(new Locale("de-at"));
 
   private static final int MAX_PICTURE_COUNT_PER_NEWS = 5;
-  private static final int PICTURE_HEIGHT = 64;
-  private static final int PICTURE_WIDTH = 64;
+  private static final int PICTURE_HEIGHT = 128;
+  private static final int PICTURE_WIDTH = 128;
 
   private PictureRepository pictureRepository;
   private NewsRepository newsRepository;

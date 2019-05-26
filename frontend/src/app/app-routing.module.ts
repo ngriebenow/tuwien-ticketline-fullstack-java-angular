@@ -12,11 +12,16 @@ import {InvoiceDetailComponent} from './components/invoice-detail/invoice-detail
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
 import {UserFilterComponent} from './components/user-filter/user-filter.component';
 import {BestEventsComponent} from './components/best-events/best-events.component';
+import {NewsDetailComponent} from './components/news-detail/news-detail.component';
+import {NewsAddComponent} from './components/news-add/news-add.component';
+
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'news', canActivate: [AuthGuard], component: NewsComponent},
+  {path: 'news/:id', canActivate: [AuthGuard], component: NewsDetailComponent},
+  {path: 'news-add', canActivate: [AuthGuard], component: NewsAddComponent},
   {path: 'hall-creation', canActivate: [AuthGuard], component: HallCreationComponent},
   {path: 'events/:id', canActivate: [AuthGuard], component: EventComponent},
   {path: 'event-filter', canActivate: [AuthGuard], component: EventFilterComponent},

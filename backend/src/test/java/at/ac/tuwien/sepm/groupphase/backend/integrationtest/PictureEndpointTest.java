@@ -8,8 +8,10 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Picture;
 import at.ac.tuwien.sepm.groupphase.backend.integrationtest.base.BaseIntegrationTest;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PictureRepository;
 import io.restassured.RestAssured;
+import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import io.restassured.specification.MultiPartSpecification;
 import java.util.List;
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +19,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 public class PictureEndpointTest extends BaseIntegrationTest {
 
@@ -29,6 +32,7 @@ public class PictureEndpointTest extends BaseIntegrationTest {
   private static Picture P1;
 
   private static PictureDto PDTO1;
+  private MultiPartSpecification multiPartSpecification;
 
   @Before
   public void initialize() {
@@ -39,6 +43,11 @@ public class PictureEndpointTest extends BaseIntegrationTest {
     P1.setData(new byte[1]);
 
     P1 = pictureRepository.save(P1);
+
+    multiPartSpecification = new MultiPartSpecBuilder(new byte[1])
+        .controlName("picture")
+        .fileName("picture")
+        .build();
   }
 
   @After
@@ -47,10 +56,9 @@ public class PictureEndpointTest extends BaseIntegrationTest {
   }
 
   @Test
-  public void givenAdminAndPicture_whenFindPictureWithId_ThenReturnPictureAndOk() {
+  public void givenAdminAndPicture_whenFindPictureWithId_ThenReturnOk() {
     Response response =
         RestAssured.given()
-            .contentType(ContentType.JSON)
             .header(HttpHeaders.AUTHORIZATION, validAdminTokenWithPrefix)
             .when()
             .get(NEWS_PICTURES_ENDPOINT + SPECIFIC_PICTURE_PATH, P1.getId())
@@ -58,7 +66,6 @@ public class PictureEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK.value());
-    assertThat(response.as(PictureDto.class).getId()).isEqualTo(P1.getId());
   }
 
   @Test
@@ -76,27 +83,12 @@ public class PictureEndpointTest extends BaseIntegrationTest {
   }
 
   @Test
-  public void givenAnonymous_whenFindPictureWithId_ThenReturnNotFound() {
+  public void givenAnonymous_whenFindPictureWithId_ThenReturnUnauthorized() {
     Response response =
         RestAssured.given()
             .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validAdminTokenWithPrefix)
             .when()
-            .get(NEWS_PICTURES_ENDPOINT + SPECIFIC_PICTURE_PATH, -1L)
-            .then()
-            .extract()
-            .response();
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
-  }
-
-  @Test
-  public void givenAdmin_whenCreatePicture_ThenReturnUnauthorized() {
-    Response response =
-        RestAssured.given()
-            .contentType(ContentType.JSON)
-            .body(PDTO1)
-            .when()
-            .post(NEWS_PICTURES_ENDPOINT)
+            .get(NEWS_PICTURES_ENDPOINT + SPECIFIC_PICTURE_PATH, P1.getId())
             .then()
             .extract()
             .response();
@@ -104,11 +96,24 @@ public class PictureEndpointTest extends BaseIntegrationTest {
   }
 
   @Test
+  public void givenAdmin_whenCreatePicture_ThenReturnCreated() {
+    Response response =
+        RestAssured.given()
+            .header(HttpHeaders.AUTHORIZATION, validAdminTokenWithPrefix)
+            .multiPart(multiPartSpecification)
+            .when()
+            .post(NEWS_PICTURES_ENDPOINT)
+            .then()
+            .extract()
+            .response();
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED.value());
+  }
+
+  @Test
   public void givenAnonymous_whenCreatePicture_ThenReturnUnauthorized() {
     Response response =
         RestAssured.given()
-            .contentType(ContentType.JSON)
-            .body(PDTO1)
+            .multiPart(multiPartSpecification)
             .when()
             .post(NEWS_PICTURES_ENDPOINT)
             .then()
@@ -121,9 +126,8 @@ public class PictureEndpointTest extends BaseIntegrationTest {
   public void givenUser_whenCreatePicture_ThenReturnForbidden() {
     Response response =
         RestAssured.given()
-            .contentType(ContentType.JSON)
             .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .body(PDTO1)
+            .multiPart(multiPartSpecification)
             .when()
             .post(NEWS_PICTURES_ENDPOINT)
             .then()

@@ -87,7 +87,7 @@ public class NewsEndpoint {
       return newsService.findAllNew(getUser(), p);
     }  else {
       LOGGER.info("get all news");
-      return newsService.findAll(p);
+      return newsService.findAll(getUser(), p);
     }
   }
 
