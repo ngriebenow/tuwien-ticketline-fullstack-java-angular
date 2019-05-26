@@ -29,7 +29,7 @@ export class EventComponent implements OnInit {
   @Output() performances: Performance[] = [];
 
   page = 0;
-  private count = 20;
+  count = 20;
   private queryParams = {}
 
   ngOnInit() {
@@ -48,13 +48,13 @@ export class EventComponent implements OnInit {
     }
   }
 
-  private nextPage(): void {
+  nextPage(): void {
     const id = +this.route.snapshot.paramMap.get('id');
     this.page++;
     this.loadPerformances(id);
   }
 
-  private previousPage(): void {
+  previousPage(): void {
     const id = +this.route.snapshot.paramMap.get('id');
     if (this.page > 0) {
       this.page--;

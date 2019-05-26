@@ -26,7 +26,7 @@ export class EventFilterComponent implements OnInit {
   }
 
   page = 0;
-  private count = 20;
+  count = 20;
   private queryParams = {};
 
   myDatePickerOptions: IMyDpOptions = {
@@ -78,12 +78,12 @@ export class EventFilterComponent implements OnInit {
     // event properties are: event.date, event.jsdate, event.formatted and event.epoc
   }
 
-  private nextPage(): void {
+  nextPage(): void {
     this.page++;
     this.loadEvents();
   }
 
-  private previousPage(): void {
+  previousPage(): void {
     if (this.page > 0) {
       this.page--;
       this.loadEvents();
