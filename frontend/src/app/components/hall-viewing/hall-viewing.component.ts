@@ -8,6 +8,7 @@ import {DefinedUnit} from 'src/app/dtos/defined-unit';
 import {PriceCategory} from 'src/app/dtos/price-category';
 import {Performance} from "../../dtos/performance";
 import {Event} from '../../dtos/event';
+import {AlertService} from '../../services/alert.service';
 
 
 @Component({
@@ -34,7 +35,8 @@ export class HallViewingComponent implements OnInit {
   sectorSel: DefinedUnit;
 
   constructor(private route: ActivatedRoute,
-              private hallViewingService: HallViewingService) {
+              private hallViewingService: HallViewingService,
+              private alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -51,7 +53,11 @@ export class HallViewingComponent implements OnInit {
 
   getDefinedUnits(): void {
     this.hallViewingService.getDefinedUnits(this.performance).subscribe(
-      defUnits => this.defUnits = defUnits as DefinedUnit[]);
+      defUnits => this.defUnits = defUnits as DefinedUnit[],
+      error => {
+        this.alertService.error('Sitzplätze konnten nicht geladen werden.');
+      }
+      );
   }
 
   clickSeat(seat: DefinedUnit) {
