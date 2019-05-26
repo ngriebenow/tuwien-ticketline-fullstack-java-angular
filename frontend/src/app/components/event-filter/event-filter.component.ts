@@ -83,7 +83,12 @@ export class EventFilterComponent implements OnInit {
     this.loadEvents();
   }
 
-
+  previousPage(): void {
+    if (this.page > 0) {
+      this.page--;
+      this.loadEvents();
+    }
+  }
 
 
   /**
