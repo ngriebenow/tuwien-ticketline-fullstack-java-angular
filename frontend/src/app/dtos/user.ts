@@ -1,9 +1,9 @@
 export class User {
   constructor(
-    public username: number,
-    public password: number,
+    public username: string,
+    public password: string,
     public isLocked: boolean,
-    public isAdmon: boolean
+    public isAdmin: boolean
   ) {
   }
 }

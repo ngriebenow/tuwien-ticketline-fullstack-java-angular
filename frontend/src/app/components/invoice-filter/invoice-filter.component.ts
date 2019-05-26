@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import * as _ from 'lodash';
+
+import {AlertService} from '../../services/alert.service';
 import {InvoiceService} from '../../services/invoice.service';
 import {Invoice} from '../../dtos/invoice';
 
@@ -12,12 +14,12 @@ import {Invoice} from '../../dtos/invoice';
 })
 export class InvoiceFilterComponent implements OnInit {
 
-  private invoices: Invoice[];
-  private page = 0;
+  invoices: Invoice[] = [];
+  page = 0;
   private count = 20;
   private queryParams = {};
 
-  private searchForm = this.formBuilder.group({
+  searchForm = this.formBuilder.group({
     performanceName: [''],
     reservationCode: [''],
     invoiceNumber: [''],
@@ -27,10 +29,13 @@ export class InvoiceFilterComponent implements OnInit {
     isPaid: ['']
   });
 
-  private activeIsCancelled = '';
-  private activeIsPaid = '';
+  activeIsCancelled = '';
+  activeIsPaid = '';
 
-  constructor(private invoiceService: InvoiceService, private formBuilder: FormBuilder) {
+  constructor(
+    private invoiceService: InvoiceService,
+    private formBuilder: FormBuilder,
+    private alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -46,7 +51,7 @@ export class InvoiceFilterComponent implements OnInit {
         this.invoices = invoices;
       },
       error => {
-        // TODO: handle this error
+        this.alertService.error('Ladefehler, bitte versuchen Sie es etwas später noch ein mal');
       }
     );
   }
@@ -56,7 +61,6 @@ export class InvoiceFilterComponent implements OnInit {
       debounceTime(500),
       distinctUntilChanged(),
     ).subscribe(values => {
-      console.log(values);
       this.queryParams = {};
         Object.entries<any>(values)
         .filter(entry => entry[1] !== null)
@@ -82,18 +86,18 @@ export class InvoiceFilterComponent implements OnInit {
     }
   }
 
-  private resetSearchForm(): void {
+  resetSearchForm(): void {
     this.page = 0;
     this.activeIsPaid = '';
     this.activeIsCancelled = '';
     this.searchForm.reset({}, { emitEvent: true });
   }
 
-  private setActiveIsCancelled(event: any): void {
+  setActiveIsCancelled(event: any): void {
     this.activeIsCancelled = event.target.value;
   }
 
-  private setActiveIsPaid(event: any): void {
+  setActiveIsPaid(event: any): void {
     this.activeIsPaid = event.target.value;
   }
 

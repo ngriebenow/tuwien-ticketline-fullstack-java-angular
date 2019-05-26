@@ -1,0 +1,26 @@
+<div *ngIf="news">
+  <h1>{{ news.title }}</h1>
+  <div class="mt-4 container">
+    <div class="row">
+      <div class="column md-1">
+        <div>{{ news.publishedAt | date: 'medium' }}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column md-1">
+        <div>{{ news.summary }}</div>
+      </div>
+    </div>
+    <div class="row">
+      <h5></h5>
+      <div class="column md-1">
+        <div>{{ news.text }}</div>
+      </div>
+    </div>
+    <app-picture-display [ids]="news.pictureIds"></app-picture-display>
+
+    <div class="bottom-right">
+      <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+    </div>
+  </div>
+</div>

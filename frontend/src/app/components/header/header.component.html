@@ -17,7 +17,7 @@
         <a class="nav-link" routerLink="/invoice-filter" routerLinkActive="active">Reservierungen</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/news" routerLinkActive="active">Kundenverwaltung</a>
+        <a class="nav-link" routerLink="/client-filter" routerLinkActive="active">Kundenverwaltung</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/news" routerLinkActive="active">News</a>
@@ -26,7 +26,7 @@
         <a *ngIf="isAdmin()" class="nav-link"  routerLink="/hall-creation" routerLinkActive="active">Orte/Säle</a>
       </li>
       <li class="nav-item">
-        <a *ngIf="isAdmin()" class="nav-link"  routerLink="/news" routerLinkActive="active">Nutzerverwaltung</a>
+        <a *ngIf="isAdmin()" class="nav-link" routerLink="/user-filter" routerLinkActive="active">Nutzerverwaltung</a>
       </li>
     </ul>
     <ul class="navbar-nav mr-5">

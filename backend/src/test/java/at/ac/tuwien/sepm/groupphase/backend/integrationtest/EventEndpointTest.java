@@ -407,7 +407,11 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-    Assert.assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND.value()));
+    List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
+
+    Assert.assertThat(retList.size(),is(0));
+
+    Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
 
   @Test

@@ -6,6 +6,8 @@ import {EventFilter} from '../dtos/event-filter';
 import {EventSearchResult} from '../dtos/event-search-result';
 import {Event} from '../dtos/event';
 import {Performance} from '../dtos/performance';
+import {EventRanking} from "../dtos/event-ranking";
+import set = Reflect.set;
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +15,24 @@ import {Performance} from '../dtos/performance';
 export class EventService {
 
   private eventBaseUri: string = this.globals.backendUri + '/events';
+  private besteventsUri: string = '/best';
 
   constructor(private httpClient: HttpClient, private globals: Globals) {
   }
 
-  getPerformancesById(id: number): Observable<Performance[]> {
-    console.log('Load performances for event ' + id);
-    return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances');
+  /**
+   * Loads specific performances by event id from the backend
+   * @param id of event to load
+   * @param queryParams the query params for the backend request
+   */
+  getPerformancesById(id: number, queryParams: {} = {}): Observable<Performance[]> {
+    let paramsHttp = new HttpParams();
+
+    Object.keys(queryParams).forEach(key => paramsHttp = paramsHttp.set(key, queryParams[key]));
+
+    console.log('getPerformancesById: ' + paramsHttp);
+
+    return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances',{params: paramsHttp});
   }
 
   /**
@@ -31,17 +44,38 @@ export class EventService {
     return this.httpClient.get<Event>(this.eventBaseUri + '/' + id);
   }
 
-  getEventsFiltered(eventFilter: EventFilter): Observable<EventSearchResult[]> {
+  /**
+   * Loads the best events from the backend
+   * @param eventFilter which the events must fulfill
+   */
+  getBestEvents(eventFilter: EventFilter): Observable<EventRanking[]> {
+    const paramsHttp = new HttpParams()
+      .set('category', eventFilter.eventCategory)
+      .set('limit', '10');
+
+
+    console.log('getBestEvents: ' + paramsHttp);
+
+    return this.httpClient.get<EventRanking[]>(this.eventBaseUri + this.besteventsUri, {params: paramsHttp});
+
+  }
+
+  /**
+   * Loads events from the backend
+   * @param eventFilter which the events must fulfil
+   * @param queryParams the query params for the backend request
+   */
+  getEventsFiltered(eventFilter: EventFilter,queryParams: {}): Observable<EventSearchResult[]> {
 
     console.log('getEventsFiltered');
 
-    let price = '';
+    let price: string = "";
     if (eventFilter.priceInEuro != null) {
       price = eventFilter.priceInEuro + '00';
     }
 
-    let time = '';
-    let date = '';
+    let time: string = "";
+    let date: string = "";
     if (eventFilter.startAtDate != null) {
       date = eventFilter.startAtDate;
 
@@ -50,7 +84,7 @@ export class EventService {
       time = eventFilter.startAtTime;
     }
 
-    const paramsHttp = new HttpParams()
+    let paramsHttp = new HttpParams()
       .set('name', eventFilter.name)
       .set('content', eventFilter.content)
       .set('duration', eventFilter.duration)
@@ -65,11 +99,10 @@ export class EventService {
       .set('locationStreet', eventFilter.locationStreet)
       .set('locationPlace', eventFilter.locationPlace)
       .set('startAtDate', date)
-      .set('startAtTime', time)
-      .set('page', '0')
-      .set('count', '100');
+      .set('startAtTime', time);
 
 
+    Object.keys(queryParams).forEach(key => paramsHttp = paramsHttp.set(key, queryParams[key]));
 
 
     console.log('getEventsFiltered: ' + paramsHttp);

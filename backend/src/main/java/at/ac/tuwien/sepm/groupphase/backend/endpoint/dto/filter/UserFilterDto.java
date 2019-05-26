@@ -8,7 +8,7 @@ public class UserFilterDto {
 
   private String role;
 
-  private Boolean locked;
+  private String locked;
 
   private Integer page;
 
@@ -69,11 +69,11 @@ public class UserFilterDto {
     this.role = role;
   }
 
-  public Boolean getLocked() {
+  public String getLocked() {
     return locked;
   }
 
-  public void setLocked(Boolean locked) {
+  public void setLocked(String locked) {
     this.locked = locked;
   }
 

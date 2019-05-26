@@ -1,9 +1,8 @@
-import {Event} from './event';
 
 export class EventRanking {
   constructor(
-    public rank: number,
-    public event: Event,
+    public eventId: number,
+    public eventName: string,
     public soldTickets: number
   ) {
   }

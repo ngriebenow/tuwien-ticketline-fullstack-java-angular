@@ -13,17 +13,24 @@ import {NewsComponent} from './components/news/news.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {httpInterceptorProviders} from './interceptors';
 import {Globals} from './global/globals';
-import { HallCreationComponent } from './components/hall-creation/hall-creation.component';
-import { HallCreationMenuComponent } from './components/hall-creation-menu/hall-creation-menu.component';
-import { HallCreationPlanComponent } from './components/hall-creation-plan/hall-creation-plan.component';
-import { EventComponent } from './components/event/event.component';
-import { EventFilterComponent } from './components/event-filter/event-filter.component';
-import { MyDatePickerModule } from 'mydatepicker';
-import {IMyDpOptions} from 'mydatepicker';
-import { InvoiceFilterComponent } from './components/invoice-filter/invoice-filter.component';
+import {HallCreationComponent} from './components/hall-creation/hall-creation.component';
+import {HallCreationMenuComponent} from './components/hall-creation-menu/hall-creation-menu.component';
+import {HallCreationPlanComponent} from './components/hall-creation-plan/hall-creation-plan.component';
+import {EventComponent} from './components/event/event.component';
+import {EventFilterComponent} from './components/event-filter/event-filter.component';
+import {IMyDpOptions, MyDatePickerModule} from 'mydatepicker';
+import {InvoiceFilterComponent} from './components/invoice-filter/invoice-filter.component';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
+import { PictureDisplayComponent } from './components/picture-display/picture-display.component';
+import { NewsDetailComponent } from './components/news-detail/news-detail.component';
+import { NewsAddComponent } from './components/news-add/news-add.component';
+import { PictureUploadComponent } from './components/picture-upload/picture-upload.component';
 import { AlertComponent } from './components/alert/alert.component';
-import { StorageServiceModule } from 'ngx-webstorage-service';
+import { InvoiceDetailComponent } from './components/invoice-detail/invoice-detail.component';
+import { BestEventsComponent } from './components/best-events/best-events.component';
+import {UserFilterComponent} from './components/user-filter/user-filter.component';
+import {ClientFilterComponent} from './components/client-filter/client-filter.component';
+
 
 @NgModule({
   declarations: [
@@ -40,7 +47,15 @@ import { StorageServiceModule } from 'ngx-webstorage-service';
     EventFilterComponent,
     InvoiceFilterComponent,
     HallViewingComponent,
+    PictureDisplayComponent,
+    NewsDetailComponent,
+    NewsAddComponent,
+    PictureUploadComponent,
     AlertComponent,
+    InvoiceDetailComponent,
+    BestEventsComponent,
+    UserFilterComponent,
+    ClientFilterComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,8 +64,7 @@ import { StorageServiceModule } from 'ngx-webstorage-service';
     HttpClientModule,
     NgbModule,
     FormsModule,
-    MyDatePickerModule,
-    StorageServiceModule,
+    MyDatePickerModule
   ],
   providers: [httpInterceptorProviders, Globals],
   bootstrap: [AppComponent]

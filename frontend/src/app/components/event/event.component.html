@@ -1,6 +1,6 @@
 <div class="container" *ngIf="event">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-12">
       <h1 align="center">{{ event.name }}</h1>
     </div>
   </div>
@@ -8,77 +8,115 @@
 
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-6">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-3">
           <h2 class="float-right">Ort</h2>
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           <input readonly class="form-control" type="text" value="{{event.hall.location.name}}" >
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           <input readonly class="form-control" type="text" value="{{event.hall.location.street}}" >
         </div>
-        <div class="col-md-1">
+        <div class="col-1">
           <input readonly class="form-control" type="text" value="{{event.hall.location.postalCode}}" >
         </div>
       </div>
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-3">
 
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           <input readonly class="form-control" type="text" value="{{event.hall.location.place}}" >
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           <input readonly class="form-control" type="text" value="{{event.hall.location.country}}" >
         </div>
-        <div class="col-md-1">
+        <div class="col-1">
 
         </div>
       </div>
 
-      <div class="row-md-3"></div>
+      <div class="row row-separator"></div>
 
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-3">
           <h2 class="float-right">Dauer/€</h2>
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           <input readonly class="form-control" type="text" value="{{event.duration / 3600 | number:'1.0-2' }}h" >
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           <input readonly class="form-control" type="text"
-                 value="{{event.priceCategories[0].priceInCents/100 | currency:'EUR'}} - {{event.priceCategories[event.priceCategories.length-1].priceInCents/100 | currency:'EUR'}}" >
+                 value="{{event.priceCategories[0].priceInCents/100 | number:'1.2-2'}} - {{event.priceCategories[event.priceCategories.length-1].priceInCents/100 | number:'1.2-2'}}€" >
         </div>
-        <div class="col-md-1">
+        <div class="col-1">
         </div>
       </div>
 
-      <div class="row-md-3"></div>
+      <div class="row row-separator"></div>
 
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-3">
           <h2 class="float-right">Künstler</h2>
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           <input readonly class="form-control" type="text" value="{{event.artists[0].name}}" >
         </div>
-        <div class="col-md-4">
+        <div class="col-4">
           <input readonly class="form-control" type="text" value="{{event.artists[0].surname}}" >
         </div>
-        <div class="col-md-1">
-          <button class="btn btn-primary">Mehr</button>
+        <div class="col-1">
+          <button class="btn btn-primary" data-toggle="modal"
+                  [attr.data-target]="'.artist-modal'" >Mehr</button>
         </div>
+
+
+
+
+        <div [ngClass]="['modal', 'fade', 'artist-modal']" tabindex="-1" role="dialog"
+             aria-labelledby="Message details modal"
+             aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Künstler</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <td>Vorname</td>
+                    <td>Nachname</td>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let a of event.artists">
+                    <td>{{ a.name }}</td>
+                    <td>{{ a.surname}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
       </div>
     </div>
-    <div class="col-md-1">
+    <div class="col-1">
       <h2 class="float-right">Inhalt</h2>
     </div>
-    <div class="col-md-5">
-      <textarea readonly class="form-control">
-        {{ event.content }}
-      </textarea>
+    <div class="col-5">
+      <textarea readonly class="form-control">{{ event.content }}</textarea>
     </div>
   </div>
 
@@ -104,6 +142,15 @@
     </tr>
     </tbody>
   </table>
+</div>
 
+<div class="col-12 d-flex justify-content-between">
+
+  <button [style.background]="getColor(page === 0)" class="btn btn-primary" (click)="previousPage()" [disabled]="page === 0"><i class="fas fa-chevron-left"></i></button>
+  <button [style.background]="getColor(performances.length !== count)" class="btn btn-primary" [disabled]="performances.length < count" (click)="nextPage()"><i class="fas fa-chevron-right"></i></button>
+</div>
+
+<div class="bottom-right">
+  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
 </div>
 

@@ -44,7 +44,7 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
         for (int j = 0; j < hall.getBoundaryPoint().getCoordinateX(); j++) {
           generatedUnits.add(
               new Unit.Builder()
-                  .name(String.format("Unit %d %d", j + 1, i + 1))
+                  .name(String.format("Reihe %d Sitz %d", j + 1, i + 1))
                   .lowerBoundary(new Point(j + 1, i + 1))
                   .upperBoundary(new Point(j + 1, i + 1))
                   .capacity(1)

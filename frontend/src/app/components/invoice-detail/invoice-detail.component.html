@@ -1,0 +1,117 @@
+<div class="row mt-3" *ngIf="invoice">
+  <div class="col-12">
+    <h1>{{ getTitle() }}</h1>
+  </div>
+</div>
+
+<div class="row mt-3" *ngIf="invoice">
+  <div class="col-6">
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group" *ngIf="invoice.reservationCode">
+          <label>Reservierungsnummer</label>
+          <input class="form-control" type="text" disabled value="{{ invoice.reservationCode }}">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group" *ngIf="invoice.number">
+          <label>Rechnungsnummer</label>
+          <input class="form-control" type="text" disabled value="{{ invoice.number }}">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Kundenname</label>
+          <input class="form-control" type="text" disabled value="{{ getClientFullName() }}">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Kundenemail</label>
+          <input class="form-control" type="text" disabled value="{{ invoice.client.email }}">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Veranstaltung</label>
+          <input class="form-control" type="text" disabled value="{{ getEventName() }}">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Aufführung</label>
+          <input class="form-control" type="text" disabled value="{{ getPerformanceName() }}">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Veranstaltungsort</label>
+          <input class="form-control" type="text" disabled value="{{ getLocationName() }}">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Saal</label>
+          <input class="form-control" type="text" disabled value="{{ getHallName() }}">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <label>Datum</label>
+          <input class="form-control" type="text" disabled value="{{ getPeformanceStart() | date:'EEEE, dd. LLL yyyy' }}">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Uhrzeit</label>
+          <input class="form-control" type="text" disabled value="{{ getPeformanceStart() | date:'HH:mm' }}">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="ticket d-flex justify-content-between mt-4"
+         *ngFor="let ticket of invoice.tickets"
+         [ngClass]="{'strike-through': !isSelected(ticket),'clickable': !isCancelled()}"
+         (click)="toggleSelected(ticket)">
+      <span>{{ ticket.priceCategoryName }} </span>
+      <span>{{ ticket.title }} </span>
+      <span>{{ centsToEuros(ticket.priceInCents) | currency:'EUR' }} </span>
+    </div>
+    <hr/>
+    <div class="total mt-4 d-flex justify-content-between">
+      <span>Summe</span>
+      <span>{{ getTotalPriceInEuros() | currency:'EUR' }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-around my-5">
+  <button class="btn btn-xl btn-secondary"
+          *ngIf="isTransient()"
+          (click)="reserveTickets()">Reservieren</button>
+  <button class="btn btn-xl btn-secondary"
+          *ngIf="isReserved() || isBought()"
+          (click)="cancelTickets()">Stornieren</button>
+  <button class="btn btn-xl btn-primary"
+          *ngIf="isTransient()"
+          (click)="buyTickets()">Kaufen</button>
+  <button class="btn btn-xl btn-primary"
+          *ngIf="isReserved()"
+          (click)="payInvoice()">Kaufen</button>
+  <button class="btn btn-xl btn-primary"
+          *ngIf="isBought() || isCancelled()"
+          (click)="printInvoice()">Drucken</button>
+</div>
+
+<div class="bottom-right">
+  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+</div>
