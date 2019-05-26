@@ -34,8 +34,8 @@ public class EventSearchResultDto {
   @ApiModelProperty(required = true, name = "The location place in which the event takes place")
   private String locationPlace;
 
-  @ApiModelProperty(required = true, name = "The price range of the event")
-  private String priceRange;
+  @ApiModelProperty(required = true, name = "The price categories of the event")
+  private List<PriceCategoryDto> priceCategories;
 
   @ApiModelProperty(required = true, name = "The corresponding performances")
   private List<PerformanceSearchResultDto> performances;
@@ -96,12 +96,13 @@ public class EventSearchResultDto {
     this.locationPlace = locationPlace;
   }
 
-  public String getPriceRange() {
-    return priceRange;
+  public List<PriceCategoryDto> getPriceCategories() {
+    return priceCategories;
   }
 
-  public void setPriceRange(String priceRange) {
-    this.priceRange = priceRange;
+  public void setPriceCategories(
+      List<PriceCategoryDto> priceCategories) {
+    this.priceCategories = priceCategories;
   }
 
   public List<PerformanceSearchResultDto> getPerformances() {
@@ -121,18 +122,21 @@ public class EventSearchResultDto {
       return false;
     }
     EventSearchResultDto that = (EventSearchResultDto) o;
-    return Objects.equals(id, that.id)
-        && Objects.equals(name, that.name)
-        && category == that.category
-        && Objects.equals(hallName, that.hallName)
-        && Objects.equals(locationName, that.locationName)
-        && Objects.equals(locationPlace, that.locationPlace)
-        && Objects.equals(priceRange, that.priceRange);
+    return Objects.equals(id, that.id) &&
+        Objects.equals(name, that.name) &&
+        category == that.category &&
+        Objects.equals(hallName, that.hallName) &&
+        Objects.equals(locationName, that.locationName) &&
+        Objects.equals(duration, that.duration) &&
+        Objects.equals(locationPlace, that.locationPlace) &&
+        Objects.equals(priceCategories, that.priceCategories) &&
+        Objects.equals(performances, that.performances);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        id, name, category, hallName, locationName, locationPlace, priceRange, performances);
+    return Objects
+        .hash(id, name, category, hallName, locationName, duration, locationPlace, priceCategories,
+            performances);
   }
 }

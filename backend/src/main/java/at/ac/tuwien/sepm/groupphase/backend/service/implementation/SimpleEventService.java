@@ -102,9 +102,11 @@ public class SimpleEventService implements EventService {
     for (Event e : events) {
       LOGGER.info("Found event " + e);
       EventSearchResultDto eventDto = eventSearchResultMapper.eventToEventSearchResultDto(e);
-      List<PriceCategory> priceCategories =
-          priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(e);
-      eventDto.setPriceRange(formatPriceRange(priceCategories));
+
+      eventDto.setPriceCategories(
+          priceCategoryRepository.findAllByEventOrderByPriceInCentsAsc(e)
+          .stream().map(pc -> priceCategoryMapper.priceCategoryToPriceCategoryDto(pc))
+          .collect(Collectors.toList()));
 
       List<PerformanceSearchResultDto> performanceSearchResultDtos =
           getPerformancesFiltered(e.getId(), eventFilterDto, Pageable.unpaged());
