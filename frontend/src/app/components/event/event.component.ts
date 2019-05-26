@@ -3,6 +3,7 @@ import {EventService} from '../../services/event.service';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-event',
@@ -21,14 +22,44 @@ export class EventComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private eventService: EventService) {}
+    private eventService: EventService,
+    private alertService: AlertService) {}
 
   @Output() event: Event;
   @Output() performances: Performance[] = [];
 
+  page = 0;
+  private count = 20;
+  private queryParams = {}
 
   ngOnInit() {
     this.getEvent();
+  }
+
+  /**
+   * Returns the color for the selctor
+   * @param cat: true if it is the first option
+   */
+  getColor(cat: boolean): string {
+    if (cat) {
+      return '#EAEAEA';
+    } else {
+      return '#8FBEFF';
+    }
+  }
+
+  private nextPage(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.page++;
+    this.loadPerformances(id);
+  }
+
+  private previousPage(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    if (this.page > 0) {
+      this.page--;
+      this.loadPerformances(id);
+    }
   }
 
   /**
@@ -57,9 +88,22 @@ export class EventComponent implements OnInit {
    * @param id the id of the event whose performances should be loaded
    */
   loadPerformances(id: number) {
-    this.eventService.getPerformancesById(id).subscribe(
-      performances => this.performances = performances as Performance[]);
-  }
 
+    this.queryParams['page'] = this.page;
+    this.queryParams['count'] = this.count;
+
+    console.log('loadPerformances with page ' + this.page + ' and count ' + this.count);
+
+
+    this.eventService.getPerformancesById(id, this.queryParams).subscribe(
+      performances => {
+        this.performances = performances as Performance[];
+      },
+      error => {
+        this.alertService.error('Ladefehler, bitte versuchen Sie es etwas später noch ein mal');
+      }
+    );
+
+  }
 
 }
