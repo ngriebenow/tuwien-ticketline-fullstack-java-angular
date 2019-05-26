@@ -21,10 +21,16 @@ export class EventService {
   /**
    * Loads specific performances by event id from the backend
    * @param id of event to load
+   * @param queryParams the query params for the backend request
    */
-  getPerformancesById(id: number): Observable<Performance[]> {
-    console.log('Load performances for event ' + id);
-    return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances');
+  getPerformancesById(id: number, queryParams: {} = {}): Observable<Performance[]> {
+    let paramsHttp = new HttpParams();
+
+    Object.keys(queryParams).forEach(key => paramsHttp = paramsHttp.set(key, queryParams[key]));
+
+    console.log('getPerformancesById: ' + paramsHttp);
+
+    return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances',{params: paramsHttp});
   }
 
   /**
@@ -40,7 +46,7 @@ export class EventService {
    * Loads the best events from the backend
    * @param eventFilter which the events must fulfill
    */
-  getBestEvents(eventFilter: EventFilter,queryParams: {} = {}): Observable<EventRanking[]> {
+  getBestEvents(eventFilter: EventFilter): Observable<EventRanking[]> {
     const paramsHttp = new HttpParams()
       .set('category', eventFilter.eventCategory)
       .set('limit', '10');
@@ -54,7 +60,8 @@ export class EventService {
 
   /**
    * Loads events from the backend
-   * @param eventFilter which the events must fulfill
+   * @param eventFilter which the events must fulfil
+   * @param queryParams the query params for the backend request
    */
   getEventsFiltered(eventFilter: EventFilter,queryParams: {}): Observable<EventSearchResult[]> {
 
@@ -90,7 +97,7 @@ export class EventService {
       .set('locationStreet', eventFilter.locationStreet)
       .set('locationPlace', eventFilter.locationPlace)
       .set('startAtDate', date)
-      .set('startAtTime', time)
+      .set('startAtTime', time);
 
 
     Object.keys(queryParams).forEach(key => paramsHttp = paramsHttp.set(key, queryParams[key]));

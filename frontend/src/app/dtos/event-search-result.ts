@@ -1,5 +1,4 @@
 import {PerformanceSearchResult} from './performance-search-result';
-import {Optional} from '@angular/core';
 
 export class EventSearchResult {
   constructor(

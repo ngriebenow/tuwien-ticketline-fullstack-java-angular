@@ -5,7 +5,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {EventSearchResult} from '../../dtos/event-search-result';
 import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 import {AlertService} from '../../services/alert.service';
-import {queriesFromFields} from "@angular/compiler-cli/src/ngtsc/annotations/src/directive";
 
 @Component({
   selector: 'app-event-filter',
@@ -47,7 +46,7 @@ export class EventFilterComponent implements OnInit {
 
   /**
    * Returns the color for the selctor
-   * @param first: true if it is the first option
+   * @param cat: true if it is the first option
    */
   getColor(cat: boolean): string {
     if (cat) {
@@ -59,7 +58,7 @@ export class EventFilterComponent implements OnInit {
 
   /**
    * Returns the text color for the selctor
-   * @param first: true if it is the first option
+   * @param cat: true if it is the first option
    */
   getTextColor(cat: boolean): string {
     if (cat) {
