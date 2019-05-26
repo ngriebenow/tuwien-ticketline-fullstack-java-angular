@@ -14,8 +14,6 @@ import {Event} from "../dtos/event";
 })
 export class HallViewingService {
 
-  //selected: Boolean[] = [];
-  //selectedNum: number[] = [];
   defUnits: DefinedUnit[] = [];
   cats: PriceCategory[] = [];
   sectorSel: DefinedUnit;
@@ -28,6 +26,13 @@ export class HallViewingService {
               private httpClient: HttpClient) {
   }
 
+  init() {
+    let ev: Event = JSON.parse(localStorage.getItem('event'));
+    this.event = ev;
+    this.performance = JSON.parse(localStorage.getItem('performance'));
+    this.cats = this.event.priceCategories;
+  }
+
   clickSeat(seat: DefinedUnit): void {
     seat.selected = !seat.selected;
   }
@@ -36,68 +41,10 @@ export class HallViewingService {
     return dunit.selected ? '#FF9824' : '#CFCFCF';
   }
 
-  getHallSize(): Point {
-    return this.ticketingService.getHallSize();
-  }
-
-  getPerformance() {
-    this.performance = this.ticketingService.getPerformance();
-    return performance;
-  }
-
-  getEventName(): String {
-    return this.event.name;
-  }
-
-  getPerformanceName(): String {
-    return this.performance.name;
-  }
-
-  getEvent() {
-    this.event = this.ticketingService.getEvent();
-    return this.event;
-  }
-
-  getCategoriesComp() {
-    const event = this.ticketingService.getEvent();
-
-    event.priceCategories.forEach(
-      pc => console.log("found pc " + pc.name.toString())
-    );
-
-
-    /*this.getCategories(event).subscribe(
-      cats => this.cats = cats as PriceCategory[]);
-    */
-    return event.priceCategories;
-  }
-
-  getCategories(event: Event) {
-    const url: string = this.hallViewingUri  + "/price-categories/" + event.id;
-    console.log("getCategories " + event.id + " with " + url);
-    return this.httpClient.get<PriceCategory[]>(url);
-  }
-
-  getDefinedUnits(performance: Performance): Observable<DefinedUnit[]>{
-    const url: string = this.hallViewingUri  + "/defined-units/" + performance.id;
-    console.log("getDefinedUnits " + performance.id + " with url " + url);
+  getDefinedUnits(performanceId: number): Observable<DefinedUnit[]>{
+    const url: string = this.hallViewingUri  + "/defined-units/" + performanceId;
+    console.log("getDefinedUnits " + performanceId + " with url " + url);
     return this.httpClient.get<DefinedUnit[]>(url);
-  }
-
-  getDefinedUnitsComp() {
-    const performance = this.ticketingService.getPerformance();
-    this.getDefinedUnits(performance).subscribe(
-      defUnits => this.defUnits = defUnits as DefinedUnit[]);
-
-    return this.defUnits;
-  }
-
-  getHallName() {
-    return this.ticketingService.getHallName();
-  }
-
-  getStartAt() {
-    return this.ticketingService.getPerformanceStart();
   }
 
   selectionNotEmpty() {
@@ -160,7 +107,7 @@ export class HallViewingService {
 
   getNumOfSelectedSec() {
     const index = this.defUnits.indexOf(this.sectorSel);
-    return this.getDefinedUnitsComp()[index].num > 0 ? this.defUnits[index].num : 0;
+    return this.defUnits.length > 0 ? this.defUnits[index].num : 0;
   }
 
   getChosenNum(dunit: DefinedUnit) {
