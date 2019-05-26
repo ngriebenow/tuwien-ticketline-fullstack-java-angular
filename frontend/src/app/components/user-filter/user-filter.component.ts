@@ -32,7 +32,7 @@ export class UserFilterComponent implements OnInit {
     this.loadUsers();
   }
 
-  private loadUsers(): void {
+  public loadUsers(): void {
     this.queryParams.page = this.page;
     this.queryParams.count = this.count;
     this.userService.getUsersFiltered(this.queryParams).subscribe(
@@ -48,33 +48,33 @@ export class UserFilterComponent implements OnInit {
     );
   }
 
-  private nextPage(): void {
+  public nextPage(): void {
     this.page++;
     this.loadUsers();
   }
 
-  private previousPage(): void {
+  public previousPage(): void {
     if (this.page > 0) {
       this.page--;
       this.loadUsers();
     }
   }
 
-  private resetSearchForm(): void {
+  public resetSearchForm(): void {
     this.page = 0;
     this.setIsLockedToNull();
     this.searchForm.reset({}, {emitEvent: true});
   }
 
-  private setIsLockedToTrue(): void {
+  public setIsLockedToTrue(): void {
     this.isLocked = 'true';
   }
 
-  private setIsLockedToFalse(): void {
+  public setIsLockedToFalse(): void {
     this.isLocked = 'false';
   }
 
-  private setIsLockedToNull(): void {
+  public setIsLockedToNull(): void {
     this.isLocked = '';
   }
 
