@@ -83,6 +83,17 @@ public class SimpleClientService implements ClientService {
     if (client.getPage() < 0) {
       throw new InvalidInputException("Page must be >0");
     }
+
+    if (client.getEmail() != null && client.getEmail().isEmpty()) {
+      client.setEmail(null);
+    }
+    if (client.getName() != null && client.getName().isEmpty()) {
+      client.setName(null);
+    }
+    if (client.getSurname() != null && client.getSurname().isEmpty()) {
+      client.setSurname(null);
+    }
+
     Pageable pageable = PageRequest.of(client.getPage(), client.getCount());
     Specification<Client> clientSpecification = likeClient(client);
     Page<Client> clients = clientRepository.findAll(clientSpecification, pageable);

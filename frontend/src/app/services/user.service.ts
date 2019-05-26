@@ -20,7 +20,7 @@ export class UserService {
    * Loads specific user from the backend
    * @param id of user to load
    */
-  getEventById(id: string): Observable<User> {
+  getUserById(id: string): Observable<User> {
     console.log('Load user for ' + id);
     return this.httpClient.get<User>(this.userBaseUri + '/' + id);
   }
