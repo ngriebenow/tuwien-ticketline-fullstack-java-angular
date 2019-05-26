@@ -70,22 +70,22 @@ export class EventService {
     console.log('getEventsFiltered');
 
     let price: string = "";
-    if (eventFilter.priceInEuro != null) {
+    if (eventFilter.priceInEuro !== null) {
       price = eventFilter.priceInEuro + '00';
     }
 
     let time: string = "";
     let date: string = "";
-    if (eventFilter.startAtDate != null) {
+    if (eventFilter.startAtDate !== null) {
       date = eventFilter.startAtDate;
 
     }
-    if (eventFilter.startAtTime != null || true) {
+    if (eventFilter.startAtTime !== null || true) {
       time = eventFilter.startAtTime;
     }
 
     let duration: string = "";
-    if (eventFilter.duration != null && eventFilter.duration != "null") {
+    if (eventFilter.duration !== null && eventFilter.duration !== "null") {
       duration = eventFilter.duration;
     }
 
