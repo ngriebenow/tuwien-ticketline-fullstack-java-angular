@@ -16,6 +16,7 @@ export class NewsService {
 
   /**
    * Loads all news from the backend
+   * @param onlyNew to specifiy if all or just unread news should be loaded
    */
   getNews(onlyNew: boolean): Observable<News[]> {
     let params = new HttpParams();

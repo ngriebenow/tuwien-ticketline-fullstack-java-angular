@@ -35,7 +35,11 @@ export class NewsComponent implements OnInit {
   ngOnInit() {
     this.loadNews(this.onlyNew());
   }
-  onlyNew() {
+  /**
+   * get if component shows only new news.
+   * @return onlyNew.
+   */
+  onlyNew(): boolean {
     let onlyNew: boolean;
     this.route
     .queryParams
@@ -67,7 +71,9 @@ export class NewsComponent implements OnInit {
   selectNewsDetails(id: number) {
     this.router.navigate(['/news/' + id]);
   }
-
+  /**
+   * navigate to the main menu
+   */
   navigateMainMenu() {
     this.router.navigate(['/']);
   }
@@ -80,7 +86,8 @@ export class NewsComponent implements OnInit {
   }
 
   /**
-   * Loads the specified page of news from the backend
+   * Loads the specified page of news from the backend.
+   * @param onlyNew to specify if all news are only unread should be loaded.
    */
   private loadNews(onlyNew: boolean) {
     // Backend pagination starts at page 0, therefore page must be reduced by 1
@@ -93,6 +100,9 @@ export class NewsComponent implements OnInit {
       }
     );
   }
+  /**
+   * Set the error message
+   */
   private defaultServiceErrorHandling(error: any) {
     console.log(error);
     this.error = true;

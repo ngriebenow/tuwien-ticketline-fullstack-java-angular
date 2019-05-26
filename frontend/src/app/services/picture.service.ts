@@ -13,12 +13,19 @@ export class PictureService {
 
   constructor(private httpClient: HttpClient, private globals: Globals) {
   }
-
-
+  /**
+   * Get picture with id.
+   * @param id of the picture
+   */
   getPicture(id: number): Observable<Blob> {
     console.log('Load picture with id ' + id);
     return this.httpClient.get(this.newsPicturesBaseUri + '/' + id, { responseType: 'blob' });
   }
+
+  /**
+   * Upload picture
+   * @param picture to upload
+   */
   uploadPicture(picture: File) {
     console.log('Upload picture');
     const fd = new FormData();

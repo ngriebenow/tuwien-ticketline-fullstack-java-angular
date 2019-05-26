@@ -16,6 +16,9 @@ export class NewsDetailComponent implements OnInit {
   ngOnInit() {
     this.getNews();
   }
+  /**
+   * Load news with id specified in route
+   */
   getNews() {
     const id = +this.route.snapshot.paramMap.get('id');
     this.loadNewsDetailed(id);

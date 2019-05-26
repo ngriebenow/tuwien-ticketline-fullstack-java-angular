@@ -62,6 +62,9 @@ export class NewsAddComponent implements OnInit {
       }
     );
   }
+  /**
+   * Clears the form
+   */
   private clearForm() {
     this.newsForm.reset();
     this.submitted = false;

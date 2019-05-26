@@ -13,6 +13,10 @@ export class PictureUploadComponent implements OnInit {
               private pictureTransferService: PictureTransferService) { }
   ngOnInit() {
   }
+  /**
+   * Gets triggered on file selection and posts the picture data.
+   * @param event for file input field
+   */
   onFileSelected(event) {
     if (event.target.files[0].size > 1048576) {
       alert('Error, file too big');
