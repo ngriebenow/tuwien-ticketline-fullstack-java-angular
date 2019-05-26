@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {range} from 'lodash';
 import {HallViewingService} from './hall-viewing.service';
 import {Event} from '../dtos/event';
 import {Hall} from '../dtos/hall';
@@ -78,10 +79,6 @@ export class TicketingService {
       .map(ticReq => this.getTransientTickets(ticReq))
       .reduce((prev, current) => prev.concat(current), []);
 
-    for (let i = 0; i < tickets.length; i++) {
-      console.log("ticket " + tickets[i].priceCategoryName);
-    }
-
     return new Invoice(
       null,
       null,
@@ -101,31 +98,7 @@ export class TicketingService {
     const definedUnit = this.dunits.find(dUnit => dUnit.id === ticketRequest.definedUnitId);
     const priceCategory = this.categories.find(pCat => pCat.id === definedUnit.priceCategoryId);
 
-    console.log("getTransientTickets " + priceCategory.name + " " + definedUnit.toString());
-
-    let ret: Ticket[] = [];
-
-    for (let i = 0; i < ticketRequest.amount; i++) {
-      ret.push(
-        new Ticket(
-          null,
-          definedUnit.name,
-          this.event.name,
-          this.performance.name,
-          this.performance.startAt,
-          priceCategory.name,
-          priceCategory.priceInCents,
-          this.hall.location.name,
-          this.hall.name,
-          definedUnit.id,
-          this.performance.id
-        )
-      );
-    }
-
-    // TODO: DOES NOT WORK?
-    /*
-    let arr = Array(ticketRequest.amount).map(_ => new Ticket(
+    return range(ticketRequest.amount).map(_ => new Ticket(
         null,
         definedUnit.name,
         this.event.name,
@@ -138,9 +111,7 @@ export class TicketingService {
         definedUnit.id,
         this.performance.id
       )
-    );*/
-
-    return ret;
+    );
   }
 }
 
