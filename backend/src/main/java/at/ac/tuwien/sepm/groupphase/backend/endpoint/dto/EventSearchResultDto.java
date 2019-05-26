@@ -128,15 +128,12 @@ public class EventSearchResultDto {
         Objects.equals(hallName, that.hallName) &&
         Objects.equals(locationName, that.locationName) &&
         Objects.equals(duration, that.duration) &&
-        Objects.equals(locationPlace, that.locationPlace) &&
-        Objects.equals(priceCategories, that.priceCategories) &&
-        Objects.equals(performances, that.performances);
+        Objects.equals(locationPlace, that.locationPlace);
   }
 
   @Override
   public int hashCode() {
     return Objects
-        .hash(id, name, category, hallName, locationName, duration, locationPlace, priceCategories,
-            performances);
+        .hash(id, name, category, hallName, locationName, duration, locationPlace);
   }
 }

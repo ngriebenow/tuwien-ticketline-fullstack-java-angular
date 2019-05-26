@@ -5,6 +5,7 @@ import static org.hamcrest.core.Is.is;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PriceCategoryDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
@@ -17,6 +18,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.pricecategory.PriceCategoryMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
@@ -28,6 +30,7 @@ import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.awt.Color;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
@@ -56,6 +59,7 @@ public class EventServiceIntegrationTest {
   @Autowired private EventMapper eventMapper;
   @Autowired private EventSearchResultMapper eventSearchResultMapper;
   @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
+  @Autowired private PriceCategoryMapper priceCategoryMapper;
 
   private Event E1;
   private Event E2;
@@ -315,12 +319,19 @@ public class EventServiceIntegrationTest {
     PC6 = priceCategoryRepository.save(PC6);
 
 
+    PriceCategoryDto pc1Dto = priceCategoryMapper.priceCategoryToPriceCategoryDto(PC1);
+    PriceCategoryDto pc2Dto = priceCategoryMapper.priceCategoryToPriceCategoryDto(PC2);
+    PriceCategoryDto pc3Dto = priceCategoryMapper.priceCategoryToPriceCategoryDto(PC3);
+    PriceCategoryDto pc4Dto = priceCategoryMapper.priceCategoryToPriceCategoryDto(PC4);
+    PriceCategoryDto pc5Dto = priceCategoryMapper.priceCategoryToPriceCategoryDto(PC5);
+    PriceCategoryDto pc6Dto = priceCategoryMapper.priceCategoryToPriceCategoryDto(PC6);
+
     E1_SR = eventSearchResultMapper.eventToEventSearchResultDto(E1);
-    E1_SR.setPriceRange("20 €");
+    E1_SR.setPriceCategories(Collections.singletonList(pc1Dto));
     E2_SR = eventSearchResultMapper.eventToEventSearchResultDto(E2);
-    E2_SR.setPriceRange("30 - 40 €");
+    E2_SR.setPriceCategories(List.of(pc2Dto,pc3Dto));
     E3_SR = eventSearchResultMapper.eventToEventSearchResultDto(E3);
-    E3_SR.setPriceRange("50 - 70 €");
+    E3_SR.setPriceCategories(List.of(pc4Dto,pc5Dto,pc6Dto));
 
   }
 

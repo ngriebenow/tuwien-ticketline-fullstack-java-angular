@@ -121,24 +121,6 @@ public class SimpleEventService implements EventService {
     return eventDtos;
   }
 
-  private String formatPriceRange(List<PriceCategory> priceCategories) {
-    String price;
-    if (priceCategories.size() > 0) {
-      price = String.format("%.0f", priceCategories.get(0).getPriceInCents() / 100.);
-
-      if (priceCategories.size() > 1) {
-        price += " - " + String.format(
-            "%.0f",
-            priceCategories.get(priceCategories.size() - 1).getPriceInCents() / 100.);
-      }
-      price += " €";
-    } else {
-      price = "kein Preis";
-    }
-
-    return price;
-  }
-
   private List<PerformanceSearchResultDto> getPerformancesFiltered(
       Long id, EventFilterDto eventFilterDto, Pageable pageable) throws NotFoundException {
     LOGGER.info("getPerformancesFiltered with id " + id + " and filter " + eventFilterDto);
