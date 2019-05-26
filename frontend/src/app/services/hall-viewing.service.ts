@@ -20,7 +20,7 @@ export class HallViewingService {
   cats: PriceCategory[] = [];
   sectorSel: DefinedUnit;
 
-  private hallViewingUri: string = this.globals.backendUri + '/hall-viewing';
+  private hallViewingUri: string = this.globals.backendUri + '/performances/hall-viewing';
 
   constructor( private ticketingService: TicketingService, private globals: Globals,
               private httpClient: HttpClient) {
@@ -64,12 +64,15 @@ export class HallViewingService {
   }
 
   getCategories(event: Event) {
-    return this.httpClient.get<PriceCategory[]>(this.hallViewingUri + "/" + event.id);
+    const url: string = this.hallViewingUri  + "/price-categories/" + event.id;
+    console.log("getCategories " + event.id + " with " + url);
+    return this.httpClient.get<PriceCategory[]>(url);
   }
 
   getDefinedUnits(performance: Performance): Observable<DefinedUnit[]>{
-    console.log("getDefinedUnits" + this.hallViewingUri + "/" + performance.id)
-    return this.httpClient.get<DefinedUnit[]>(this.hallViewingUri + "/" + performance.id);
+    const url: string = this.hallViewingUri  + "/defined-units/" + performance.id;
+    console.log("getDefinedUnits " + performance.id + " with url " + url);
+    return this.httpClient.get<DefinedUnit[]>(url);
   }
 
   getDefinedUnitsComp() {

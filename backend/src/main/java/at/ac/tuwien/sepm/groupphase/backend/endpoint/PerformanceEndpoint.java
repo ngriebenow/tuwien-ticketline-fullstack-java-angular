@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/performance")
+@RequestMapping(value = "/performances")
 @Api(value = "performances")
 public class PerformanceEndpoint {
 
@@ -28,7 +28,7 @@ public class PerformanceEndpoint {
     this.performanceService = performanceService;
   }
 
-  @RequestMapping(value = "/events/performances/{id}/hall-viewing", method = RequestMethod.GET)
+  @RequestMapping(value = "/hall-viewing/defined-units/{id}", method = RequestMethod.GET)
   @ApiOperation(
       value = "Get defined units by performance id",
       authorizations = {@Authorization(value = "apiKey")})
@@ -39,7 +39,7 @@ public class PerformanceEndpoint {
     return performanceService.getDefinedUnitsByPerformanceId(performance);
   }
 
-  @RequestMapping(value = "/events/{id}/performances/hall-viewing", method = RequestMethod.GET)
+  @RequestMapping(value = "/hall-viewing/price-categories/{id}", method = RequestMethod.GET)
   @ApiOperation(
       value = "Get price categories by event id",
       authorizations = {@Authorization(value = "apiKey")})

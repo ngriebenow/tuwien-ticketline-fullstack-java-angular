@@ -36,7 +36,7 @@ public class SimplePerformanceService implements PerformanceService {
       definedUnitRepository.findAllByPerformanceIsLike(performance).forEach
           (e -> definedUnitDtos.add(definedUnitMapper.definedUnitToDto(e)));
     } catch (NotFoundException e){
-      LOGGER.error(e.getMessage());
+      LOGGER.error("Could not get defined units " + e.getMessage());
     }
     return definedUnitDtos;
   }
@@ -50,7 +50,7 @@ public class SimplePerformanceService implements PerformanceService {
       priceCategoryRepo.findAllByEventOrderByPriceInCentsAsc(event).forEach(
           e -> priceCategoryDtos.add(priceCategoryMapper.priceCategoryToPriceCategoryDto(e)));
     } catch (NotFoundException e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error("Could not get price categories " + e.getMessage());
     }
     return priceCategoryDtos;
   }

@@ -49,7 +49,7 @@ import {TicketingService} from "./services/ticketing.service";
     HttpClientModule,
     NgbModule,
     FormsModule,
-    MyDatePickerModule
+    MyDatePickerModule,
   ],
   providers: [httpInterceptorProviders, Globals, TicketingService],
   bootstrap: [AppComponent]
