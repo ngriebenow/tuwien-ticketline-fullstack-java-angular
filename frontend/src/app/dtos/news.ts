@@ -5,6 +5,7 @@ export class News {
     public summary: string,
     public text: string,
     public publishedAt: string,
-    public pictureIds: number[]) {
+    public pictureIds: number[],
+    public read: boolean) {
   }
 }

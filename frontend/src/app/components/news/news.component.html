@@ -3,12 +3,40 @@
   <div class="mt-4 container">
     <ng-container *ngFor="let news of getNews()">
       <div class="news-entry-panel">
-        <div class="space"></div>
-        <div class="title"><h5>{{news.title}}</h5></div>
-        <div class="puplishedAt">{{news.publishedAt | date: 'short'}}</div>
-        <div class="summary">{{news.summary}}</div>
-        <div class="details">
-          <button (click)="selectNewsDetails(news.id)" type="button" class="btn btn-primary">Details</button>
+        <div class="mt-4 container">
+          <div class="row">
+            <div class="column md-1">
+              <div class="read-marker" *ngIf="news.read"></div>
+              <div class="not-read-marker" *ngIf="!news.read"></div>
+            </div>
+            <div class="column md-1">
+              <div class="row">
+                <div class="column md-1">
+                  <div class="space"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="column md-1">
+                  <h5>{{news.title}}</h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="column md-1">
+                  {{news.publishedAt | date: 'short'}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="column md-1">
+                  {{news.summary}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="column md-12">
+                  <button (click)="selectNewsDetails(news.id)" type="button" class="btn btn-primary">Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </ng-container>

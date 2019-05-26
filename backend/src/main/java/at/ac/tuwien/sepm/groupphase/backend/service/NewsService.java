@@ -12,9 +12,10 @@ public interface NewsService {
    * Find all news entries.
    *
    * @param pageable for pagination
+   * @param user to mark unread news
    * @return list of all simple news entries
    */
-  List<SimpleNewsDto> findAll(Pageable pageable);
+  List<SimpleNewsDto> findAll(User user, Pageable pageable);
 
   /**
    * Find all new (== not read) news entries for given user.

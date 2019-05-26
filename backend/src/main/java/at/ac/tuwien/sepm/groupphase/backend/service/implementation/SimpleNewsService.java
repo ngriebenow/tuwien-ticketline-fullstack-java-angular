@@ -75,19 +75,33 @@ public class SimpleNewsService implements NewsService {
     }
 
     List<News> news = q.getResultList();
-    news.forEach(n -> newsDtos.add(newsMapper.newsToSimpleNewsDto(n)));
+    for (News entry : news) {
+      SimpleNewsDto newsDto = newsMapper.newsToSimpleNewsDto(entry);
+      newsDto.setRead(false);
+      newsDtos.add(newsDto);
+    }
     return newsDtos;
   }
 
   @Transactional
   @Override
-  public List<SimpleNewsDto> findAll(Pageable pageable) {
+  public List<SimpleNewsDto> findAll(User user, Pageable pageable) {
     LOGGER.info("get all news");
+
+    List<SimpleNewsDto> unreadNews = findAllNew(user, pageable);
 
     List<SimpleNewsDto> newsDtos = new ArrayList<>();
     List<News> news = new ArrayList<>();
     news = newsRepository.findAllByOrderByPublishedAtDesc(pageable);
-    news.forEach(n -> newsDtos.add(newsMapper.newsToSimpleNewsDto(n)));
+    for (News entry : news) {
+      SimpleNewsDto newsDto = newsMapper.newsToSimpleNewsDto(entry);
+      if (unreadNews.contains(newsDto)) {
+        newsDto.setRead(false);
+      } else {
+        newsDto.setRead(true);
+      }
+      newsDtos.add(newsDto);
+    }
     return newsDtos;
   }
 

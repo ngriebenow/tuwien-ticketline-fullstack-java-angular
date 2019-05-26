@@ -17,7 +17,10 @@
         <div>{{news.text}}</div>
       </div>
     </div>
+    <app-picture-display [ids]="news.pictureIds"></app-picture-display>
 
-  <app-picture-display [ids]="news.pictureIds"></app-picture-display>
-</div>
+    <div class="bottom-right">
+      <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+    </div>
+  </div>
 </div>

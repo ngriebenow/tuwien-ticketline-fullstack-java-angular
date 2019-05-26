@@ -108,7 +108,7 @@ public class NewsServiceIntegrationTest {
   public void givenUserAndNoNews_whenCreateNewsThenFindOneThenFindAll_thenReturnNews() {
     N1 = newsService.create(N1);
     DetailedNewsDto retN1 = newsService.findOne(N1.getId(), U1);
-    List<SimpleNewsDto> simpleNewsDtos = newsService.findAll(Pageable.unpaged());
+    List<SimpleNewsDto> simpleNewsDtos = newsService.findAll(U1, Pageable.unpaged());
     assertThat(simpleNewsDtos.size()).isEqualTo(1);
   }
 

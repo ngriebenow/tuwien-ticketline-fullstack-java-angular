@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {News} from '../../dtos/news';
 import {Router} from '@angular/router';
 import {NewsService} from '../../services/news.service';
-import {PictureTransferService} from "../../services/picture-transfer.service";
+import {PictureTransferService} from '../../services/picture-transfer.service';
 
 @Component({
   selector: 'app-news-add',
@@ -40,7 +40,8 @@ export class NewsAddComponent implements OnInit {
         this.newsForm.controls.summary.value,
         this.newsForm.controls.text.value,
         new Date().toISOString(),
-        this.pictureTransferService.getData()
+        this.pictureTransferService.getData(),
+        false
       );
       this.createNews(news);
       this.clearForm();
