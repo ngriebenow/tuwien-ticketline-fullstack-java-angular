@@ -39,10 +39,12 @@ export class HallCreationMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hallSize = this.hallCreationService.getHallSize();
+    this.hallSize = new Point(this.hallCreationService.getHallSize().coordinateX,
+      this.hallCreationService.getHallSize().coordinateY);
     this.getHall();
     this.getMaxHallSize();
     this.getSelectedSector();
+    this.hallCreationService.changeSelectedSector(null);
   }
 
   initializationMode(): boolean {
@@ -93,6 +95,7 @@ export class HallCreationMenuComponent implements OnInit {
     } else if (this.hallSize.coordinateY > this.maxHallSize.coordinateY) {
       this.hallSize.coordinateY = this.maxHallSize.coordinateY;
     }
+    this.hallCreationService.setHallSize(this.hallSize);
     this.hallCreationService.fillWithSeats();
   }
 

@@ -18,13 +18,13 @@ export class HallCreationService {
   private initialized: boolean;
   private edited: boolean;
 
-  private hall: Hall;
-  private hallSize: Point;
+  private readonly hall: Hall;
+  private readonly hallSize: Point;
   private readonly maxHallSize: Point;
 
-  private seats: Point[];
-  private sectors: Unit[];
-  private aisles: Point[];
+  private readonly seats: Point[];
+  private readonly sectors: Unit[];
+  private readonly aisles: Point[];
 
   private selectedUnitType: UnitType; // saves unit type that is selected in menu
   private selectedUnitPosition: Point; // saves first sector coordinate for sector creation
@@ -35,6 +35,11 @@ export class HallCreationService {
   constructor(private hallService: HallService, private router: Router, private alertService: AlertService) {
     console.log('constructor');
     this.maxHallSize = new Point(27, 27); // set max hall size here
+    this.hallSize = new Point(null, null);
+    this.hall = new Hall(null, null, null, null, null);
+    this.seats = [];
+    this.sectors = [];
+    this.aisles = [];
     this.createNewHall();
   }
 
@@ -92,11 +97,16 @@ export class HallCreationService {
     this.loadedExisting = false;
     this.initialized = false;
     this.edited = false;
-    this.hallSize = new Point(10, 10);
-    this.hall = new Hall(null, null, null, null, this.hallSize);
-    this.seats = [];
-    this.sectors = [];
-    this.aisles = [];
+    this.hallSize.coordinateX = 10;
+    this.hallSize.coordinateY = 10;
+    this.hall.id = null;
+    this.hall.version = null;
+    this.hall.name = null;
+    this.hall.location = null;
+    this.hall.boundaryPoint = this.hallSize;
+    this.seats.length = 0;
+    this.sectors.length = 0;
+    this.aisles.length = 0;
     this.fillWithSeats();
   }
 
@@ -105,11 +115,6 @@ export class HallCreationService {
    * loads hall from backend and sets initialized to true
    */
   loadExistingHall(id: number): void {
-    this.hallSize = new Point(10, 10);
-    this.hall = new Hall(null, null, null, null, this.hallSize);
-    this.seats = [];
-    this.sectors = [];
-    this.aisles = [];
     this.hallService.getHallById(id).then(
       result => result.subscribe(
         (loadedHall: Hall) => {
@@ -119,6 +124,7 @@ export class HallCreationService {
           this.hall.version = loadedHall.version;
           this.hall.name = loadedHall.name;
           this.hall.location = loadedHall.location;
+          this.hall.boundaryPoint = this.hallSize;
           this.loadExistingHall_loadUnits(id);
         },
         error => {
@@ -135,15 +141,16 @@ export class HallCreationService {
    * @param id of hall
    */
   loadExistingHall_loadUnits(id: number): void {
-    let loadedUnits: Unit[];
+    this.seats.length = 0;
+    this.sectors.length = 0;
+    this.aisles.length = 0;
     this.hallService.getUnitsByHallId(id).subscribe(
       (dbUnits: Unit[]) => {
-        loadedUnits = dbUnits;
-        for (let i = 0; i < loadedUnits.length; i++) {
-          if (loadedUnits[i].capacity === 1) {
-            this.seats.push(loadedUnits[i].upperBoundary);
-          } else if (loadedUnits[i].capacity > 1) {
-            this.sectors.push(loadedUnits[i]);
+        for (let i = 0; i < dbUnits.length; i++) {
+          if (dbUnits[i].capacity === 1) {
+            this.seats.push(dbUnits[i].upperBoundary);
+          } else if (dbUnits[i].capacity > 1) {
+            this.sectors.push(dbUnits[i]);
           }
         }
         this.createAisles();
@@ -305,13 +312,14 @@ export class HallCreationService {
    * returns back to home menu
    */
   backToMenu(): void {
-    // todo reset values at exit or at enter?
+    this.createNewHall();
     this.router.navigateByUrl('');
   }
 
   cancelHallCreation(): void {
     // todo cancel popup and functionality
     this.createNewHall();
+    this.backToMenu();
   }
 
   /**
@@ -621,11 +629,13 @@ export class HallCreationService {
   }
 
   /**
-   * changes saves sector and sends it to all subscribers
-   * @param sector != null
+   * changes saved sector and sends it to all subscribers
+   * @param sector if != null: assign, else: resend existing sector
    */
   changeSelectedSector(sector: Unit): void {
-    this.selectedSector = sector;
+    if (sector != null) {
+      this.selectedSector = sector;
+    }
     this.changeSector.emit(this.selectedSector);
   }
 
@@ -639,6 +649,11 @@ export class HallCreationService {
 
   getHallSize(): Point {
     return this.hallSize;
+  }
+
+  setHallSize(newSize: Point): void {
+    this.hallSize.coordinateX = newSize.coordinateX;
+    this.hallSize.coordinateY = newSize.coordinateY;
   }
 
   getMaxHallSize(): Point {
