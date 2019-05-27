@@ -272,6 +272,7 @@ thead {
   border-radius: 10px !important;
 }
 
+textarea:not(:placeholder-shown),
 input:not(:placeholder-shown){
   background-color: $main-blue !important;
   color: white !important;
