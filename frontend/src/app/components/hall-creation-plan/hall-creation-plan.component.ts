@@ -103,7 +103,7 @@ export class HallCreationPlanComponent implements OnInit {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   calcSectorSizeX(sector: Unit) {
-    return ((sector.lowerBoundary.coordinateX - sector.upperBoundary.coordinateX + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
+    return this.getSectorSize(sector).coordinateX + 'px';
   }
 
   /**
@@ -111,7 +111,24 @@ export class HallCreationPlanComponent implements OnInit {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   calcSectorSizeY(sector: Unit) {
-    return ((sector.lowerBoundary.coordinateY - sector.upperBoundary.coordinateY + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
+    return this.getSectorSize(sector).coordinateY + 'px';
+  }
+
+  /**
+   * @return true if sector is big enough to show name
+   * @param sector != null && lowerBoundary != null && upperBoundary != null
+   */
+  spaceForName(sector: Unit): boolean {
+    return this.getSectorSize(sector).coordinateY > 40;
+  }
+
+  /**
+   * @return true if sector is big enough for big font size
+   * @param sector != null && lowerBoundary != null && upperBoundary != null
+   */
+  spaceForBigText(sector: Unit): boolean {
+    return this.getSectorSize(sector).coordinateX > 100 &&
+      this.getSectorSize(sector).coordinateY > 100;
   }
 
   /**
@@ -126,6 +143,17 @@ export class HallCreationPlanComponent implements OnInit {
    */
   getSeatDistance(): number {
     return this.getUnitSize() / 10;
+  }
+
+  /**
+   * @return size of sector in pixel
+   * @param sector != null && lowerBoundary != null && upperBoundary != null
+   */
+  getSectorSize(sector: Unit): Point {
+    return new Point(
+      (sector.lowerBoundary.coordinateX - sector.upperBoundary.coordinateX + 1) * this.getUnitSize() - this.getSeatDistance(),
+      (sector.lowerBoundary.coordinateY - sector.upperBoundary.coordinateY + 1) * this.getUnitSize() - this.getSeatDistance()
+    );
   }
 
   /**
