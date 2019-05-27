@@ -46,7 +46,9 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
   private UnitRepository unitRepository;
   private DefinedUnitRepository definedUnitRepository;
 
-  /** Create a new DefinedUnitDataGenerator. */
+  /**
+   * Create a new DefinedUnitDataGenerator.
+   */
   @Autowired
   public DefinedUnitDataGenerator(
       PerformanceRepository performanceRepository,
@@ -61,7 +63,9 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
     this.definedUnitRepository = definedUnitRepository;
   }
 
-  /** Javadoc. */
+  /**
+   * Javadoc.
+   */
   public static void normalizeArray(int[] array) {
     int lastP = array[0];
     int pindex = 0;

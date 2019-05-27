@@ -25,7 +25,7 @@ public class SimplePerformanceService implements PerformanceService {
   private DefinedUnitMapperImpl definedUnitMapper;
 
   /**
-   * Gets all defined units for a performance by its id
+   * Gets all defined units for a performance by its id.
    *
    * @param performance containing only the performance id
    */

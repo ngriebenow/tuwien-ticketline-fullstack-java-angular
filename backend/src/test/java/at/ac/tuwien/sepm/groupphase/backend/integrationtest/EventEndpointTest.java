@@ -5,7 +5,6 @@ import static org.hamcrest.core.Is.is;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
@@ -17,7 +16,6 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.event.EventSearchResultMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.performance.PerformanceSearchResultMapper;
 import at.ac.tuwien.sepm.groupphase.backend.integrationtest.base.BaseIntegrationTest;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
@@ -31,12 +29,9 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.awt.Color;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -51,21 +46,30 @@ public class EventEndpointTest extends BaseIntegrationTest {
   private static final String SPECIFIC_EVENT_PATH = "/{id}";
   private static final String EVENT_PERFORMANCE_ENDPOINT = "/performances";
 
-  @Autowired private PerformanceRepository performanceRepository;
-  @Autowired private HallRepository hallRepository;
-  @Autowired private LocationRepository locationRepository;
-  @Autowired private ArtistRepository artistRepository;
-  @Autowired private EventRepository eventRepository;
-  @Autowired private PriceCategoryRepository priceCategoryRepository;
+  @Autowired
+  private PerformanceRepository performanceRepository;
+  @Autowired
+  private HallRepository hallRepository;
+  @Autowired
+  private LocationRepository locationRepository;
+  @Autowired
+  private ArtistRepository artistRepository;
+  @Autowired
+  private EventRepository eventRepository;
+  @Autowired
+  private PriceCategoryRepository priceCategoryRepository;
 
-  @Autowired private EventMapper eventMapper;
-  @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
-  @Autowired private EventSearchResultMapper eventSearchResultMapper;
+  @Autowired
+  private EventMapper eventMapper;
+  @Autowired
+  private PerformanceSearchResultMapper performanceSearchResultMapper;
+  @Autowired
+  private EventSearchResultMapper eventSearchResultMapper;
 
   private static Event E1;
   private static Event E2;
   private static Event E3;
-  
+
   private static EventSearchResultDto E1_SR;
   private static EventSearchResultDto E2_SR;
   private static EventSearchResultDto E3_SR;
@@ -202,7 +206,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P1 =
         new Performance.Builder()
             .name("1A")
-            .startAt(LocalDateTime.of(3000, 1, 15,0,0))
+            .startAt(LocalDateTime.of(3000, 1, 15, 0, 0))
             .id(0L)
             .event(E1)
             .build();
@@ -211,7 +215,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P2 =
         new Performance.Builder()
             .name("2A")
-            .startAt(LocalDateTime.of(3000, 1, 15,8,0))
+            .startAt(LocalDateTime.of(3000, 1, 15, 8, 0))
             .id(1L)
             .event(E1)
             .build();
@@ -220,7 +224,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P3 =
         new Performance.Builder()
             .name("1B")
-            .startAt(LocalDateTime.of(3000, 2, 15,16,0))
+            .startAt(LocalDateTime.of(3000, 2, 15, 16, 0))
             .event(E2)
             .build();
     P3 = performanceRepository.save(P3);
@@ -228,7 +232,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P4 =
         new Performance.Builder()
             .name("2B")
-            .startAt(LocalDateTime.of(3001, 2, 15,23,0))
+            .startAt(LocalDateTime.of(3001, 2, 15, 23, 0))
             .event(E2)
             .build();
     P4 = performanceRepository.save(P4);
@@ -236,7 +240,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P5 =
         new Performance.Builder()
             .name("3B")
-            .startAt(LocalDateTime.of(3000, 3, 15,0,0))
+            .startAt(LocalDateTime.of(3000, 3, 15, 0, 0))
             .event(E2)
             .build();
     P5 = performanceRepository.save(P5);
@@ -244,7 +248,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P6 =
         new Performance.Builder()
             .name("1C")
-            .startAt(LocalDateTime.of(3000, 3, 15,22,29))
+            .startAt(LocalDateTime.of(3000, 3, 15, 22, 29))
             .event(E3)
             .build();
     P6 = performanceRepository.save(P6);
@@ -252,7 +256,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P7 =
         new Performance.Builder()
             .name("2C")
-            .startAt(LocalDateTime.of(3000, 2, 14,22,30))
+            .startAt(LocalDateTime.of(3000, 2, 14, 22, 30))
             .event(E3)
             .build();
     P7 = performanceRepository.save(P7);
@@ -260,7 +264,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P8 =
         new Performance.Builder()
             .name("3C")
-            .startAt(LocalDateTime.of(3000, 6, 15,22,31))
+            .startAt(LocalDateTime.of(3000, 6, 15, 22, 31))
             .event(E3)
             .build();
     P8 = performanceRepository.save(P8);
@@ -268,12 +272,10 @@ public class EventEndpointTest extends BaseIntegrationTest {
     P9 =
         new Performance.Builder()
             .name("4C")
-            .startAt(LocalDateTime.of(3000, 12, 15,23,59))
+            .startAt(LocalDateTime.of(3000, 12, 15, 23, 59))
             .event(E3)
             .build();
     P9 = performanceRepository.save(P9);
-
-
 
     PC1 = new PriceCategory.Builder()
         .name("PC1")
@@ -281,7 +283,6 @@ public class EventEndpointTest extends BaseIntegrationTest {
         .event(E1)
         .priceInCents(2000).build();
     PC1 = priceCategoryRepository.save(PC1);
-    
 
     PC2 = new PriceCategory.Builder()
         .name("PC2")
@@ -317,7 +318,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
         .event(E3)
         .priceInCents(7000).build();
     PC6 = priceCategoryRepository.save(PC6);
-    
+
     E1_SR = eventSearchResultMapper.eventToEventSearchResultDto(E1);
     E1_SR.setPriceRange("20 €");
     E2_SR = eventSearchResultMapper.eventToEventSearchResultDto(E2);
@@ -382,9 +383,10 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-    List<PerformanceSearchResultDto> retList = Arrays.asList(response.as(PerformanceSearchResultDto[].class));
+    List<PerformanceSearchResultDto> retList = Arrays
+        .asList(response.as(PerformanceSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(2));
+    Assert.assertThat(retList.size(), is(2));
     Assert.assertTrue(retList.contains(
         performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P1)
     ));
@@ -409,7 +411,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
 
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(0));
+    Assert.assertThat(retList.size(), is(0));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -427,10 +429,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(2));
+    Assert.assertThat(retList.size(), is(2));
     Assert.assertTrue(retList.contains(E2_SR));
     Assert.assertTrue(retList.contains(E3_SR));
 
@@ -450,10 +451,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E1_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -472,10 +472,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E2_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -494,10 +493,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(2));
+    Assert.assertThat(retList.size(), is(2));
     Assert.assertTrue(retList.contains(E2_SR));
     Assert.assertTrue(retList.contains(E3_SR));
 
@@ -517,10 +515,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(0));
+    Assert.assertThat(retList.size(), is(0));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -538,10 +535,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E1_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -560,10 +556,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(2));
+    Assert.assertThat(retList.size(), is(2));
     Assert.assertTrue(retList.contains(E2_SR));
     Assert.assertTrue(retList.contains(E3_SR));
 
@@ -583,10 +578,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -605,10 +599,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(0));
+    Assert.assertThat(retList.size(), is(0));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -626,10 +619,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(2));
+    Assert.assertThat(retList.size(), is(2));
 
     EventSearchResultDto E1sR = E1_SR;
     EventSearchResultDto E2sR = E2_SR;
@@ -637,20 +629,22 @@ public class EventEndpointTest extends BaseIntegrationTest {
     EventSearchResultDto retE1sR = retList.get(retList.indexOf(E1sR));
     EventSearchResultDto retE2sR = retList.get(retList.indexOf(E2sR));
 
-    Assert.assertThat(retE1sR,equalTo(E1sR));
-    Assert.assertThat(retE2sR,equalTo(E2sR));
-    
-    Assert.assertThat(retE1sR.getPerformances().size(),is(1));
-    Assert.assertThat(retE2sR.getPerformances().size(),is(1));
-    
+    Assert.assertThat(retE1sR, equalTo(E1sR));
+    Assert.assertThat(retE2sR, equalTo(E2sR));
+
+    Assert.assertThat(retE1sR.getPerformances().size(), is(1));
+    Assert.assertThat(retE2sR.getPerformances().size(), is(1));
+
     PerformanceSearchResultDto retP1sR = retE1sR.getPerformances().get(0);
     PerformanceSearchResultDto retP2sR = retE2sR.getPerformances().get(0);
-    
-    PerformanceSearchResultDto P1sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P1);
-    PerformanceSearchResultDto P5sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P5);
 
-    Assert.assertThat(retP1sR,equalTo(P1sR));
-    Assert.assertThat(retP2sR,equalTo(P5sR));
+    PerformanceSearchResultDto P1sR = performanceSearchResultMapper
+        .performanceToPerformanceSearchResultDto(P1);
+    PerformanceSearchResultDto P5sR = performanceSearchResultMapper
+        .performanceToPerformanceSearchResultDto(P5);
+
+    Assert.assertThat(retP1sR, equalTo(P1sR));
+    Assert.assertThat(retP2sR, equalTo(P5sR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -668,25 +662,25 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(2));
+    Assert.assertThat(retList.size(), is(2));
 
     EventSearchResultDto retE2sR = retList.get(retList.indexOf(E2_SR));
     EventSearchResultDto retE3sR = retList.get(retList.indexOf(E3_SR));
 
-    Assert.assertThat(retE3sR,equalTo(E3_SR));
-    Assert.assertThat(retE2sR,equalTo(E2_SR));
+    Assert.assertThat(retE3sR, equalTo(E3_SR));
+    Assert.assertThat(retE2sR, equalTo(E2_SR));
 
-    Assert.assertThat(retE3sR.getPerformances().size(),is(2));
-    Assert.assertThat(retE2sR.getPerformances().size(),is(1));
+    Assert.assertThat(retE3sR.getPerformances().size(), is(2));
+    Assert.assertThat(retE2sR.getPerformances().size(), is(1));
 
-
-
-    PerformanceSearchResultDto P7sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P7);
-    PerformanceSearchResultDto P8sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P8);
-    PerformanceSearchResultDto P4sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P4);
+    PerformanceSearchResultDto P7sR = performanceSearchResultMapper
+        .performanceToPerformanceSearchResultDto(P7);
+    PerformanceSearchResultDto P8sR = performanceSearchResultMapper
+        .performanceToPerformanceSearchResultDto(P8);
+    PerformanceSearchResultDto P4sR = performanceSearchResultMapper
+        .performanceToPerformanceSearchResultDto(P4);
 
     PerformanceSearchResultDto retP7sR = retE3sR.getPerformances().get(
         retE3sR.getPerformances().indexOf(P7sR));
@@ -694,12 +688,11 @@ public class EventEndpointTest extends BaseIntegrationTest {
     PerformanceSearchResultDto retP8sR = retE3sR.getPerformances().get(
         retE3sR.getPerformances().indexOf(P8sR));
 
-
     PerformanceSearchResultDto retP4sR = retE2sR.getPerformances().get(0);
 
-    Assert.assertThat(retP7sR,equalTo(P7sR));
-    Assert.assertThat(retP8sR,equalTo(P8sR));
-    Assert.assertThat(retP4sR,equalTo(P4sR));
+    Assert.assertThat(retP7sR, equalTo(P7sR));
+    Assert.assertThat(retP8sR, equalTo(P8sR));
+    Assert.assertThat(retP4sR, equalTo(P4sR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
@@ -717,20 +710,20 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
 
     EventSearchResultDto retE3sR = retList.get(0);
 
-    Assert.assertThat(retE3sR,equalTo(E3_SR));
-    Assert.assertThat(retE3sR.getPerformances().size(),is(1));
+    Assert.assertThat(retE3sR, equalTo(E3_SR));
+    Assert.assertThat(retE3sR.getPerformances().size(), is(1));
 
-    PerformanceSearchResultDto P9sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P9);
+    PerformanceSearchResultDto P9sR = performanceSearchResultMapper
+        .performanceToPerformanceSearchResultDto(P9);
     PerformanceSearchResultDto retP9sR = retE3sR.getPerformances().get(0);
 
-    Assert.assertThat(retP9sR,equalTo(P9sR));
+    Assert.assertThat(retP9sR, equalTo(P9sR));
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
 
@@ -747,20 +740,20 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
 
     EventSearchResultDto retE2sR = retList.get(0);
 
-    Assert.assertThat(retE2sR,equalTo(E2_SR));
-    Assert.assertThat(retE2sR.getPerformances().size(),is(1));
+    Assert.assertThat(retE2sR, equalTo(E2_SR));
+    Assert.assertThat(retE2sR.getPerformances().size(), is(1));
 
-    PerformanceSearchResultDto P3sR = performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P3);
+    PerformanceSearchResultDto P3sR = performanceSearchResultMapper
+        .performanceToPerformanceSearchResultDto(P3);
     PerformanceSearchResultDto retP3sR = retE2sR.getPerformances().get(0);
 
-    Assert.assertThat(retP3sR,equalTo(P3sR));
+    Assert.assertThat(retP3sR, equalTo(P3sR));
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
   }
 
@@ -811,10 +804,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -833,10 +825,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -855,10 +846,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -877,10 +867,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -899,10 +888,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -921,10 +909,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E3_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -943,10 +930,9 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .extract()
             .response();
 
-
     List<EventSearchResultDto> retList = Arrays.asList(response.as(EventSearchResultDto[].class));
 
-    Assert.assertThat(retList.size(),is(1));
+    Assert.assertThat(retList.size(), is(1));
     Assert.assertTrue(retList.contains(E2_SR));
 
     Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));

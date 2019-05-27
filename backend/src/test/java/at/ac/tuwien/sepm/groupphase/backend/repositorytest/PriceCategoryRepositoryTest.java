@@ -17,7 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class PriceCategoryRepositoryTest {
 
-  @Autowired PriceCategoryRepository priceCategoryRepository;
+  @Autowired
+  PriceCategoryRepository priceCategoryRepository;
   private PriceCategory PRICE_CATEGORY_1 =
       new PriceCategory.Builder()
           .name("Kategorie 1")
@@ -38,7 +39,7 @@ public class PriceCategoryRepositoryTest {
 
   @Test(expected = NotFoundException.class)
   public void
-      givenPriceCategorySaved_whenFindUnknownPriceCategoryById_thenThrowNotFoundException() {
+  givenPriceCategorySaved_whenFindUnknownPriceCategoryById_thenThrowNotFoundException() {
     priceCategoryRepository.findById(-1L).orElseThrow(NotFoundException::new);
   }
 }

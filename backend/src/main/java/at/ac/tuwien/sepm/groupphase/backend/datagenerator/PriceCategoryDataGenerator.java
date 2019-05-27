@@ -49,7 +49,7 @@ public class PriceCategoryDataGenerator implements DataGenerator<PriceCategory> 
       generatedPriceCategories.clear();
 
       int pcCount = FAKER.random().nextInt(
-          MIN_PRICE_CATEGORIES_PER_EVENT,MAX_PRICE_CATEGORIES_PER_EVENT);
+          MIN_PRICE_CATEGORIES_PER_EVENT, MAX_PRICE_CATEGORIES_PER_EVENT);
 
       for (int i = 0; i < pcCount; i++) {
         Color color =

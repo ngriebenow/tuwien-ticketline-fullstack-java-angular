@@ -77,12 +77,17 @@ public class InvoiceServiceTest {
   private TicketRequestDto ticketRequestDto;
   private ClientDto clientDtoOne;
 
-  @Autowired private InvoiceService invoiceService;
+  @Autowired
+  private InvoiceService invoiceService;
 
-  @MockBean private InvoiceRepository mockInvoiceRepository;
-  @MockBean private PerformanceRepository mockPerformanceRepository;
-  @MockBean private ClientRepository mockClientRepository;
-  @MockBean private DefinedUnitRepository mockDefinedUnitRepository;
+  @MockBean
+  private InvoiceRepository mockInvoiceRepository;
+  @MockBean
+  private PerformanceRepository mockPerformanceRepository;
+  @MockBean
+  private ClientRepository mockClientRepository;
+  @MockBean
+  private DefinedUnitRepository mockDefinedUnitRepository;
 
   @Before
   public void setUp() {

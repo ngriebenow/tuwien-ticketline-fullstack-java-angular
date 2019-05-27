@@ -2,16 +2,11 @@ package at.ac.tuwien.sepm.groupphase.backend.servicetest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Picture;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.news.NewsMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.picture.PictureMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
-import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PictureRepository;
-import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import at.ac.tuwien.sepm.groupphase.backend.service.PictureService;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,8 +25,10 @@ public class PictureServiceTest {
   @MockBean
   PictureRepository pictureRepository;
 
-  @Autowired private PictureService pictureService;
-  @Autowired private PictureMapper pictureMapper;
+  @Autowired
+  private PictureService pictureService;
+  @Autowired
+  private PictureMapper pictureMapper;
 
   private Picture P1 = new Picture.Builder().
       id(1L).build();
@@ -45,7 +42,8 @@ public class PictureServiceTest {
   }
 
   @Test(expected = NotFoundException.class)
-  public void givenNoPictures_whenFindPicturesById_thenThrowNotFoundException() throws NotFoundException {
+  public void givenNoPictures_whenFindPicturesById_thenThrowNotFoundException()
+      throws NotFoundException {
     BDDMockito.given(pictureRepository.findById(-1L)).willReturn(Optional.empty());
     pictureService.findOne(-1L);
   }

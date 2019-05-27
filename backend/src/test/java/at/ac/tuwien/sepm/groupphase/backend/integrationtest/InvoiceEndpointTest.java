@@ -59,17 +59,28 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   private List<TicketRequestDto> ticketRequestDtoListOne;
   private List<TicketRequestDto> ticketRequestDtoListTwo;
 
-  @Autowired private ClientRepository clientRepository;
-  @Autowired private LocationRepository locationRepository;
-  @Autowired private HallRepository hallRepository;
-  @Autowired private ArtistRepository artistRepository;
-  @Autowired private EventRepository eventRepository;
-  @Autowired private UnitRepository unitRepository;
-  @Autowired private PerformanceRepository performanceRepository;
-  @Autowired private PriceCategoryRepository priceCategoryRepository;
-  @Autowired private DefinedUnitRepository definedUnitRepository;
-  @Autowired private TicketRepository ticketRepository;
-  @Autowired private InvoiceRepository invoiceRepository;
+  @Autowired
+  private ClientRepository clientRepository;
+  @Autowired
+  private LocationRepository locationRepository;
+  @Autowired
+  private HallRepository hallRepository;
+  @Autowired
+  private ArtistRepository artistRepository;
+  @Autowired
+  private EventRepository eventRepository;
+  @Autowired
+  private UnitRepository unitRepository;
+  @Autowired
+  private PerformanceRepository performanceRepository;
+  @Autowired
+  private PriceCategoryRepository priceCategoryRepository;
+  @Autowired
+  private DefinedUnitRepository definedUnitRepository;
+  @Autowired
+  private TicketRepository ticketRepository;
+  @Autowired
+  private InvoiceRepository invoiceRepository;
 
   private Client clientOne;
   private Client clientTwo;

@@ -231,7 +231,7 @@ public class SimpleInvoiceService implements InvoiceService {
    * @param performance the performance to create tickets for.
    * @param invoice the invoice created for these tickets.
    * @param ticketRequestDtos the list of definedUnitIds with the amount of tickets to create for
-   *        each.
+   *         each.
    * @return a list of the generated tickets.
    */
   private void createTickets(

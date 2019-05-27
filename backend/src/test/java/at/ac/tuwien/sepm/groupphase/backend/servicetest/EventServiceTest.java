@@ -37,13 +37,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles(profiles = "unit-test")
 public class EventServiceTest {
 
-  @MockBean private EventRepository eventRepository;
-  @MockBean private PerformanceRepository performanceRepository;
-  @MockBean private PriceCategoryRepository priceCategoryRepository;
+  @MockBean
+  private EventRepository eventRepository;
+  @MockBean
+  private PerformanceRepository performanceRepository;
+  @MockBean
+  private PriceCategoryRepository priceCategoryRepository;
 
-  @Autowired private EventService eventService;
+  @Autowired
+  private EventService eventService;
 
-  @Autowired private EventMapper eventMapper;
+  @Autowired
+  private EventMapper eventMapper;
 
   private Event E1;
   private Artist A1;
@@ -115,7 +120,7 @@ public class EventServiceTest {
   }
 
 
-
   @Test
-  public void givenEventId_whenFindPerformancesByEventId_thenReturnPerformances() {}
+  public void givenEventId_whenFindPerformancesByEventId_thenReturnPerformances() {
+  }
 }

@@ -84,6 +84,11 @@ public class DefinedUnitDto {
     this.name = name;
   }
 
+  /**
+   * Builds DefinedUnitDto.
+   *
+   * @return the detined unit dto
+   */
   public DefinedUnitDto build() {
     DefinedUnitDto dto = new DefinedUnitDto();
     dto.setId(id);
@@ -105,13 +110,13 @@ public class DefinedUnitDto {
       return false;
     }
     DefinedUnitDto that = (DefinedUnitDto) o;
-    return free == that.free &&
-        capacity == that.capacity &&
-        Objects.equals(name, that.name) &&
-        Objects.equals(id, that.id) &&
-        lowerBoundary.equals(that.lowerBoundary) &&
-        upperBoundary.equals(that.upperBoundary) &&
-        Objects.equals(priceCategoryId, that.priceCategoryId);
+    return free == that.free
+        && capacity == that.capacity
+        && Objects.equals(name, that.name)
+        && Objects.equals(id, that.id)
+        && lowerBoundary.equals(that.lowerBoundary)
+        && upperBoundary.equals(that.upperBoundary)
+        && Objects.equals(priceCategoryId, that.priceCategoryId);
   }
 
   @Override

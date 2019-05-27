@@ -16,7 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class InvoiceRepositoryTest {
 
-  @Autowired InvoiceRepository invoiceRepository;
+  @Autowired
+  InvoiceRepository invoiceRepository;
   private Invoice INVOICE_1 =
       new Invoice.Builder()
           .isCancelled(false)

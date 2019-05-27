@@ -56,7 +56,7 @@ public class PointDto {
       return false;
     }
     PointDto pointDto = (PointDto) o;
-    return coordinateX == pointDto.coordinateX &&
-        coordinateY == pointDto.coordinateY;
+    return coordinateX == pointDto.coordinateX
+        && coordinateY == pointDto.coordinateY;
   }
 }

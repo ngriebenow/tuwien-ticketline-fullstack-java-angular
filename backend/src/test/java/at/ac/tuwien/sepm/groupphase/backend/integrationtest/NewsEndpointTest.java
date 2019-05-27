@@ -23,20 +23,22 @@ public class NewsEndpointTest extends BaseIntegrationTest {
   private static final String NEWS_ENDPOINT = "/news";
   private static final String SPECIFIC_NEWS_PATH = "/{id}";
 
-  @Autowired private NewsRepository newsRepository;
-  @Autowired private NewsReadRepository newsReadRepository;
+  @Autowired
+  private NewsRepository newsRepository;
+  @Autowired
+  private NewsReadRepository newsReadRepository;
 
   private static News N1;
 
   @Before
   public void initialize() {
     N1 = new News.Builder()
-            .id(0L)
-            .publishedAt(LocalDateTime.now())
-            .title("Test")
-            .summary("Just one Test")
-            .text("abcdefghijk test news test news news")
-            .build();
+        .id(0L)
+        .publishedAt(LocalDateTime.now())
+        .title("Test")
+        .summary("Just one Test")
+        .text("abcdefghijk test news test news news")
+        .build();
 
     N1 = newsRepository.save(N1);
   }

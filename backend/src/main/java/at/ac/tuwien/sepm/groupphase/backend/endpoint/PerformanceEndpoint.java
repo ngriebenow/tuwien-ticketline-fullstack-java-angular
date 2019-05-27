@@ -27,7 +27,7 @@ public class PerformanceEndpoint {
   }
 
   /**
-   * Gets all defined units by the performance id
+   * Gets all defined units by the performance id.
    *
    * @param id of the performance
    * @return list of all defined-unit-dtos from this performance

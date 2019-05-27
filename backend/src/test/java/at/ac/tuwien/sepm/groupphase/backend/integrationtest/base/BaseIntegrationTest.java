@@ -32,12 +32,17 @@ public abstract class BaseIntegrationTest {
   protected String validUserTokenWithPrefix;
   protected String validAdminTokenWithPrefix;
 
-  @LocalServerPort private int port;
-  @Autowired private SimpleHeaderTokenAuthenticationService simpleHeaderTokenAuthenticationService;
-  @Autowired private JacksonConfiguration jacksonConfiguration;
+  @LocalServerPort
+  private int port;
+  @Autowired
+  private SimpleHeaderTokenAuthenticationService simpleHeaderTokenAuthenticationService;
+  @Autowired
+  private JacksonConfiguration jacksonConfiguration;
 
-  @Autowired private AccountService accountService;
-  @Autowired private UserRepository userRepository;
+  @Autowired
+  private AccountService accountService;
+  @Autowired
+  private UserRepository userRepository;
 
   @Before
   public void beforeBase() {
@@ -72,17 +77,17 @@ public abstract class BaseIntegrationTest {
                         (aClass, s) -> jacksonConfiguration.jackson2ObjectMapperBuilder().build()));
     validUserTokenWithPrefix =
         Strings.join(
-                AuthenticationConstants.TOKEN_PREFIX,
-                simpleHeaderTokenAuthenticationService
-                    .authenticate(USER_USERNAME, USER_PASSWORD)
-                    .getCurrentToken())
+            AuthenticationConstants.TOKEN_PREFIX,
+            simpleHeaderTokenAuthenticationService
+                .authenticate(USER_USERNAME, USER_PASSWORD)
+                .getCurrentToken())
             .with(" ");
     validAdminTokenWithPrefix =
         Strings.join(
-                AuthenticationConstants.TOKEN_PREFIX,
-                simpleHeaderTokenAuthenticationService
-                    .authenticate(ADMIN_USERNAME, ADMIN_PASSWORD)
-                    .getCurrentToken())
+            AuthenticationConstants.TOKEN_PREFIX,
+            simpleHeaderTokenAuthenticationService
+                .authenticate(ADMIN_USERNAME, ADMIN_PASSWORD)
+                .getCurrentToken())
             .with(" ");
   }
 }

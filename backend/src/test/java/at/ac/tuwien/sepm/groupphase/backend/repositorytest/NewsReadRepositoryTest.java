@@ -1,5 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.repositorytest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.NewsRead;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
@@ -16,15 +18,17 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class NewsReadRepositoryTest {
 
-  @Autowired UserRepository userRepository;
-  @Autowired NewsReadRepository newsReadRepository;
-  @Autowired NewsRepository newsRepository;
+  @Autowired
+  UserRepository userRepository;
+  @Autowired
+  NewsReadRepository newsReadRepository;
+  @Autowired
+  NewsRepository newsRepository;
 
   private News N1 = new News.Builder().
       id(0L).
@@ -63,7 +67,6 @@ public class NewsReadRepositoryTest {
         news(N1).
         user(U1).
         build();
-
 
     NR1 = newsReadRepository.save(NR1);
 

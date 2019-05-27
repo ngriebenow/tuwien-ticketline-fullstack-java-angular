@@ -20,7 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class EventRepositoryTest {
 
-  @Autowired EventRepository eventRepository;
+  @Autowired
+  EventRepository eventRepository;
 
   private Event E1 =
       new Event.Builder()

@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.groupphase.backend.integrationtest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PictureDto;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Picture;
 import at.ac.tuwien.sepm.groupphase.backend.integrationtest.base.BaseIntegrationTest;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PictureRepository;
@@ -12,14 +11,12 @@ import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.MultiPartSpecification;
-import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 public class PictureEndpointTest extends BaseIntegrationTest {
 
@@ -27,7 +24,8 @@ public class PictureEndpointTest extends BaseIntegrationTest {
   private static final String NEWS_PICTURES_ENDPOINT = "/newspictures";
   private static final String SPECIFIC_PICTURE_PATH = "/{id}";
 
-  @Autowired private PictureRepository pictureRepository;
+  @Autowired
+  private PictureRepository pictureRepository;
 
   private static Picture P1;
 

@@ -17,7 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class UnitRepositoryTest {
 
-  @Autowired UnitRepository unitRepository;
+  @Autowired
+  UnitRepository unitRepository;
   private Unit UNIT_1 =
       new Unit.Builder()
           .name("Unit 1")

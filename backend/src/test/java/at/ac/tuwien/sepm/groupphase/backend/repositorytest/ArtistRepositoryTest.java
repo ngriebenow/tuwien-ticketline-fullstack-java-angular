@@ -18,7 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class ArtistRepositoryTest {
 
-  @Autowired ArtistRepository artistRepository;
+  @Autowired
+  ArtistRepository artistRepository;
 
   private Artist A1 = new Artist.Builder().id(0L).surname("A1 surname").build();
 

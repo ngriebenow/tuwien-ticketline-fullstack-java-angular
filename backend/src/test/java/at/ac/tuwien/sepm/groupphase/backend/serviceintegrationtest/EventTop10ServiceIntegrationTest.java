@@ -1,8 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.serviceintegrationtest;
 
-import static org.hamcrest.core.Is.is;
-
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.core.Is.is;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventRankingDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
@@ -50,19 +49,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class EventTop10ServiceIntegrationTest {
 
 
-  @Autowired private ClientRepository clientRepository;
-  @Autowired private LocationRepository locationRepository;
-  @Autowired private HallRepository hallRepository;
-  @Autowired private ArtistRepository artistRepository;
-  @Autowired private EventRepository eventRepository;
-  @Autowired private UnitRepository unitRepository;
-  @Autowired private PerformanceRepository performanceRepository;
-  @Autowired private PriceCategoryRepository priceCategoryRepository;
-  @Autowired private DefinedUnitRepository definedUnitRepository;
-  @Autowired private TicketRepository ticketRepository;
-  @Autowired private InvoiceRepository invoiceRepository;
+  @Autowired
+  private ClientRepository clientRepository;
+  @Autowired
+  private LocationRepository locationRepository;
+  @Autowired
+  private HallRepository hallRepository;
+  @Autowired
+  private ArtistRepository artistRepository;
+  @Autowired
+  private EventRepository eventRepository;
+  @Autowired
+  private UnitRepository unitRepository;
+  @Autowired
+  private PerformanceRepository performanceRepository;
+  @Autowired
+  private PriceCategoryRepository priceCategoryRepository;
+  @Autowired
+  private DefinedUnitRepository definedUnitRepository;
+  @Autowired
+  private TicketRepository ticketRepository;
+  @Autowired
+  private InvoiceRepository invoiceRepository;
 
-  @Autowired private EventService eventService;
+  @Autowired
+  private EventService eventService;
 
   private Client clientOne;
   private Client clientTwo;
@@ -141,7 +152,8 @@ public class EventTop10ServiceIntegrationTest {
         new Event.Builder()
             .name("Nicos Zugtreff")
             .duration(Duration.ofMinutes(90L))
-            .content("Willst du die neuen Zuggarnituren der ÖBB kennenlernen? Sichere dir exklusive VIP-Tickets!")
+            .content(
+                "Willst du die neuen Zuggarnituren der ÖBB kennenlernen? Sichere dir exklusive VIP-Tickets!")
             .category(EventCategory.OTHER)
             .hall(hall)
             .artists(Collections.singletonList(artist))
@@ -253,7 +265,7 @@ public class EventTop10ServiceIntegrationTest {
             .unit(unit2)
             .capacityFree(unit2.getCapacity())
             .build();
-    definedUnit4 =definedUnitRepository.save(definedUnit4);
+    definedUnit4 = definedUnitRepository.save(definedUnit4);
 
     definedUnit5 =
         new DefinedUnit.Builder()
@@ -262,15 +274,14 @@ public class EventTop10ServiceIntegrationTest {
             .unit(unit2)
             .capacityFree(unit2.getCapacity())
             .build();
-    definedUnit5 =definedUnitRepository.save(definedUnit5);
+    definedUnit5 = definedUnitRepository.save(definedUnit5);
 
     invoice1 =
         new Invoice.Builder()
-        .reservationCode("NIC")
-        .client(clientOne)
-        .build();
+            .reservationCode("NIC")
+            .client(clientOne)
+            .build();
     invoiceRepository.save(invoice1);
-    
 
     definedUnit1 = definedUnitRepository.findAll().get(0);
 
@@ -321,22 +332,22 @@ public class EventTop10ServiceIntegrationTest {
 
   @Test
   public void givenEvents_whenGetBestEvents_returnBestEvents() {
-    
-    List<EventRankingDto> eventRankingDtoList = 
-        eventService.getBest(10,new EventFilterDto());
 
-    Assert.assertThat(eventRankingDtoList.size(),is(equalTo(2)));
+    List<EventRankingDto> eventRankingDtoList =
+        eventService.getBest(10, new EventFilterDto());
+
+    Assert.assertThat(eventRankingDtoList.size(), is(equalTo(2)));
 
     EventRankingDto first = eventRankingDtoList.get(0);
-    Assert.assertThat(first.getEventId(),is(equalTo(event1.getId())));
-    Assert.assertThat(first.getEventName(),is(equalTo(event1.getName())));
-    Assert.assertThat(first.getSoldTickets(),is(equalTo(2L)));
+    Assert.assertThat(first.getEventId(), is(equalTo(event1.getId())));
+    Assert.assertThat(first.getEventName(), is(equalTo(event1.getName())));
+    Assert.assertThat(first.getSoldTickets(), is(equalTo(2L)));
 
     EventRankingDto second = eventRankingDtoList.get(1);
-    Assert.assertThat(second.getEventId(),is(equalTo(event2.getId())));
-    Assert.assertThat(second.getEventName(),is(equalTo(event2.getName())));
-    Assert.assertThat(second.getSoldTickets(),is(equalTo(1L)));
-    
+    Assert.assertThat(second.getEventId(), is(equalTo(event2.getId())));
+    Assert.assertThat(second.getEventName(), is(equalTo(event2.getName())));
+    Assert.assertThat(second.getSoldTickets(), is(equalTo(1L)));
+
   }
 
 }

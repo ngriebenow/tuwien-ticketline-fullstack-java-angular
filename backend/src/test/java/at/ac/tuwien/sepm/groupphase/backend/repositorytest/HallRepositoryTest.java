@@ -18,7 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class HallRepositoryTest {
 
-  @Autowired HallRepository hallRepository;
+  @Autowired
+  HallRepository hallRepository;
 
   private Hall H1 = new Hall.Builder().name("Hall 1").build();
 

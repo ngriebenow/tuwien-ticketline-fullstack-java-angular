@@ -14,7 +14,6 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Unit;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.definedunit.DefinedUnitMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.definedunit.DefinedUnitMapperImpl;
 import at.ac.tuwien.sepm.groupphase.backend.integrationtest.base.BaseIntegrationTest;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
@@ -42,19 +41,29 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 public class PerformanceEndpointTest extends BaseIntegrationTest {
+
   private static final String PERFORMANCE_ENDPOINT =
       "/performances/hall-viewing/defined-units/{id}";
 
-  @Autowired private DefinedUnitRepository definedUnitRepository;
-  @Autowired private PerformanceRepository performanceRepository;
-  @Autowired private EventRepository eventRepository;
-  @Autowired private ArtistRepository artistRepository;
-  @Autowired private LocationRepository locationRepository;
-  @Autowired private PriceCategoryRepository priceCategoryRepository;
-  @Autowired private HallRepository hallRepository;
-  @Autowired private UnitRepository unitRepository;
+  @Autowired
+  private DefinedUnitRepository definedUnitRepository;
+  @Autowired
+  private PerformanceRepository performanceRepository;
+  @Autowired
+  private EventRepository eventRepository;
+  @Autowired
+  private ArtistRepository artistRepository;
+  @Autowired
+  private LocationRepository locationRepository;
+  @Autowired
+  private PriceCategoryRepository priceCategoryRepository;
+  @Autowired
+  private HallRepository hallRepository;
+  @Autowired
+  private UnitRepository unitRepository;
 
-  @Autowired private DefinedUnitMapperImpl definedUnitMapper;
+  @Autowired
+  private DefinedUnitMapperImpl definedUnitMapper;
 
   private static Event E1;
   private static Event E2;
@@ -209,7 +218,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P1 =
         new Performance.Builder()
             .name("1A")
-            .startAt(LocalDateTime.of(3000, 1, 15,0,0))
+            .startAt(LocalDateTime.of(3000, 1, 15, 0, 0))
             .id(0L)
             .event(E1)
             .build();
@@ -218,7 +227,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P2 =
         new Performance.Builder()
             .name("2A")
-            .startAt(LocalDateTime.of(3000, 1, 15,8,0))
+            .startAt(LocalDateTime.of(3000, 1, 15, 8, 0))
             .id(1L)
             .event(E1)
             .build();
@@ -227,7 +236,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P3 =
         new Performance.Builder()
             .name("1B")
-            .startAt(LocalDateTime.of(3000, 2, 15,16,0))
+            .startAt(LocalDateTime.of(3000, 2, 15, 16, 0))
             .event(E2)
             .build();
     P3 = performanceRepository.save(P3);
@@ -235,7 +244,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P4 =
         new Performance.Builder()
             .name("2B")
-            .startAt(LocalDateTime.of(3001, 2, 15,23,0))
+            .startAt(LocalDateTime.of(3001, 2, 15, 23, 0))
             .event(E2)
             .build();
     P4 = performanceRepository.save(P4);
@@ -243,7 +252,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P5 =
         new Performance.Builder()
             .name("3B")
-            .startAt(LocalDateTime.of(3000, 3, 15,0,0))
+            .startAt(LocalDateTime.of(3000, 3, 15, 0, 0))
             .event(E2)
             .build();
     P5 = performanceRepository.save(P5);
@@ -251,7 +260,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P6 =
         new Performance.Builder()
             .name("1C")
-            .startAt(LocalDateTime.of(3000, 3, 15,22,29))
+            .startAt(LocalDateTime.of(3000, 3, 15, 22, 29))
             .event(E3)
             .build();
     P6 = performanceRepository.save(P6);
@@ -259,7 +268,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P7 =
         new Performance.Builder()
             .name("2C")
-            .startAt(LocalDateTime.of(3000, 2, 14,22,30))
+            .startAt(LocalDateTime.of(3000, 2, 14, 22, 30))
             .event(E3)
             .build();
     P7 = performanceRepository.save(P7);
@@ -267,7 +276,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P8 =
         new Performance.Builder()
             .name("3C")
-            .startAt(LocalDateTime.of(3000, 6, 15,22,31))
+            .startAt(LocalDateTime.of(3000, 6, 15, 22, 31))
             .event(E3)
             .build();
     P8 = performanceRepository.save(P8);
@@ -275,12 +284,10 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P9 =
         new Performance.Builder()
             .name("4C")
-            .startAt(LocalDateTime.of(3000, 12, 15,23,59))
+            .startAt(LocalDateTime.of(3000, 12, 15, 23, 59))
             .event(E3)
             .build();
     P9 = performanceRepository.save(P9);
-
-
 
     PC1 = new PriceCategory.Builder()
         .name("PC1")
@@ -288,7 +295,6 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
         .event(E1)
         .priceInCents(2000).build();
     PC1 = priceCategoryRepository.save(PC1);
-
 
     PC2 = new PriceCategory.Builder()
         .name("PC2")
@@ -326,48 +332,48 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     PC6 = priceCategoryRepository.save(PC6);
 
     U1 = new Unit.Builder()
-        .lowerBoundary(new Point(1,1))
-        .upperBoundary(new Point(1,1))
+        .lowerBoundary(new Point(1, 1))
+        .upperBoundary(new Point(1, 1))
         .capacity(1)
         .name("Unit1")
         .hall(H1).build();
     U1 = unitRepository.save(U1);
 
     U2 = new Unit.Builder()
-        .lowerBoundary(new Point(2,1))
-        .upperBoundary(new Point(2,1))
+        .lowerBoundary(new Point(2, 1))
+        .upperBoundary(new Point(2, 1))
         .capacity(1)
         .name("Unit2")
         .hall(H1).build();
     U2 = unitRepository.save(U2);
 
     U3 = new Unit.Builder()
-        .lowerBoundary(new Point(1,2))
-        .upperBoundary(new Point(1,2))
+        .lowerBoundary(new Point(1, 2))
+        .upperBoundary(new Point(1, 2))
         .capacity(1)
         .name("Unit3")
         .hall(H1).build();
     U3 = unitRepository.save(U3);
 
     U4 = new Unit.Builder()
-        .lowerBoundary(new Point(2,2))
-        .upperBoundary(new Point(2,2))
+        .lowerBoundary(new Point(2, 2))
+        .upperBoundary(new Point(2, 2))
         .capacity(1)
         .name("Unit4")
         .hall(H1).build();
     U4 = unitRepository.save(U4);
 
     U5 = new Unit.Builder()
-        .lowerBoundary(new Point(1,1))
-        .upperBoundary(new Point(1,1))
+        .lowerBoundary(new Point(1, 1))
+        .upperBoundary(new Point(1, 1))
         .capacity(1)
         .name("Unit1")
         .hall(H2).build();
     U5 = unitRepository.save(U5);
 
     U6 = new Unit.Builder()
-        .lowerBoundary(new Point(2,1))
-        .upperBoundary(new Point(2,1))
+        .lowerBoundary(new Point(2, 1))
+        .upperBoundary(new Point(2, 1))
         .capacity(1)
         .name("Unit2")
         .hall(H2).build();
@@ -457,7 +463,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
 
     List<DefinedUnitDto> retList = Arrays.asList(response.as(DefinedUnitDto[].class));
 
-    Assert.assertThat(retList.size(),is(4));
+    Assert.assertThat(retList.size(), is(4));
     Assert.assertTrue(retList.contains(definedUnitMapper.definedUnitToDto(DU1)));
     Assert.assertTrue(retList.contains(definedUnitMapper.definedUnitToDto(DU2)));
     Assert.assertTrue(retList.contains(definedUnitMapper.definedUnitToDto(DU3)));

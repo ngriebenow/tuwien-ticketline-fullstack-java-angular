@@ -16,7 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class DefinedUnitRepositoryTest {
 
-  @Autowired DefinedUnitRepository definedUnitRepository;
+  @Autowired
+  DefinedUnitRepository definedUnitRepository;
   private DefinedUnit DEFINED_UNIT_1 = new DefinedUnit.Builder().capacityFree(24).build();
 
   @Before

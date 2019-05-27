@@ -11,7 +11,6 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +25,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles(profiles = "integration-test")
 public class NewsServiceIntegrationTest {
 
-  @Autowired private NewsService newsService;
-  @Autowired private UserRepository userRepository;
+  @Autowired
+  private NewsService newsService;
+  @Autowired
+  private UserRepository userRepository;
 
   private User U1;
   private User U2;
@@ -60,7 +61,7 @@ public class NewsServiceIntegrationTest {
   @Before
   public void initialization() {
 
-    pictureIds.add(0,-1L);
+    pictureIds.add(0, -1L);
     unknownPictureIdNews = DetailedNewsDto.builder()
         .id(1L)
         .pictureIds(pictureIds)

@@ -19,7 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class NewsRepositoryTest {
 
-  @Autowired NewsRepository newsRepository;
+  @Autowired
+  NewsRepository newsRepository;
 
   private News N1 =
       new News.Builder()

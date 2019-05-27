@@ -25,10 +25,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ActiveProfiles(profiles = "integration-test")
 public class NewsAndPictureIntegrationTest {
 
-  @Autowired private NewsService newsService;
-  @Autowired private PictureService pictureService;
-  @Autowired private PictureRepository pictureRepository;
-  @Autowired private NewsMapper newsMapper;
+  @Autowired
+  private NewsService newsService;
+  @Autowired
+  private PictureService pictureService;
+  @Autowired
+  private PictureRepository pictureRepository;
+  @Autowired
+  private NewsMapper newsMapper;
 
   private DetailedNewsDto N1;
   private DetailedNewsDto N2;
@@ -39,8 +43,8 @@ public class NewsAndPictureIntegrationTest {
   @Before
   public void initialization() {
 
-    pictureIds1.add(0,4L);
-    pictureIds1.add(1,5L);
+    pictureIds1.add(0, 4L);
+    pictureIds1.add(1, 5L);
 
     N1 = DetailedNewsDto.builder()
         .id(1L)
@@ -87,7 +91,7 @@ public class NewsAndPictureIntegrationTest {
 
   @Test(expected = ValidationException.class)
   public void givenNoNews_whenSetNewsInPictures_thenThrowValidationException() {
-    pictureService.updateSetNews(N1,N1.getPictureIds());
+    pictureService.updateSetNews(N1, N1.getPictureIds());
   }
 
 

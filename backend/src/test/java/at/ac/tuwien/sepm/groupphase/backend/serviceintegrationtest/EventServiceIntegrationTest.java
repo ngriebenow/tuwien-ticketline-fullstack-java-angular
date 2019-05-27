@@ -44,18 +44,28 @@ import org.springframework.test.context.ActiveProfiles;
 public class EventServiceIntegrationTest {
 
 
-  @Autowired private EventService eventService;
+  @Autowired
+  private EventService eventService;
 
-  @Autowired private PerformanceRepository performanceRepository;
-  @Autowired private HallRepository hallRepository;
-  @Autowired private LocationRepository locationRepository;
-  @Autowired private ArtistRepository artistRepository;
-  @Autowired private EventRepository eventRepository;
-  @Autowired private PriceCategoryRepository priceCategoryRepository;
-  
-  @Autowired private EventMapper eventMapper;
-  @Autowired private EventSearchResultMapper eventSearchResultMapper;
-  @Autowired private PerformanceSearchResultMapper performanceSearchResultMapper;
+  @Autowired
+  private PerformanceRepository performanceRepository;
+  @Autowired
+  private HallRepository hallRepository;
+  @Autowired
+  private LocationRepository locationRepository;
+  @Autowired
+  private ArtistRepository artistRepository;
+  @Autowired
+  private EventRepository eventRepository;
+  @Autowired
+  private PriceCategoryRepository priceCategoryRepository;
+
+  @Autowired
+  private EventMapper eventMapper;
+  @Autowired
+  private EventSearchResultMapper eventSearchResultMapper;
+  @Autowired
+  private PerformanceSearchResultMapper performanceSearchResultMapper;
 
   private Event E1;
   private Event E2;
@@ -269,15 +279,12 @@ public class EventServiceIntegrationTest {
             .build();
     P9 = performanceRepository.save(P9);
 
-
-
     PC1 = new PriceCategory.Builder()
         .name("PC1")
         .color(Color.BLACK)
         .event(E1)
         .priceInCents(2000).build();
     PC1 = priceCategoryRepository.save(PC1);
-
 
     PC2 = new PriceCategory.Builder()
         .name("PC2")
@@ -314,7 +321,6 @@ public class EventServiceIntegrationTest {
         .priceInCents(7000).build();
     PC6 = priceCategoryRepository.save(PC6);
 
-
     E1_SR = eventSearchResultMapper.eventToEventSearchResultDto(E1);
     E1_SR.setPriceRange("20 €");
     E2_SR = eventSearchResultMapper.eventToEventSearchResultDto(E2);
@@ -350,8 +356,10 @@ public class EventServiceIntegrationTest {
     List<PerformanceSearchResultDto> retList =
         eventService.getPerformancesByEventId(E1.getId(), Pageable.unpaged());
 
-    Assert.assertTrue(retList.contains(performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P1)));
-    Assert.assertTrue(retList.contains(performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P2)));
+    Assert.assertTrue(retList
+        .contains(performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P1)));
+    Assert.assertTrue(retList
+        .contains(performanceSearchResultMapper.performanceToPerformanceSearchResultDto(P2)));
 
   }
 
@@ -359,7 +367,7 @@ public class EventServiceIntegrationTest {
   public void givenInvalidEventId_whenFindPerformancesByEventId_thenReturnNoPerformances() {
     List<PerformanceSearchResultDto> retList =
         eventService.getPerformancesByEventId(-1L, Pageable.unpaged());
-    Assert.assertThat(retList.size(),is(equalTo(0)));
+    Assert.assertThat(retList.size(), is(equalTo(0)));
   }
 
   @Test

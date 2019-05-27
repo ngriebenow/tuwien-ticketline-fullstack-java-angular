@@ -25,8 +25,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class PerformanceRepositoryTest {
 
-  @Autowired PerformanceRepository performanceRepository;
-  @Autowired EventRepository eventRepository;
+  @Autowired
+  PerformanceRepository performanceRepository;
+  @Autowired
+  EventRepository eventRepository;
 
   private Event E1 =
       new Event.Builder()

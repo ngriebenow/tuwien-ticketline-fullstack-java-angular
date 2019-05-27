@@ -18,7 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class LocationRepositoryTest {
 
-  @Autowired LocationRepository locationRepository;
+  @Autowired
+  LocationRepository locationRepository;
 
   private Location L1 =
       new Location.Builder()
