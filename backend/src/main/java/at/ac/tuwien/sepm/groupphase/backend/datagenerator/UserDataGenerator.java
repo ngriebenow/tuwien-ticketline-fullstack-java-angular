@@ -31,6 +31,7 @@ public class UserDataGenerator implements DataGenerator<User> {
     admin.setEnabled(true);
     admin.setFailedLoginCounter(0);
     admin.setPassword("password");
+    accountService.saveUser(admin);
 
     UserDto user = new UserDto();
     user.setUsername("user");
@@ -38,16 +39,14 @@ public class UserDataGenerator implements DataGenerator<User> {
     user.setEnabled(true);
     user.setFailedLoginCounter(0);
     user.setPassword("password");
+    accountService.saveUser(user);
 
     UserDto user2 = new UserDto();
-    user.setUsername("MR2");
-    user.setAdmin(false);
-    user.setEnabled(true);
-    user.setFailedLoginCounter(0);
-    user.setPassword("password");
-
-    accountService.saveUser(admin);
-    accountService.saveUser(user);
+    user2.setUsername("MR2");
+    user2.setAdmin(false);
+    user2.setEnabled(true);
+    user2.setFailedLoginCounter(0);
+    user2.setPassword("password");
     accountService.saveUser(user2);
   }
 
