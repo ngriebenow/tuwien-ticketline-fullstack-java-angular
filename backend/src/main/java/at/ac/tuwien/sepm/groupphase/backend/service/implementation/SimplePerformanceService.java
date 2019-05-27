@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DefinedUnitDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.DefinedUnit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.definedunit.DefinedUnitMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.definedunit.DefinedUnitMapperImpl;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.point.PointMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.DefinedUnitRepository;
@@ -23,9 +24,7 @@ public class SimplePerformanceService implements PerformanceService {
   @Autowired
   private DefinedUnitRepository definedUnitRepository;
   @Autowired
-  private DefinedUnitMapper definedUnitMapper;
-  @Autowired
-  private PointMapper pointMapper;
+  private DefinedUnitMapperImpl definedUnitMapper;
 
   @Transactional(readOnly = true)
   @Override
@@ -33,33 +32,18 @@ public class SimplePerformanceService implements PerformanceService {
       throws NotFoundException {
     LOGGER.info("getDefinedUnitsByPerformanceId " + performance.getId());
     List<DefinedUnitDto> definedUnitDtos = new ArrayList<>();
-    try {
 
       List<DefinedUnit> definedUnits =
           definedUnitRepository.findAllByPerformanceIsLike(performance);
+
+      if (definedUnits.size() == 0) {
+        throw new NotFoundException("Could not find defined units.");
+      }
+
       for (DefinedUnit definedUnit : definedUnits) {
-
         DefinedUnitDto definedUnitDto = definedUnitMapper.definedUnitToDto(definedUnit);
-        definedUnitDto.setLowerBoundary(
-            pointMapper.pointToPointDto(definedUnit.getUnit().getLowerBoundary()));
-
-        definedUnitDto.setUpperBoundary(
-            pointMapper.pointToPointDto(definedUnit.getUnit().getUpperBoundary()));
-
-        definedUnitDto.setCapacity(definedUnit.getUnit().getCapacity());
-
-        definedUnitDto.setName(definedUnit.getUnit().getName());
-
-        // TODO: refactor so that free and capacityFree is free
-        definedUnitDto.setFree(definedUnit.getCapacityFree());
-
-        definedUnitDto.setPriceCategoryId(definedUnit.getPriceCategory().getId());
-
         definedUnitDtos.add(definedUnitDto);
       }
-    } catch (NotFoundException e) {
-      LOGGER.error("Could not get defined units " + e.getMessage());
-    }
     return definedUnitDtos;
   }
 }

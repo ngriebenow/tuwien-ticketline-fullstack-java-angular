@@ -26,7 +26,12 @@ public class PerformanceEndpoint {
     this.performanceService = performanceService;
   }
 
-  /** Javadoc. */
+  /**
+   * Gets all defined units by the performance id
+   *
+   * @param id of the performance
+   * @return list of all defined-unit-dtos from this performance
+   */
   @RequestMapping(value = "/hall-viewing/defined-units/{id}", method = RequestMethod.GET)
   @ApiOperation(
       value = "Get defined units by performance id",

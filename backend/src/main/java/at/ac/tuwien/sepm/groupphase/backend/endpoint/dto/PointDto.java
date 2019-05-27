@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.Objects;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -45,5 +46,18 @@ public class PointDto {
     pointDto.setCoordinateX(coordinateX);
     pointDto.setCoordinateY(coordinateY);
     return pointDto;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    PointDto pointDto = (PointDto) o;
+    return coordinateX == pointDto.coordinateX &&
+        coordinateY == pointDto.coordinateY;
   }
 }
