@@ -112,6 +112,20 @@ export class EventFilterComponent implements OnInit {
     this.router.navigate(['/events', eid, 'performances', pid, 'hall-viewing']);
   }
 
+  CheckNumberField(elid: string): void {
+
+    let price: string = (<HTMLInputElement>document.getElementById(elid)).value.toString();
+
+    if (price === "" || price.match(/^\d+$/) !== null) {
+      this.loadEvents();
+    }
+    else {
+      (<HTMLInputElement>document.getElementById(elid)).value = "";
+      this.alertService.warning('Es sind nur Zahlen für dieses Feld erlaubt.');
+    }
+
+  }
+
 
   /**
    * Loads the events
