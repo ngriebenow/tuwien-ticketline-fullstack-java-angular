@@ -1,12 +1,14 @@
 @import "colors";
 
-font{
+font {
   font-family: Roboto !important;
 }
-body{
+
+body {
   font-family: Roboto !important;
 }
-input{
+
+input {
   font-family: Roboto !important;
 }
 
@@ -15,7 +17,7 @@ input{
   No resizing!
   Can be repositioned (up or down)
 */
-h1{
+h1 {
   font-size: 2.7rem !important;
   padding: 30px;
   text-align: center;
@@ -26,7 +28,7 @@ h1{
   "Small headers"
   Might be resized according to mock-ups
 */
-h2{
+h2 {
   color: $main-blue;
   margin-bottom: 0 !important;
 }
@@ -34,7 +36,7 @@ h2{
 /*
   h3 is ONLY for the text on the home-screen! do not use it anywhere else!
 */
-h3{
+h3 {
   color: whitesmoke;
 }
 
@@ -44,7 +46,7 @@ h3{
   might be resized when needed
   changes to #FFFFFF when input is there
 */
-h4{
+h4 {
   color: $medium-gray;
 }
 
@@ -52,17 +54,16 @@ h4{
   Text for NOT writable text-fields
   might be resized when needed
 */
-h5{
-  color:$dark-gray;
+h5 {
+  color: $dark-gray;
 }
 
 
-$theme-colors:(
+$theme-colors: (
   "primary": $main-blue,
   "secondary":$main-orange,
   "danger": $custom-red,
   "success": $custom-green,
-
   "lightgray": $light-gray,
   "mediumGray": $medium-gray,
   "darkGray": $dark-gray,
@@ -75,7 +76,7 @@ $theme-colors:(
   primary button - light-blue
   size can be changed accordingly
 */
-.btn-primary{
+.btn-primary {
   color: whitesmoke !important;
 }
 
@@ -83,7 +84,7 @@ $theme-colors:(
   secondary button - dark-orange
   size can be changed accordingly
 */
-.btn-secondary{
+.btn-secondary {
   color: whitesmoke !important;
 }
 
@@ -126,7 +127,7 @@ $theme-colors:(
 /*
   must be used for all buttons on the right!
 */
-.btn-lg{
+.btn-lg {
   width: 100px !important;
   height: 50px !important;
 }
@@ -141,11 +142,11 @@ $theme-colors:(
 /*
   if the text in a button is too large, apply this!
 */
-.btn-font-size-reduced{
+.btn-font-size-reduced {
   font-style: normal;
   font-size: 14px !important;
   display: table-cell !important;
-  vertical-align:middle !important;
+  vertical-align: middle !important;
   padding: 0px !important;
 }
 
@@ -161,7 +162,7 @@ $theme-colors:(
   Checkbox Text:
   Might be adjusted when needed
 */
-.form-check-label{
+.form-check-label {
   font-family: Roboto !important;
   color: $main-blue !important;
   font-size: xx-large;
@@ -173,7 +174,7 @@ $theme-colors:(
   Need to adjust "margin-left: 22% !important;"
   when needed in the special scss-class
 */
-.form-check-input{
+.form-check-input {
   height: 38px !important;
   width: 38px !important;
   border-radius: 10px !important;
@@ -210,15 +211,16 @@ $theme-colors:(
       </tbody>
   </table>
 */
-.table{
+.table {
   color: $dark-gray !important;
 }
-.table-striped tbody tr:nth-of-type(odd){
+
+.table-striped tbody tr:nth-of-type(odd) {
   background-color: $light-gray !important;
 }
 
 thead {
-  background-color:$dark-gray !important;
+  background-color: $dark-gray !important;
   color: white !important;
 }
 
@@ -265,7 +267,7 @@ thead {
 */
 
 
-.form-control{
+.form-control {
   background-color: $light-gray !important;
   color: white !important;
   border-color: $light-gray !important;
@@ -273,12 +275,12 @@ thead {
 }
 
 textarea:not(:placeholder-shown),
-input:not(:placeholder-shown){
+input:not(:placeholder-shown) {
   background-color: $main-blue !important;
   color: white !important;
 }
 
-input:placeholder-shown{
+input:placeholder-shown {
   background-color: $light-gray !important;
   color: white !important;
 }
@@ -286,7 +288,7 @@ input:placeholder-shown{
 /*
   for read-only (e.g. Reservirung)
 */
-input[readonly]{
+input[readonly] {
   background-color: $light-gray !important;
   border-radius: 0px !important;
   color: $dark-gray !important;
@@ -304,7 +306,7 @@ input[readonly]{
   </div>
 */
 
-select{
+select {
   height: 38px;
   width: 120px;
   color: white;
@@ -313,7 +315,7 @@ select{
   border-radius: 10px;
 }
 
-option{
+option {
   color: $dark-gray;
   background-color: white;
   border-color: $medium-gray;
