@@ -33,7 +33,7 @@ export class UserService {
       .set('username', userFilter.username)
       .set('role', userFilter.role)
       .set('locked', String(userFilter.locked))
-      .set('page', '0')
+      .set('page', String(userFilter.page))
       .set('count', '100');
 
 
