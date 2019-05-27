@@ -24,7 +24,6 @@ public class DefinedUnitMapperImpl implements DefinedUnitMapper{
     dto.setUpperBoundary(
         pointMapper.pointToPointDto(definedUnit.getUnit().getUpperBoundary()));
     dto.setPriceCategoryId(definedUnit.getPriceCategory().getId());
-
     return dto;
   }
 }
