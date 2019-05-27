@@ -25,7 +25,7 @@ public class PerformanceDataGenerator implements DataGenerator<Performance> {
 
   private static final Faker FAKER = new Faker(new Locale("de-at"));
   private static final int MIN_PERFORMANCES_PER_EVENT = 1;
-  private static final int MAX_PERFORMANCES_PER_EVENT = 2;
+  private static final int MAX_PERFORMANCES_PER_EVENT = 15;
   private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Event.class));
   private EventRepository eventRepository;
   private PerformanceRepository performanceRepository;

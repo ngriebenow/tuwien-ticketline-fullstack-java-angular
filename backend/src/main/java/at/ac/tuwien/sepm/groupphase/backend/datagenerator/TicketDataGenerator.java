@@ -66,7 +66,7 @@ public class TicketDataGenerator implements DataGenerator<Ticket> {
       int ticketCount =
           FAKER.random().nextInt(MIN_TICKET_COUNT_PER_INVOICE, MAX_TICKET_COUNT_PER_INVOICE);
 
-      if (false && definedUnits.size() > 0) {
+      if (definedUnits.size() > 0) {
         int definedUnitIdx = FAKER.random().nextInt(definedUnits.size());
 
         for (int i = 0; i < ticketCount; i++) {

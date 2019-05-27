@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LocationDataGenerator implements DataGenerator<Location> {
 
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-  private static final int MAX_LOCATION_COUNT = 2;
+  private static final int MAX_LOCATION_COUNT = 10;
   private final Set<Class<?>> dependencies = new HashSet<>();
   private LocationRepository locationRepository;
 
