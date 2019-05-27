@@ -1,6 +1,7 @@
 import {Point} from './Point';
 
 export class DefinedUnit {
+
   constructor(
     public id: number,
     public name: string,
@@ -9,8 +10,10 @@ export class DefinedUnit {
     public lowerBoundary: Point,
     public upperBoundary: Point,
     public priceCategoryId: number,
-    public selected: boolean = false,
-    public num: number = 0,
+    public selected: boolean,
+    public num: number,
   ) {
+    this.selected = false;
+    this.num = 0;
   }
 }

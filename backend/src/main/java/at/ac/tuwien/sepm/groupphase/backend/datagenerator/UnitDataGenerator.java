@@ -54,8 +54,8 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
               hall.getBoundaryPoint().getCoordinateY()];
 
 
-      for (int i = 0; i < hall.getBoundaryPoint().getCoordinateY(); i++) {
-        for (int j = 0; j < hall.getBoundaryPoint().getCoordinateX(); j++) {
+      for (int i = 0; i < hall.getBoundaryPoint().getCoordinateX(); i++) {
+        for (int j = 0; j < hall.getBoundaryPoint().getCoordinateY(); j++) {
 
           int sectorSizeX = FAKER.random().nextInt(SECTOR_MIN_SIZE_X,SECTOR_MAX_SIZE_X);
           int sectorSizeY = FAKER.random().nextInt(SECTOR_MIN_SIZE_Y,SECTOR_MAX_SIZE_Y);
@@ -64,7 +64,7 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
 
             boolean feasible = true;
             for (int k = i; k < i + sectorSizeX && feasible; k++) {
-              for(int l = 0; l < j + sectorSizeY && feasible; l++) {
+              for (int l = 0; l < j + sectorSizeY && feasible; l++) {
                 if (k >= hall.getBoundaryPoint().getCoordinateX()
                     || l >= hall.getBoundaryPoint().getCoordinateY()
                     || occupied[k][l]) {
@@ -73,28 +73,31 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
               }
             }
 
-            if (feasible && FAKER.random().nextInt(-500,500) < -450) {
+            if (feasible && FAKER.random().nextInt(0,1000) < 300) {
 
               for (int k = i; k < i + sectorSizeX; k++) {
-                for(int l = 0; l < j + sectorSizeY; l++) {
-                  occupied[k][l] = false;
+                for (int l = 0; l < j + sectorSizeY; l++) {
+                  occupied[k][l] = true;
                 }
               }
 
               generatedUnits.add(
                   new Unit.Builder()
                       .name("Sektor " + FAKER.commerce().productName())
-                      .lowerBoundary(new Point(j + 1, i + 1))
-                      .upperBoundary(new Point(j + sectorSizeX, i + sectorSizeY))
+                      .lowerBoundary(new Point(i + 1, j + 1))
+                      .upperBoundary(new Point(i + sectorSizeX, j + sectorSizeY))
                       .capacity(FAKER.random().nextInt(SECTOR_CAPACITY_MIN, SECTOR_CAPACITY_MAX))
                       .hall(hall)
                       .build());
             } else {
+
+              occupied[i][j] = true;
+
               generatedUnits.add(
                   new Unit.Builder()
-                      .name(String.format("Reihe %d Sitz %d", j + 1, i + 1))
-                      .lowerBoundary(new Point(j + 1, i + 1))
-                      .upperBoundary(new Point(j + 1, i + 1))
+                      .name(String.format("Reihe %d Sitz %d", i + 1, j + 1))
+                      .lowerBoundary(new Point(i + 1, j + 1))
+                      .upperBoundary(new Point(i + 1, j + 1))
                       .capacity(1)
                       .hall(hall)
                       .build());
