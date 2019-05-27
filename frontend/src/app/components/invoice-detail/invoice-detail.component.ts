@@ -120,28 +120,23 @@ export class InvoiceDetailComponent implements OnInit {
   }
 
   private getPerformanceName(): string {
-    //return this.getFirstTicket().performanceName;
-    return this.ticketingService.performance.name;
+    return this.getFirstTicket().performanceName;
   }
 
   private getEventName(): string {
-    //return this.getFirstTicket().eventName;
-    return this.ticketingService.event.name;
+    return this.getFirstTicket().eventName;
   }
 
   private getPeformanceStart(): string {
-    //return this.getFirstTicket().startAt;
-    return this.ticketingService.performance.startAt;
+    return this.getFirstTicket().startAt;
   }
 
   private getLocationName(): string {
-    //return this.getFirstTicket().locationName;
-    return this.ticketingService.hall.location.name;
+    return this.getFirstTicket().locationName;
   }
 
   private getHallName(): string {
-    //return this.getFirstTicket().hallName;
-    return this.ticketingService.hall.name;
+    return this.getFirstTicket().hallName;
   }
 
   private centsToEuros(cents: number): number {
@@ -192,12 +187,12 @@ export class InvoiceDetailComponent implements OnInit {
     }
     this.invoiceService.reserveTickets(this.buildReservationRequest()).subscribe(
       invoice => {
-        this.alertService.success('Ticketkauf erfolgreich abgeschlossen');
+        this.alertService.success('Reservierung erfolgreich abgeschlossen');
         this.reset(invoice);
       },
       error => {
         console.log(error);
-        this.alertService.error('Tickets konnten nicht gekauft werden, bitte versuchen Sie es später noch ein mal');
+        this.alertService.error('Tickets konnten nicht reserviert werden, bitte versuchen Sie es später noch ein mal');
       }
     );
   }
@@ -211,7 +206,7 @@ export class InvoiceDetailComponent implements OnInit {
       return;
     }
     if (this.selectedTickets.length === 0) {
-      this.alertService.error('Bitte wählen Sie zumindest ein Ticket aus');
+      this.alertService.warning('Bitte wählen Sie zumindest ein Ticket aus');
       return;
     }
     const ticketIds: number[] = this.selectedTickets.map(tic => tic.id);
@@ -233,10 +228,10 @@ export class InvoiceDetailComponent implements OnInit {
   private buyTickets(): void {
     if (!this.isTransient()) {
       return;
-      return;
     }
     if (this.selectedTickets.length === 0) {
-      this.alertService.error('Bitte wählen Sie zumindest ein Ticket aus');
+      this.alertService.warning('Bitte wählen Sie zumindest ein Ticket aus');
+      return;
     }
     this.invoiceService.buyTickets(this.buildReservationRequest()).subscribe(
       invoice => {

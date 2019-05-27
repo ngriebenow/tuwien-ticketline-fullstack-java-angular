@@ -41,7 +41,7 @@ export class EventComponent implements OnInit {
   savePerformance(id: number) {
     localStorage.setItem('event', JSON.stringify(this.event));
     for (let i = 0; i < this.performances.length; i++) {
-      if(this.performances[i].id === id){
+      if (this.performances[i].id === id) {
         localStorage.setItem('performance', JSON.stringify(this.performances[i]));
       }
     }

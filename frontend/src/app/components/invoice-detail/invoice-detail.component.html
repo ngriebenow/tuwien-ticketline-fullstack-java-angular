@@ -10,13 +10,13 @@
       <div class="col-6">
         <div class="form-group" *ngIf="invoice.reservationCode">
           <label>Reservierungsnummer</label>
-          <input class="form-control" type="text" disabled value="{{ invoice.reservationCode }}">
+          <input readonly class="form-control" type="text" disabled value="{{ invoice.reservationCode }}">
         </div>
       </div>
       <div class="col-6">
         <div class="form-group" *ngIf="invoice.number">
           <label>Rechnungsnummer</label>
-          <input class="form-control" type="text" disabled value="{{ invoice.number }}">
+          <input readonly class="form-control" type="text" disabled value="{{ invoice.number }}">
         </div>
       </div>
     </div>
@@ -24,13 +24,13 @@
       <div class="col-6">
         <div class="form-group">
           <label>Kundenname</label>
-          <input class="form-control" type="text" disabled value="{{ getClientFullName() }}">
+          <input readonly class="form-control" type="text" disabled value="{{ getClientFullName() }}">
         </div>
       </div>
       <div class="col-6">
         <div class="form-group">
           <label>Kundenemail</label>
-          <input class="form-control" type="text" disabled value="{{ invoice.client.email }}">
+          <input readonly class="form-control" type="text" disabled value="{{ invoice.client.email }}">
         </div>
       </div>
     </div>
@@ -38,13 +38,13 @@
       <div class="col-6">
         <div class="form-group">
           <label>Veranstaltung</label>
-          <input class="form-control" type="text" disabled value="{{ getEventName() }}">
+          <input readonly class="form-control" type="text" disabled value="{{ getEventName() }}">
         </div>
       </div>
       <div class="col-6">
         <div class="form-group">
           <label>Aufführung</label>
-          <input class="form-control" type="text" disabled value="{{ getPerformanceName() }}">
+          <input readonly class="form-control" type="text" disabled value="{{ getPerformanceName() }}">
         </div>
       </div>
     </div>
@@ -52,13 +52,13 @@
       <div class="col-6">
         <div class="form-group">
           <label>Veranstaltungsort</label>
-          <input class="form-control" type="text" disabled value="{{ getLocationName() }}">
+          <input readonly class="form-control" type="text" disabled value="{{ getLocationName() }}">
         </div>
       </div>
       <div class="col-6">
         <div class="form-group">
           <label>Saal</label>
-          <input class="form-control" type="text" disabled value="{{ getHallName() }}">
+          <input readonly class="form-control" type="text" disabled value="{{ getHallName() }}">
         </div>
       </div>
     </div>
@@ -66,13 +66,13 @@
       <div class="col-6">
         <div class="form-group">
           <label>Datum</label>
-          <input class="form-control" type="text" disabled value="{{ getPeformanceStart() | date:'EEEE, dd. LLL yyyy' }}">
+          <input readonly class="form-control" type="text" disabled value="{{ getPeformanceStart() | date:'EEEE, dd. LLL yyyy' }}">
         </div>
       </div>
       <div class="col-6">
         <div class="form-group">
           <label>Uhrzeit</label>
-          <input class="form-control" type="text" disabled value="{{ getPeformanceStart() | date:'HH:mm' }}">
+          <input readonly class="form-control" type="text" disabled value="{{ getPeformanceStart() | date:'HH:mm' }}">
         </div>
       </div>
     </div>
