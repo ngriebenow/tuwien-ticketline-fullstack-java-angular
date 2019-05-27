@@ -3,9 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service.implementation;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.DefinedUnitDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.DefinedUnit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.definedunit.DefinedUnitMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.definedunit.DefinedUnitMapperImpl;
-import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.point.PointMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.DefinedUnitRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
@@ -26,24 +24,30 @@ public class SimplePerformanceService implements PerformanceService {
   @Autowired
   private DefinedUnitMapperImpl definedUnitMapper;
 
+  /**
+   * Gets all defined units for a performance by its id
+   *
+   * @param performance containing only the performance id
+   */
   @Transactional(readOnly = true)
   @Override
-  public List<DefinedUnitDto> getDefinedUnitsByPerformanceId(Performance performance)
-      throws NotFoundException {
+  public List<DefinedUnitDto> getDefinedUnitsByPerformanceId(
+      final Performance performance) throws NotFoundException {
     LOGGER.info("getDefinedUnitsByPerformanceId " + performance.getId());
     List<DefinedUnitDto> definedUnitDtos = new ArrayList<>();
 
-      List<DefinedUnit> definedUnits =
-          definedUnitRepository.findAllByPerformanceIsLike(performance);
+    List<DefinedUnit> definedUnits =
+        definedUnitRepository.findAllByPerformanceIsLike(performance);
 
-      if (definedUnits.size() == 0) {
-        throw new NotFoundException("Could not find defined units.");
-      }
+    if (definedUnits.size() == 0) {
+      throw new NotFoundException("Could not find defined units.");
+    }
 
-      for (DefinedUnit definedUnit : definedUnits) {
-        DefinedUnitDto definedUnitDto = definedUnitMapper.definedUnitToDto(definedUnit);
-        definedUnitDtos.add(definedUnitDto);
-      }
+    for (DefinedUnit definedUnit : definedUnits) {
+      DefinedUnitDto definedUnitDto =
+          definedUnitMapper.definedUnitToDto(definedUnit);
+      definedUnitDtos.add(definedUnitDto);
+    }
     return definedUnitDtos;
   }
 }

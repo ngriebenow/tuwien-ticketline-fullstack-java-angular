@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DefinedUnitMapperImpl implements DefinedUnitMapper{
+public class DefinedUnitMapperImpl implements DefinedUnitMapper {
 
   @Autowired
   private PointMapper pointMapper;

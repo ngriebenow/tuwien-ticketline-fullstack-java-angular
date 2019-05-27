@@ -60,9 +60,6 @@ export class HallViewingComponent implements OnInit {
       ).add(
       () => this.setSelectedAndNum(this.defUnits)
     );
-    for (let i = 0; i < this.defUnits.length; i++) {
-      console.log("Initi: " + this.defUnits[i].selected);
-    }
   }
 
   setSelectedAndNum(dunits: DefinedUnit[]) {
@@ -190,14 +187,14 @@ export class HallViewingComponent implements OnInit {
   }
 
   sectorDone() {
-    if (this.sectorNum !== null) {
-      const index = this.defUnits.indexOf(this.sectorSel);
+    const index = this.defUnits.indexOf(this.sectorSel);
+    console.log('SectorNum: ' + this.sectorNum);
+    if (this.sectorNum !== 0 && this.sectorNum !== undefined && this.sectorNum !== null) {
+      this.defUnits[index].selected = true;
       this.defUnits[index].num = this.sectorNum;
-      if (this.sectorNum !== 0) {
-        this.defUnits[index].selected = true;
-      } else {
-        this.defUnits[index].selected = false;
-      }
+    } else {
+      this.defUnits[index].selected = false;
+      this.defUnits[index].num = 0;
     }
     this.sectorSel = null;
   }
