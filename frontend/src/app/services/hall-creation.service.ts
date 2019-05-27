@@ -7,6 +7,7 @@ import {Hall} from '../dtos/hall';
 import {HallService} from './hall.service';
 import {HallRequest} from '../dtos/hall-request';
 import {Router} from '@angular/router';
+import {AlertService} from './alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,13 @@ export class HallCreationService {
   private initialized: boolean;
   private edited: boolean;
 
-  private hall: Hall;
-  private hallSize: Point;
+  private readonly hall: Hall;
+  private readonly hallSize: Point;
   private readonly maxHallSize: Point;
 
-  private seats: Point[];
-  private sectors: Unit[];
-  private aisles: Point[];
+  private readonly seats: Point[];
+  private readonly sectors: Unit[];
+  private readonly aisles: Point[];
 
   private selectedUnitType: UnitType; // saves unit type that is selected in menu
   private selectedUnitPosition: Point; // saves first sector coordinate for sector creation
@@ -31,10 +32,60 @@ export class HallCreationService {
 
   @Output() changeSector: EventEmitter<Unit> = new EventEmitter();
 
-  constructor(private hallService: HallService, private router: Router) {
+  constructor(private hallService: HallService, private router: Router, private alertService: AlertService) {
     console.log('constructor');
     this.maxHallSize = new Point(27, 27); // set max hall size here
+    this.hallSize = new Point(null, null);
+    this.hall = new Hall(null, null, null, null, null);
+    this.seats = [];
+    this.sectors = [];
+    this.aisles = [];
     this.createNewHall();
+  }
+
+  /**
+   * @return Unit with lower and upperBoundary according to p1 and p2
+   * @param p1 != null
+   * @param p2 != null
+   */
+  static calculateSectorBoundaries(p1: Point, p2: Point): Unit {
+    const lowerBoundary: Point = new Point(
+      Math.max(p1.coordinateX, p2.coordinateX),
+      Math.max(p1.coordinateY, p2.coordinateY)
+    );
+    const upperBoundary: Point = new Point(
+      Math.min(p1.coordinateX, p2.coordinateX),
+      Math.min(p1.coordinateY, p2.coordinateY)
+    );
+    return new Unit(null, null, null, lowerBoundary, upperBoundary, null);
+  }
+
+  /**
+   * @return true if sector1 and sector2 overlap
+   * @param sector1 !- null && lowerBoundary != null && upperBoundary != null
+   * @param sector2 != null && lowerBoundary != null && upperBoundary != null
+   */
+  static sectorsOverlapping(sector1: Unit, sector2: Unit): boolean {
+    return !(
+      sector1.lowerBoundary.coordinateX < sector2.upperBoundary.coordinateX ||
+      sector2.lowerBoundary.coordinateX < sector1.upperBoundary.coordinateX ||
+      sector1.lowerBoundary.coordinateY < sector2.upperBoundary.coordinateY ||
+      sector2.lowerBoundary.coordinateY < sector1.upperBoundary.coordinateY
+    );
+  }
+
+  /**
+   * @return true if point is inside sector
+   * @param point != null
+   * @param sector != null && lowerBoundary != null && upperBoundary != null
+   */
+  static pointInSector(point: Point, sector: Unit): boolean {
+    return (
+      point.coordinateX >= sector.upperBoundary.coordinateX &&
+      point.coordinateX <= sector.lowerBoundary.coordinateX &&
+      point.coordinateY >= sector.upperBoundary.coordinateY &&
+      point.coordinateY <= sector.lowerBoundary.coordinateY
+    );
   }
 
   /**
@@ -46,11 +97,16 @@ export class HallCreationService {
     this.loadedExisting = false;
     this.initialized = false;
     this.edited = false;
-    this.hallSize = new Point(10, 10);
-    this.hall = new Hall(null, null, null, null, this.hallSize);
-    this.seats = [];
-    this.sectors = [];
-    this.aisles = [];
+    this.hallSize.coordinateX = 10;
+    this.hallSize.coordinateY = 10;
+    this.hall.id = null;
+    this.hall.version = null;
+    this.hall.name = null;
+    this.hall.location = null;
+    this.hall.boundaryPoint = this.hallSize;
+    this.seats.length = 0;
+    this.sectors.length = 0;
+    this.aisles.length = 0;
     this.fillWithSeats();
   }
 
@@ -59,11 +115,6 @@ export class HallCreationService {
    * loads hall from backend and sets initialized to true
    */
   loadExistingHall(id: number): void {
-    this.hallSize = new Point(10, 10);
-    this.hall = new Hall(null, null, null, null, null);
-    this.seats = [];
-    this.sectors = [];
-    this.aisles = [];
     this.hallService.getHallById(id).then(
       result => result.subscribe(
         (loadedHall: Hall) => {
@@ -73,40 +124,43 @@ export class HallCreationService {
           this.hall.version = loadedHall.version;
           this.hall.name = loadedHall.name;
           this.hall.location = loadedHall.location;
-          this.loadUnits(id);
+          this.hall.boundaryPoint = this.hallSize;
+          this.loadExistingHall_loadUnits(id);
         },
         error => {
           console.log(error);
-          // todo error handling
+          this.alertService.error('Der Saal konnte nicht geladen werden.');
+          this.createNewHall();
         }
       )
     );
-    this.loadedExisting = true;
-    this.initialized = true;
-    this.edited = false;
   }
 
   /**
    * loads units of hall from db
    * @param id of hall
    */
-  loadUnits(id: number): void {
-    let loadedUnits: Unit[];
+  loadExistingHall_loadUnits(id: number): void {
+    this.seats.length = 0;
+    this.sectors.length = 0;
+    this.aisles.length = 0;
     this.hallService.getUnitsByHallId(id).subscribe(
       (dbUnits: Unit[]) => {
-        loadedUnits = dbUnits;
-        for (let i = 0; i < loadedUnits.length; i++) {
-          if (loadedUnits[i].capacity === 1) {
-            this.seats.push(loadedUnits[i].upperBoundary);
-          } else if (loadedUnits[i].capacity > 1) {
-            this.sectors.push(loadedUnits[i]);
+        for (let i = 0; i < dbUnits.length; i++) {
+          if (dbUnits[i].capacity === 1) {
+            this.seats.push(dbUnits[i].upperBoundary);
+          } else if (dbUnits[i].capacity > 1) {
+            this.sectors.push(dbUnits[i]);
           }
         }
         this.createAisles();
+        this.loadedExisting = true;
+        this.initialized = true;
+        this.edited = false;
       },
       error => {
         console.log(error);
-        // todo error handling
+        this.alertService.error('Der Saal konnte nicht geladen werden.');
       }
     );
   }
@@ -120,7 +174,7 @@ export class HallCreationService {
         let found = false;
         const aisle: Point = new Point(x + 1, y + 1);
         for (let s = 0; !found && s < this.sectors.length; s++) {
-          if (this.pointInSector(aisle, this.sectors[s])) {
+          if (HallCreationService.pointInSector(aisle, this.sectors[s])) {
             found = true;
           }
         }
@@ -146,9 +200,14 @@ export class HallCreationService {
       this.hallSize.coordinateX <= this.maxHallSize.coordinateX &&
       this.hallSize.coordinateY <= this.hallSize.coordinateY
     ) {
-      if (this.hall.name !== undefined && this.hall.name != null && this.hall.name !== '' && this.hall.name !== ' ') {
+      if (!this.hall.name || !this.hall.name.trim()) {
+        this.alertService.warning('Bitte Saalnamen angeben.');
+      } else {
         this.initialized = true;
       }
+    } else {
+      this.alertService.warning('Der Saal muss zwischen 1x1 und ' + this.maxHallSize.coordinateX + 'x' +
+        this.maxHallSize.coordinateY + ' groß sein.');
     }
   }
 
@@ -171,6 +230,7 @@ export class HallCreationService {
    * checks and ends sector creation process and calls saveHall()
    */
   completeSectors(): void {
+    // todo scale down / deactivate name and capacity text at small size
     if (this.validateSectors()) {
       this.saveHall();
     }
@@ -183,12 +243,12 @@ export class HallCreationService {
   validateSectors(): boolean {
     for (let i = 0; i < this.sectors.length; i++) {
       if (
-        this.sectors[i].name === null ||
-        this.sectors[i].name === '' ||
-        this.sectors[i].name === ' ' ||
+        !this.sectors[i].name ||
+        !this.sectors[i].name.trim() ||
         this.sectors[i].capacity === null ||
-        this.sectors[i].capacity < 1
+        this.sectors[i].capacity < 2
       ) {
+        this.alertService.warning('Bitte für alle Sektoren einen Namen und Kapazität größer 1 angeben.');
         return false;
       }
     }
@@ -204,23 +264,24 @@ export class HallCreationService {
       this.hallService.putHall(hallToSave).subscribe(
         () => {
           console.log('Updated hall successfully!');
+          this.alertService.success('Der Saal wurde erfolgreich gepeichert.');
           this.backToMenu();
         },
         error => {
           console.log(error);
-          // todo error handling
+          this.alertService.error('Der Saal konnte nicht gespeichert werden.');
         }
       );
     } else {
       this.hallService.postHall(hallToSave).subscribe(
         savedHall => {
           console.log('Saved hall successfully with id: ' + savedHall.id);
+          this.alertService.success('Der Saal wurde erfolgreich gepeichert.');
           this.backToMenu();
         },
         error => {
           console.log(error);
-          // this.defaultServiceErrorHandling(error);
-          // todo error handling
+          this.alertService.error('Der Saal konnte nicht gespeichert werden.');
         }
       );
     }
@@ -251,11 +312,15 @@ export class HallCreationService {
    * returns back to home menu
    */
   backToMenu(): void {
-    // todo reset values at exit or at enter?
+    this.createNewHall();
     this.router.navigateByUrl('');
   }
 
-  // todo cancel popup and functionality
+  cancelHallCreation(): void {
+    // todo cancel popup and functionality
+    this.createNewHall();
+    this.backToMenu();
+  }
 
   /**
    * fills whole hall with seats
@@ -344,7 +409,7 @@ export class HallCreationService {
     // delete sectors
     const rowUnit = new Unit(null, null, null, new Point(this.hallSize.coordinateX, row), new Point(1, row), null);
     for (let i = this.sectors.length - 1; i >= 0; i--) {
-      if (this.sectorsOverlapping(this.sectors[i], rowUnit)) {
+      if (HallCreationService.sectorsOverlapping(this.sectors[i], rowUnit)) {
         this.deleteSector(this.sectors[i]);
       }
     }
@@ -372,7 +437,7 @@ export class HallCreationService {
     // delete sectors
     const rowUnit = new Unit(null, null, null, new Point(column, this.hallSize.coordinateY), new Point(column, 1), null);
     for (let i = this.sectors.length - 1; i >= 0; i--) {
-      if (this.sectorsOverlapping(this.sectors[i], rowUnit)) {
+      if (HallCreationService.sectorsOverlapping(this.sectors[i], rowUnit)) {
         this.deleteSector(this.sectors[i]);
       }
     }
@@ -509,22 +574,22 @@ export class HallCreationService {
       this.selectedUnitPosition = position;
     } else { // create sector from first corner to position
       // calculate sector
-      const sector: Unit = this.calculateSectorBoundaries(position, this.selectedUnitPosition);
+      const sector: Unit = HallCreationService.calculateSectorBoundaries(position, this.selectedUnitPosition);
       // delete overlapping sectors
       for (let i = this.sectors.length - 1; i >= 0; i--) {
-        if (this.sectorsOverlapping(this.sectors[i], sector)) {
+        if (HallCreationService.sectorsOverlapping(this.sectors[i], sector)) {
           this.deleteSector(this.sectors[i]);
         }
       }
       // delete seats
       for (let i = this.seats.length - 1; i >= 0; i--) {
-        if (this.pointInSector(this.seats[i], sector)) {
+        if (HallCreationService.pointInSector(this.seats[i], sector)) {
           this.seats.splice(i, 1);
         }
       }
       // delete aisles
       for (let i = this.aisles.length - 1; i >= 0; i--) {
-        if (this.pointInSector(this.aisles[i], sector)) {
+        if (HallCreationService.pointInSector(this.aisles[i], sector)) {
           this.aisles.splice(i, 1);
         }
       }
@@ -532,51 +597,6 @@ export class HallCreationService {
       this.sectors.push(sector);
       this.selectedUnitPosition = null;
     }
-  }
-
-  /**
-   * @return Unit with lower and upperBoundary according to p1 and p2
-   * @param p1 != null
-   * @param p2 != null
-   */
-  calculateSectorBoundaries(p1: Point, p2: Point): Unit {
-    const lowerBoundary: Point = new Point(
-      Math.max(p1.coordinateX, p2.coordinateX),
-      Math.max(p1.coordinateY, p2.coordinateY)
-    );
-    const upperBoundary: Point = new Point(
-      Math.min(p1.coordinateX, p2.coordinateX),
-      Math.min(p1.coordinateY, p2.coordinateY)
-    );
-    return new Unit(null, null, null, lowerBoundary, upperBoundary, null);
-  }
-
-  /**
-   * @return true if sector1 and sector2 overlap
-   * @param sector1 !- null && lowerBoundary != null && upperBoundary != null
-   * @param sector2 != null && lowerBoundary != null && upperBoundary != null
-   */
-  sectorsOverlapping(sector1: Unit, sector2: Unit): boolean {
-    return !(
-      sector1.lowerBoundary.coordinateX < sector2.upperBoundary.coordinateX ||
-      sector2.lowerBoundary.coordinateX < sector1.upperBoundary.coordinateX ||
-      sector1.lowerBoundary.coordinateY < sector2.upperBoundary.coordinateY ||
-      sector2.lowerBoundary.coordinateY < sector1.upperBoundary.coordinateY
-    );
-  }
-
-  /**
-   * @return true if point is inside sector
-   * @param point != null
-   * @param sector != null && lowerBoundary != null && upperBoundary != null
-   */
-  pointInSector(point: Point, sector: Unit): boolean {
-    return (
-      point.coordinateX >= sector.upperBoundary.coordinateX &&
-      point.coordinateX <= sector.lowerBoundary.coordinateX &&
-      point.coordinateY >= sector.upperBoundary.coordinateY &&
-      point.coordinateY <= sector.lowerBoundary.coordinateY
-    );
   }
 
   /**
@@ -609,11 +629,13 @@ export class HallCreationService {
   }
 
   /**
-   * changes saves sector and sends it to all subscribers
-   * @param sector != null
+   * changes saved sector and sends it to all subscribers
+   * @param sector if != null: assign, else: resend existing sector
    */
   changeSelectedSector(sector: Unit): void {
-    this.selectedSector = sector;
+    if (sector != null) {
+      this.selectedSector = sector;
+    }
     this.changeSector.emit(this.selectedSector);
   }
 
@@ -627,6 +649,11 @@ export class HallCreationService {
 
   getHallSize(): Point {
     return this.hallSize;
+  }
+
+  setHallSize(newSize: Point): void {
+    this.hallSize.coordinateX = newSize.coordinateX;
+    this.hallSize.coordinateY = newSize.coordinateY;
   }
 
   getMaxHallSize(): Point {

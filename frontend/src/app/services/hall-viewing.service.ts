@@ -33,9 +33,9 @@ export class HallViewingService {
     return event;
   }
 
-  getDefinedUnits(performance: Performance): Observable<DefinedUnit[]>{
-    const url: string = this.hallViewingUri  + "/defined-units/" + performance.id;
-    console.log("getDefinedUnits " + performance.id + " with url " + url);
+  getDefinedUnits(performance: Performance): Observable<DefinedUnit[]> {
+    const url: string = this.hallViewingUri  + '/defined-units/' + performance.id;
+    console.log('getDefinedUnits ' + performance.id + ' with url ' + url);
     return this.httpClient.get<DefinedUnit[]>(url);
   }
 }

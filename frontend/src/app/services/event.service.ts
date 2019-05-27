@@ -6,7 +6,7 @@ import {EventFilter} from '../dtos/event-filter';
 import {EventSearchResult} from '../dtos/event-search-result';
 import {Event} from '../dtos/event';
 import {Performance} from '../dtos/performance';
-import {EventRanking} from "../dtos/event-ranking";
+import {EventRanking} from '../dtos/event-ranking';
 import set = Reflect.set;
 
 @Injectable({
@@ -15,7 +15,7 @@ import set = Reflect.set;
 export class EventService {
 
   private eventBaseUri: string = this.globals.backendUri + '/events';
-  private besteventsUri: string = '/best';
+  private besteventsUri = '/best';
 
   constructor(private httpClient: HttpClient, private globals: Globals) {
   }
@@ -32,7 +32,7 @@ export class EventService {
 
     console.log('getPerformancesById: ' + paramsHttp);
 
-    return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances',{params: paramsHttp});
+    return this.httpClient.get<Performance[]>(this.eventBaseUri + '/' + id + '/performances', {params: paramsHttp});
   }
 
   /**
@@ -65,29 +65,34 @@ export class EventService {
    * @param eventFilter which the events must fulfil
    * @param queryParams the query params for the backend request
    */
-  getEventsFiltered(eventFilter: EventFilter,queryParams: {}): Observable<EventSearchResult[]> {
+  getEventsFiltered(eventFilter: EventFilter, queryParams: {}): Observable<EventSearchResult[]> {
 
     console.log('getEventsFiltered');
 
-    let price: string = "";
-    if (eventFilter.priceInEuro != null) {
+    let price = '';
+    if (eventFilter.priceInEuro !== null) {
       price = eventFilter.priceInEuro + '00';
     }
 
-    let time: string = "";
-    let date: string = "";
-    if (eventFilter.startAtDate != null) {
+    let time = '';
+    let date = '';
+    if (eventFilter.startAtDate !== null) {
       date = eventFilter.startAtDate;
 
     }
-    if (eventFilter.startAtTime != null || true) {
+    if (eventFilter.startAtTime !== null || true) {
       time = eventFilter.startAtTime;
+    }
+
+    let duration = '';
+    if (eventFilter.duration !== null && eventFilter.duration !== 'null') {
+      duration = eventFilter.duration;
     }
 
     let paramsHttp = new HttpParams()
       .set('name', eventFilter.name)
       .set('content', eventFilter.content)
-      .set('duration', eventFilter.duration)
+      .set('duration', duration)
       .set('eventCategory', eventFilter.eventCategory)
       .set('artistName', eventFilter.artistName)
       .set('priceInCents', price)

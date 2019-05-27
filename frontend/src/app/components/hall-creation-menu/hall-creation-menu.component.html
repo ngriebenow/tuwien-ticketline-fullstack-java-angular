@@ -13,7 +13,7 @@
       <h2 class="float-right">Tiefe</h2>
     </div>
     <div class="col-6">
-      <input type="number" min="1" max="{{maxHallSize.coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateY" (input)="updatePlan()" class="form-control" required>
+      <input type="number" min="1" max="{{maxHallSize.coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateY" (change)="updatePlan()" class="form-control" required>
     </div>
   </div>
 
@@ -22,7 +22,7 @@
       <h2 class="float-right">Breite</h2>
     </div>
     <div class="col-6">
-      <input type="number" min="1" max="{{maxHallSize.coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateX" (input)="updatePlan()" class="form-control" required>
+      <input type="number" min="1" max="{{maxHallSize.coordinateY}}" step="1" [(ngModel)]="hallSize.coordinateX" (change)="updatePlan()" class="form-control" required>
     </div>
   </div>
 
@@ -42,6 +42,35 @@
     </div>
     <div class="col-6">
       <button type="button" (click)="loadHall()" class="btn btn-secondary float-left btn-lg btn-font-size-reduced">Lade Saal</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="editingMode() || sectorMode()" class="container">
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right info-text">Saalname</h2>
+    </div>
+    <div class="col-6 align-self-center">
+      <h2 class="float-left info-text">{{ hall.name }}</h2>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right info-text">Tiefe</h2>
+    </div>
+    <div class="col-6 align-self-center">
+      <h2 class="float-left info-text">{{ hallCreationService.getHallSize().coordinateY }}</h2>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right info-text">Breite</h2>
+    </div>
+    <div class="col-6 align-self-center">
+      <h2 class="float-left info-text">{{ hallCreationService.getHallSize().coordinateX }}</h2>
     </div>
   </div>
 </div>
@@ -143,7 +172,7 @@
       <h2 class="float-right">Kapazität</h2>
     </div>
     <div class="col-6">
-      <input type="number" min="1" step="1" [(ngModel)]="selectedSector.capacity" (input)="clipCapacity()" class="form-control" required placeholder="10">
+      <input type="number" min="1" step="1" [(ngModel)]="selectedSector.capacity" (change)="clipCapacity()" class="form-control" required placeholder="10">
     </div>
   </div>
 
@@ -152,7 +181,7 @@
       <button type="button" (click)="cancelHallCreation()" class="btn btn-primary float-right btn-lg btn-font-size-reduced">Abbrechen</button>
     </div>
     <div class="col-6">
-      <button type="button" (click)="completeSectors()" class="btn btn-secondary float-left btn-lg">Speichern</button>
+      <button type="button" (click)="completeSectors()" class="btn btn-secondary float-left btn-lg btn-font-size-reduced">Speichern</button>
     </div>
   </div>
 </div>

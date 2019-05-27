@@ -11,6 +11,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UnitRepository;
+import at.ac.tuwien.sepm.groupphase.backend.service.implementation.SimpleEventService;
 import com.github.javafaker.Faker;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.IntStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Profile("generateData")
 public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(SimpleEventService.class);
 
   private static final Faker FAKER = new Faker(new Locale("de-at"));
   private final Set<Class<?>> dependencies =
@@ -40,9 +46,7 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
   private UnitRepository unitRepository;
   private DefinedUnitRepository definedUnitRepository;
 
-  /**
-   * Create a new DefinedUnitDataGenerator.
-   */
+  /** Create a new DefinedUnitDataGenerator. */
   @Autowired
   public DefinedUnitDataGenerator(
       PerformanceRepository performanceRepository,
@@ -55,6 +59,20 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
     this.eventRepository = eventRepository;
     this.unitRepository = unitRepository;
     this.definedUnitRepository = definedUnitRepository;
+  }
+
+  /** Javadoc. */
+  public static void normalizeArray(int[] array) {
+    int lastP = array[0];
+    int pindex = 0;
+    for (int k = 0; k < array.length; k++) {
+      if (array[k] != lastP) {
+        lastP = array[k];
+        array[k] = ++pindex;
+      } else {
+        array[k] = pindex;
+      }
+    }
   }
 
   @Transactional
@@ -75,10 +93,49 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
       for (Performance performance :
           performanceRepository.findAllByEvent(event, Pageable.unpaged())) {
         generatedDefinedUnits.clear();
+
+        int[] adherings = new int[hall.getBoundaryPoint().getCoordinateY()];
+        IntStream.range(0, adherings.length).forEach(x -> adherings[x] = x);
+
+        units.sort(
+            (x, y) ->
+                Integer.compare(
+                    x.getLowerBoundary().getCoordinateY(), y.getLowerBoundary().getCoordinateY()));
+
         for (Unit unit : units) {
-          int categoryIdx = unit.getLowerBoundary().getCoordinateY() / step;
-          PriceCategory category =
-              priceCategories.get(Math.min(priceCategories.size() - 1, categoryIdx));
+          if (unit.getLowerBoundary().getCoordinateY()
+              != unit.getUpperBoundary().getCoordinateY()) {
+
+            for (int o = unit.getLowerBoundary().getCoordinateY();
+                o <= unit.getUpperBoundary().getCoordinateY();
+                o++) {
+              adherings[o - 1] = adherings[unit.getLowerBoundary().getCoordinateY() - 1];
+            }
+          }
+        }
+
+        while (adherings[adherings.length - 1] >= priceCategories.size()) {
+
+          normalizeArray(adherings);
+
+          int toMerge2 = FAKER.random().nextInt(1, adherings[adherings.length - 1]);
+          int toMerge1 = toMerge2 - 1;
+
+          for (int k = 0; k < adherings.length; k++) {
+            if (adherings[k] == toMerge1) {
+              adherings[k] = toMerge2;
+            }
+          }
+
+          normalizeArray(adherings);
+        }
+
+        for (int w = 0; w < adherings.length; w++) {
+          LOGGER.info(Integer.toString(adherings[w]));
+        }
+        for (Unit unit : units) {
+          int categoryIdx = adherings[unit.getLowerBoundary().getCoordinateY() - 1];
+          PriceCategory category = priceCategories.get(categoryIdx);
 
           generatedDefinedUnits.add(
               new DefinedUnit.Builder()
