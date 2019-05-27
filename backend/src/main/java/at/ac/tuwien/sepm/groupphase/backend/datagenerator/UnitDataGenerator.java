@@ -28,8 +28,8 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
 
   private static final int SECTOR_MIN_SIZE_X = 2;
   private static final int SECTOR_MIN_SIZE_Y = 2;
-  private static final int SECTOR_MAX_SIZE_X = 4;
-  private static final int SECTOR_MAX_SIZE_Y = 4;
+  private static final int SECTOR_MAX_SIZE_X = 6;
+  private static final int SECTOR_MAX_SIZE_Y = 6;
 
   private static final int SECTOR_CAPACITY_MIN = 5;
   private static final int SECTOR_CAPACITY_MAX = 20;
@@ -54,8 +54,8 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
               hall.getBoundaryPoint().getCoordinateY()];
 
 
-      for (int i = 0; i < hall.getBoundaryPoint().getCoordinateX(); i++) {
-        for (int j = 0; j < hall.getBoundaryPoint().getCoordinateY(); j++) {
+      for (int j = 0; j < hall.getBoundaryPoint().getCoordinateY(); j++) {
+        for (int i = 0; i < hall.getBoundaryPoint().getCoordinateX(); i++) {
 
           int sectorSizeX = FAKER.random().nextInt(SECTOR_MIN_SIZE_X,SECTOR_MAX_SIZE_X);
           int sectorSizeY = FAKER.random().nextInt(SECTOR_MIN_SIZE_Y,SECTOR_MAX_SIZE_Y);
@@ -64,7 +64,7 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
 
             boolean feasible = true;
             for (int k = i; k < i + sectorSizeX && feasible; k++) {
-              for (int l = 0; l < j + sectorSizeY && feasible; l++) {
+              for (int l = j; l < j + sectorSizeY && feasible; l++) {
                 if (k >= hall.getBoundaryPoint().getCoordinateX()
                     || l >= hall.getBoundaryPoint().getCoordinateY()
                     || occupied[k][l]) {
@@ -73,7 +73,7 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
               }
             }
 
-            if (feasible && FAKER.random().nextInt(0,1000) < 300) {
+            if (feasible && FAKER.random().nextInt(0,1000) < 100) {
 
               for (int k = i; k < i + sectorSizeX; k++) {
                 for (int l = 0; l < j + sectorSizeY; l++) {

@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EventDataGenerator implements DataGenerator<Event> {
 
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-  private static final int MAX_EVENT_COUNT = 2;
+  private static final int MAX_EVENT_COUNT = 10;
   private static final int MIN_ARTISTS = 1;
   private static final int MAX_ARTISTS = 4;
   private static final int MIN_EVENT_DURATION = 1;

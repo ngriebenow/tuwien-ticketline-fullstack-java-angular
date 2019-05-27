@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +61,20 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
     this.definedUnitRepository = definedUnitRepository;
   }
 
+  /** Javadoc. */
+  public static void normalizeArray(int[] array) {
+    int lastP = array[0];
+    int pindex = 0;
+    for (int k = 0; k < array.length; k++) {
+      if (array[k] != lastP) {
+        lastP = array[k];
+        array[k] = ++pindex;
+      } else {
+        array[k] = pindex;
+      }
+    }
+  }
+
   @Transactional
   @Override
   public void execute() {
@@ -84,13 +97,20 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
         int[] adherings = new int[hall.getBoundaryPoint().getCoordinateY()];
         IntStream.range(0, adherings.length).forEach(x -> adherings[x] = x);
 
+        units.sort(
+            (x, y) ->
+                Integer.compare(
+                    x.getLowerBoundary().getCoordinateY(), y.getLowerBoundary().getCoordinateY()));
+
         for (Unit unit : units) {
-          if (unit.getLowerBoundary() != unit.getUpperBoundary()) {
-            IntStream.range(
-                    unit.getLowerBoundary().getCoordinateY() - 1,
-                    unit.getUpperBoundary().getCoordinateY() - 1)
-                .forEach(
-                    x -> adherings[x] = adherings[unit.getLowerBoundary().getCoordinateY() - 1]);
+          if (unit.getLowerBoundary().getCoordinateY()
+              != unit.getUpperBoundary().getCoordinateY()) {
+
+            for (int o = unit.getLowerBoundary().getCoordinateY();
+                o <= unit.getUpperBoundary().getCoordinateY();
+                o++) {
+              adherings[o - 1] = adherings[unit.getLowerBoundary().getCoordinateY() - 1];
+            }
           }
         }
 
@@ -108,8 +128,6 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
           }
 
           normalizeArray(adherings);
-
-          
         }
 
         for (int w = 0; w < adherings.length; w++) {
@@ -131,21 +149,6 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
       }
     }
   }
-
-  /** Javadoc. */
-  public static void normalizeArray(int[] array) {
-    int lastP = array[0];
-    int pindex = 0;
-    for (int k = 0; k < array.length; k++) {
-      if (array[k] != lastP) {
-        lastP = array[k];
-        array[k] = ++pindex;
-      } else {
-        array[k] = pindex;
-      }
-    }
-  }
-  
 
   @Override
   public Class<DefinedUnit> getGeneratedType() {
