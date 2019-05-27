@@ -38,9 +38,9 @@ public class NewsDataGenerator implements DataGenerator<News> {
     for (int i = 0; i < MAX_NEWS_COUNT; i++) {
       generatedNews.add(
           News.builder()
-              .title(FAKER.lorem().characters(30, 40))
-              .summary(FAKER.lorem().characters(30, 40))
-              .text(FAKER.lorem().paragraph(FAKER.number().numberBetween(5, 10)))
+              .title(FAKER.lordOfTheRings().character() + FAKER.hitchhikersGuideToTheGalaxy().character())
+              .summary(FAKER.harryPotter().quote())
+              .text(FAKER.lorem().paragraph(FAKER.number().numberBetween(8, 12)))
               .publishedAt(
                   LocalDateTime.ofInstant(
                       FAKER.date().past(365 * 3, TimeUnit.DAYS).toInstant(),

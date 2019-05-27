@@ -35,10 +35,20 @@ public class LocationDataGenerator implements DataGenerator<Location> {
 
     for (int i = 0; i < MAX_LOCATION_COUNT; i++) {
       Address address = FAKER.address();
+      if (i % 2 == 0) {
+        generatedLocations.add(
+            new Location.Builder()
+                .name(FAKER.harryPotter().location())
+                .country("Austria")
+                .place(address.city())
+                .postalCode(address.zipCode())
+                .street(address.streetAddress())
+                .build());
+      }
       generatedLocations.add(
           new Location.Builder()
               .name(FAKER.harryPotter().location())
-              .country("Austria")
+              .country(FAKER.address().country())
               .place(address.city())
               .postalCode(address.zipCode())
               .street(address.streetAddress())

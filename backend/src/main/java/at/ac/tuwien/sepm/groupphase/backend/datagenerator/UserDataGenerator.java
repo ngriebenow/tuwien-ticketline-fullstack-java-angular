@@ -39,8 +39,16 @@ public class UserDataGenerator implements DataGenerator<User> {
     user.setFailedLoginCounter(0);
     user.setPassword("password");
 
+    UserDto user2 = new UserDto();
+    user.setUsername("MR2");
+    user.setAdmin(false);
+    user.setEnabled(true);
+    user.setFailedLoginCounter(0);
+    user.setPassword("password");
+
     accountService.saveUser(admin);
     accountService.saveUser(user);
+    accountService.saveUser(user2);
   }
 
   @Override
