@@ -57,7 +57,19 @@ export class HallViewingComponent implements OnInit {
       error => {
         this.alertService.error('Sitzplätze konnten nicht geladen werden.');
       }
-      );
+      ).add(
+      () => this.setSelectedAndNum(this.defUnits)
+    );
+    for (let i = 0; i < this.defUnits.length; i++) {
+      console.log("Initi: " + this.defUnits[i].selected);
+    }
+  }
+
+  setSelectedAndNum(dunits: DefinedUnit[]) {
+    for (let i = 0; i < dunits.length; i++) {
+      dunits[i].selected = false;
+      dunits[i].num = 0;
+    }
   }
 
   clickSeat(seat: DefinedUnit) {
@@ -125,7 +137,8 @@ export class HallViewingComponent implements OnInit {
   }
 
   sectorIsSelected(dunit: DefinedUnit) {
-    return dunit.selected;
+    console.log('selected: ' + dunit.selected === null);
+    return dunit.selected === null || dunit.selected;
   }
 
   sectorSelected(dunit: DefinedUnit) {

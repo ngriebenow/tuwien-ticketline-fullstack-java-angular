@@ -22,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class PriceCategoryDataGenerator implements DataGenerator<PriceCategory> {
 
   private static final Faker FAKER = new Faker(new Locale("de-at"));
-  private static final int MAX_PRICE_CATEGORIES_PER_EVENT = 3;
+  private static final int MIN_PRICE_CATEGORIES_PER_EVENT = 1;
+  private static final int MAX_PRICE_CATEGORIES_PER_EVENT = 5;
   private static final int MIN_BASE_PRICE = 1500;
   private static final int MAX_BASE_PRICE = 9000;
   private static final double BASE_PRICE_DECREASE_FACTOR = 0.1;
@@ -46,7 +47,11 @@ public class PriceCategoryDataGenerator implements DataGenerator<PriceCategory> 
       int basePrice = FAKER.random().nextInt(MIN_BASE_PRICE, MAX_BASE_PRICE);
 
       generatedPriceCategories.clear();
-      for (int i = 0; i < MAX_PRICE_CATEGORIES_PER_EVENT; i++) {
+
+      int pcCount = FAKER.random().nextInt(
+          MIN_PRICE_CATEGORIES_PER_EVENT,MAX_PRICE_CATEGORIES_PER_EVENT);
+
+      for (int i = 0; i < pcCount; i++) {
         Color color =
             new Color(
                 FAKER.random().nextInt(256),

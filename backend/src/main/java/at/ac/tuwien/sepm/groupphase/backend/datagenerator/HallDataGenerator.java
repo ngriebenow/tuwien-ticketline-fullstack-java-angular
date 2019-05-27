@@ -23,10 +23,10 @@ public class HallDataGenerator implements DataGenerator<Hall> {
 
   private static final Faker FAKER = new Faker(new Locale("de-at"));
   private static final int MAX_HALL_COUNT_PER_LOCATION = 10;
-  private static final int MIN_WIDTH = 10;
-  private static final int MAX_WIDTH = 20;
-  private static final int MIN_ROWS = 10;
-  private static final int MAX_ROWS = 20;
+  private static final int MIN_WIDTH = 5;
+  private static final int MAX_WIDTH = 25;
+  private static final int MIN_ROWS = 5;
+  private static final int MAX_ROWS = 25;
   private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Location.class));
   private HallRepository hallRepository;
   private LocationRepository locationRepository;

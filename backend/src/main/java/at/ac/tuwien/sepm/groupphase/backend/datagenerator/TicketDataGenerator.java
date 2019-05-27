@@ -66,21 +66,23 @@ public class TicketDataGenerator implements DataGenerator<Ticket> {
       int ticketCount =
           FAKER.random().nextInt(MIN_TICKET_COUNT_PER_INVOICE, MAX_TICKET_COUNT_PER_INVOICE);
 
-      int definedUnitIdx = FAKER.random().nextInt(definedUnits.size());
+      if (definedUnits.size() > 0) {
+        int definedUnitIdx = FAKER.random().nextInt(definedUnits.size());
 
-      for (int i = 0; i < ticketCount; i++) {
-        RANDOM.nextBytes(salt);
-        DefinedUnit definedUnit = definedUnits.get((definedUnitIdx + i) % definedUnits.size());
-        invoice.addTicket(
-            new Ticket.Builder()
-                .salt(Base64.getEncoder().encodeToString(salt))
-                .isCancelled(invoice.isCancelled())
-                .definedUnit(definedUnit)
-                .build());
+        for (int i = 0; i < ticketCount; i++) {
+          RANDOM.nextBytes(salt);
+          DefinedUnit definedUnit = definedUnits.get((definedUnitIdx + i) % definedUnits.size());
+          invoice.addTicket(
+              new Ticket.Builder()
+                  .salt(Base64.getEncoder().encodeToString(salt))
+                  .isCancelled(invoice.isCancelled())
+                  .definedUnit(definedUnit)
+                  .build());
 
-        definedUnit.setCapacityFree(definedUnit.getCapacityFree() - 1);
+          definedUnit.setCapacityFree(definedUnit.getCapacityFree() - 1);
+        }
+        invoiceRepository.save(invoice);
       }
-      invoiceRepository.save(invoice);
     }
   }
 
