@@ -5,7 +5,7 @@ export class EventFilter {
     public name: string,
     public eventCategory: string,
     public artistName: string,
-    public priceInEuro: number,
+    public priceInEuro: string,
     public content: string,
     public duration: string,
     public hallId: string,

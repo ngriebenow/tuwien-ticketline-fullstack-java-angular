@@ -7,9 +7,13 @@
     <button type="button" (click)="clickAisle(aisle)" [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(aisle),'top':calcPositionTop(aisle)}" class="btn btn-aisle"></button>
   </ng-container>
   <ng-container *ngFor="let sector of sectors">
-    <button type="button" (click)="clickSector(sector)" [ngStyle]="{'width':calcSectorSizeX(sector),'height':calcSectorSizeY(sector),'position':'absolute','left':calcPositionLeft(sector.upperBoundary),'top':calcPositionTop(sector.upperBoundary)}" class="btn btn-sector">
-      <h4>{{ sector.name }}</h4>
-      <h4>{{ sector.capacity }}</h4>
+    <button type="button" (click)="clickSector(sector)" [ngStyle]="{'width':calcSectorSizeX(sector),'height':calcSectorSizeY(sector),'position':'absolute','left':calcPositionLeft(sector.upperBoundary),'top':calcPositionTop(sector.upperBoundary)}" class="btn btn-sector text-truncate align-middle btn-font-size-reduced">
+      <h4 *ngIf="spaceForBigText(sector); else smallText">{{ sector.name }}</h4>
+      <h4 *ngIf="spaceForBigText(sector)">{{ sector.capacity }}</h4>
+      <ng-template #smallText>
+        <p *ngIf="spaceForName(sector)">{{ sector.name }}</p>
+        <p>{{ sector.capacity }}</p>
+      </ng-template>
     </button>
   </ng-container>
 </div>
