@@ -46,6 +46,35 @@
   </div>
 </div>
 
+<div *ngIf="editingMode() || sectorMode()" class="container">
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right info-text">Saalname</h2>
+    </div>
+    <div class="col-6 align-self-center">
+      <h2 class="float-left info-text">{{ hall.name }}</h2>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right info-text">Tiefe</h2>
+    </div>
+    <div class="col-6 align-self-center">
+      <h2 class="float-left info-text">{{ hallCreationService.getHallSize().coordinateY }}</h2>
+    </div>
+  </div>
+
+  <div class="row row-padding">
+    <div class="col-6 align-self-center">
+      <h2 class="float-right info-text">Breite</h2>
+    </div>
+    <div class="col-6 align-self-center">
+      <h2 class="float-left info-text">{{ hallCreationService.getHallSize().coordinateX }}</h2>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="editingMode()" class="container">
   <div class="row row-padding">
     <div class="col-6 align-self-center">
