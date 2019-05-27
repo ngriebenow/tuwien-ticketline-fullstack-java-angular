@@ -1,7 +1,9 @@
 <div class="pictures">
-<ng-container *ngFor="let picture of getPicturesSortedById()">
-  <div class="line">
-    <img [src]="picture.data" alt="News Picture">
+  <div class="row justify-content-center">
+    <ng-container *ngFor="let picture of getPicturesSortedById()">
+      <div class="col-md-2 text-center" style="padding-left: 5px; padding-right: 5px;">
+        <img [src]="picture.data" alt="News Picture">
+      </div>
+    </ng-container>
   </div>
-</ng-container>
 </div>
