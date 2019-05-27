@@ -4,9 +4,9 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UserDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.UserFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.user.UserMapper;
-import at.ac.tuwien.sepm.groupphase.backend.exception.DuplicateEntry;
 import at.ac.tuwien.sepm.groupphase.backend.exception.InvalidInputException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.AccountService;
 import java.util.ArrayList;
@@ -34,9 +34,7 @@ public class SimpleAccountService implements AccountService {
     this.userMapper = userMapper;
   }
 
-  /**
-   * Javadoc.
-   */
+  /** Javadoc. */
   private static Specification<User> likeUser(UserFilterDto userFilter) {
     return new Specification<User>() {
       @Override
@@ -127,7 +125,7 @@ public class SimpleAccountService implements AccountService {
   public UserDto saveUser(UserDto user) {
     try {
       findOne(user.getUsername());
-      throw new DuplicateEntry("User " + user.getUsername() + " already in database.");
+      throw new ValidationException("User " + user.getUsername() + " already in database.");
     } catch (NotFoundException e) {
       // Everything fine
     }
@@ -150,10 +148,11 @@ public class SimpleAccountService implements AccountService {
       old.setFailedLoginCounter(updated.getFailedLoginCounter());
     }
     if (updated.getEnabled() != null) {
-      old.setEnabled(updated.getEnabled());
+      old.setEnabled(updated.getEnabled().toLowerCase().equals("true") ? true : false);
     }
     if (updated.getAdmin() != null) {
-      old.setAuthority(updated.getAdmin() ? "ROLE_ADMIN" : "ROLE_USER");
+      old.setAuthority(
+          updated.getAdmin().toLowerCase().equals("true") ? "ROLE_ADMIN" : "ROLE_USER");
     }
     return old;
   }

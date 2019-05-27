@@ -10,9 +10,9 @@ public class UserDto {
 
   private Integer failedLoginCounter;
 
-  private Boolean enabled;
+  private String enabled;
 
-  private Boolean isAdmin;
+  private String admin;
 
   public String getUsername() {
     return username;
@@ -38,20 +38,20 @@ public class UserDto {
     this.failedLoginCounter = failedLoginCounter;
   }
 
-  public Boolean getEnabled() {
+  public String getEnabled() {
     return enabled;
   }
 
-  public void setEnabled(Boolean enabled) {
+  public void setEnabled(String enabled) {
     this.enabled = enabled;
   }
 
-  public Boolean getAdmin() {
-    return isAdmin;
+  public String getAdmin() {
+    return admin;
   }
 
-  public void setAdmin(Boolean admin) {
-    isAdmin = admin;
+  public void setAdmin(String admin) {
+    this.admin = admin;
   }
 
   @Override
@@ -65,12 +65,12 @@ public class UserDto {
     UserDto userDto = (UserDto) o;
     return failedLoginCounter == userDto.failedLoginCounter
         && enabled == userDto.enabled
-        && isAdmin == userDto.isAdmin
+        && admin == userDto.admin
         && username.equals(userDto.username);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, failedLoginCounter, enabled, isAdmin);
+    return Objects.hash(username, failedLoginCounter, enabled, admin);
   }
 }

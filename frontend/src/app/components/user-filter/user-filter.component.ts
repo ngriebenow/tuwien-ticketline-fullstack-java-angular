@@ -3,6 +3,7 @@ import {FormBuilder} from '@angular/forms';
 import {UserService} from '../../services/user.service';
 import {User} from '../../dtos/user';
 import {UserFilter} from '../../dtos/user-filter';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-filter',
@@ -23,7 +24,7 @@ export class UserFilterComponent implements OnInit {
     isEnabled: ['']
   });
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder) {
+  constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router) {
     this.queryParams = new UserFilter('', '', '', 0, 20);
     this.isLocked = '';
   }
@@ -38,9 +39,6 @@ export class UserFilterComponent implements OnInit {
     this.userService.getUsersFiltered(this.queryParams).subscribe(
       (user: User[]) => {
         this.users = user;
-        this.users.forEach(function (value) {
-          console.log(value);
-        });
       },
       error => {
         // TODO: error handling
@@ -60,26 +58,12 @@ export class UserFilterComponent implements OnInit {
     }
   }
 
-  public resetSearchForm(): void {
-    this.page = 0;
-    this.setIsLockedToNull();
-    this.searchForm.reset({}, {emitEvent: true});
+  public setIsLocked(inp: string): void {
+    this.isLocked = inp;
   }
 
-  public setIsLockedToTrue(): void {
-    this.isLocked = 'true';
-  }
-
-  public setIsLockedToFalse(): void {
-    this.isLocked = 'false';
-  }
-
-  public setIsLockedToNull(): void {
-    this.isLocked = '';
-  }
-
-  public update(): void {
-    this.loadUsers();
+  public addUser(): void {
+    this.router.navigate(['/user-add']);
   }
 
 

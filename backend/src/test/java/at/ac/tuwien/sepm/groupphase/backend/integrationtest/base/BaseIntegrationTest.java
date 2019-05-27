@@ -46,8 +46,8 @@ public abstract class BaseIntegrationTest {
       admin.setUsername(ADMIN_USERNAME);
       admin.setPassword(ADMIN_PASSWORD);
       admin.setFailedLoginCounter(0);
-      admin.setEnabled(true);
-      admin.setAdmin(true);
+      admin.setEnabled("true");
+      admin.setAdmin("true");
       accountService.saveUser(admin);
     }
 
@@ -56,8 +56,8 @@ public abstract class BaseIntegrationTest {
       user.setUsername(USER_USERNAME);
       user.setPassword(USER_PASSWORD);
       user.setFailedLoginCounter(0);
-      user.setEnabled(true);
-      user.setAdmin(false);
+      user.setEnabled("true");
+      user.setAdmin("false");
       accountService.saveUser(user);
     }
 

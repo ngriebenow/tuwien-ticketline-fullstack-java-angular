@@ -19,12 +19,12 @@ public class SimpleUserMapper implements UserMapper {
     User u = new User();
     u.setUsername(user.getUsername());
     u.setPassword(encoder.encode(user.getPassword()));
-    if (user.getAdmin()) {
+    if (user.getAdmin().toLowerCase().equals("true")) {
       u.setAuthority("ROLE_ADMIN");
     } else {
       u.setAuthority("ROLE_USER");
     }
-    u.setEnabled(user.getEnabled());
+    u.setEnabled(user.getEnabled().toLowerCase().equals("true"));
     u.setFailedLoginCounter(user.getFailedLoginCounter());
     return u;
   }
@@ -35,12 +35,12 @@ public class SimpleUserMapper implements UserMapper {
     u.setUsername(user.getUsername());
     u.setPassword("");
     if (user.getAuthority().contains("ROLE_ADMIN")) {
-      u.setAdmin(true);
+      u.setAdmin("true");
     } else {
-      u.setAdmin(false);
+      u.setAdmin("false");
     }
     u.setFailedLoginCounter(user.getFailedLoginCounter());
-    u.setEnabled(user.isEnabled());
+    u.setEnabled(user.isEnabled() ? "true" : "false");
     return u;
   }
 }

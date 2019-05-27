@@ -1,0 +1,65 @@
+<h1>User anlegen</h1>
+<form class="form" [formGroup]="searchForm" (ngSubmit)="createUser()">
+
+  <div class="form-group row">
+    <h2 for="inputUsername" class="col-sm-2 col-form-label text-right">Benutzername</h2>
+    <div class="col-sm-9">
+      <div class="md-form mt-0">
+        <input type="input" class="form-control" name="username" id="inputUsername" placeholder="Benutzername"
+               [(ngModel)]="queryParams.username" formControlName="username">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <h2 for="inputPassword" class="col-sm-2 col-form-label text-right">Passwort</h2>
+    <div class="col-sm-9">
+      <div class="md-form mt-0">
+        <input type="input" class="form-control" name="password" id="inputPassword" placeholder="Passwort"
+               [(ngModel)]="queryParams.password" formControlName="password">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group">
+      <label>Administrator</label>
+      <br/>
+      <div class="btn-group btn-group-toggle">
+        <label class="btn btn-light">
+          <input type="radio" value=true
+                 (click)="setAdmin('true')" formControlName="admin">
+          <i class="fas fa-check"></i>
+        </label>
+        <label class="btn btn-light">
+          <input type="radio" value=false
+                 (click)="setAdmin('false')" formControlName="admin">
+          <i class="fas fa-times"></i>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Aktiviert</label>
+      <br/>
+      <div class="btn-group btn-group-toggle">
+        <label class="btn btn-light">
+          <input type="radio" value=false
+                 (click)="setLocked('true')" formControlName="enabled">
+          <i class="fas fa-check"></i>
+        </label>
+        <label class="btn btn-light">
+          <input type="radio" value=true
+                 (click)="setLocked('false')" formControlName="enabled">
+          <i class="fas fa-times"></i>
+        </label>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="bottom-right-above-1">
+  <button type="button" class="btn-font-size-reduced btn-lg btn-primary" (click)="createUser()">Speichern</button>
+</div>
+<div class="bottom-right">
+  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+</div>

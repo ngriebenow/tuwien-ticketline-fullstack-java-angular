@@ -33,8 +33,8 @@ export class UserService {
       .set('username', userFilter.username)
       .set('role', userFilter.role)
       .set('locked', String(userFilter.locked))
-      .set('page', '0')
-      .set('count', '100');
+      .set('page', String(userFilter.page))
+      .set('count', String(userFilter.count));
 
 
     console.log('getUsersFiltered: ' + paramsHttp);

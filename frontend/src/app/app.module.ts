@@ -21,15 +21,16 @@ import {EventFilterComponent} from './components/event-filter/event-filter.compo
 import {IMyDpOptions, MyDatePickerModule} from 'mydatepicker';
 import {InvoiceFilterComponent} from './components/invoice-filter/invoice-filter.component';
 import {HallViewingComponent} from './components/hall-viewing/hall-viewing.component';
-import { PictureDisplayComponent } from './components/picture-display/picture-display.component';
-import { NewsDetailComponent } from './components/news-detail/news-detail.component';
-import { NewsAddComponent } from './components/news-add/news-add.component';
-import { PictureUploadComponent } from './components/picture-upload/picture-upload.component';
-import { AlertComponent } from './components/alert/alert.component';
-import { InvoiceDetailComponent } from './components/invoice-detail/invoice-detail.component';
-import { BestEventsComponent } from './components/best-events/best-events.component';
+import {PictureDisplayComponent} from './components/picture-display/picture-display.component';
+import {NewsDetailComponent} from './components/news-detail/news-detail.component';
+import {NewsAddComponent} from './components/news-add/news-add.component';
+import {PictureUploadComponent} from './components/picture-upload/picture-upload.component';
+import {AlertComponent} from './components/alert/alert.component';
+import {InvoiceDetailComponent} from './components/invoice-detail/invoice-detail.component';
+import {BestEventsComponent} from './components/best-events/best-events.component';
 import {UserFilterComponent} from './components/user-filter/user-filter.component';
 import {ClientFilterComponent} from './components/client-filter/client-filter.component';
+import {UserAddComponent} from './components/user-add/user-add.component';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import {ClientFilterComponent} from './components/client-filter/client-filter.co
     BestEventsComponent,
     UserFilterComponent,
     ClientFilterComponent,
+    UserAddComponent,
   ],
   imports: [
     BrowserModule,

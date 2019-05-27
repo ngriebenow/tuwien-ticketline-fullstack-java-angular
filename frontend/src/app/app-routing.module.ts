@@ -16,6 +16,7 @@ import {NewsDetailComponent} from './components/news-detail/news-detail.componen
 import {NewsAddComponent} from './components/news-add/news-add.component';
 
 import {ClientFilterComponent} from './components/client-filter/client-filter.component';
+import {UserAddComponent} from './components/user-add/user-add.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -32,7 +33,8 @@ const routes: Routes = [
   {path: 'invoices/:id', canActivate: [AuthGuard], component: InvoiceDetailComponent},
   {path: 'finalize-transaction', canActivate: [AuthGuard], component: InvoiceDetailComponent},
   {path: 'user-filter', canActivate: [AuthGuard], component: UserFilterComponent},
-  {path: 'client-filter', canActivate: [AuthGuard], component: ClientFilterComponent}
+  {path: 'client-filter', canActivate: [AuthGuard], component: ClientFilterComponent},
+  {path: 'user-add', canActivate: [AuthGuard], component: UserAddComponent},
 ];
 
 @NgModule({
