@@ -17,14 +17,24 @@
   height: 15px;
 }
 .not-read-marker{
-  width:5px;
+  width:15px;
   height: 186px;
   margin-right: 25px;
   background-color: $main-orange;
 }
 .read-marker{
-  width:5px;
+  width:15px;
   height: 186px;
   margin-right: 25px;
   background-color: white;
+}
+
+.row-padding {
+  padding-top: 20px;
+  padding-bottom: 15px;
+}
+
+.row-padding-2 {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
