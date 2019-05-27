@@ -4,10 +4,10 @@
     <div class="col-3 no-padding my-auto">
       <div class="container-fluid key-bg" style="padding-top: 70px;">
         <div class="row row-padding" *ngFor="let cat of cats">
-          <div class="col-6 align-self-center">
+          <div class="col-6 align-self-center" *ngIf="catInUse(cat)">
             <h2 class="float-right" style="font-size:20px">{{ cat.name }}</h2>
           </div>
-          <div class="col-4 align-self-center">
+          <div class="col-4 align-self-center" *ngIf="catInUse(cat)">
             <input readonly class="form-control" type="text" value="{{cat.priceInCents/100 | currency:'EUR'}}">
           </div>
         </div>
@@ -106,10 +106,10 @@
           </div>
         </ng-container>
         <ng-container *ngFor="let cat of cats">
-          <div
+          <div *ngIf="catInUse(cat)"
             [ngStyle]="{'height': calcCatHeight(cat.id), 'background-color': getCatColor(cat.id),'position':'absolute', 'top':calcCatPosition(cat.id)}"
             class="btn btn-cat disabled"></div>
-          <h5 [ngStyle]="{'top': calcCatNamePosition(cat.id),'position':'absolute'}" style="margin-left: 835px">
+          <h5 *ngIf="catInUse(cat)" [ngStyle]="{'top': calcCatNamePosition(cat.id),'position':'absolute'}" style="margin-left: 835px">
            {{ cat.name }}</h5>
         </ng-container>
       </div>

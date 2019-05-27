@@ -100,6 +100,15 @@ export class HallViewingComponent implements OnInit {
     return this.performance.startAt;
   }
 
+  catInUse(priceCat: PriceCategory) {
+    for (let i = 0; i < this.defUnits.length; i++) {
+      if (this.defUnits[i].priceCategoryId === priceCat.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   selectionNotEmpty() {
     let any = false;
     this.defUnits.forEach(
