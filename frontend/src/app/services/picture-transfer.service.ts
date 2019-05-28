@@ -31,6 +31,6 @@ export class PictureTransferService {
    * Clears the pictureIds array.
    */
   clearData() {
-    this.uploadedPictureIds = undefined;
+    this.uploadedPictureIds = new Array();
   }
 }
