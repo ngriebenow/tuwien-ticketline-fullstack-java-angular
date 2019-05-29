@@ -29,16 +29,19 @@ import java.awt.Color;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @ActiveProfiles(profiles = "serviceintegration-test")
 public class EventServiceIntegrationTest {
@@ -109,7 +112,7 @@ public class EventServiceIntegrationTest {
   private PriceCategory PC6;
 
 
-  @BeforeEach
+  @Before
   public void initialize() {
 
     E1 =
@@ -208,7 +211,7 @@ public class EventServiceIntegrationTest {
     P1 =
         new Performance.Builder()
             .name("1A")
-            .startAt(LocalDate.of(2000, 1, 15).atStartOfDay())
+            .startAt(LocalDate.of(3000, 1, 15).atStartOfDay())
             .id(0L)
             .event(E1)
             .build();
@@ -217,7 +220,7 @@ public class EventServiceIntegrationTest {
     P2 =
         new Performance.Builder()
             .name("2A")
-            .startAt(LocalDate.of(2000, 2, 15).atStartOfDay())
+            .startAt(LocalDate.of(3000, 2, 15).atStartOfDay())
             .id(1L)
             .event(E1)
             .build();
@@ -226,7 +229,7 @@ public class EventServiceIntegrationTest {
     P3 =
         new Performance.Builder()
             .name("1B")
-            .startAt(LocalDate.of(2000, 3, 15).atStartOfDay())
+            .startAt(LocalDate.of(3000, 3, 15).atStartOfDay())
             .event(E2)
             .build();
     P3 = performanceRepository.save(P3);
@@ -234,7 +237,7 @@ public class EventServiceIntegrationTest {
     P4 =
         new Performance.Builder()
             .name("2B")
-            .startAt(LocalDate.of(2000, 4, 15).atStartOfDay())
+            .startAt(LocalDate.of(3000, 4, 15).atStartOfDay())
             .event(E2)
             .build();
     P4 = performanceRepository.save(P4);
@@ -242,7 +245,7 @@ public class EventServiceIntegrationTest {
     P5 =
         new Performance.Builder()
             .name("3B")
-            .startAt(LocalDate.of(2000, 5, 15).atStartOfDay())
+            .startAt(LocalDate.of(3000, 5, 15).atStartOfDay())
             .event(E2)
             .build();
     P5 = performanceRepository.save(P5);
@@ -250,7 +253,7 @@ public class EventServiceIntegrationTest {
     P6 =
         new Performance.Builder()
             .name("1C")
-            .startAt(LocalDate.of(2000, 6, 15).atStartOfDay())
+            .startAt(LocalDate.of(3000, 6, 15).atStartOfDay())
             .event(E3)
             .build();
     P6 = performanceRepository.save(P6);
@@ -258,7 +261,7 @@ public class EventServiceIntegrationTest {
     P7 =
         new Performance.Builder()
             .name("2C")
-            .startAt(LocalDate.of(2000, 7, 15).atStartOfDay())
+            .startAt(LocalDate.of(3000, 7, 15).atStartOfDay())
             .event(E3)
             .build();
     P7 = performanceRepository.save(P7);
@@ -266,7 +269,7 @@ public class EventServiceIntegrationTest {
     P8 =
         new Performance.Builder()
             .name("3C")
-            .startAt(LocalDate.of(2000, 8, 15).atStartOfDay())
+            .startAt(LocalDate.of(3000, 8, 15).atStartOfDay())
             .event(E3)
             .build();
     P8 = performanceRepository.save(P8);
@@ -274,7 +277,7 @@ public class EventServiceIntegrationTest {
     P9 =
         new Performance.Builder()
             .name("4C")
-            .startAt(LocalDate.of(2000, 9, 15).atStartOfDay())
+            .startAt(LocalDate.of(3000, 9, 15).atStartOfDay())
             .event(E3)
             .build();
     P9 = performanceRepository.save(P9);
@@ -330,7 +333,7 @@ public class EventServiceIntegrationTest {
 
   }
 
-  @AfterEach
+  @After
   public void cleanUp() {
     priceCategoryRepository.deleteAll();
     performanceRepository.deleteAll();

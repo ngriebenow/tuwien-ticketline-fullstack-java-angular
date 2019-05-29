@@ -35,15 +35,17 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @ActiveProfiles(profiles = "serviceintegration-test")
 public class EventTop10ServiceIntegrationTest {
@@ -100,8 +102,7 @@ public class EventTop10ServiceIntegrationTest {
   private Ticket ticket3;
   private Invoice invoice1;
 
-  @Transactional
-  @BeforeEach
+  @Before
   public void setUp() {
     clientOne =
         new Client.Builder().name("Klaus").surname("Klauser").email("klaus@klausur.at").build();
@@ -313,7 +314,7 @@ public class EventTop10ServiceIntegrationTest {
   }
 
 
-  @AfterEach
+  @After
   public void cleanUp() {
     invoice1.removeTicket(ticket1);
     invoiceRepository.save(invoice1);
