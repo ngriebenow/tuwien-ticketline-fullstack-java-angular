@@ -3,7 +3,6 @@ import {FormBuilder} from '@angular/forms';
 import {ClientFilter} from '../../dtos/client-filter';
 import {Client} from '../../dtos/client';
 import {ClientService} from '../../services/client.service';
-import {stringify} from 'postcss';
 
 @Component({
   selector: 'app-user-filter',
@@ -16,6 +15,7 @@ export class ClientFilterComponent implements OnInit {
   public page = 0;
   public count = 20;
   public queryParams: ClientFilter;
+  public customerID: string;
 
   public searchForm = this.formBuilder.group({
     clientName: [''],
@@ -47,6 +47,18 @@ export class ClientFilterComponent implements OnInit {
     );
   }
 
+  public loadClient(): void {
+    this.clientService.getClientById(this.customerID).subscribe(
+      (client) => {
+        this.clients = new Array();
+        this.clients.push(client);
+      },
+      error => {
+        // TODO: error handling
+      }
+    );
+  }
+
   public nextPage(): void {
     this.page++;
     this.loadClients();
@@ -60,7 +72,12 @@ export class ClientFilterComponent implements OnInit {
   }
 
   public update(): void {
-    this.loadClients();
+    if (this.customerID === '') {
+      this.loadClients();
+    } else {
+      this.loadClient();
+    }
+
   }
 
   selectUser(client: Client): void {
