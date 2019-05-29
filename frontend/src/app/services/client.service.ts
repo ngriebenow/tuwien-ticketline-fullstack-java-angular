@@ -20,7 +20,7 @@ export class ClientService {
    * Loads specific client from the backend
    * @param id of client to load
    */
-  getClientById(id: number): Observable<Client> {
+  getClientById(id: string): Observable<Client> {
     console.log('Load client for ' + id);
     return this.httpClient.get<Client>(this.userBaseUri + '/' + id);
   }
