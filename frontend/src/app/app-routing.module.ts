@@ -19,6 +19,8 @@ import {ClientFilterComponent} from './components/client-filter/client-filter.co
 import {AdminAuthGuard} from './guards/admin-auth.guard';
 import {UserAddComponent} from './components/user-add/user-add.component';
 import {UserEditComponent} from './components/user-edit/user-edit.component';
+import {ClientAddComponent} from './components/client-add/client-add.component';
+
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -38,6 +40,7 @@ const routes: Routes = [
   {path: 'client-filter', canActivate: [AuthGuard], component: ClientFilterComponent},
   {path: 'user-add', canActivate: [AuthGuard], component: UserAddComponent},
   {path: 'user-edit/:user', canActivate: [AuthGuard], component: UserEditComponent},
+  {path: 'client-add', canActivate: [AuthGuard], component: ClientAddComponent},
 ];
 
 @NgModule({

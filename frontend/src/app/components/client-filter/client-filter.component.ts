@@ -3,6 +3,7 @@ import {FormBuilder} from '@angular/forms';
 import {ClientFilter} from '../../dtos/client-filter';
 import {Client} from '../../dtos/client';
 import {ClientService} from '../../services/client.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-filter',
@@ -23,7 +24,7 @@ export class ClientFilterComponent implements OnInit {
     clientEmail: ['']
   });
 
-  constructor(private clientService: ClientService, private formBuilder: FormBuilder) {
+  constructor(private clientService: ClientService, private formBuilder: FormBuilder, private router: Router) {
     this.queryParams = new ClientFilter('', '', '', 0, 10);
   }
 
@@ -82,6 +83,10 @@ export class ClientFilterComponent implements OnInit {
 
   selectUser(client: Client): void {
     localStorage.setItem('client', JSON.stringify(client));
+  }
+
+  public addClient(): void {
+    this.router.navigate(['/client-add']);
   }
 
 }
