@@ -16,13 +16,14 @@ import {NewsDetailComponent} from './components/news-detail/news-detail.componen
 import {NewsAddComponent} from './components/news-add/news-add.component';
 
 import {ClientFilterComponent} from './components/client-filter/client-filter.component';
+import {AdminAuthGuard} from './guards/admin-auth.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'news', canActivate: [AuthGuard], component: NewsComponent},
   {path: 'news/:id', canActivate: [AuthGuard], component: NewsDetailComponent},
-  {path: 'news-add', canActivate: [AuthGuard], component: NewsAddComponent},
+  {path: 'news-add', canActivate: [AuthGuard, AdminAuthGuard], component: NewsAddComponent},
   {path: 'hall-creation', canActivate: [AuthGuard], component: HallCreationComponent},
   {path: 'events/:id', canActivate: [AuthGuard], component: EventComponent},
   {path: 'event-filter', canActivate: [AuthGuard], component: EventFilterComponent},
