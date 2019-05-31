@@ -3,6 +3,7 @@ import {FormBuilder} from '@angular/forms';
 import {UserService} from '../../services/user.service';
 import {User} from '../../dtos/user';
 import {UserFilter} from '../../dtos/user-filter';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-filter',
@@ -16,16 +17,19 @@ export class UserFilterComponent implements OnInit {
   public count = 20;
   public queryParams: UserFilter;
   public isLocked: string;
+  public admin: string;
 
   public searchForm = this.formBuilder.group({
     userName: [''],
     userRole: [''],
-    isEnabled: ['']
+    isEnabled: [''],
+    isAdmin: ['']
   });
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder) {
+  constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router) {
     this.queryParams = new UserFilter('', '', '', 0, 20);
     this.isLocked = '';
+    this.admin = '';
   }
 
   ngOnInit() {
@@ -38,7 +42,7 @@ export class UserFilterComponent implements OnInit {
     this.userService.getUsersFiltered(this.queryParams).subscribe(
       (user: User[]) => {
         this.users = user;
-        this.users.forEach(function (value) {
+        user.forEach(function (value) {
           console.log(value);
         });
       },
@@ -60,27 +64,20 @@ export class UserFilterComponent implements OnInit {
     }
   }
 
-  public resetSearchForm(): void {
-    this.page = 0;
-    this.setIsLockedToNull();
-    this.searchForm.reset({}, {emitEvent: true});
+  public setIsLocked(inp: string): void {
+    this.isLocked = inp;
   }
 
-  public setIsLockedToTrue(): void {
-    this.isLocked = 'true';
+  public setAdmin(inp: string): void {
+    this.admin = inp;
   }
 
-  public setIsLockedToFalse(): void {
-    this.isLocked = 'false';
+  public addUser(): void {
+    this.router.navigate(['/user-add']);
   }
 
-  public setIsLockedToNull(): void {
-    this.isLocked = '';
+  public editUser(user: User): void {
+    this.router.navigate(['/user-edit/' + user.username]);
   }
-
-  public update(): void {
-    this.loadUsers();
-  }
-
 
 }

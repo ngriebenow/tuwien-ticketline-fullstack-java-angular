@@ -27,16 +27,16 @@ public class UserDataGenerator implements DataGenerator<User> {
   public void execute() {
     UserDto admin = new UserDto();
     admin.setUsername("admin");
-    admin.setAdmin(true);
-    admin.setEnabled(true);
+    admin.setAdmin("true");
+    admin.setEnabled("true");
     admin.setFailedLoginCounter(0);
     admin.setPassword("password");
     accountService.saveUser(admin);
 
     UserDto user = new UserDto();
     user.setUsername("user");
-    user.setAdmin(false);
-    user.setEnabled(true);
+    user.setAdmin("false");
+    user.setEnabled("true");
     user.setFailedLoginCounter(0);
     user.setPassword("password");
     accountService.saveUser(user);
