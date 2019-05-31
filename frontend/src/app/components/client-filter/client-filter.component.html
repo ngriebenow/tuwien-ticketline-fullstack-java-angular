@@ -5,44 +5,44 @@
 </div>
 
 <div class="container">
-<div class="row mt-3">
-  <div class="col-12">
-    <form [formGroup]="searchForm">
-      <div class="row justify-content-md-center" style="padding-bottom: 15px !important;">
-        <div class="col-2 align-self-center">
-          <h2 class="float-right" style="font-size: 24px">Kunden-ID</h2>
+  <div class="row mt-3">
+    <div class="col-12">
+      <form [formGroup]="searchForm">
+        <div class="row justify-content-md-center" style="padding-bottom: 15px !important;">
+          <div class="col-2 align-self-center">
+            <h2 class="float-right" style="font-size: 24px">Kunden-ID</h2>
+          </div>
+          <div class="col-3 align-self-center">
+            <input class="form-control" type="text" placeholder="Kunden-ID" formControlName="clientName"
+                   (change)="update()" [(ngModel)]="customerID">
+          </div>
+          <div class="col-2 align-self-center">
+            <h2 class="float-right" style="font-size: 24px !important;">Nachname</h2>
+          </div>
+          <div class="col-3 align-self-center">
+            <input class="form-control" type="text" placeholder="Nachname" formControlName="clientSurname"
+                   (change)="update()" [(ngModel)]="queryParams.surname">
+          </div>
         </div>
-        <div class="col-3 align-self-center">
-          <input class="form-control" type="text" placeholder="Kunden-ID" formControlName="clientName"
-                 (change)="update()" [(ngModel)]="customerID">
+        <div class="row justify-content-md-center" style="padding-bottom: 15px;">
+          <div class="col-2 align-self-center">
+            <h2 class="float-right" style="font-size: 24px !important;">Vorname</h2>
+          </div>
+          <div class="col-3 align-self-center">
+            <input class="form-control" type="text" placeholder="Vorname" formControlName="clientName"
+                   (change)="update()" [(ngModel)]="queryParams.name">
+          </div>
+          <div class="col-2 align-self-center">
+            <h2 class="float-right" style="font-size: 24px !important;">E-Mail</h2>
+          </div>
+          <div class="col-3 align-self-center">
+            <input class="form-control" type="text" placeholder="E-Mail" formControlName="clientEmail"
+                   (change)="update()" [(ngModel)]="queryParams.email">
+          </div>
         </div>
-        <div class="col-2 align-self-center">
-          <h2 class="float-right" style="font-size: 24px !important;">Nachname</h2>
-        </div>
-        <div class="col-3 align-self-center">
-          <input class="form-control" type="text" placeholder="Nachname" formControlName="clientSurname"
-                 (change)="update()" [(ngModel)]="queryParams.surname">
-        </div>
-      </div>
-      <div class="row justify-content-md-center" style="padding-bottom: 15px;">
-        <div class="col-2 align-self-center">
-          <h2 class="float-right" style="font-size: 24px !important;">Vorname</h2>
-        </div>
-        <div class="col-3 align-self-center">
-          <input class="form-control" type="text" placeholder="Vorname" formControlName="clientName"
-                 (change)="update()" [(ngModel)]="queryParams.name">
-        </div>
-        <div class="col-2 align-self-center">
-          <h2 class="float-right" style="font-size: 24px !important;">E-Mail</h2>
-        </div>
-        <div class="col-3 align-self-center">
-          <input class="form-control" type="text" placeholder="E-Mail" formControlName="clientEmail"
-                 (change)="update()" [(ngModel)]="queryParams.email">
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 </div>
 
 <div class="row mt-3">
@@ -57,12 +57,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let client of clients" (click)="selectUser(client)" [routerLink]="['/finalize-transaction']">
-        <td>{{ client.id }}</td>
-        <td>{{ client.surname }}</td>
-        <td>{{ client.name }}</td>
-        <td>{{ client.email }}</td>
-      </tr>
+      <ng-container *ngFor="let client of clients">
+        <tr *ngIf="client.id!=0" (click)="selectUser(client)" [routerLink]="['/finalize-transaction']">
+          <td>{{ client.id }}</td>
+          <td>{{ client.surname }}</td>
+          <td>{{ client.name }}</td>
+          <td>{{ client.email }}</td>
+        </tr>
+      </ng-container>
       </tbody>
     </table>
   </div>
@@ -76,7 +78,9 @@
 </div>
 
 <div class="bottom-right-above-2">
-  <button type="button" class="btn btn-primary btn-lg btn-font-size-reduced">Anonymer Kunde</button>
+  <button type="button" (click)="anonym()" class="btn btn-primary btn-lg btn-font-size-reduced"
+          [routerLink]="['/finalize-transaction']">Anonymer Kunde
+  </button>
 </div>
 
 <div class="bottom-right-above-1">

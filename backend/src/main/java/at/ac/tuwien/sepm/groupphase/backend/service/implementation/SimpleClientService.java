@@ -8,12 +8,18 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.InvalidInputException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ClientService;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import org.hibernate.Session;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,14 +33,14 @@ public class SimpleClientService implements ClientService {
   private ClientRepository clientRepository;
   private ClientMapper clientMapper;
 
+  @PersistenceContext private EntityManager entityManager;
+
   public SimpleClientService(ClientRepository clientRepository, ClientMapper clientMapper) {
     this.clientRepository = clientRepository;
     this.clientMapper = clientMapper;
   }
 
-  /**
-   * Javadoc.
-   */
+  /** Javadoc. */
   private static Specification<Client> likeClient(ClientFilterDto clientFilter) {
     return new Specification<Client>() {
       @Override
@@ -149,5 +155,19 @@ public class SimpleClientService implements ClientService {
   @Override
   public ClientDto getOneById(long id) {
     return clientMapper.clientToClientDto(findOne(id));
+  }
+
+  @EventListener(ApplicationReadyEvent.class)
+  @Transactional
+  public void createAnonymousClient() {
+    Session session = entityManager.unwrap(Session.class);
+    session.doWork(
+        con -> {
+          try (PreparedStatement stmt =
+              con.prepareStatement(
+                  "MERGE INTO client VALUES(0,'anonym@local','anonym','anonym')")) {
+            stmt.executeUpdate();
+          }
+        });
   }
 }

@@ -85,6 +85,16 @@ export class ClientFilterComponent implements OnInit {
     localStorage.setItem('client', JSON.stringify(client));
   }
 
+  anonym(): void {
+    this.clientService.getClientById('0').subscribe(
+      (c) => {
+        this.selectUser(c);
+      },
+      error => {
+      }
+    );
+  }
+
   public addClient(): void {
     this.router.navigate(['/client-add']);
   }
