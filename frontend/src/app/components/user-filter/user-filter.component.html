@@ -83,7 +83,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let user of users">
+      <tr *ngFor="let user of users" (click)="editUser(user)">
         <td>{{ user.username }}</td>
         <td *ngIf="user.admin==='true'">Ja</td>
         <td *ngIf="user.admin==='false'">Nein</td>
@@ -103,7 +103,7 @@
 </div>
 
 <div class="bottom-right-above-1">
-  <button class="btn-font-size-reduced btn btn-secondary btn-lg " (click)="addUser()" type="button">Neu</button>
+  <button class="btn btn-secondary btn-lg " (click)="addUser()" type="button">Neu</button>
 </div>
 <div class="bottom-right">
   <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>

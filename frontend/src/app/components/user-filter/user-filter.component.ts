@@ -76,5 +76,8 @@ export class UserFilterComponent implements OnInit {
     this.router.navigate(['/user-add']);
   }
 
+  public editUser(user: User): void {
+    this.router.navigate(['/user-edit/' + user.username]);
+  }
 
 }

@@ -17,6 +17,7 @@ import {NewsAddComponent} from './components/news-add/news-add.component';
 
 import {ClientFilterComponent} from './components/client-filter/client-filter.component';
 import {UserAddComponent} from './components/user-add/user-add.component';
+import {UserEditComponent} from './components/user-edit/user-edit.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -35,6 +36,7 @@ const routes: Routes = [
   {path: 'user-filter', canActivate: [AuthGuard], component: UserFilterComponent},
   {path: 'client-filter', canActivate: [AuthGuard], component: ClientFilterComponent},
   {path: 'user-add', canActivate: [AuthGuard], component: UserAddComponent},
+  {path: 'user-edit/:user', canActivate: [AuthGuard], component: UserEditComponent},
 ];
 
 @NgModule({

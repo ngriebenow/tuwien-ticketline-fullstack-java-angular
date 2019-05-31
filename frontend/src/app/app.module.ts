@@ -31,6 +31,7 @@ import {BestEventsComponent} from './components/best-events/best-events.componen
 import {UserFilterComponent} from './components/user-filter/user-filter.component';
 import {ClientFilterComponent} from './components/client-filter/client-filter.component';
 import {UserAddComponent} from './components/user-add/user-add.component';
+import {UserEditComponent} from './components/user-edit/user-edit.component';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import {UserAddComponent} from './components/user-add/user-add.component';
     UserFilterComponent,
     ClientFilterComponent,
     UserAddComponent,
+    UserEditComponent,
   ],
   imports: [
     BrowserModule,
