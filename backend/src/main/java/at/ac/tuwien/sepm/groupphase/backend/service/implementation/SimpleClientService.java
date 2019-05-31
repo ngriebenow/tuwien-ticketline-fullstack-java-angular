@@ -115,6 +115,7 @@ public class SimpleClientService implements ClientService {
   @Transactional
   @Override
   public ClientDto saveClient(ClientDto client) {
+    client.setId(null);
     Client tmp = clientRepository.saveAndFlush(clientMapper.clientDtoToClient(client));
     return clientMapper.clientToClientDto(tmp);
   }
