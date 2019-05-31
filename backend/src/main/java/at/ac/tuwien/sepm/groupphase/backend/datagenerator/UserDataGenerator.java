@@ -43,8 +43,8 @@ public class UserDataGenerator implements DataGenerator<User> {
 
     UserDto user2 = new UserDto();
     user2.setUsername("MR2");
-    user2.setAdmin(false);
-    user2.setEnabled(true);
+    user2.setAdmin("false");
+    user2.setEnabled("true");
     user2.setFailedLoginCounter(0);
     user2.setPassword("password");
     accountService.saveUser(user2);
