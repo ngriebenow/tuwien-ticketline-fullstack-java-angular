@@ -17,16 +17,19 @@ export class UserFilterComponent implements OnInit {
   public count = 20;
   public queryParams: UserFilter;
   public isLocked: string;
+  public admin: string;
 
   public searchForm = this.formBuilder.group({
     userName: [''],
     userRole: [''],
-    isEnabled: ['']
+    isEnabled: [''],
+    isAdmin: ['']
   });
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router) {
     this.queryParams = new UserFilter('', '', '', 0, 20);
     this.isLocked = '';
+    this.admin = '';
   }
 
   ngOnInit() {
@@ -39,6 +42,9 @@ export class UserFilterComponent implements OnInit {
     this.userService.getUsersFiltered(this.queryParams).subscribe(
       (user: User[]) => {
         this.users = user;
+        user.forEach(function (value) {
+          console.log(value);
+        });
       },
       error => {
         // TODO: error handling
@@ -60,6 +66,10 @@ export class UserFilterComponent implements OnInit {
 
   public setIsLocked(inp: string): void {
     this.isLocked = inp;
+  }
+
+  public setAdmin(inp: string): void {
+    this.admin = inp;
   }
 
   public addUser(): void {
