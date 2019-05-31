@@ -33,6 +33,7 @@ import {ClientFilterComponent} from './components/client-filter/client-filter.co
 import {UserAddComponent} from './components/user-add/user-add.component';
 import {UserEditComponent} from './components/user-edit/user-edit.component';
 import {ClientAddComponent} from './components/client-add/client-add.component';
+import {ClientEditComponent} from "./components/client-edit/client-edit.component";
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import {ClientAddComponent} from './components/client-add/client-add.component';
     UserAddComponent,
     UserEditComponent,
     ClientAddComponent,
+    ClientEditComponent,
   ],
   imports: [
     BrowserModule,

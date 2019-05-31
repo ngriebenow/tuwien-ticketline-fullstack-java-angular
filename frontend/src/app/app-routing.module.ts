@@ -20,6 +20,7 @@ import {AdminAuthGuard} from './guards/admin-auth.guard';
 import {UserAddComponent} from './components/user-add/user-add.component';
 import {UserEditComponent} from './components/user-edit/user-edit.component';
 import {ClientAddComponent} from './components/client-add/client-add.component';
+import {ClientEditComponent} from './components/client-edit/client-edit.component';
 
 
 const routes: Routes = [
@@ -41,6 +42,7 @@ const routes: Routes = [
   {path: 'user-add', canActivate: [AuthGuard], component: UserAddComponent},
   {path: 'user-edit/:user', canActivate: [AuthGuard], component: UserEditComponent},
   {path: 'client-add', canActivate: [AuthGuard], component: ClientAddComponent},
+  {path: 'client-edit/:client', canActivate: [AuthGuard], component: ClientEditComponent},
 ];
 
 @NgModule({
