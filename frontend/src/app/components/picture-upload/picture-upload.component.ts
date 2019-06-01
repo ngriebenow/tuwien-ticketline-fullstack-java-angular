@@ -18,7 +18,6 @@ export class PictureUploadComponent implements OnInit, OnDestroy {
     const element = document.querySelector('.droppable');
     function callback(droppedFiles) {
       for (const file of droppedFiles) {
-        // alert(file.name);
         this.uploadFile(file);
       }
     }
@@ -28,13 +27,7 @@ export class PictureUploadComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.pictureTransferService.clearData();
   }
-  /**
-   * Gets triggered on file selection and posts the picture data.
-   * @param event for file input field
-   */
-  onFileSelected(event) {
-    this.uploadFile(event.target.files[0]);
-  }
+
   uploadFile(file: File) {
     if (file.size > 1048576) {
       alert('Error, file too big');
@@ -55,6 +48,14 @@ export class PictureUploadComponent implements OnInit, OnDestroy {
 
     input.addEventListener('change', triggerCallback);
     element.appendChild(input);
+
+    element.addEventListener('mouseover', function(e) {
+      element.classList.add('mouseover');
+    });
+
+    element.addEventListener('mouseleave', function(e) {
+      element.classList.remove('mouseover');
+    });
 
     element.addEventListener('dragover', function(e) {
       e.preventDefault();
