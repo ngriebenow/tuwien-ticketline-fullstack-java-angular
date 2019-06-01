@@ -1,3 +1,20 @@
+@import "../../../colors";
 input {
   border-radius: 5px;
+}
+
+.droppable {
+  width: 500px;
+  height: 75px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-style: dotted;
+  border-width: 3px;
+  // opacity: 0;
+  text-align: center;
+}
+
+.droppable.dragover {
+  background-color: $main-blue;
+
 }

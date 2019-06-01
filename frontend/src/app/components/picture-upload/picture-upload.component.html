@@ -1,22 +1,12 @@
 <div class="form-group row">
   <div class="col-sm-4">
-    <input type="file" (change)="onFileSelected($event)">
-  </div>
-  <div class="col-sm-4">
-    <input type="file" (change)="onFileSelected($event)">
-  </div>
-  <div class="col-sm-4">
-    <input type="file" (change)="onFileSelected($event)">
+    <div class="droppable">Drag and Drop</div>
+    <label class="btn btn-primary" style="margin-top:5px;">
+      Durchsuchen <input type="file" (change)="onFileSelected($event)" style="display:none;">
+    </label>
   </div>
 </div>
-<div class="form-group row">
-  <div class="col-sm-4">
-    <input type="file" (change)="onFileSelected($event)">
-  </div>
-  <div class="col-sm-4">
-    <input type="file" (change)="onFileSelected($event)">
-  </div>
-  <div class="col-sm-4">
-    <input type="file" (change)="onFileSelected($event)">
-  </div>
+
+<div class="row justify-content-center" *ngFor="let file of files">
+  {{file.name}}
 </div>
