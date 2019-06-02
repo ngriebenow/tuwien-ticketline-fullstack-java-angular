@@ -112,7 +112,7 @@ public class InvoiceEndpoint {
 
   @PostMapping("/{id}/pay")
   @ApiOperation(
-      value = "Pay tickets for the specified invoice",
+      value = "Pay tickets for an existing invoice",
       authorizations = {@Authorization("apiKey")})
   public InvoiceDto pay(@PathVariable Long id, @RequestBody List<Long> ticketIds) {
     LOGGER.info("Attempting to pay tickets {} for invoice {}", ticketIds, id);
