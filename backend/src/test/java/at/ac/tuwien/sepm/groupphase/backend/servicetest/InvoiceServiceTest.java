@@ -12,18 +12,21 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.InvoiceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TicketDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.TicketRequestDto;
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UserDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Client;
 import at.ac.tuwien.sepm.groupphase.backend.entity.DefinedUnit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Invoice;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
+import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.DefinedUnitRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -64,30 +67,34 @@ public class InvoiceServiceTest {
   private static final String CLIENT_SURNAME = "Schabernackl";
   private static final String CLIENT_EMAIL = "witzhaus@nac.kl";
 
+  private static final String USER_NAME = "user";
+  private static final boolean USER_ENABLED = true;
+  private static final int USER_FAILED_COUNTER = 0;
+  private static final String USER_PASSWORD = "password";
+  private static final String USER_AUTHORITY = "ROLE_USER";
+
   private Invoice invoiceOne;
   private Ticket ticketOne;
   private Performance performanceOne;
   private DefinedUnit definedUnitOne;
   private PriceCategory priceCategoryOne;
   private Client clientOne;
+  private User userOne;
 
   private InvoiceDto invoiceDtoOne;
   private TicketDto ticketDtoOne;
   private ReservationRequestDto reservationRequestDto;
   private TicketRequestDto ticketRequestDto;
   private ClientDto clientDtoOne;
+  private UserDto userDtoOne;
 
-  @Autowired
-  private InvoiceService invoiceService;
+  @Autowired private InvoiceService invoiceService;
 
-  @MockBean
-  private InvoiceRepository mockInvoiceRepository;
-  @MockBean
-  private PerformanceRepository mockPerformanceRepository;
-  @MockBean
-  private ClientRepository mockClientRepository;
-  @MockBean
-  private DefinedUnitRepository mockDefinedUnitRepository;
+  @MockBean private InvoiceRepository mockInvoiceRepository;
+  @MockBean private PerformanceRepository mockPerformanceRepository;
+  @MockBean private ClientRepository mockClientRepository;
+  @MockBean private UserRepository mockUserRepository;
+  @MockBean private DefinedUnitRepository mockDefinedUnitRepository;
 
   @Before
   public void setUp() {
@@ -123,6 +130,13 @@ public class InvoiceServiceTest {
             .email(CLIENT_EMAIL)
             .build();
 
+    userOne = new User();
+    userOne.setUsername(USER_NAME);
+    userOne.setEnabled(USER_ENABLED);
+    userOne.setFailedLoginCounter(USER_FAILED_COUNTER);
+    userOne.setPassword(USER_PASSWORD);
+    userOne.setAuthority(USER_AUTHORITY);
+
     invoiceOne =
         new Invoice.Builder()
             .id(INVOICE_ID)
@@ -131,6 +145,7 @@ public class InvoiceServiceTest {
             .reservationCode(INVOICE_RESERVATION_CODE)
             .tickets(new ArrayList<>())
             .client(clientOne)
+            .soldBy(userOne)
             .build();
     invoiceOne.addTicket(ticketOne);
 
@@ -151,10 +166,17 @@ public class InvoiceServiceTest {
             .email(CLIENT_EMAIL)
             .build();
 
+    userDtoOne = new UserDto();
+    userDtoOne.setUsername(USER_NAME);
+    userDtoOne.setEnabled(String.valueOf(USER_ENABLED));
+    userDtoOne.setFailedLoginCounter(USER_FAILED_COUNTER);
+    userDtoOne.setPassword(USER_PASSWORD);
+
     invoiceDtoOne =
         new InvoiceDto.Builder()
             .id(INVOICE_ID)
             .client(clientDtoOne)
+            .soldBy(userDtoOne)
             .reservationCode(INVOICE_RESERVATION_CODE)
             .isPaid(INVOICE_IS_PAID)
             .isCancelled(INVOICE_IS_CANCELED)
@@ -208,19 +230,21 @@ public class InvoiceServiceTest {
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
     when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
+    when(mockUserRepository.findById(USER_NAME)).thenReturn(Optional.of(userOne));
 
-    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(ValidationException.class);
 
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
     verify(mockClientRepository).findById(CLIENT_ID);
+    verify(mockUserRepository).findById(USER_NAME);
   }
 
   @Test
   public void whenBuyTicketsEmptyTickets_thenThrowException() {
     reservationRequestDto.setTicketRequests(Collections.emptyList());
 
-    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(ConstraintViolationException.class);
   }
 
@@ -228,7 +252,7 @@ public class InvoiceServiceTest {
   public void whenBuyTicketsNullTickets_thenThrowException() {
     reservationRequestDto.setTicketRequests(null);
 
-    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(ConstraintViolationException.class);
   }
 
@@ -236,7 +260,7 @@ public class InvoiceServiceTest {
   public void whenBuyTicketsAmountZero_thenThrowException() {
     ticketRequestDto.setAmount(0);
 
-    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(ConstraintViolationException.class);
   }
 
@@ -244,7 +268,7 @@ public class InvoiceServiceTest {
   public void whenBuyTicketsNegativeAmount_thenThrowException() {
     ticketRequestDto.setAmount(-1);
 
-    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(ConstraintViolationException.class);
   }
 
@@ -256,7 +280,7 @@ public class InvoiceServiceTest {
     when(mockPerformanceRepository.findById(any(Long.class)))
         .thenReturn(Optional.of(performanceOne));
 
-    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(NotFoundException.class);
 
     verify(mockClientRepository).findById(invalidClientId);
@@ -270,7 +294,7 @@ public class InvoiceServiceTest {
     when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
     when(mockPerformanceRepository.findById(invalidPerformanceId)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(NotFoundException.class);
 
     verify(mockClientRepository).findById(CLIENT_ID);
@@ -284,6 +308,7 @@ public class InvoiceServiceTest {
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
     when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
+    when(mockUserRepository.findById(USER_NAME)).thenReturn(Optional.of(userOne));
     List<Long> definedUnitIdList =
         reservationRequestDto.getTicketRequests().stream()
             .map(TicketRequestDto::getDefinedUnitId)
@@ -291,13 +316,14 @@ public class InvoiceServiceTest {
     when(mockDefinedUnitRepository.findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList))
         .thenReturn(new ArrayList<>());
 
-    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(NotFoundException.class);
 
     verify(mockDefinedUnitRepository)
         .findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList);
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
     verify(mockClientRepository).findById(CLIENT_ID);
+    verify(mockUserRepository).findById(USER_NAME);
   }
 
   @Test
@@ -307,6 +333,7 @@ public class InvoiceServiceTest {
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
     when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
+    when(mockUserRepository.findById(USER_NAME)).thenReturn(Optional.of(userOne));
     List<Long> definedUnitIdList =
         reservationRequestDto.getTicketRequests().stream()
             .map(TicketRequestDto::getDefinedUnitId)
@@ -314,13 +341,14 @@ public class InvoiceServiceTest {
     when(mockDefinedUnitRepository.findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList))
         .thenReturn(Collections.singletonList(definedUnitOne));
 
-    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.buyTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(ValidationException.class);
 
     verify(mockDefinedUnitRepository)
         .findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList);
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
     verify(mockClientRepository).findById(CLIENT_ID);
+    verify(mockUserRepository).findById(USER_NAME);
   }
 
   @Test
@@ -328,6 +356,7 @@ public class InvoiceServiceTest {
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
     when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
+    when(mockUserRepository.findById(USER_NAME)).thenReturn(Optional.of(userOne));
     List<Long> definedUnitIdList =
         reservationRequestDto.getTicketRequests().stream()
             .map(TicketRequestDto::getDefinedUnitId)
@@ -336,7 +365,7 @@ public class InvoiceServiceTest {
         .thenReturn(Collections.singletonList(definedUnitOne));
     doReturn(invoiceOne).when(mockInvoiceRepository).save(any(Invoice.class));
 
-    InvoiceDto invoiceDto = invoiceService.buyTickets(reservationRequestDto);
+    InvoiceDto invoiceDto = invoiceService.buyTickets(reservationRequestDto, USER_NAME);
     assertThat(invoiceDto).isEqualTo(invoiceDtoOne);
     assertThat(invoiceDto.getTickets()).isEqualTo(invoiceDtoOne.getTickets());
 
@@ -345,6 +374,7 @@ public class InvoiceServiceTest {
         .findAllByPerformanceAndIdIn(performanceOne, definedUnitIdList);
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
     verify(mockClientRepository).findById(CLIENT_ID);
+    verify(mockUserRepository).findById(USER_NAME);
   }
 
   @Test
@@ -355,7 +385,7 @@ public class InvoiceServiceTest {
     when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
     when(mockPerformanceRepository.findById(invalidPerformanceId)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> invoiceService.reserveTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.reserveTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(NotFoundException.class);
 
     verify(mockClientRepository).findById(CLIENT_ID);
@@ -370,7 +400,7 @@ public class InvoiceServiceTest {
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
 
-    assertThatThrownBy(() -> invoiceService.reserveTickets(reservationRequestDto))
+    assertThatThrownBy(() -> invoiceService.reserveTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(ValidationException.class);
 
     verify(mockClientRepository).findById(CLIENT_ID);

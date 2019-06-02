@@ -46,7 +46,7 @@ public class Invoice {
   private Client client;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(nullable = false)
+  @JoinColumn(nullable = true)
   private User soldBy;
 
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
