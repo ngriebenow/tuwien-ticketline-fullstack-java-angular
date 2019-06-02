@@ -45,14 +45,14 @@ public class Invoice {
   @JoinColumn(nullable = false)
   private Client client;
 
-  /// TODO: Implement as soon as michis user persistance part is done
-  // private User soldBy;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(nullable = false)
+  private User soldBy;
 
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Ticket> tickets;
 
-  public Invoice() {
-  }
+  public Invoice() {}
 
   private Invoice(Builder builder) {
     setId(builder.id);
@@ -62,6 +62,7 @@ public class Invoice {
     setNumber(builder.number);
     setPaidAt(builder.paidAt);
     setClient(builder.client);
+    setSoldBy(builder.soldBy);
     setTickets(builder.tickets);
   }
 
@@ -155,6 +156,14 @@ public class Invoice {
     this.client = client;
   }
 
+  public User getSoldBy() {
+    return soldBy;
+  }
+
+  public void setSoldBy(User soldBy) {
+    this.soldBy = soldBy;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) {
@@ -170,12 +179,14 @@ public class Invoice {
         && Objects.equal(reservationCode, invoice.reservationCode)
         && Objects.equal(number, invoice.number)
         && Objects.equal(paidAt, invoice.paidAt)
-        && Objects.equal(client, invoice.client);
+        && Objects.equal(client, invoice.client)
+        && Objects.equal(soldBy, invoice.soldBy);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, number, paidAt, client);
+    return Objects.hashCode(
+        id, isPaid, isCancelled, reservationCode, number, paidAt, client, soldBy);
   }
 
   @Override
@@ -196,6 +207,8 @@ public class Invoice {
         + paidAt
         + ", client="
         + client
+        + ", soldBy="
+        + soldBy
         + '}';
   }
 
@@ -208,10 +221,10 @@ public class Invoice {
     private Long number;
     private LocalDate paidAt;
     private Client client;
+    private User soldBy;
     private List<Ticket> tickets = new ArrayList<>();
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder id(Long val) {
       id = val;
@@ -245,6 +258,11 @@ public class Invoice {
 
     public Builder client(Client val) {
       client = val;
+      return this;
+    }
+
+    public Builder soldBy(User val) {
+      soldBy = val;
       return this;
     }
 

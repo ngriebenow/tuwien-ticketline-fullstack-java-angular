@@ -2,8 +2,10 @@ package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Client;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Invoice;
+import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
 import com.github.javafaker.Faker;
 import java.time.LocalDate;
@@ -25,12 +27,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Profile("generateData")
 public class InvoiceDataGenerator implements DataGenerator<Invoice> {
 
-  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Client.class));
+  private final Set<Class<?>> dependencies = new HashSet<>(Arrays.asList(Client.class, User.class));
   private static final Faker FAKER = new Faker(new Locale("de-at"));
 
   private static final int MAX_INVOICE_COUNT_PER_CLIENT = 13;
 
   private ClientRepository clientRepository;
+  private UserRepository userRepository;
   private InvoiceRepository invoiceRepository;
   private InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator;
 
@@ -40,9 +43,11 @@ public class InvoiceDataGenerator implements DataGenerator<Invoice> {
   @Autowired
   public InvoiceDataGenerator(
       ClientRepository clientRepository,
+      UserRepository userRepository,
       InvoiceRepository invoiceRepository,
       InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator) {
     this.clientRepository = clientRepository;
+    this.userRepository = userRepository;
     this.invoiceRepository = invoiceRepository;
     this.invoiceNumberSequenceGenerator = invoiceNumberSequenceGenerator;
   }
@@ -51,6 +56,8 @@ public class InvoiceDataGenerator implements DataGenerator<Invoice> {
   @Override
   public void execute() {
     List<Invoice> generatedInvoices = new ArrayList<>(MAX_INVOICE_COUNT_PER_CLIENT);
+
+    List<User> users = userRepository.findAll();
 
     for (Client client : clientRepository.findAll()) {
       generatedInvoices.clear();
@@ -61,6 +68,7 @@ public class InvoiceDataGenerator implements DataGenerator<Invoice> {
                 .reservationCode(FAKER.letterify("??????"))
                 .isPaid(isPaid)
                 .client(client)
+                .soldBy(users.get(i % users.size()))
                 .isCancelled(false);
         if (isPaid) {
           Date today = localDateToDate(LocalDate.now());

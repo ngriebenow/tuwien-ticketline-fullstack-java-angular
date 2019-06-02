@@ -32,14 +32,13 @@ public class InvoiceDto {
   @ApiModelProperty("The client who issued this invoice")
   private ClientDto client;
 
-  // TODO: Implement as soon as michis user persistence part is done
-  // private UserDto user;
+  @ApiModelProperty("The user who issued this invoice")
+  private UserDto soldBy;
 
   @ApiModelProperty(value = "The tickets reserved and bought by this invoice")
   private List<TicketDto> tickets;
 
-  public InvoiceDto() {
-  }
+  public InvoiceDto() {}
 
   private InvoiceDto(Builder builder) {
     setId(builder.id);
@@ -49,6 +48,7 @@ public class InvoiceDto {
     setNumber(builder.number);
     setPaidAt(builder.paidAt);
     setClient(builder.client);
+    setSoldBy(builder.soldBy);
     setTickets(builder.tickets);
   }
 
@@ -108,6 +108,14 @@ public class InvoiceDto {
     this.client = client;
   }
 
+  public UserDto getSoldBy() {
+    return soldBy;
+  }
+
+  public void setSoldBy(UserDto soldBy) {
+    this.soldBy = soldBy;
+  }
+
   public List<TicketDto> getTickets() {
     return tickets;
   }
@@ -131,12 +139,14 @@ public class InvoiceDto {
         && Objects.equal(reservationCode, that.reservationCode)
         && Objects.equal(number, that.number)
         && Objects.equal(paidAt, that.paidAt)
-        && Objects.equal(client, that.client);
+        && Objects.equal(client, that.client)
+        && Objects.equal(soldBy, that.soldBy);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(id, isPaid, isCancelled, reservationCode, number, paidAt, client);
+    return Objects.hashCode(
+        id, isPaid, isCancelled, reservationCode, number, paidAt, client, soldBy);
   }
 
   @Override
@@ -157,6 +167,8 @@ public class InvoiceDto {
         + paidAt
         + ", client="
         + client
+        + ", soldBy="
+        + soldBy
         + '}';
   }
 
@@ -169,10 +181,10 @@ public class InvoiceDto {
     private Long number;
     private LocalDate paidAt;
     private ClientDto client;
+    private UserDto soldBy;
     private List<TicketDto> tickets;
 
-    public Builder() {
-    }
+    public Builder() {}
 
     public Builder id(Long val) {
       id = val;
@@ -206,6 +218,11 @@ public class InvoiceDto {
 
     public Builder client(ClientDto val) {
       client = val;
+      return this;
+    }
+
+    public Builder soldBy(UserDto val) {
+      soldBy = val;
       return this;
     }
 
