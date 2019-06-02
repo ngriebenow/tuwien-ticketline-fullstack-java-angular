@@ -36,16 +36,19 @@ export class NewsAddComponent implements OnInit {
   addNews() {
     this.submitted = true;
     if (this.newsForm.valid) {
-      const news: News = new News(null,
-        this.newsForm.controls.title.value,
-        this.newsForm.controls.summary.value,
-        this.newsForm.controls.text.value,
-        new Date().toISOString(),
-        this.pictureTransferService.getData(),
-        false
-      );
-      this.createNews(news);
-      this.clearForm();
+      Promise.all(this.pictureTransferService.uploadData()).then(function (result) {
+        const news: News = new News(null,
+          this.newsForm.controls.title.value,
+          this.newsForm.controls.summary.value,
+          this.newsForm.controls.text.value,
+          new Date().toISOString(),
+          this.pictureTransferService.getIds(),
+          false
+        );
+        this.createNews(news);
+        this.clearForm();
+        this.pictureTransferService.clearData();
+      }.bind(this));
     } else {
       console.log('Invalid input');
     }
