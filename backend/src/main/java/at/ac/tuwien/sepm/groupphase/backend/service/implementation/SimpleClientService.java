@@ -157,6 +157,9 @@ public class SimpleClientService implements ClientService {
     return clientMapper.clientToClientDto(findOne(id));
   }
 
+  /**
+   * Javadoc.
+   */
   @EventListener(ApplicationReadyEvent.class)
   @Transactional
   public void createAnonymousClient() {

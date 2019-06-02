@@ -163,10 +163,10 @@ public class SimpleAccountService implements AccountService {
     if (user.getUsername() == null) {
       throw new InvalidInputException("Username must be set!");
     }
-    if(user.getPassword()!=null&&user.getPassword().isEmpty()){
+	  if (user.getPassword() != null && user.getPassword().isEmpty()) {
       user.setPassword(null);
     }
-    User old = findOne(user.getUsername()); //Will throw NotFoundException if not in DB
+	  User old = findOne(user.getUsername()); // Will throw NotFoundException if not in DB
     old = updateUserHelper(old, user);
     userRepository.saveAndFlush(old);
     return getOneById(user.getUsername());
@@ -177,5 +177,4 @@ public class SimpleAccountService implements AccountService {
   public UserDto getOneById(String id) {
     return userMapper.userToUserDto(findOne(id));
   }
-
 }
