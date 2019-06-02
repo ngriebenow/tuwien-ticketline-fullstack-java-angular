@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PictureService} from '../../services/picture.service';
 import {PictureTransferService} from '../../services/picture-transfer.service';
-import {Picture} from '../../dtos/picture';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-picture-upload',
@@ -10,18 +10,32 @@ import {Picture} from '../../dtos/picture';
 })
 export class PictureUploadComponent implements OnInit, OnDestroy {
   constructor(private pictureService: PictureService,
-              private pictureTransferService: PictureTransferService) {
+              private pictureTransferService: PictureTransferService,
+              private alertService: AlertService) {
   }
   ngOnInit() {
 
     const element = document.querySelector('.droppable');
     function callback(droppedFiles: File[]) {
       for (const file of droppedFiles) {
-        this.appendHtml(file);
-        this.pictureTransferService.appendFile(file);
+        if (this.valid(file)) {
+          this.appendHtml(file);
+          this.pictureTransferService.appendFile(file);
+        }
       }
     }
     this.makedroppable(element, callback.bind(this));
+  }
+  valid (file: File): boolean {
+    if (file.size > 1048576) {
+      this.alertService.error('Datei zu groß, Maximalgröße 1 MB');
+      return false;
+    }
+    if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+      this.alertService.error('Falscher Dateityp, nur png oder jpg zulässig');
+      return false;
+    }
+    return true;
   }
   appendHtml(file: File) {
     const reader = new FileReader();
@@ -42,17 +56,6 @@ export class PictureUploadComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.pictureTransferService.clearData();
   }
-
-  /*
-  uploadFile(file: File) {
-    if (file.size > 1048576) {
-      alert('Error, file too big');
-    } else {
-      this.pictureService.uploadPicture(file)
-      .subscribe(res => this.pictureTransferService.appendData(res));
-    }
-  }*/
-
   makedroppable(element, callback) {
 
     const input = document.createElement('input');

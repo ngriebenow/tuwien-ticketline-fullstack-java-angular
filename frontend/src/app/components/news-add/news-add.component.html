@@ -9,11 +9,6 @@
                placeholder="Title">
       </div>
     </div>
-    <div *ngIf="submitted && newsForm.controls.title.errors" class="error">
-      <small class="form-text text-warning" *ngIf="newsForm.controls.title.errors.required">Your title is
-        required!
-      </small>
-    </div>
   </div>
 
   <div class="form-group row">
@@ -24,11 +19,6 @@
                   placeholder="Kurzbeschreibung"></textarea>
       </div>
     </div>
-    <div *ngIf="submitted && newsForm.controls.summary.errors" class="error">
-      <small class="form-text text-warning" *ngIf="newsForm.controls.summary.errors.required">Summary is
-        required!
-      </small>
-    </div>
   </div>
 
   <div class="form-group row">
@@ -38,12 +28,6 @@
         <textarea rows="12" class="form-control" name="text" formControlName="text" id="inputText"
                   placeholder="Fließtext"></textarea>
       </div>
-    </div>
-    <div *ngIf="submitted && newsForm.controls.text.errors" class="error">
-      <small class="form-text text-warning" *ngIf="newsForm.controls.text.errors.required">Your
-        text is
-        required!
-      </small>
     </div>
   </div>
 

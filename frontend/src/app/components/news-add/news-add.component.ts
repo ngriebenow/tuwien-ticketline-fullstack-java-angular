@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {NewsService} from '../../services/news.service';
 import {NewsComponent} from '../../components/news/news.component';
 import {PictureTransferService} from '../../services/picture-transfer.service';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-news-add',
@@ -18,7 +19,8 @@ export class NewsAddComponent implements OnInit {
   submitted = false;
   constructor(private router: Router, private newsService: NewsService,
               private formBuilder: FormBuilder,
-              private pictureTransferService: PictureTransferService) {
+              private pictureTransferService: PictureTransferService,
+              private alertService: AlertService) {
       this.newsForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       summary: ['', [Validators.required]],
@@ -51,6 +53,15 @@ export class NewsAddComponent implements OnInit {
       }.bind(this));
     } else {
       console.log('Invalid input');
+      if (this.newsForm.controls.title.invalid) {
+        this.alertService.error('Der Titel ist erforderlich');
+      }
+      if (this.newsForm.controls.summary.invalid) {
+        this.alertService.error('Die Kurzbeschreibung ist erforderlich');
+      }
+      if (this.newsForm.controls.text.invalid) {
+        this.alertService.error('Der Fließtext ist erforderlich');
+      }
     }
   }
 
