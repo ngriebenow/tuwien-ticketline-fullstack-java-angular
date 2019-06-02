@@ -21,7 +21,7 @@ export class UserEditComponent implements OnInit {
   });
 
   constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder, private route: ActivatedRoute) {
-
+    this.queryParams = new User('', '', 0, '', '');
   }
 
   ngOnInit() {
