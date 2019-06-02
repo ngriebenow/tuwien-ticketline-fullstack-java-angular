@@ -22,7 +22,7 @@ export class ClientEditComponent implements OnInit {
 
   constructor(private router: Router, private clientService: ClientService,
               private formBuilder: FormBuilder, private route: ActivatedRoute) {
-
+    this.queryParams = new Client(0, '', '', '');
   }
 
   ngOnInit() {
