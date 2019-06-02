@@ -2,4 +2,14 @@
   <p>Drag n Drop oder Klick</p>
   <p><i class="fas fa-upload fa-big"></i></p>
 </div>
+<div class="pictures">
+  <div class="row justify-content-center">
+    <ng-container *ngFor="let picture of getPictures()">
+      <div class="col-md-2 text-center" style="padding-left: 5px; padding-right: 5px;">
+        <img height=75 width=75 [src]="picture.data" alt="News Picture">
+        <button class="btn" (click)="deletePicture(picture)"> <i class="fas fa-trash-alt fa-big"></i></button>
+      </div>
+    </ng-container>
+  </div>
+</div>
 

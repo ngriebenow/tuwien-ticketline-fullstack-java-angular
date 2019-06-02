@@ -1,6 +1,7 @@
 export class Picture {
   constructor(
     public id: number,
-    public data: any) {
+    public file: File,
+    public data: any ) {
   }
 }

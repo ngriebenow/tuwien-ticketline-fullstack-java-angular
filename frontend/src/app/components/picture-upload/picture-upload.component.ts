@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PictureService} from '../../services/picture.service';
 import {PictureTransferService} from '../../services/picture-transfer.service';
 import {AlertService} from '../../services/alert.service';
+import {Picture} from '../../dtos/picture';
 
 @Component({
   selector: 'app-picture-upload',
@@ -19,12 +20,14 @@ export class PictureUploadComponent implements OnInit, OnDestroy {
     function callback(droppedFiles: File[]) {
       for (const file of droppedFiles) {
         if (this.valid(file)) {
-          this.appendHtml(file);
-          this.pictureTransferService.appendFile(file);
+          this.appendPictureToTransferService(file);
         }
       }
     }
     this.makedroppable(element, callback.bind(this));
+  }
+  getPictures(): any[] {
+    return this.pictureTransferService.getPictures();
   }
   valid (file: File): boolean {
     if (file.size > 1048576) {
@@ -37,18 +40,13 @@ export class PictureUploadComponent implements OnInit, OnDestroy {
     }
     return true;
   }
-  appendHtml(file: File) {
+  deletePicture(picture: any) {
+    this.pictureTransferService.deletePicture(picture);
+  }
+  appendPictureToTransferService(file: File) {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      const div = document.createElement('div');
-      div.innerText = file.name
-      document.getElementById('pictures').appendChild(div);
-      const img = document.createElement('img');
-      img.src = reader.result.toString();
-      img.width = 200;
-      img.height = 200;
-      img.alt = 'News picture ' + file.name;
-      document.getElementById('pictures').appendChild(img); }, false);
+      this.pictureTransferService.pushPicture(new Picture(0, file, reader.result)); }, false);
     if (file) {
       reader.readAsDataURL(file);
     }

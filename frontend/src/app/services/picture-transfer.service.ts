@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import {PictureService} from './picture.service';
+import {Picture} from '../dtos/picture';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PictureTransferService {
   private uploadedPictureIds: number[];
-  private files: File[];
+  private pictures: Picture[];
   constructor(private pictureService: PictureService) {
     this.uploadedPictureIds = new Array();
-    this.files = new Array();
+    this.pictures = new Array();
   }
 
   /**
    * Append an picture id to an array
    * @param data id of the picture
    */
-  appendFile(file: File) {
-    this.files.push(file);
+  pushPicture(picture: Picture) {
+    this.pictures.push(picture);
   }
 
   /**
@@ -27,9 +28,9 @@ export class PictureTransferService {
   uploadData() {
     let promises: any[];
     promises = new Array();
-    for (const file of this.files) {
+    for (const picture of this.pictures) {
       // alert('picture transfer service, upload picture' + file.name);
-      const myData = this.pictureService.uploadPicture(file).toPromise();
+      const myData = this.pictureService.uploadPicture(picture.file).toPromise();
       myData.then(function (result) {
         this.uploadedPictureIds.push(result);
       }.bind(this));
@@ -45,6 +46,15 @@ export class PictureTransferService {
    */
   clearData() {
     this.uploadedPictureIds = new Array();
-    this.files = new Array();
+    this.pictures = new Array();
+  }
+  getPictures(): Picture[] {
+    return this.pictures;
+  }
+  deletePicture(picture: Picture) {
+    const index = this.pictures.indexOf(picture);
+    if (index > -1) {
+      this.pictures.splice(index, 1);
+    }
   }
 }
