@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {ConfirmationDialogService} from '../../services/confirmation-dialog.service';
 import {AlertService} from '../../services/alert.service';
 import {InvoiceService} from '../../services/invoice.service';
 import {TicketingService} from '../../services/ticketing.service';
@@ -32,6 +35,7 @@ export class InvoiceDetailComponent implements OnInit {
     private router: Router,
     private invoiceService: InvoiceService,
     private ticketingService: TicketingService,
+    private dialogService: ConfirmationDialogService,
     private alertService: AlertService) {
   }
 
@@ -250,22 +254,28 @@ export class InvoiceDetailComponent implements OnInit {
     if (!this.isReserved()) {
       return;
     }
-    this.invoiceService.cancelReservation(this.invoice.id).subscribe(
-      () => {
-        this.router.navigate(['/']).then(
-          nav => this.alertService.success('Reservierung erfolgreich storniert'),
-          error => {
-            console.log(error);
-            this.alertService.success('Reservierung erfolgreich storniert');
-            this.alertService.error('Fehler bei der Navigation. Bitte kehren Sie zum Hauptmenue zurück');
-          }
-        );
-      },
-      error => {
-        console.log(error);
-        this.alertService.error('Reservierung konnte nicht storniert werden, bitte versuchen sie es später noch ein mal');
-      }
-    );
+
+    const message = 'Wollen Sie die Reservierung wirklich stornieren?';
+    const onYes = () => {
+      this.invoiceService.cancelReservation(this.invoice.id).subscribe(
+        () => {
+          this.router.navigate(['/']).then(
+            nav => this.alertService.success('Reservierung erfolgreich storniert'),
+            error => {
+              console.log(error);
+              this.alertService.success('Reservierung erfolgreich storniert');
+              this.alertService.error('Fehler bei der Navigation. Bitte kehren Sie zum Hauptmenue zurück');
+            }
+          );
+        },
+        error => {
+          console.log(error);
+          this.alertService.error('Reservierung konnte nicht storniert werden, bitte versuchen sie es später noch ein mal');
+        }
+      );
+    };
+
+    this.dialogService.open(message, onYes);
   }
 
   // TODO: next sprint

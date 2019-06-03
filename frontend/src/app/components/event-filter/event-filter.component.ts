@@ -114,13 +114,12 @@ export class EventFilterComponent implements OnInit {
 
   CheckNumberField(elid: string): void {
 
-    let price: string = (<HTMLInputElement>document.getElementById(elid)).value.toString();
+    const price: string = (<HTMLInputElement>document.getElementById(elid)).value.toString();
 
-    if (price === "" || price.match(/^\d+$/) !== null) {
+    if (price === '' || price.match(/^\d+$/) !== null) {
       this.loadEvents();
-    }
-    else {
-      (<HTMLInputElement>document.getElementById(elid)).value = "";
+    } else {
+      (<HTMLInputElement>document.getElementById(elid)).value = '';
       this.alertService.warning('Es sind nur Zahlen für dieses Feld erlaubt.');
     }
 
