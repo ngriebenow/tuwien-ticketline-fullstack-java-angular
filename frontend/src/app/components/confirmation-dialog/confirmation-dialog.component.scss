@@ -1,0 +1,10 @@
+@import '../../../colors.scss';
+
+.modal-header,
+.modal-footer {
+  border: none;
+}
+
+.modal-title {
+  color: $regular-black;
+}

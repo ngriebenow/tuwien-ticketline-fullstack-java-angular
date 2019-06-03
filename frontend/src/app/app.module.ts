@@ -33,7 +33,8 @@ import {ClientFilterComponent} from './components/client-filter/client-filter.co
 import {UserAddComponent} from './components/user-add/user-add.component';
 import {UserEditComponent} from './components/user-edit/user-edit.component';
 import {ClientAddComponent} from './components/client-add/client-add.component';
-import {ClientEditComponent} from "./components/client-edit/client-edit.component";
+import {ClientEditComponent} from './components/client-edit/client-edit.component';
+import {ConfirmationDialogComponent} from './components/confirmation-dialog/confirmation-dialog.component';
 
 
 @NgModule({
@@ -64,6 +65,7 @@ import {ClientEditComponent} from "./components/client-edit/client-edit.componen
     UserEditComponent,
     ClientAddComponent,
     ClientEditComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,7 +77,8 @@ import {ClientEditComponent} from "./components/client-edit/client-edit.componen
     MyDatePickerModule
   ],
   providers: [httpInterceptorProviders, Globals],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ ConfirmationDialogComponent ]
 })
 export class AppModule {
 
