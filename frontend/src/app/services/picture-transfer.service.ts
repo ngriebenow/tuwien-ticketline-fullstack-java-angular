@@ -1,36 +1,71 @@
 import { Injectable } from '@angular/core';
+import {PictureService} from './picture.service';
+import {Picture} from '../dtos/picture';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PictureTransferService {
   private uploadedPictureIds: number[];
-  constructor() {
+  private pictures: Picture[];
+  constructor(private pictureService: PictureService) {
     this.uploadedPictureIds = new Array();
+    this.pictures = new Array();
   }
 
   /**
-   * Append an picture id to an array
-   * @param data id of the picture
+   * Append a picture to an array.
+   * @param picture to be appended
    */
-  appendData(data) {
-    this.uploadedPictureIds.push(data);
+  pushPicture(picture: Picture) {
+    this.pictures.push(picture);
   }
 
   /**
-   * Get all picture Ids
-   * @return pictureIds
+   * Initiate post request to backend for all current pictures and push the returned ids.
+   * @return promises of all request so that news entry can be created after all requests are done.
    */
-  getData() {
-    const temp = this.uploadedPictureIds;
-    this.clearData();
-    return temp;
+  uploadData() {
+    let promises: any[];
+    promises = new Array();
+    for (const picture of this.pictures) {
+      const myData = this.pictureService.uploadPicture(picture.file).toPromise();
+      myData.then(function (result) {
+        this.uploadedPictureIds.push(result);
+      }.bind(this));
+      promises.push(myData);
+    }
+    return promises;
   }
-
+  /**
+   * Return the array of all picture ids.
+   * @return uploadedPictureIds
+   */
+  getIds(): number[] {
+    return this.uploadedPictureIds;
+  }
   /**
    * Clears the pictureIds array.
    */
   clearData() {
     this.uploadedPictureIds = new Array();
+    this.pictures = new Array();
+  }
+  /**
+   * Get the current picture array of pictures (for rendering as thumbnail)
+   * @return pictures array
+   */
+  getPictures(): Picture[] {
+    return this.pictures;
+  }
+  /**
+   * Delete a dropped in picture.
+   * @param picture to be deleted
+   */
+  deletePicture(picture: Picture) {
+    const index = this.pictures.indexOf(picture);
+    if (index > -1) {
+      this.pictures.splice(index, 1);
+    }
   }
 }

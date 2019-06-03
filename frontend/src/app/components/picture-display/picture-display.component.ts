@@ -44,7 +44,7 @@ export class PictureDisplayComponent implements OnInit {
   appendPictureFromBlob(id: number, picture: Blob) {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      this.pictures.push(new Picture(id, reader.result));
+      this.pictures.push(new Picture(id, null, reader.result));
     }, false);
 
     if (picture) {

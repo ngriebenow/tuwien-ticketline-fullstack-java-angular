@@ -9,11 +9,6 @@
                placeholder="Title">
       </div>
     </div>
-    <div *ngIf="submitted && newsForm.controls.title.errors" class="error">
-      <small class="form-text text-warning" *ngIf="newsForm.controls.title.errors.required">Your title is
-        required!
-      </small>
-    </div>
   </div>
 
   <div class="form-group row">
@@ -23,11 +18,6 @@
         <textarea rows="4" class="form-control" name="summary" formControlName="summary" id="inputSummary"
                   placeholder="Kurzbeschreibung"></textarea>
       </div>
-    </div>
-    <div *ngIf="submitted && newsForm.controls.summary.errors" class="error">
-      <small class="form-text text-warning" *ngIf="newsForm.controls.summary.errors.required">Summary is
-        required!
-      </small>
     </div>
   </div>
 
@@ -39,17 +29,13 @@
                   placeholder="Fließtext"></textarea>
       </div>
     </div>
-    <div *ngIf="submitted && newsForm.controls.text.errors" class="error">
-      <small class="form-text text-warning" *ngIf="newsForm.controls.text.errors.required">Your
-        text is
-        required!
-      </small>
-    </div>
   </div>
 
   <div class="form-group row">
-    <h2 for="Pictures" class="col-sm-2 col-form-label text-right">Fotos hinzufügen</h2>
-    <app-picture-upload style="padding-left: 15px"></app-picture-upload>
+    <h2 for="pictures" class="col-sm-2 col-form-label text-right">Fotos hinzufügen</h2>
+    <div class="col-sm-9">
+      <app-picture-upload id="pictures"></app-picture-upload>
+    </div>
   </div>
 </form>
 <div class="bottom-right-above-1">
