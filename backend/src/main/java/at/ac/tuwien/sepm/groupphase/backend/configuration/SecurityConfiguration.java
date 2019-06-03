@@ -118,7 +118,7 @@ public class SecurityConfiguration {
         registry
             .addMapping("/**")
             .allowedOrigins("*")
-            .allowedMethods("PUT", "POST", "OPTION", "GET");
+            .allowedMethods("PUT", "POST", "OPTIONS", "GET", "DELETE");
       }
     };
   }
