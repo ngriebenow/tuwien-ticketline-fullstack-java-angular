@@ -33,6 +33,7 @@ export class NewsAddComponent implements OnInit {
 
   /**
    * Starts form validation and builds a news dto for sending a creation request if the form is valid.
+   * Initiates the upload of all pictures to backend. Waits until all requests are completed.
    * If the procedure was successful, the form will be cleared.
    */
   addNews() {
