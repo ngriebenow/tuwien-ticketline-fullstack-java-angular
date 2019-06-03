@@ -25,6 +25,7 @@ import at.ac.tuwien.sepm.groupphase.backend.specification.InvoiceSpecification;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -204,6 +205,17 @@ public class SimpleInvoiceService implements InvoiceService {
     return invoiceMapper.invoiceToInvoiceDto(invoice);
   }
 
+  @Transactional
+  @Override
+  public void deleteReservation(Long id) {
+    LOGGER.info("Deleting reservation {}", id);
+    String errorMessage = "Can't find reservation with id " + id;
+    Invoice invoice =
+        getOrThrowNotFound(invoiceRepository.findByIdAndIsPaid(id, false), errorMessage);
+    deleteTickets(invoice.getTickets());
+    invoiceRepository.delete(invoice);
+  }
+
   /**
    * Create a new invoice with the passed details. The only validation performed is if the requested
    * tickets do belong to the specified performance.
@@ -304,14 +316,20 @@ public class SimpleInvoiceService implements InvoiceService {
 
   /** Remove tickets from their invoice, delete them and release their defined units. */
   private void deleteTickets(List<Ticket> tickets) {
-    tickets.forEach(
-        tic -> {
-          DefinedUnit definedUnit = tic.getDefinedUnit();
-          definedUnit.setCapacityFree(definedUnit.getCapacityFree() + 1);
-          definedUnitRepository.save(definedUnit);
-          tic.getInvoice().removeTicket(tic);
-        });
+    releaseDefinedUnits(tickets);
+    new ArrayList<>(tickets).forEach(tic -> tic.getInvoice().removeTicket(tic));
     ticketRepository.deleteAll(tickets);
+  }
+
+  /**
+   * Release the definedUnits referenced by the given tickets by increasing their capacity.
+   */
+  private void releaseDefinedUnits(List<Ticket> tickets) {
+    tickets.forEach(tic -> {
+      DefinedUnit definedUnit = tic.getDefinedUnit();
+      definedUnit.setCapacityFree(definedUnit.getCapacityFree() + 1);
+      definedUnitRepository.save(definedUnit);
+    });
   }
 
   /** Return an object of type T or log an error and throw a NotFoundException. */

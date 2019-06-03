@@ -59,28 +59,17 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
   private List<TicketRequestDto> ticketRequestDtoListOne;
   private List<TicketRequestDto> ticketRequestDtoListTwo;
 
-  @Autowired
-  private ClientRepository clientRepository;
-  @Autowired
-  private LocationRepository locationRepository;
-  @Autowired
-  private HallRepository hallRepository;
-  @Autowired
-  private ArtistRepository artistRepository;
-  @Autowired
-  private EventRepository eventRepository;
-  @Autowired
-  private UnitRepository unitRepository;
-  @Autowired
-  private PerformanceRepository performanceRepository;
-  @Autowired
-  private PriceCategoryRepository priceCategoryRepository;
-  @Autowired
-  private DefinedUnitRepository definedUnitRepository;
-  @Autowired
-  private TicketRepository ticketRepository;
-  @Autowired
-  private InvoiceRepository invoiceRepository;
+  @Autowired private ClientRepository clientRepository;
+  @Autowired private LocationRepository locationRepository;
+  @Autowired private HallRepository hallRepository;
+  @Autowired private ArtistRepository artistRepository;
+  @Autowired private EventRepository eventRepository;
+  @Autowired private UnitRepository unitRepository;
+  @Autowired private PerformanceRepository performanceRepository;
+  @Autowired private PriceCategoryRepository priceCategoryRepository;
+  @Autowired private DefinedUnitRepository definedUnitRepository;
+  @Autowired private TicketRepository ticketRepository;
+  @Autowired private InvoiceRepository invoiceRepository;
 
   private Client clientOne;
   private Client clientTwo;
@@ -738,6 +727,49 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     assertThat(invoiceDtoPage.size()).isEqualTo(2);
   }
 
+  @Test
+  public void givenOneReservation_whenDelete_then200() {
+    Long id =
+        postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne).as(InvoiceDto.class).getId();
+
+    Response response = deleteResponse(INVOICE_ENDPOINT + "/" + id);
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+  }
+
+  @Test
+  public void givenOneReservation_whenDelete_thenReservationGone() {
+    Long id =
+        postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne).as(InvoiceDto.class).getId();
+    String uri = INVOICE_ENDPOINT + "/" + id;
+
+    deleteResponse(uri);
+    Response response = getResponse(uri, new HashMap<>());
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+  }
+
+  @Test
+  public void givenOneInvoice_whenDelete_then404() {
+    Long id =
+        postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne).as(InvoiceDto.class).getId();
+    String uri = INVOICE_ENDPOINT + "/" + id;
+
+    Response response = deleteResponse(uri);
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+  }
+
+  @Test
+  public void givenNothing_whenDelete_then404() {
+    Long id = 1L;
+    String uri = INVOICE_ENDPOINT + "/" + id;
+
+    Response response = deleteResponse(uri);
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+  }
+
   private Response getResponse(String endpoint, Map<String, String> parameters) {
     return get(endpoint, parameters).extract().response();
   }
@@ -758,6 +790,16 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
         .body(body)
         .when()
         .post(endpoint)
+        .then()
+        .extract()
+        .response();
+  }
+
+  private Response deleteResponse(String endpoint) {
+    return RestAssured.given()
+        .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+        .when()
+        .delete(endpoint)
         .then()
         .extract()
         .response();

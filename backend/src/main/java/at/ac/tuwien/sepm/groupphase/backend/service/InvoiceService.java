@@ -60,4 +60,11 @@ public interface InvoiceService {
    * @return the paid invoice.
    */
   InvoiceDto payTickets(Long id, @NotEmpty List<@NotNull Long> ticketIds, String userName);
+
+  /**
+   * Delete invoice with given id as long as it's a reservation (unpaid invoice).
+   *
+   * @param id the invoices id.
+   */
+  void deleteReservation(Long id);
 }
