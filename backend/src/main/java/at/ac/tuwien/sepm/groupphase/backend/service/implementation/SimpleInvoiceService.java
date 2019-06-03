@@ -126,7 +126,7 @@ public class SimpleInvoiceService implements InvoiceService {
     User soldBy = getOrThrowNotFound(userRepository.findById(userName), errorMessage);
 
     if (performance.getStartAt().isBefore(LocalDateTime.now())) {
-      errorMessage = "Can't reserve tickets for bygone performance " + performanceId;
+      errorMessage = "Can't buy tickets for bygone performance " + performanceId;
       throw invalid(errorMessage);
     }
 
@@ -150,6 +150,9 @@ public class SimpleInvoiceService implements InvoiceService {
     Performance performance =
         getOrThrowNotFound(performanceRepository.findById(performanceId), errorMessage);
 
+    errorMessage = "Can't find user with name " + userName;
+    User soldBy = getOrThrowNotFound(userRepository.findById(userName), errorMessage);
+
     if (performance
         .getStartAt()
         .minusMinutes(PRE_PERFORMANCE_RESERVATION_CLEAR_MINUTES)
@@ -159,7 +162,7 @@ public class SimpleInvoiceService implements InvoiceService {
     }
 
     return createInvoice(
-        performance, client, null, reservationRequestDto.getTicketRequests(), false);
+        performance, client, soldBy, reservationRequestDto.getTicketRequests(), false);
   }
 
   @Transactional

@@ -399,11 +399,13 @@ public class InvoiceServiceTest {
     when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
+    when(mockUserRepository.findById(USER_NAME)).thenReturn(Optional.of(userOne));
 
     assertThatThrownBy(() -> invoiceService.reserveTickets(reservationRequestDto, USER_NAME))
         .isInstanceOf(ValidationException.class);
 
     verify(mockClientRepository).findById(CLIENT_ID);
     verify(mockPerformanceRepository).findById(INVOICE_PERFORMANCE_ID);
+    verify(mockUserRepository).findById(USER_NAME);
   }
 }
