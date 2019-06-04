@@ -212,7 +212,7 @@
           <div class="card card-performance" (click)="$event.stopPropagation();showHall(event,p)">
             <div class="card-performance-body">
               <div class="col-12">
-                <h6 class="card-performance-title float-none">{{ p.startAt | date:'HH:mm, dd.MM.yyyy' }}</h6>
+                <h6 class="card-performance-title float-none">{{ p.startAt | date:'HH:mm, dd.MM.yyyy' : '+0300' }}</h6>
               </div>
               <!--<h6 class="card-performance-subtitle">{{ p.name }}</h6>-->
             </div>
