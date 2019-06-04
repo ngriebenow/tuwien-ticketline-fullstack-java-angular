@@ -211,7 +211,7 @@ public class EventServiceIntegrationTest {
     P1 =
         new Performance.Builder()
             .name("1A")
-            .startAt(LocalDate.of(3000, 1, 15).atStartOfDay())
+            .startAtLocalAndUtc(LocalDate.of(3000, 1, 15).atStartOfDay())
             .id(0L)
             .event(E1)
             .build();
@@ -220,7 +220,7 @@ public class EventServiceIntegrationTest {
     P2 =
         new Performance.Builder()
             .name("2A")
-            .startAt(LocalDate.of(3000, 2, 15).atStartOfDay())
+            .startAtLocalAndUtc(LocalDate.of(3000, 2, 15).atStartOfDay())
             .id(1L)
             .event(E1)
             .build();
@@ -229,7 +229,7 @@ public class EventServiceIntegrationTest {
     P3 =
         new Performance.Builder()
             .name("1B")
-            .startAt(LocalDate.of(3000, 3, 15).atStartOfDay())
+            .startAtLocalAndUtc(LocalDate.of(3000, 3, 15).atStartOfDay())
             .event(E2)
             .build();
     P3 = performanceRepository.save(P3);
@@ -237,7 +237,7 @@ public class EventServiceIntegrationTest {
     P4 =
         new Performance.Builder()
             .name("2B")
-            .startAt(LocalDate.of(3000, 4, 15).atStartOfDay())
+            .startAtLocalAndUtc(LocalDate.of(3000, 4, 15).atStartOfDay())
             .event(E2)
             .build();
     P4 = performanceRepository.save(P4);
@@ -245,7 +245,7 @@ public class EventServiceIntegrationTest {
     P5 =
         new Performance.Builder()
             .name("3B")
-            .startAt(LocalDate.of(3000, 5, 15).atStartOfDay())
+            .startAtLocalAndUtc(LocalDate.of(3000, 5, 15).atStartOfDay())
             .event(E2)
             .build();
     P5 = performanceRepository.save(P5);
@@ -253,7 +253,7 @@ public class EventServiceIntegrationTest {
     P6 =
         new Performance.Builder()
             .name("1C")
-            .startAt(LocalDate.of(3000, 6, 15).atStartOfDay())
+            .startAtLocalAndUtc(LocalDate.of(3000, 6, 15).atStartOfDay())
             .event(E3)
             .build();
     P6 = performanceRepository.save(P6);
@@ -261,7 +261,7 @@ public class EventServiceIntegrationTest {
     P7 =
         new Performance.Builder()
             .name("2C")
-            .startAt(LocalDate.of(3000, 7, 15).atStartOfDay())
+            .startAtLocalAndUtc(LocalDate.of(3000, 7, 15).atStartOfDay())
             .event(E3)
             .build();
     P7 = performanceRepository.save(P7);
@@ -269,7 +269,7 @@ public class EventServiceIntegrationTest {
     P8 =
         new Performance.Builder()
             .name("3C")
-            .startAt(LocalDate.of(3000, 8, 15).atStartOfDay())
+            .startAtLocalAndUtc(LocalDate.of(3000, 8, 15).atStartOfDay())
             .event(E3)
             .build();
     P8 = performanceRepository.save(P8);
@@ -277,7 +277,7 @@ public class EventServiceIntegrationTest {
     P9 =
         new Performance.Builder()
             .name("4C")
-            .startAt(LocalDate.of(3000, 9, 15).atStartOfDay())
+            .startAtLocalAndUtc(LocalDate.of(3000, 9, 15).atStartOfDay())
             .event(E3)
             .build();
     P9 = performanceRepository.save(P9);

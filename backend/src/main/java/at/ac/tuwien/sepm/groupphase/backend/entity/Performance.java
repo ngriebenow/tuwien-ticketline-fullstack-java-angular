@@ -40,6 +40,7 @@ public class Performance {
   public Performance() {
   }
 
+  /** Javadoc. */
   public Performance(Builder builder) {
     setId(builder.id);
     setStartAt(builder.startAt);
@@ -138,7 +139,14 @@ public class Performance {
     }
 
     public Builder startAt(LocalDateTime val) {
+      startAtUtc = val;
+      return this;
+    }
+
+    /** Javadoc.*/
+    public Builder startAtLocalAndUtc(LocalDateTime val) {
       startAt = val;
+      startAtUtc = val;
       return this;
     }
 
