@@ -25,7 +25,8 @@ export class PictureDisplayComponent implements OnInit {
     this.loadAllPictures();
   }
   /**
-   * load all pictures with ids, one by one from service.
+   * Load all pictures with ids, one by one from service and convert from blob to file.
+   * After all pictures are loaded and converted, create the albums for the lightbox.
    */
   loadAllPictures() {
     for (const id of this.ids) {
@@ -81,19 +82,23 @@ export class PictureDisplayComponent implements OnInit {
     }
   }
   /**
-   * return sorted pictures array.
-   * @return picture array sorted by id ascending
+   * Return the albums.
+   * @return albums of all newspictures
    */
   getAlbums(): any[] {
     return this.albums;
   }
-
+  /**
+   * Open the lightbox.
+   * @param index of the picture
+   */
   open(index: number): void {
-    // open lightbox
     this.lightbox.open(this.albums, index);
   }
+  /**
+   * Close lightbox programmatically
+   */
   close(): void {
-    // close lightbox programmatically
     this.lightbox.close();
   }
 
