@@ -101,7 +101,7 @@ public class InvoiceServiceTest {
     performanceOne =
         new Performance.Builder()
             .id(INVOICE_PERFORMANCE_ID)
-            .startAt(LocalDateTime.now().plusDays(7))
+            .startAtLocalAndUtc(LocalDateTime.now().plusDays(7))
             .build();
 
     priceCategoryOne = new PriceCategory.Builder().priceInCents(TICKET_PRICE).build();

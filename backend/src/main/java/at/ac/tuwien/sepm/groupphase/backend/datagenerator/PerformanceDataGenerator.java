@@ -57,7 +57,7 @@ public class PerformanceDataGenerator implements DataGenerator<Performance> {
         generatedPerformances.add(
             new Performance.Builder()
                 .name(String.format("Aufführung %d", i + 1))
-                .startAt(initialStartAt.plusDays(i))
+                .startAtLocalAndUtc(initialStartAt.plusDays(i))
                 .startAtUtc(utc)
                 .event(event)
                 .build());

@@ -40,7 +40,7 @@ public class PerformanceRepositoryTest {
   private Performance P1 =
       new Performance.Builder()
           .name("Perf 1")
-          .startAt(LocalDateTime.now())
+          .startAtLocalAndUtc(LocalDateTime.now())
           .id(0L)
           .event(E1)
           .build();
@@ -48,7 +48,7 @@ public class PerformanceRepositoryTest {
   private Performance P2 =
       new Performance.Builder()
           .name("Perf 2")
-          .startAt(LocalDateTime.now())
+          .startAtLocalAndUtc(LocalDateTime.now())
           .id(1L)
           .event(E1)
           .build();

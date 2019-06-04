@@ -198,7 +198,7 @@ public class EventTop10ServiceIntegrationTest {
         new Performance.Builder()
             .name("Sonntagskrunch")
             .event(event1)
-            .startAt(LocalDateTime.now().plusDays(3))
+            .startAtLocalAndUtc(LocalDateTime.now().plusDays(3))
             .build();
     performance1 = performanceRepository.save(performance1);
 
@@ -206,7 +206,7 @@ public class EventTop10ServiceIntegrationTest {
         new Performance.Builder()
             .name("Luftballonkochkurz")
             .event(event1)
-            .startAt(LocalDateTime.now().plusDays(4))
+            .startAtLocalAndUtc(LocalDateTime.now().plusDays(4))
             .build();
     performance2 = performanceRepository.save(performance2);
 
@@ -214,7 +214,7 @@ public class EventTop10ServiceIntegrationTest {
         new Performance.Builder()
             .name("Taurus Hobbyfahren")
             .event(event2)
-            .startAt(LocalDateTime.now().plusDays(4))
+            .startAtLocalAndUtc(LocalDateTime.now().plusDays(4))
             .build();
     performance3 = performanceRepository.save(performance3);
 

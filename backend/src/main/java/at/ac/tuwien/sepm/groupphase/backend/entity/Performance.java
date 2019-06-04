@@ -138,7 +138,14 @@ public class Performance {
     }
 
     public Builder startAt(LocalDateTime val) {
+      startAtUtc = val;
+      return this;
+    }
+
+    /** Javadoc.*/
+    public Builder startAtLocalAndUtc(LocalDateTime val) {
       startAt = val;
+      startAtUtc = val;
       return this;
     }
 

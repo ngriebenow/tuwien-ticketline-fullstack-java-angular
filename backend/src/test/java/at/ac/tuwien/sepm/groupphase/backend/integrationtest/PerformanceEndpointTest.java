@@ -218,7 +218,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P1 =
         new Performance.Builder()
             .name("1A")
-            .startAt(LocalDateTime.of(3000, 1, 15, 0, 0))
+            .startAtLocalAndUtc(LocalDateTime.of(3000, 1, 15, 0, 0))
             .id(0L)
             .event(E1)
             .build();
@@ -227,7 +227,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P2 =
         new Performance.Builder()
             .name("2A")
-            .startAt(LocalDateTime.of(3000, 1, 15, 8, 0))
+            .startAtLocalAndUtc(LocalDateTime.of(3000, 1, 15, 8, 0))
             .id(1L)
             .event(E1)
             .build();
@@ -236,7 +236,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P3 =
         new Performance.Builder()
             .name("1B")
-            .startAt(LocalDateTime.of(3000, 2, 15, 16, 0))
+            .startAtLocalAndUtc(LocalDateTime.of(3000, 2, 15, 16, 0))
             .event(E2)
             .build();
     P3 = performanceRepository.save(P3);
@@ -244,7 +244,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P4 =
         new Performance.Builder()
             .name("2B")
-            .startAt(LocalDateTime.of(3001, 2, 15, 23, 0))
+            .startAtLocalAndUtc(LocalDateTime.of(3001, 2, 15, 23, 0))
             .event(E2)
             .build();
     P4 = performanceRepository.save(P4);
@@ -252,7 +252,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P5 =
         new Performance.Builder()
             .name("3B")
-            .startAt(LocalDateTime.of(3000, 3, 15, 0, 0))
+            .startAtLocalAndUtc(LocalDateTime.of(3000, 3, 15, 0, 0))
             .event(E2)
             .build();
     P5 = performanceRepository.save(P5);
@@ -260,7 +260,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P6 =
         new Performance.Builder()
             .name("1C")
-            .startAt(LocalDateTime.of(3000, 3, 15, 22, 29))
+            .startAtLocalAndUtc(LocalDateTime.of(3000, 3, 15, 22, 29))
             .event(E3)
             .build();
     P6 = performanceRepository.save(P6);
@@ -268,7 +268,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P7 =
         new Performance.Builder()
             .name("2C")
-            .startAt(LocalDateTime.of(3000, 2, 14, 22, 30))
+            .startAtLocalAndUtc(LocalDateTime.of(3000, 2, 14, 22, 30))
             .event(E3)
             .build();
     P7 = performanceRepository.save(P7);
@@ -276,7 +276,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P8 =
         new Performance.Builder()
             .name("3C")
-            .startAt(LocalDateTime.of(3000, 6, 15, 22, 31))
+            .startAtLocalAndUtc(LocalDateTime.of(3000, 6, 15, 22, 31))
             .event(E3)
             .build();
     P8 = performanceRepository.save(P8);
@@ -284,7 +284,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     P9 =
         new Performance.Builder()
             .name("4C")
-            .startAt(LocalDateTime.of(3000, 12, 15, 23, 59))
+            .startAtLocalAndUtc(LocalDateTime.of(3000, 12, 15, 23, 59))
             .event(E3)
             .build();
     P9 = performanceRepository.save(P9);

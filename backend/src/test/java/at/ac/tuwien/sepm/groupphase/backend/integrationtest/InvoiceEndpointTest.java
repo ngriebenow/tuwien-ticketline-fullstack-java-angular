@@ -159,7 +159,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
         new Performance.Builder()
             .name("Sonntagskrunch")
             .event(event)
-            .startAt(LocalDateTime.now().plusDays(3))
+            .startAtLocalAndUtc(LocalDateTime.now().plusDays(3))
             .build();
     performanceRepository.save(performance1);
 
@@ -167,7 +167,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
         new Performance.Builder()
             .name("Luftballonkochkurz")
             .event(event)
-            .startAt(LocalDateTime.now().plusDays(4))
+            .startAtLocalAndUtc(LocalDateTime.now().plusDays(4))
             .build();
     performanceRepository.save(performance2);
 

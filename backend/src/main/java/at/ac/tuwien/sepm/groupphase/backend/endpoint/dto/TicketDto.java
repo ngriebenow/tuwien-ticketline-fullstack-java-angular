@@ -190,7 +190,7 @@ public class TicketDto {
         + ", performanceName='"
         + performanceName
         + '\''
-        + ", startAt="
+        + ", startAtLocalAndUtc="
         + startAt
         + ", priceCategoryName='"
         + priceCategoryName
