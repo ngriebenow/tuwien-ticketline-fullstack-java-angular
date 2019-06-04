@@ -46,4 +46,10 @@ public interface EventService {
    * @return the list of performances which belong to the event
    */
   List<PerformanceSearchResultDto> getPerformancesByEventId(Long id, Pageable pageable);
+
+  /**
+   * Get all event categories.
+   * @return the list of event categories.
+   */
+  List<String> getEventCategories();
 }

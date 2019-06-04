@@ -118,7 +118,7 @@ public class EventServiceIntegrationTest {
     E1 =
         new Event.Builder()
             .name("Abc")
-            .category(EventCategory.CINEMA)
+            .category(EventCategory.Kino)
             .duration(Duration.ofHours(2))
             .content("Content1")
             .build();
@@ -126,7 +126,7 @@ public class EventServiceIntegrationTest {
     E2 =
         new Event.Builder()
             .name("Bcd")
-            .category(EventCategory.CONCERT)
+            .category(EventCategory.Konzert)
             .duration(Duration.ofHours(5))
             .content("Content2")
             .build();
@@ -134,7 +134,7 @@ public class EventServiceIntegrationTest {
     E3 =
         new Event.Builder()
             .name("Cde")
-            .category(EventCategory.OTHER)
+            .category(EventCategory.Sonstige)
             .duration(Duration.ofHours(3))
             .content("Content3")
             .build();
@@ -391,7 +391,7 @@ public class EventServiceIntegrationTest {
   public void givenEvents_whenFilterByEventCategory_thenReturnEvents() {
 
     EventFilterDto filterDto = new EventFilterDto();
-    filterDto.setEventCategory(EventCategory.CONCERT);
+    filterDto.setEventCategory(EventCategory.Konzert);
 
     List<EventSearchResultDto> retList = eventService.getFiltered(filterDto, Pageable.unpaged());
 

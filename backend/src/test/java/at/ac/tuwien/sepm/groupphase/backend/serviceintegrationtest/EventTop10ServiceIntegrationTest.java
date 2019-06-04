@@ -156,7 +156,7 @@ public class EventTop10ServiceIntegrationTest {
             .name("Freuden der Freizeit")
             .duration(Duration.ofMinutes(90L))
             .content("Alle wollen mal ausspannen und neues ausprobieren. Bist du dabei?")
-            .category(EventCategory.CONCERT)
+            .category(EventCategory.Konzert)
             .hall(hall)
             .artists(Collections.singletonList(artist))
             .build();
@@ -168,7 +168,7 @@ public class EventTop10ServiceIntegrationTest {
             .duration(Duration.ofMinutes(90L))
             .content(
                 "Willst du die neuen Zuggarnituren der ÖBB kennenlernen? Sichere dir exklusive VIP-Tickets!")
-            .category(EventCategory.OTHER)
+            .category(EventCategory.Sonstige)
             .hall(hall)
             .artists(Collections.singletonList(artist))
             .build();

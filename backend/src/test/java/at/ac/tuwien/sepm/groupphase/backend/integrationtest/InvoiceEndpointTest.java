@@ -129,7 +129,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
             .name("Freuden der Freizeit")
             .duration(Duration.ofMinutes(90L))
             .content("Alle wollen mal ausspannen und neues ausprobieren. Bist du dabei?")
-            .category(EventCategory.CONCERT)
+            .category(EventCategory.Konzert)
             .hall(hall)
             .artists(Collections.singletonList(artist))
             .build();
