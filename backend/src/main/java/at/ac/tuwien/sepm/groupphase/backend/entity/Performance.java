@@ -25,6 +25,9 @@ public class Performance {
   private LocalDateTime startAt;
 
   @Column(nullable = false)
+  private LocalDateTime startAtUtc;
+
+  @Column(nullable = false)
   private String name;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -37,12 +40,18 @@ public class Performance {
   public Performance() {
   }
 
-  private Performance(Builder builder) {
+  public Performance(Builder builder) {
     setId(builder.id);
     setStartAt(builder.startAt);
+    setStartAtUtc(builder.startAtUtc);
     setName(builder.name);
     setEvent(builder.event);
   }
+
+  public static Builder newBuilder() {
+    return new Builder();
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -69,6 +78,14 @@ public class Performance {
   @Override
   public int hashCode() {
     return Objects.hash(id, startAt, name, event);
+  }
+
+  public LocalDateTime getStartAtUtc() {
+    return startAtUtc;
+  }
+
+  public void setStartAtUtc(LocalDateTime startAtUtc) {
+    this.startAtUtc = startAtUtc;
   }
 
   public Long getId() {
@@ -103,10 +120,12 @@ public class Performance {
     this.event = event;
   }
 
+
   public static final class Builder {
 
     private Long id;
     private LocalDateTime startAt;
+    private LocalDateTime startAtUtc;
     private String name;
     private Event event;
 
@@ -120,6 +139,11 @@ public class Performance {
 
     public Builder startAt(LocalDateTime val) {
       startAt = val;
+      return this;
+    }
+
+    public Builder startAtUtc(LocalDateTime val) {
+      startAtUtc = val;
       return this;
     }
 

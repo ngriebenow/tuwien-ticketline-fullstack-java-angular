@@ -10,7 +10,7 @@ public class PerformanceDto {
   @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
   private Long id;
 
-  @ApiModelProperty(required = true, name = "The name of the performance")
+  @ApiModelProperty(required = true, name = "The local date and time of the performance")
   private LocalDateTime startAt;
 
   @ApiModelProperty(required = true, name = "The corresponding event of the performance")

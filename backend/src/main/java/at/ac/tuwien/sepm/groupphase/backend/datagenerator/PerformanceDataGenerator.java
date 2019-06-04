@@ -46,6 +46,9 @@ public class PerformanceDataGenerator implements DataGenerator<Performance> {
       LocalDateTime initialStartAt =
           LocalDateTime.ofInstant(
               FAKER.date().future(365, TimeUnit.DAYS).toInstant(), ZoneId.systemDefault());
+
+      LocalDateTime utc = initialStartAt.atZone(ZoneId.of("UTC")).toLocalDateTime();
+
       int numPerformances =
           FAKER.random().nextInt(MIN_PERFORMANCES_PER_EVENT, MAX_PERFORMANCES_PER_EVENT);
 
@@ -55,6 +58,7 @@ public class PerformanceDataGenerator implements DataGenerator<Performance> {
             new Performance.Builder()
                 .name(String.format("Aufführung %d", i + 1))
                 .startAt(initialStartAt.plusDays(i))
+                .startAtUtc(utc)
                 .event(event)
                 .build());
       }
