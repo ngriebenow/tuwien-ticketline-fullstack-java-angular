@@ -320,11 +320,11 @@ public class EventEndpointTest extends BaseIntegrationTest {
     PC6 = priceCategoryRepository.save(PC6);
 
     E1_SR = eventSearchResultMapper.eventToEventSearchResultDto(E1);
-    E1_SR.setPriceRange("20 €");
+    E1_SR.setPriceRange("€20");
     E2_SR = eventSearchResultMapper.eventToEventSearchResultDto(E2);
-    E2_SR.setPriceRange("30 - 40 €");
+    E2_SR.setPriceRange("€30 - €40");
     E3_SR = eventSearchResultMapper.eventToEventSearchResultDto(E3);
-    E3_SR.setPriceRange("50 - 70 €");
+    E3_SR.setPriceRange("€50 - €70");
   }
 
   @After
