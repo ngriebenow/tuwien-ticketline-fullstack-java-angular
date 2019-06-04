@@ -329,6 +329,12 @@ option {
   background-color: $medium-gray !important;
 }
 
+table > tbody > tr:hover > td {
+  background: $main-orange;
+  color: white;
+}
+
+
 /*
   DATEPICKER:
   <div class="container">
