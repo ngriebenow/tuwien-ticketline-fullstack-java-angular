@@ -21,7 +21,8 @@ export class ClientFilterComponent implements OnInit {
   public searchForm = this.formBuilder.group({
     clientName: [''],
     clientSurname: [''],
-    clientEmail: ['']
+    clientEmail: [''],
+    id: [''],
   });
 
   constructor(private clientService: ClientService, private formBuilder: FormBuilder, private router: Router) {
@@ -38,12 +39,8 @@ export class ClientFilterComponent implements OnInit {
     this.clientService.getClientsFiltered(this.queryParams).subscribe(
       (client: Client[]) => {
         this.clients = client;
-        this.clients.forEach(function (value) {
-          console.log(value);
-        });
       },
       error => {
-        // TODO: error handling
       }
     );
   }
@@ -55,7 +52,6 @@ export class ClientFilterComponent implements OnInit {
         this.clients.push(client);
       },
       error => {
-        // TODO: error handling
       }
     );
   }

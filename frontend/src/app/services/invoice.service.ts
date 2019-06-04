@@ -37,4 +37,7 @@ export class InvoiceService {
     return this.httClient.post<Invoice>(`${this.invoiceBaseUri}/reserve`, reservationRequest);
   }
 
+  cancelReservation(id: number): Observable<any> {
+    return this.httClient.delete<any>(`${this.invoiceBaseUri}/${id}`);
+  }
 }

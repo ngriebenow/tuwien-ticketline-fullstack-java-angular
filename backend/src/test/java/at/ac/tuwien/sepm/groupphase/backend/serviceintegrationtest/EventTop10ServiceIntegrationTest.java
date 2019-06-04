@@ -18,6 +18,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Unit;
+import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.DefinedUnitRepository;
@@ -29,6 +30,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TicketRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UnitRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.awt.Color;
 import java.time.Duration;
@@ -73,6 +75,8 @@ public class EventTop10ServiceIntegrationTest {
   private TicketRepository ticketRepository;
   @Autowired
   private InvoiceRepository invoiceRepository;
+  @Autowired
+  private UserRepository userRepository;
 
   @Autowired
   private EventService eventService;
@@ -101,6 +105,7 @@ public class EventTop10ServiceIntegrationTest {
   private Ticket ticket2;
   private Ticket ticket3;
   private Invoice invoice1;
+  private User userOne;
 
   @Before
   public void setUp() {
@@ -115,6 +120,14 @@ public class EventTop10ServiceIntegrationTest {
             .email("rabarbara@arabrabar.at")
             .build();
     clientTwo = clientRepository.save(clientTwo);
+
+    userOne = new User();
+    userOne.setUsername("user");
+    userOne.setEnabled(true);
+    userOne.setFailedLoginCounter(0);
+    userOne.setPassword("password");
+    userOne.setAuthority("ROLE_USER");
+    userOne = userRepository.save(userOne);
 
     location =
         new Location.Builder()
@@ -281,6 +294,7 @@ public class EventTop10ServiceIntegrationTest {
         new Invoice.Builder()
             .reservationCode("NIC")
             .client(clientOne)
+            .soldBy(userOne)
             .build();
     invoiceRepository.save(invoice1);
 

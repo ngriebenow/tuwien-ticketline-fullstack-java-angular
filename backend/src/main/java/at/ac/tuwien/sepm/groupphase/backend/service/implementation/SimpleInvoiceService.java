@@ -9,6 +9,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.DefinedUnit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Invoice;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
+import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.invoice.InvoiceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
@@ -17,12 +18,14 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.DefinedUnitRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.TicketRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
 import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
 import at.ac.tuwien.sepm.groupphase.backend.specification.InvoiceSpecification;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -56,20 +59,20 @@ public class SimpleInvoiceService implements InvoiceService {
   private final InvoiceRepository invoiceRepository;
   private PerformanceRepository performanceRepository;
   private ClientRepository clientRepository;
+  private UserRepository userRepository;
   private DefinedUnitRepository definedUnitRepository;
   private TicketRepository ticketRepository;
   private InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator;
 
   private final InvoiceMapper invoiceMapper;
 
-  /**
-   * Create a new InvoiceService.
-   */
+  /** Create a new InvoiceService. */
   @Autowired
   public SimpleInvoiceService(
       InvoiceRepository invoiceRepository,
       PerformanceRepository performanceRepository,
       ClientRepository clientRepository,
+      UserRepository userRepository,
       DefinedUnitRepository definedUnitRepository,
       TicketRepository ticketRepository,
       InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator,
@@ -77,6 +80,7 @@ public class SimpleInvoiceService implements InvoiceService {
     this.invoiceRepository = invoiceRepository;
     this.performanceRepository = performanceRepository;
     this.clientRepository = clientRepository;
+    this.userRepository = userRepository;
     this.definedUnitRepository = definedUnitRepository;
     this.ticketRepository = ticketRepository;
     this.invoiceNumberSequenceGenerator = invoiceNumberSequenceGenerator;
@@ -104,7 +108,8 @@ public class SimpleInvoiceService implements InvoiceService {
 
   @Transactional
   @Override
-  public InvoiceDto buyTickets(@Valid ReservationRequestDto reservationRequestDto) {
+  public InvoiceDto buyTickets(
+      @Valid ReservationRequestDto reservationRequestDto, String userName) {
     Long performanceId = reservationRequestDto.getPerformanceId();
     Long clientId = reservationRequestDto.getClientId();
 
@@ -117,17 +122,22 @@ public class SimpleInvoiceService implements InvoiceService {
     Performance performance =
         getOrThrowNotFound(performanceRepository.findById(performanceId), errorMessage);
 
+    errorMessage = "Can't find user with name " + userName;
+    User soldBy = getOrThrowNotFound(userRepository.findById(userName), errorMessage);
+
     if (performance.getStartAt().isBefore(LocalDateTime.now())) {
-      errorMessage = "Can't reserve tickets for bygone performance " + performanceId;
+      errorMessage = "Can't buy tickets for bygone performance " + performanceId;
       throw invalid(errorMessage);
     }
 
-    return createInvoice(performance, client, reservationRequestDto.getTicketRequests(), true);
+    return createInvoice(
+        performance, client, soldBy, reservationRequestDto.getTicketRequests(), true);
   }
 
   @Transactional
   @Override
-  public InvoiceDto reserveTickets(@Valid ReservationRequestDto reservationRequestDto) {
+  public InvoiceDto reserveTickets(
+      @Valid ReservationRequestDto reservationRequestDto, String userName) {
     Long performanceId = reservationRequestDto.getPerformanceId();
     Long clientId = reservationRequestDto.getClientId();
 
@@ -140,6 +150,9 @@ public class SimpleInvoiceService implements InvoiceService {
     Performance performance =
         getOrThrowNotFound(performanceRepository.findById(performanceId), errorMessage);
 
+    errorMessage = "Can't find user with name " + userName;
+    User soldBy = getOrThrowNotFound(userRepository.findById(userName), errorMessage);
+
     if (performance
         .getStartAt()
         .minusMinutes(PRE_PERFORMANCE_RESERVATION_CLEAR_MINUTES)
@@ -148,16 +161,20 @@ public class SimpleInvoiceService implements InvoiceService {
       throw invalid(errorMessage);
     }
 
-    return createInvoice(performance, client, reservationRequestDto.getTicketRequests(), false);
+    return createInvoice(
+        performance, client, soldBy, reservationRequestDto.getTicketRequests(), false);
   }
 
   @Transactional
   @Override
-  public InvoiceDto payTickets(Long id, @NotEmpty List<@NotNull Long> ticketIds) {
+  public InvoiceDto payTickets(Long id, @NotEmpty List<@NotNull Long> ticketIds, String userName) {
     LOGGER.info("Paying tickets {} for invoice {}", ticketIds, id);
 
     String errorMessage = "Can't find invoice " + id;
     Invoice invoice = getOrThrowNotFound(invoiceRepository.findById(id), errorMessage);
+
+    errorMessage = "Can't find user with name " + userName;
+    User soldBy = getOrThrowNotFound(userRepository.findById(userName), errorMessage);
 
     if (invoice.isPaid()) {
       String msg = "Invoice " + id + " is already paid";
@@ -185,10 +202,21 @@ public class SimpleInvoiceService implements InvoiceService {
             .collect(Collectors.toList());
     deleteTickets(unboughtTickets);
 
-    markPaid(invoice);
+    markPaid(invoice, soldBy);
     invoiceRepository.save(invoice);
 
     return invoiceMapper.invoiceToInvoiceDto(invoice);
+  }
+
+  @Transactional
+  @Override
+  public void deleteReservation(Long id) {
+    LOGGER.info("Deleting reservation {}", id);
+    String errorMessage = "Can't find reservation with id " + id;
+    Invoice invoice =
+        getOrThrowNotFound(invoiceRepository.findByIdAndIsPaid(id, false), errorMessage);
+    deleteTickets(invoice.getTickets());
+    invoiceRepository.delete(invoice);
   }
 
   /**
@@ -198,6 +226,7 @@ public class SimpleInvoiceService implements InvoiceService {
   private InvoiceDto createInvoice(
       Performance performance,
       Client client,
+      User soldBy,
       List<TicketRequestDto> ticketRequestDtos,
       boolean isPaid) {
 
@@ -209,11 +238,12 @@ public class SimpleInvoiceService implements InvoiceService {
             .isPaid(false)
             .isCancelled(false)
             .client(client)
+            .soldBy(soldBy)
             .reservationCode(generateReservationCode())
             .build();
 
     if (isPaid) {
-      markPaid(invoice);
+      markPaid(invoice, soldBy);
     }
 
     createTickets(performance, invoice, ticketRequestDtos);
@@ -231,7 +261,7 @@ public class SimpleInvoiceService implements InvoiceService {
    * @param performance the performance to create tickets for.
    * @param invoice the invoice created for these tickets.
    * @param ticketRequestDtos the list of definedUnitIds with the amount of tickets to create for
-   *         each.
+   *     each.
    * @return a list of the generated tickets.
    */
   private void createTickets(
@@ -278,48 +308,45 @@ public class SimpleInvoiceService implements InvoiceService {
         });
   }
 
-  /**
-   * Mark the invoice as paid by setting all the needed attributes.
-   */
-  private Invoice markPaid(Invoice invoice) {
+  /** Mark the invoice as paid by setting all the needed attributes. */
+  private Invoice markPaid(Invoice invoice, User soldBy) {
     invoice.setPaid(true);
     invoice.setNumber(invoiceNumberSequenceGenerator.getNext());
     invoice.setPaidAt(LocalDate.now());
+    invoice.setSoldBy(soldBy);
     return invoice;
   }
 
-  /**
-   * Remove tickets from their invoice, delete them and release their defined units.
-   */
+  /** Remove tickets from their invoice, delete them and release their defined units. */
   private void deleteTickets(List<Ticket> tickets) {
-    tickets.forEach(
-        tic -> {
-          DefinedUnit definedUnit = tic.getDefinedUnit();
-          definedUnit.setCapacityFree(definedUnit.getCapacityFree() + 1);
-          definedUnitRepository.save(definedUnit);
-          tic.getInvoice().removeTicket(tic);
-        });
+    releaseDefinedUnits(tickets);
+    new ArrayList<>(tickets).forEach(tic -> tic.getInvoice().removeTicket(tic));
     ticketRepository.deleteAll(tickets);
   }
 
   /**
-   * Return an object of type T or log an error and throw a NotFoundException.
+   * Release the definedUnits referenced by the given tickets by increasing their capacity.
    */
+  private void releaseDefinedUnits(List<Ticket> tickets) {
+    tickets.forEach(tic -> {
+      DefinedUnit definedUnit = tic.getDefinedUnit();
+      definedUnit.setCapacityFree(definedUnit.getCapacityFree() + 1);
+      definedUnitRepository.save(definedUnit);
+    });
+  }
+
+  /** Return an object of type T or log an error and throw a NotFoundException. */
   private <T> T getOrThrowNotFound(Optional<T> optional, String msg) {
     return optional.orElseThrow(() -> notFound(msg));
   }
 
-  /**
-   * Log an error message and return a not found exception.
-   */
+  /** Log an error message and return a not found exception. */
   private NotFoundException notFound(String msg) {
     LOGGER.error(msg);
     throw new NotFoundException(msg);
   }
 
-  /**
-   * Log an error message and return a not validation exception.
-   */
+  /** Log an error message and return a not validation exception. */
   private ValidationException invalid(String msg) {
     LOGGER.error(msg);
     throw new ValidationException(msg);

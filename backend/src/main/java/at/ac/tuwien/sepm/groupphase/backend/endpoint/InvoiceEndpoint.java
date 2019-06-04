@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import java.security.Principal;
 import java.util.List;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +41,7 @@ public class InvoiceEndpoint {
     this.invoiceService = invoiceService;
   }
 
+  /** Get a sinlge invoice by id. */
   @GetMapping("/{id}")
   @ApiOperation(
       value = "Get an invoice by its id",
@@ -48,9 +51,7 @@ public class InvoiceEndpoint {
     return invoiceService.getOneById(id);
   }
 
-  /**
-   * Add JavaDoc.
-   */
+  /** Add JavaDoc. */
   @GetMapping
   @ApiOperation(
       value = "Get filtered invoices",
@@ -81,41 +82,49 @@ public class InvoiceEndpoint {
     return invoiceService.getFiltered(invoiceFilterDto, pageable);
   }
 
-  /**
-   * Buy tickets for the specified performance.
-   */
+  /** Buy tickets for the specified performance. */
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @ApiOperation(
       value = "Buy tickets for the specified performance",
       authorizations = {@Authorization("apiKey")})
-  public InvoiceDto buy(@RequestBody ReservationRequestDto reservationRequestDto) {
+  public InvoiceDto buy(
+      @RequestBody ReservationRequestDto reservationRequestDto, Principal principal) {
     LOGGER.info(
         "Attempting to buy tickets for performance {}", reservationRequestDto.getPerformanceId());
-    return invoiceService.buyTickets(reservationRequestDto);
+    return invoiceService.buyTickets(reservationRequestDto, principal.getName());
   }
 
-  /**
-   * Reserve tickets for the specified performance.
-   */
+  /** Reserve tickets for the specified performance. */
   @PostMapping("/reserve")
   @ResponseStatus(HttpStatus.CREATED)
   @ApiOperation(
       value = "Reserve tickets for the specified performance",
       authorizations = {@Authorization("apiKey")})
-  public InvoiceDto reserve(@RequestBody ReservationRequestDto reservationRequestDto) {
+  public InvoiceDto reserve(
+      @RequestBody ReservationRequestDto reservationRequestDto, Principal principal) {
     LOGGER.info(
         "Attempting to reserve tickets for performance with id {}",
         reservationRequestDto.getPerformanceId());
-    return invoiceService.reserveTickets(reservationRequestDto);
+    return invoiceService.reserveTickets(reservationRequestDto, principal.getName());
   }
 
   @PostMapping("/{id}/pay")
   @ApiOperation(
-      value = "Pay tickets for the specified invoice",
+      value = "Pay tickets for an existing invoice",
       authorizations = {@Authorization("apiKey")})
-  public InvoiceDto pay(@PathVariable Long id, @RequestBody List<Long> ticketIds) {
+  public InvoiceDto pay(
+      @PathVariable Long id, @RequestBody List<Long> ticketIds, Principal principal) {
     LOGGER.info("Attempting to pay tickets {} for invoice {}", ticketIds, id);
-    return invoiceService.payTickets(id, ticketIds);
+    return invoiceService.payTickets(id, ticketIds, principal.getName());
+  }
+
+  @DeleteMapping("/{id}")
+  @ApiOperation(
+      value = "Delete a reservation",
+      authorizations = {@Authorization("apiKey")})
+  public void delete(@PathVariable Long id) {
+    LOGGER.info("Attempting to delete reservation {}", id);
+    invoiceService.deleteReservation(id);
   }
 }

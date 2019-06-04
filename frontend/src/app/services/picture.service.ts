@@ -26,7 +26,7 @@ export class PictureService {
    * Upload picture
    * @param picture to upload
    */
-  uploadPicture(picture: File) {
+  uploadPicture(picture: File): Observable<any> {
     console.log('Upload picture');
     const fd = new FormData();
     fd.append('picture', picture, picture.name);

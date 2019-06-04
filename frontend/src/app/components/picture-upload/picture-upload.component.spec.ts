@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PictureUploadComponent } from './picture-upload.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {Globals} from '../../global/globals';
 
@@ -14,6 +15,7 @@ describe('PictureUploadComponent', () => {
       imports: [
         HttpClientTestingModule,
         ReactiveFormsModule,
+        RouterTestingModule
       ],
       declarations: [
         PictureUploadComponent,

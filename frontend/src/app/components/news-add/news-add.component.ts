@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {NewsService} from '../../services/news.service';
 import {NewsComponent} from '../../components/news/news.component';
 import {PictureTransferService} from '../../services/picture-transfer.service';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-news-add',
@@ -18,7 +19,8 @@ export class NewsAddComponent implements OnInit {
   submitted = false;
   constructor(private router: Router, private newsService: NewsService,
               private formBuilder: FormBuilder,
-              private pictureTransferService: PictureTransferService) {
+              private pictureTransferService: PictureTransferService,
+              private alertService: AlertService) {
       this.newsForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       summary: ['', [Validators.required]],
@@ -31,23 +33,36 @@ export class NewsAddComponent implements OnInit {
 
   /**
    * Starts form validation and builds a news dto for sending a creation request if the form is valid.
+   * Initiates the upload of all pictures to backend. Waits until all requests are completed.
    * If the procedure was successful, the form will be cleared.
    */
   addNews() {
     this.submitted = true;
     if (this.newsForm.valid) {
-      const news: News = new News(null,
-        this.newsForm.controls.title.value,
-        this.newsForm.controls.summary.value,
-        this.newsForm.controls.text.value,
-        new Date().toISOString(),
-        this.pictureTransferService.getData(),
-        false
-      );
-      this.createNews(news);
-      this.clearForm();
+      Promise.all(this.pictureTransferService.uploadData()).then(function (result) {
+        const news: News = new News(null,
+          this.newsForm.controls.title.value,
+          this.newsForm.controls.summary.value,
+          this.newsForm.controls.text.value,
+          new Date().toISOString(),
+          this.pictureTransferService.getIds(),
+          false
+        );
+        this.createNews(news);
+        this.clearForm();
+        this.pictureTransferService.clearData();
+      }.bind(this));
     } else {
       console.log('Invalid input');
+      if (this.newsForm.controls.title.invalid) {
+        this.alertService.error('Der Titel ist erforderlich');
+      }
+      if (this.newsForm.controls.summary.invalid) {
+        this.alertService.error('Die Kurzbeschreibung ist erforderlich');
+      }
+      if (this.newsForm.controls.text.invalid) {
+        this.alertService.error('Der Fließtext ist erforderlich');
+      }
     }
   }
 

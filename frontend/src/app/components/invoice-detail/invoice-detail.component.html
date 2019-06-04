@@ -99,8 +99,11 @@
           *ngIf="isTransient()"
           (click)="reserveTickets()">Reservieren</button>
   <button class="btn btn-xl btn-secondary"
-          *ngIf="isReserved() || isBought()"
+          *ngIf="isBought()"
           (click)="cancelTickets()">Stornieren</button>
+  <button class="btn btn-xl btn-secondary"
+          *ngIf="isReserved()"
+          (click)="cancelReservation()">Stornieren</button>
   <button class="btn btn-xl btn-primary"
           *ngIf="isTransient()"
           (click)="buyTickets()">Kaufen</button>

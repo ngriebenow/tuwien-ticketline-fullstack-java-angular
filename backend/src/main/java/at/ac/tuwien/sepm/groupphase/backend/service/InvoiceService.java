@@ -35,26 +35,36 @@ public interface InvoiceService {
    * client.
    *
    * @param reservationRequestDto an object containing information about performance, client and
-   *        tickets.
+   *     tickets.
+   * @param userName the name of the user issuing the request.
    * @return the paid invoice.
    */
-  InvoiceDto buyTickets(@Valid ReservationRequestDto reservationRequestDto);
+  InvoiceDto buyTickets(@Valid ReservationRequestDto reservationRequestDto, String userName);
 
   /**
    * Issue a new reservation for the specified defined units of one performance for a client.
    *
    * @param reservationRequestDto an object containing information about performance, client and
-   *        tickets.
+   *     tickets.
+   * @param userName the name of the user issuing the request.
    * @return the unpaid invoice for the reservation.
    */
-  InvoiceDto reserveTickets(@Valid ReservationRequestDto reservationRequestDto);
+  InvoiceDto reserveTickets(@Valid ReservationRequestDto reservationRequestDto, String userName);
 
   /**
    * Buy a subset of tickets for an existing invoice.
    *
    * @param id of the invoice to pay tickets for.
    * @param ticketIds list of ticket ids to be paid for.
+   * @param userName the name of the user issuing the request.
    * @return the paid invoice.
    */
-  InvoiceDto payTickets(Long id, @NotEmpty List<@NotNull Long> ticketIds);
+  InvoiceDto payTickets(Long id, @NotEmpty List<@NotNull Long> ticketIds, String userName);
+
+  /**
+   * Delete invoice with given id as long as it's a reservation (unpaid invoice).
+   *
+   * @param id the invoices id.
+   */
+  void deleteReservation(Long id);
 }

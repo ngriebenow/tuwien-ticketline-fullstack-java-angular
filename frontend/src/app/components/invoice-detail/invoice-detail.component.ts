@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {ConfirmationDialogService} from '../../services/confirmation-dialog.service';
 import {AlertService} from '../../services/alert.service';
 import {InvoiceService} from '../../services/invoice.service';
 import {TicketingService} from '../../services/ticketing.service';
@@ -29,8 +32,10 @@ export class InvoiceDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private invoiceService: InvoiceService,
     private ticketingService: TicketingService,
+    private dialogService: ConfirmationDialogService,
     private alertService: AlertService) {
   }
 
@@ -245,9 +250,37 @@ export class InvoiceDetailComponent implements OnInit {
     );
   }
 
+  private cancelReservation(): void {
+    if (!this.isReserved()) {
+      return;
+    }
+
+    const message = 'Wollen Sie die Reservierung wirklich stornieren?';
+    const onYes = () => {
+      this.invoiceService.cancelReservation(this.invoice.id).subscribe(
+        () => {
+          this.router.navigate(['/']).then(
+            nav => this.alertService.success('Reservierung erfolgreich storniert'),
+            error => {
+              console.log(error);
+              this.alertService.success('Reservierung erfolgreich storniert');
+              this.alertService.error('Fehler bei der Navigation. Bitte kehren Sie zum Hauptmenue zurück');
+            }
+          );
+        },
+        error => {
+          console.log(error);
+          this.alertService.error('Reservierung konnte nicht storniert werden, bitte versuchen sie es später noch ein mal');
+        }
+      );
+    };
+
+    this.dialogService.open(message, onYes);
+  }
+
   // TODO: next sprint
   private cancelTickets(): void {
-    if (!this.isReserved() && !this.isBought()) {
+    if (!this.isBought()) {
       return;
     }
     this.alertService.info('Implementierung dieses Features folg demnächst');
