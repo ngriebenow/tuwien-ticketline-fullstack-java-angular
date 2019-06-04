@@ -5,8 +5,6 @@ import at.ac.tuwien.sepm.groupphase.backend.security.HeaderTokenAuthenticationFi
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
@@ -19,6 +17,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.provisioning.InMemoryUserDetailsManagerConfigurer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -48,26 +47,10 @@ public class SecurityConfiguration {
 
   @Bean
   public static PasswordEncoder configureDefaultPasswordEncoder() {
-    return new BCryptPasswordEncoder();
+    return new BCryptPasswordEncoder(10);
   }
 
-  /**
-   * Creates new h2 datasource with properties read from the current profile.
-   *
-   * @return DataSource
-   */
-  public DataSource getDataSource() {
-    BasicDataSource dataSource = new BasicDataSource();
-    dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
-    dataSource.setUrl(env.getProperty("spring.datasource.url"));
-    dataSource.setUsername(env.getProperty("spring.datasource.username"));
-    dataSource.setPassword(env.getProperty("spring.datasource.password"));
-    return dataSource;
-  }
-
-  /**
-   * TODO: Add JavaDoc.
-   */
+  /** TODO: Add JavaDoc. */
   @Bean
   public ErrorAttributes errorAttributes() {
     return new DefaultErrorAttributes() {
@@ -81,35 +64,26 @@ public class SecurityConfiguration {
     };
   }
 
-  /**
-   * TODO: Add JavaDoc.
-   */
+  /** TODO: Add JavaDoc. */
   @Autowired
   public void configureGlobal(
       AuthenticationManagerBuilder auth, List<AuthenticationProvider> providerList)
       throws Exception {
-    /*new InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder>()
-    .withUser("user")
-    .password(passwordEncoder.encode("password"))
-    .authorities("USER")
-    .and()
-    .withUser("admin")
-    .password(passwordEncoder.encode("password"))
-    .authorities("ADMIN", "USER")
-    .and()
-    .passwordEncoder(passwordEncoder)
-    .configure(auth);*/
-    auth.jdbcAuthentication()
-        .dataSource(getDataSource())
-        .usersByUsernameQuery("select username, password, enabled" + " from user where username=?")
-        .authoritiesByUsernameQuery("select username, authority " + "from user where username=?")
-        .passwordEncoder(new BCryptPasswordEncoder());
+    new InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder>()
+        .withUser("user")
+        .password(passwordEncoder.encode("password"))
+        .authorities("USER")
+        .and()
+        .withUser("admin")
+        .password(passwordEncoder.encode("password"))
+        .authorities("ADMIN", "USER")
+        .and()
+        .passwordEncoder(passwordEncoder)
+        .configure(auth);
     providerList.forEach(auth::authenticationProvider);
   }
 
-  /**
-   * TODO: Add JavaDoc.
-   */
+  /** TODO: Add JavaDoc. */
   @Bean
   public WebMvcConfigurer corsConfigurer() {
     return new WebMvcConfigurerAdapter() {
@@ -130,8 +104,7 @@ public class SecurityConfiguration {
     private final String h2ConsolePath;
     private final String h2AccessMatcher;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    @Autowired private AuthenticationManager authenticationManager;
 
     public WebSecurityConfiguration(
         H2ConsoleConfigurationProperties h2ConsoleConfigurationProperties) {

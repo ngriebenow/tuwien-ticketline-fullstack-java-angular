@@ -88,20 +88,20 @@
             <div *ngIf="dunit.free > 0 && sectorIsSelected(dunit) == false">
               <button (click)="sectorSelected(dunit)"
                       [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
-                      class="btn btn-sector text-truncate align-middle"><h4 *ngIf="showName(dunit) > 50">
-               {{ dunit.name }}</h4><h4>{{ dunit.free }}</h4></button>
+                      class="btn btn-sector text-truncate align-middle"><h4 *ngIf="showName(dunit) > 50" class="text">
+               {{ dunit.name }}</h4><h4 class="text">{{ dunit.free }}</h4></button>
             </div>
             <div *ngIf="dunit.free == 0 && sectorIsSelected(dunit) == false">
               <button
                 [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
-                class="btn btn-sector-zero text-truncate"><h4 class="zero" *ngIf="showName(dunit) > 50">
-               {{ dunit.name }}</h4><h4 class="zero">{{ dunit.free }}</h4></button>
+                class="btn btn-sector-zero text-truncate"><h4 class="zero" *ngIf="showName(dunit) > 50" class="text">
+               {{ dunit.name }}</h4><h4 class="zero text">{{ dunit.free }}</h4></button>
             </div>
             <div *ngIf="sectorIsSelected(dunit) == true">
               <button (click)="sectorSelected(dunit)"
                       [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
-                      class="btn btn-sector-zero-selected text-truncate"><h4 *ngIf="showName(dunit) > 50">
-               {{ dunit.name }}</h4><h4>{{ getChosenNum(dunit) }}/{{ dunit.free }}</h4></button>
+                      class="btn btn-sector-zero-selected text-truncate"><h4 *ngIf="showName(dunit) > 50" class="text">
+               {{ dunit.name }}</h4><h4 class="text">{{ getChosenNum(dunit) }}/{{ dunit.free }}</h4></button>
             </div>
           </div>
         </ng-container>

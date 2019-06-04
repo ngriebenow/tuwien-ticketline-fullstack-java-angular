@@ -214,3 +214,9 @@ h4{
 .zero{
   color: $dark-gray;
 }
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
