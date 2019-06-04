@@ -41,11 +41,14 @@ export class EventFilterComponent implements OnInit {
 
   @Output() eventSearchResults: EventSearchResult[] = [];
 
+  @Output() eventCategories: string[] = [];
+
 
 
   ngOnInit() {
     console.log('ngOnInit');
     this.loadEvents();
+    this.loadEventCategories();
   }
 
   /**
@@ -123,6 +126,17 @@ export class EventFilterComponent implements OnInit {
       this.alertService.warning('Es sind nur Zahlen für dieses Feld erlaubt.');
     }
 
+  }
+
+  loadEventCategories(): void {
+    this.eventService.getEventCategories().subscribe(
+      (categories: string[]) => {
+        this.eventCategories = categories;
+      },
+      error => {
+        this.alertService.error('Ladefehler, bitte versuchen Sie es etwas später noch ein mal');
+      }
+    );
   }
 
 

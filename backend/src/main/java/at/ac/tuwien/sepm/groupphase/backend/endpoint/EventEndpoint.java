@@ -48,7 +48,7 @@ public class EventEndpoint {
     return eventService.getOneById(id);
   }
 
-  @RequestMapping(value = "/eventcategories", method = RequestMethod.GET)
+  @RequestMapping(value = "/categories", method = RequestMethod.GET)
   @ApiOperation(
       value = "Get all event categories",
       authorizations = {@Authorization(value = "apiKey")})

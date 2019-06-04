@@ -20,12 +20,7 @@
               [style.background]="getColor(fstCategory.selected)"
               [style.color] = "getTextColor(fstCategory.selected)">
         <option #fstCategory value="">(alle)</option>
-        <option value="CINEMA">Kino</option>
-        <option value="CONCERT">Konzert</option>
-        <option value="CONFERENCE">Konferenz</option>
-        <option value="CHILDREN">Kinder</option>
-        <option value="EXHIBITION">Ausstellung</option>
-        <option value="OTHER">Andere</option>
+        <option *ngFor="let ev of eventCategories" value="{{ev}}">{{ev}}</option>
       </select>
     </div>
 
