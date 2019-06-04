@@ -8,6 +8,8 @@ import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 import {AlertService} from '../../services/alert.service';
 import {PerformanceSearchResult} from '../../dtos/performance-search-result';
 import {Router} from '@angular/router';
+import {CustomDatePipe} from '../../pipes/custom-date.pipe';
+import {CommonModule, DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-event-filter',
@@ -15,10 +17,17 @@ import {Router} from '@angular/router';
   styleUrls: ['./event-filter.component.scss']
 })
 @NgModule({
+  declarations: [
+    CustomDatePipe
+  ],
   imports: [
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CustomDatePipe
   ],
+  exports: [
+    CustomDatePipe
+  ]
 })
 export class EventFilterComponent implements OnInit {
 
@@ -92,6 +101,20 @@ export class EventFilterComponent implements OnInit {
       this.page--;
       this.loadEvents();
     }
+  }
+
+  getLocalDate(dateString: string) {
+
+    let date =  new Date(dateString + "Z");
+
+    console.log(date);
+
+    return new DatePipe('en-US').transform(date, 'dd.MM.yyyy HH:mm');
+
+    //let pipe = new CustomDatePipe();
+
+    //return pipe.transform(dateString,'fromUTC');
+
   }
 
 
