@@ -2,6 +2,7 @@ import {Component, Input, OnInit, Output} from '@angular/core';
 import {EventFilter} from '../../dtos/event-filter';
 import {EventRanking} from '../../dtos/event-ranking';
 import {EventService} from '../../services/event.service';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-best-events',
@@ -10,7 +11,8 @@ import {EventService} from '../../services/event.service';
 })
 export class BestEventsComponent implements OnInit {
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService,
+              private alertService: AlertService) {
 
   }
 
@@ -18,9 +20,11 @@ export class BestEventsComponent implements OnInit {
 
   @Output() eventRankings: EventRanking[] = [];
 
+  @Output() eventCategories: string[] = [];
+
   /**
    * Returns the color for the selctor
-   * @param first: true if it is the first option
+   * @param cat: true if it is the first option
    */
   getColor(cat: boolean): string {
     if (cat) {
@@ -32,7 +36,7 @@ export class BestEventsComponent implements OnInit {
 
   /**
    * Returns the text color for the selctor
-   * @param first: true if it is the first option
+   * @param cat: true if it is the first option
    */
   getTextColor(cat: boolean): string {
     if (cat) {
@@ -87,6 +91,17 @@ export class BestEventsComponent implements OnInit {
       (events: EventRanking[]) => this.eventRankings = events);
   }
 
+  loadEventCategories(): void {
+    this.eventService.getEventCategories().subscribe(
+      (categories: string[]) => {
+        this.eventCategories = categories;
+      },
+      error => {
+        this.alertService.error('Ladefehler, bitte versuchen Sie es etwas später noch ein mal');
+      }
+    );
+  }
+
 
   /**
    * Calculates the vertical offset for the event bars
@@ -111,6 +126,7 @@ export class BestEventsComponent implements OnInit {
 
   ngOnInit() {
     this.loadEventRankings();
+    this.loadEventCategories();
   }
 
 }

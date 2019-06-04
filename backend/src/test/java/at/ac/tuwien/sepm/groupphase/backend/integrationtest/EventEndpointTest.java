@@ -113,7 +113,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     E1 =
         new Event.Builder()
             .name("Abc")
-            .category(EventCategory.CINEMA)
+            .category(EventCategory.Kino)
             .duration(Duration.ofHours(2))
             .content("Content1")
             .build();
@@ -121,7 +121,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     E2 =
         new Event.Builder()
             .name("Bcd")
-            .category(EventCategory.CONCERT)
+            .category(EventCategory.Konzert)
             .duration(Duration.ofHours(5))
             .content("Content2")
             .build();
@@ -129,7 +129,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
     E3 =
         new Event.Builder()
             .name("Cde")
-            .category(EventCategory.OTHER)
+            .category(EventCategory.Sonstige)
             .duration(Duration.ofHours(3))
             .content("Content3")
             .build();
@@ -320,11 +320,11 @@ public class EventEndpointTest extends BaseIntegrationTest {
     PC6 = priceCategoryRepository.save(PC6);
 
     E1_SR = eventSearchResultMapper.eventToEventSearchResultDto(E1);
-    E1_SR.setPriceRange("20 €");
+    E1_SR.setPriceRange("€20");
     E2_SR = eventSearchResultMapper.eventToEventSearchResultDto(E2);
-    E2_SR.setPriceRange("30 - 40 €");
+    E2_SR.setPriceRange("€30 - €40");
     E3_SR = eventSearchResultMapper.eventToEventSearchResultDto(E3);
-    E3_SR.setPriceRange("50 - 70 €");
+    E3_SR.setPriceRange("€50 - €70");
   }
 
   @After
@@ -446,7 +446,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
             .contentType(ContentType.JSON)
             .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
             .when()
-            .get(EVENT_ENDPOINT + "?eventCategory=CINEMA")
+            .get(EVENT_ENDPOINT + "?eventCategory=Kino")
             .then()
             .extract()
             .response();

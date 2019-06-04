@@ -48,6 +48,15 @@ public class EventEndpoint {
     return eventService.getOneById(id);
   }
 
+  @RequestMapping(value = "/categories", method = RequestMethod.GET)
+  @ApiOperation(
+      value = "Get all event categories",
+      authorizations = {@Authorization(value = "apiKey")})
+  public List<String> getCategories() {
+    LOGGER.info("get event categories ");
+    return eventService.getEventCategories();
+  }
+
   /**
    * Return all performances which belong to a certain event.
    */

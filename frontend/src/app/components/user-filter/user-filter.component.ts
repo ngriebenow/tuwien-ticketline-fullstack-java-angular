@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 })
 export class UserFilterComponent implements OnInit {
 
-  public users: User[];
+  public users: User[] = [];
   public page = 0;
   public count = 20;
   public queryParams: UserFilter;

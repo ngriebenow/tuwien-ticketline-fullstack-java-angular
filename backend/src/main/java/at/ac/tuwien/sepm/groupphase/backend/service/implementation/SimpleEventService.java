@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.EventSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.PerformanceSearchResultDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventRanking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.PriceCategory;
@@ -23,6 +24,7 @@ import at.ac.tuwien.sepm.groupphase.backend.specification.EventSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.specification.PerformanceSpecification;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,14 +124,13 @@ public class SimpleEventService implements EventService {
   private String formatPriceRange(List<PriceCategory> priceCategories) {
     String price;
     if (priceCategories.size() > 0) {
-      price = String.format("%.0f", priceCategories.get(0).getPriceInCents() / 100.);
+      price = "€" + String.format("%.0f", priceCategories.get(0).getPriceInCents() / 100.);
 
       if (priceCategories.size() > 1) {
-        price += " - " + String.format(
+        price += " - €" + String.format(
             "%.0f",
             priceCategories.get(priceCategories.size() - 1).getPriceInCents() / 100.);
       }
-      price += " €";
     } else {
       price = "kein Preis";
     }
@@ -156,5 +157,11 @@ public class SimpleEventService implements EventService {
       throws NotFoundException {
     LOGGER.info("getPerformancesOfEvent " + id);
     return getPerformancesFiltered(id, new EventFilterDto(), pageable);
+  }
+
+  @Override
+  public List<String> getEventCategories() {
+    return List.of(EventCategory.values()).stream().map(
+        Objects::toString).collect(Collectors.toList());
   }
 }

@@ -20,12 +20,7 @@
               [style.background]="getColor(fstCategory.selected)"
               [style.color] = "getTextColor(fstCategory.selected)">
         <option #fstCategory value="">(alle)</option>
-        <option value="CINEMA">Kino</option>
-        <option value="CONCERT">Konzert</option>
-        <option value="CONFERENCE">Konferenz</option>
-        <option value="CHILDREN">Kinder</option>
-        <option value="EXHIBITION">Ausstellung</option>
-        <option value="OTHER">Andere</option>
+        <option *ngFor="let ev of eventCategories" value="{{ev}}">{{ev}}</option>
       </select>
     </div>
 
@@ -223,16 +218,17 @@
     </div>
   </div>
 </div>
-
-
-  <div class="row mt-3 mb-5">
-    <div class="col-12 d-flex justify-content-between">
-
-      <button [style.background]="getColor(page === 0)" class="btn btn-primary" (click)="previousPage()" [disabled]="page === 0"><i class="fas fa-chevron-left"></i></button>
-      <button [style.background]="getColor(eventSearchResults.length !== count)" [disabled]="eventSearchResults.length < count" class="btn btn-primary" (click)="nextPage()"><i class="fas fa-chevron-right"></i></button>
+  <div class="row mt-3 mb-5" *ngIf="eventSearchResults.length === 0">
+    <div class="col-12 d-flex justify-content-center">
+      <h4>Keine Suchergebnisse!</h4>
     </div>
   </div>
-
+  <div class="row mt-3 mb-5" *ngIf="eventSearchResults.length >= count || page !== 0">
+      <div class="col-12 d-flex justify-content-between">
+        <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i class="fas fa-chevron-left"></i></button>
+        <button class="btn btn-primary page-button"  [disabled]="eventSearchResults.length < count" (click)="nextPage()"><i class="fas fa-chevron-right"></i></button>
+      </div>
+  </div>
   <div class="bottom-right-above-1">
     <button routerLink="/best-events" type="button" class="btn btn-primary btn-lg">Top 10</button>
   </div>

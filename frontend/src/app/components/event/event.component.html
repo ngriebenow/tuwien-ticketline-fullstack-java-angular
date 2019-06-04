@@ -49,7 +49,7 @@
         </div>
         <div class="col-4">
           <input readonly class="form-control" type="text"
-                 value="{{event.priceCategories[0].priceInCents/100 | number:'1.2-2'}} - {{event.priceCategories[event.priceCategories.length-1].priceInCents/100 | number:'1.2-2'}}€" >
+                 value="{{event.priceCategories[0].priceInCents/100 | currency:'EUR'}} - {{event.priceCategories[event.priceCategories.length-1].priceInCents/100 | currency:'EUR'}}" >
         </div>
         <div class="col-1">
         </div>
@@ -138,7 +138,7 @@
     <tr *ngFor="let x of performances" (click)="savePerformance(x.id)" [routerLink]="['/events', event.id ,'performances', x.id, 'hall-viewing']">
       <td>{{ x.name }}</td>
       <td>{{ x.startAt | date:'dd.MM.yyyy' }}</td>
-      <td>{{ x.startAt | date:'HH:MM' }}</td>
+      <td>{{ x.startAt | date:'HH:mm' }}</td>
     </tr>
     </tbody>
   </table>

@@ -62,7 +62,7 @@ public class EventServiceTest {
     E1 =
         new Event.Builder()
             .name("Event1")
-            .category(EventCategory.CINEMA)
+            .category(EventCategory.Kino)
             .duration(Duration.ofHours(2))
             .build();
 

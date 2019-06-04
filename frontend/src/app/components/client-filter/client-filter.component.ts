@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 })
 export class ClientFilterComponent implements OnInit {
 
-  public clients: Client[];
+  public clients: Client[] = [];
   public page = 0;
   public count = 20;
   public queryParams: ClientFilter;

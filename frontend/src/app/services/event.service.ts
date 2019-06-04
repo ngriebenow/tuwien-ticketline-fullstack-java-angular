@@ -16,6 +16,7 @@ export class EventService {
 
   private eventBaseUri: string = this.globals.backendUri + '/events';
   private besteventsUri = '/best';
+  private eventCategories = '/categories';
 
   constructor(private httpClient: HttpClient, private globals: Globals) {
   }
@@ -58,6 +59,13 @@ export class EventService {
 
     return this.httpClient.get<EventRanking[]>(this.eventBaseUri + this.besteventsUri, {params: paramsHttp});
 
+  }
+
+  /**
+   * Loads all the event categories
+   */
+  getEventCategories(): Observable<String[]> {
+    return this.httpClient.get<string[]>(this.eventBaseUri + this.eventCategories);
   }
 
   /**

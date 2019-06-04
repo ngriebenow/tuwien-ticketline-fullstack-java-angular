@@ -125,7 +125,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     E1 =
         new Event.Builder()
             .name("Abc")
-            .category(EventCategory.CINEMA)
+            .category(EventCategory.Kino)
             .duration(Duration.ofHours(2))
             .content("Content1")
             .build();
@@ -133,7 +133,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     E2 =
         new Event.Builder()
             .name("Bcd")
-            .category(EventCategory.CONCERT)
+            .category(EventCategory.Konzert)
             .duration(Duration.ofHours(5))
             .content("Content2")
             .build();
@@ -141,7 +141,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
     E3 =
         new Event.Builder()
             .name("Cde")
-            .category(EventCategory.OTHER)
+            .category(EventCategory.Sonstige)
             .duration(Duration.ofHours(3))
             .content("Content3")
             .build();
