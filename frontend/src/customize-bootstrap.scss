@@ -321,6 +321,14 @@ option {
   border-color: $medium-gray;
 }
 
+.page-button {
+  background-color: $main-blue;
+}
+
+.page-button[disabled] {
+  background-color: $medium-gray !important;
+}
+
 /*
   DATEPICKER:
   <div class="container">
