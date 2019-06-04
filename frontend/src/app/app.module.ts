@@ -36,6 +36,13 @@ import {ClientAddComponent} from './components/client-add/client-add.component';
 import {ClientEditComponent} from './components/client-edit/client-edit.component';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog/confirmation-dialog.component';
 
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de-AT';
+import localeDeExtra from '@angular/common/locales/extra/de-AT';
+
+import { LOCALE_ID } from '@angular/core';
+
+registerLocaleData(localeDe, 'de-AT', localeDeExtra);
 
 @NgModule({
   declarations: [
@@ -76,11 +83,13 @@ import {ConfirmationDialogComponent} from './components/confirmation-dialog/conf
     FormsModule,
     MyDatePickerModule
   ],
-  providers: [httpInterceptorProviders, Globals],
+  providers: [httpInterceptorProviders, Globals,
+    { provide: LOCALE_ID, useValue: 'de-AT' } ],
   bootstrap: [AppComponent],
   entryComponents: [ ConfirmationDialogComponent ]
 })
 export class AppModule {
+
 
   public myDatePickerOptions: IMyDpOptions = {
     sunHighlight: false,

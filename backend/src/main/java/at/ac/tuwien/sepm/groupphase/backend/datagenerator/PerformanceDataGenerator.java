@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import com.github.javafaker.Faker;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -45,7 +46,7 @@ public class PerformanceDataGenerator implements DataGenerator<Performance> {
     for (Event event : eventRepository.findAll()) {
       LocalDateTime initialStartAt =
           LocalDateTime.ofInstant(
-              FAKER.date().future(365, TimeUnit.DAYS).toInstant(), ZoneId.systemDefault());
+              FAKER.date().future(365, TimeUnit.DAYS).toInstant(), ZoneOffset.UTC);
       int numPerformances =
           FAKER.random().nextInt(MIN_PERFORMANCES_PER_EVENT, MAX_PERFORMANCES_PER_EVENT);
 
