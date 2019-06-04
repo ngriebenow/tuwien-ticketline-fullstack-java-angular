@@ -3,8 +3,8 @@ package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import com.github.javafaker.Faker;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -43,7 +43,7 @@ public class NewsDataGenerator implements DataGenerator<News> {
               .summary(FAKER.harryPotter().quote())
               .text(FAKER.lorem().paragraph(FAKER.number().numberBetween(8, 12)))
               .publishedAt(
-                  LocalDateTime.ofInstant(
+                  ZonedDateTime.ofInstant(
                       FAKER.date().past(365 * 3, TimeUnit.DAYS).toInstant(),
                       ZoneId.systemDefault()))
               .build());

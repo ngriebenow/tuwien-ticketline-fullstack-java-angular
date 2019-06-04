@@ -2,6 +2,9 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +25,7 @@ public class Performance {
   private Long id;
 
   @Column(nullable = false)
-  private LocalDateTime startAt;
+  private ZonedDateTime startAt;
 
   @Column(nullable = false)
   private String name;
@@ -79,12 +82,16 @@ public class Performance {
     this.id = id;
   }
 
-  public LocalDateTime getStartAt() {
+  public ZonedDateTime getStartAt() {
     return startAt;
   }
 
-  public void setStartAt(LocalDateTime startAt) {
+  public void setStartAt(ZonedDateTime startAt) {
     this.startAt = startAt;
+  }
+
+  public void setStartAt(LocalDateTime localDateTime) {
+    this.startAt = ZonedDateTime.of(localDateTime, ZoneId.of("UTC"));
   }
 
   public String getName() {
@@ -106,7 +113,7 @@ public class Performance {
   public static final class Builder {
 
     private Long id;
-    private LocalDateTime startAt;
+    private ZonedDateTime startAt;
     private String name;
     private Event event;
 
@@ -118,8 +125,13 @@ public class Performance {
       return this;
     }
 
-    public Builder startAt(LocalDateTime val) {
+    public Builder startAt(ZonedDateTime val) {
       startAt = val;
+      return this;
+    }
+
+    public Builder startAt(LocalDateTime val) {
+      startAt = ZonedDateTime.of(val, ZoneId.of("UTC"));
       return this;
     }
 

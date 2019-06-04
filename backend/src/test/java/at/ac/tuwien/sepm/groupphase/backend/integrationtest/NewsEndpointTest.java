@@ -10,7 +10,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class NewsEndpointTest extends BaseIntegrationTest {
   public void initialize() {
     N1 = new News.Builder()
         .id(0L)
-        .publishedAt(LocalDateTime.now())
+        .publishedAt(ZonedDateTime.now())
         .title("Test")
         .summary("Just one Test")
         .text("abcdefghijk test news test news news")

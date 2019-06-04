@@ -7,5 +7,7 @@ spring:
         format_sql: true
         jdbs:
           batch_size: 30
+        jdbc:
+          time_zone = UTC
         order_inserts: true
         order_updates: true

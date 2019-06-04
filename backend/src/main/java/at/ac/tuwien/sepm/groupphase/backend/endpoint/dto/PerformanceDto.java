@@ -3,6 +3,8 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 @ApiModel(value = "PerformanceDto", description = "A DTO for a performance via rest")
 public class PerformanceDto {
@@ -11,7 +13,7 @@ public class PerformanceDto {
   private Long id;
 
   @ApiModelProperty(required = true, name = "The name of the performance")
-  private LocalDateTime startAt;
+  private ZonedDateTime startAt;
 
   @ApiModelProperty(required = true, name = "The corresponding event of the performance")
   private EventDto event;
@@ -27,11 +29,11 @@ public class PerformanceDto {
     this.id = id;
   }
 
-  public LocalDateTime getStartAt() {
+  public ZonedDateTime getStartAt() {
     return startAt;
   }
 
-  public void setStartAt(LocalDateTime startAt) {
+  public void setStartAt(ZonedDateTime startAt) {
     this.startAt = startAt;
   }
 
@@ -57,7 +59,6 @@ public class PerformanceDto {
   public PerformanceDto build() {
     PerformanceDto performanceDto = new PerformanceDto();
     performanceDto.setId(id);
-    // performanceDto.setId(event);
     performanceDto.setName(name);
     performanceDto.setStartAt(startAt);
     return performanceDto;

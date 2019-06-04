@@ -28,7 +28,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -101,7 +101,7 @@ public class InvoiceServiceTest {
     performanceOne =
         new Performance.Builder()
             .id(INVOICE_PERFORMANCE_ID)
-            .startAt(LocalDateTime.now().plusDays(7))
+            .startAt(ZonedDateTime.now().plusDays(7))
             .build();
 
     priceCategoryOne = new PriceCategory.Builder().priceInCents(TICKET_PRICE).build();
@@ -226,7 +226,7 @@ public class InvoiceServiceTest {
 
   @Test
   public void whenBuyTicketsForPastPerformance_thenThrowException() {
-    performanceOne.setStartAt(LocalDateTime.now().minusDays(7));
+    performanceOne.setStartAt(ZonedDateTime.now().minusDays(7));
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))
         .thenReturn(Optional.of(performanceOne));
     when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
@@ -394,7 +394,7 @@ public class InvoiceServiceTest {
 
   @Test
   public void whenReserveInReservationClearWindow_thenThrowsException() {
-    performanceOne.setStartAt(LocalDateTime.now().minusMinutes(22));
+    performanceOne.setStartAt(ZonedDateTime.now().minusMinutes(22));
 
     when(mockClientRepository.findById(CLIENT_ID)).thenReturn(Optional.of(clientOne));
     when(mockPerformanceRepository.findById(INVOICE_PERFORMANCE_ID))

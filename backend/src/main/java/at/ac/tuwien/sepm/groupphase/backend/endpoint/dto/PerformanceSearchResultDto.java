@@ -2,7 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @ApiModel(value = "PerformanceSearchResultDto", description = "A DTO for a performance via rest")
@@ -12,7 +12,7 @@ public class PerformanceSearchResultDto {
   private Long id;
 
   @ApiModelProperty(required = true, name = "The name of the performance")
-  private LocalDateTime startAt;
+  private ZonedDateTime startAt;
 
   @ApiModelProperty(required = true, name = "The name of the performance")
   private String name;
@@ -25,11 +25,11 @@ public class PerformanceSearchResultDto {
     this.id = id;
   }
 
-  public LocalDateTime getStartAt() {
+  public ZonedDateTime getStartAt() {
     return startAt;
   }
 
-  public void setStartAt(LocalDateTime startAt) {
+  public void setStartAt(ZonedDateTime startAt) {
     this.startAt = startAt;
   }
 

@@ -2,7 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.authentication;
 
 import io.swagger.annotations.ApiModel;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,11 +15,11 @@ public class AuthenticationTokenInfo {
 
   private List<String> roles;
 
-  private LocalDateTime issuedAt;
+  private ZonedDateTime issuedAt;
 
-  private LocalDateTime notBefore;
+  private ZonedDateTime notBefore;
 
-  private LocalDateTime expireAt;
+  private ZonedDateTime expireAt;
 
   private Duration validityDuration;
 
@@ -45,27 +45,27 @@ public class AuthenticationTokenInfo {
     this.roles = roles;
   }
 
-  public LocalDateTime getIssuedAt() {
+  public ZonedDateTime getIssuedAt() {
     return issuedAt;
   }
 
-  public void setIssuedAt(LocalDateTime issuedAt) {
+  public void setIssuedAt(ZonedDateTime issuedAt) {
     this.issuedAt = issuedAt;
   }
 
-  public LocalDateTime getNotBefore() {
+  public ZonedDateTime getNotBefore() {
     return notBefore;
   }
 
-  public void setNotBefore(LocalDateTime notBefore) {
+  public void setNotBefore(ZonedDateTime notBefore) {
     this.notBefore = notBefore;
   }
 
-  public LocalDateTime getExpireAt() {
+  public ZonedDateTime getExpireAt() {
     return expireAt;
   }
 
-  public void setExpireAt(LocalDateTime expireAt) {
+  public void setExpireAt(ZonedDateTime expireAt) {
     this.expireAt = expireAt;
   }
 
@@ -134,9 +134,9 @@ public class AuthenticationTokenInfo {
 
     private String username;
     private List<String> roles;
-    private LocalDateTime issuedAt;
-    private LocalDateTime notBefore;
-    private LocalDateTime expireAt;
+    private ZonedDateTime issuedAt;
+    private ZonedDateTime notBefore;
+    private ZonedDateTime expireAt;
     private Duration validityDuration;
     private Duration overlapDuration;
 
@@ -150,17 +150,17 @@ public class AuthenticationTokenInfo {
       return this;
     }
 
-    public AuthenticationTokenInfoBuilder issuedAt(LocalDateTime issuedAt) {
+    public AuthenticationTokenInfoBuilder issuedAt(ZonedDateTime issuedAt) {
       this.issuedAt = issuedAt;
       return this;
     }
 
-    public AuthenticationTokenInfoBuilder notBefore(LocalDateTime notBefore) {
+    public AuthenticationTokenInfoBuilder notBefore(ZonedDateTime notBefore) {
       this.notBefore = notBefore;
       return this;
     }
 
-    public AuthenticationTokenInfoBuilder expireAt(LocalDateTime expireAt) {
+    public AuthenticationTokenInfoBuilder expireAt(ZonedDateTime expireAt) {
       this.expireAt = expireAt;
       return this;
     }

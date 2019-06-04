@@ -17,7 +17,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PriceCategoryRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -90,7 +90,7 @@ public class EventServiceTest {
     P1 =
         new Performance.Builder()
             .name("Perf 1")
-            .startAt(LocalDateTime.now())
+            .startAt(ZonedDateTime.now())
             .id(0L)
             .event(E1)
             .build();
@@ -98,7 +98,7 @@ public class EventServiceTest {
     P2 =
         new Performance.Builder()
             .name("Perf 2")
-            .startAt(LocalDateTime.now())
+            .startAt(ZonedDateTime.now())
             .id(1L)
             .event(E1)
             .build();

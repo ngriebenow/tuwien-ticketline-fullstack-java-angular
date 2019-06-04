@@ -36,7 +36,7 @@ import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import java.awt.Color;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -159,7 +159,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
         new Performance.Builder()
             .name("Sonntagskrunch")
             .event(event)
-            .startAt(LocalDateTime.now().plusDays(3))
+            .startAt(ZonedDateTime.now().plusDays(3))
             .build();
     performanceRepository.save(performance1);
 
@@ -167,7 +167,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
         new Performance.Builder()
             .name("Luftballonkochkurz")
             .event(event)
-            .startAt(LocalDateTime.now().plusDays(4))
+            .startAt(ZonedDateTime.now().plusDays(4))
             .build();
     performanceRepository.save(performance2);
 
@@ -346,7 +346,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void whenRequestReservationPastPerformance_thenStatus400() {
-    performance1.setStartAt(LocalDateTime.now().minusMinutes(14));
+    performance1.setStartAt(ZonedDateTime.now().minusMinutes(14));
     performanceRepository.save(performance1);
 
     Response response = postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne);

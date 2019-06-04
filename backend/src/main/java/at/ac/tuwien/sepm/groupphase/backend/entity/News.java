@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +18,7 @@ public class News {
   private Long id;
 
   @Column(nullable = false)
-  private LocalDateTime publishedAt;
+  private ZonedDateTime publishedAt;
 
   @Column(nullable = false)
   private String title;
@@ -75,11 +75,11 @@ public class News {
     this.id = id;
   }
 
-  public LocalDateTime getPublishedAt() {
+  public ZonedDateTime getPublishedAt() {
     return publishedAt;
   }
 
-  public void setPublishedAt(LocalDateTime publishedAt) {
+  public void setPublishedAt(ZonedDateTime publishedAt) {
     this.publishedAt = publishedAt;
   }
 
@@ -110,7 +110,7 @@ public class News {
   public static final class Builder {
 
     private Long id;
-    private LocalDateTime publishedAt;
+    private ZonedDateTime publishedAt;
     private String title;
     private String summary;
     private String text;
@@ -123,7 +123,7 @@ public class News {
       return this;
     }
 
-    public Builder publishedAt(LocalDateTime val) {
+    public Builder publishedAt(ZonedDateTime val) {
       publishedAt = val;
       return this;
     }

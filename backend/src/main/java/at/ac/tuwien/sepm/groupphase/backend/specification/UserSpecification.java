@@ -2,7 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.specification;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.EventCategory;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -29,7 +29,7 @@ public class UserSpecification<T> implements Specification<T> {
    * Javadoc.
    */
   public static <T> Specification<T> startsAt(
-      String name, LocalDateTime dateTime, Duration tolerance) {
+      String name, ZonedDateTime dateTime, Duration tolerance) {
     return new Specification<T>() {
       @Override
       public Predicate toPredicate(

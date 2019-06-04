@@ -3,7 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.specification;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.EventFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance_;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -82,7 +82,7 @@ public class PerformanceSpecification {
                       eventFilterDto.getStartAtDate().getYear()));
             } else {
               return criteriaBuilder.greaterThanOrEqualTo(root.get(Performance_.startAt),
-                  LocalDateTime.now());
+                  ZonedDateTime.now());
             }
           }
         };

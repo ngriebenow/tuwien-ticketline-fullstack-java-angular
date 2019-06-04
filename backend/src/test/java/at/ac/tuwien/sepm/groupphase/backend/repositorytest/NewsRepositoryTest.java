@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
@@ -25,7 +25,7 @@ public class NewsRepositoryTest {
   private News N1 =
       new News.Builder()
           .id(0L)
-          .publishedAt(LocalDateTime.now())
+          .publishedAt(ZonedDateTime.now())
           .title("Test")
           .summary("Just one Test")
           .text("abcdefghijk test news test news news")
@@ -34,7 +34,7 @@ public class NewsRepositoryTest {
   private News N2 =
       new News.Builder()
           .id(1L)
-          .publishedAt(LocalDateTime.now())
+          .publishedAt(ZonedDateTime.now())
           .title("Test2")
           .summary("Just another Test")
           .text("test test test test")

@@ -2,7 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +13,7 @@ public class DetailedNewsDto {
   private Long id;
 
   @ApiModelProperty(name = "The date and time when the news entry was published")
-  private LocalDateTime publishedAt;
+  private ZonedDateTime publishedAt;
 
   @ApiModelProperty(required = true, name = "The title of the news entry")
   private String title;
@@ -39,11 +39,11 @@ public class DetailedNewsDto {
     this.id = id;
   }
 
-  public LocalDateTime getPublishedAt() {
+  public ZonedDateTime getPublishedAt() {
     return publishedAt;
   }
 
-  public void setPublishedAt(LocalDateTime publishedAt) {
+  public void setPublishedAt(ZonedDateTime publishedAt) {
     this.publishedAt = publishedAt;
   }
 
@@ -122,7 +122,7 @@ public class DetailedNewsDto {
   public static final class NewsDtoBuilder {
 
     private Long id;
-    private LocalDateTime publishedAt;
+    private ZonedDateTime publishedAt;
     private String title;
     private String text;
     private String summary;
@@ -133,7 +133,7 @@ public class DetailedNewsDto {
       return this;
     }
 
-    public NewsDtoBuilder publishedAt(LocalDateTime publishedAt) {
+    public NewsDtoBuilder publishedAt(ZonedDateTime publishedAt) {
       this.publishedAt = publishedAt;
       return this;
     }

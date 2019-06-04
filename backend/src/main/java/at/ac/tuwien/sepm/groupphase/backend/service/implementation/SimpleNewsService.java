@@ -13,7 +13,7 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.NewsReadRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PictureRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -144,7 +144,7 @@ public class SimpleNewsService implements NewsService {
     LOGGER.info("create news " + news);
 
     validateDetailedNewsDto(news);
-    news.setPublishedAt(LocalDateTime.now());
+    news.setPublishedAt(ZonedDateTime.now());
     return newsMapper
         .newsToDetailedNewsDto(newsRepository.save(newsMapper.detailedNewsDtoToNews(news)));
   }

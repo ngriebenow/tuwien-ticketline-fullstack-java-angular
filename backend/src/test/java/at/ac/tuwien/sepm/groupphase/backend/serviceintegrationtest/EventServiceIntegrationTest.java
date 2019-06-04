@@ -28,6 +28,7 @@ import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import java.awt.Color;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.junit.After;
 import org.junit.Assert;

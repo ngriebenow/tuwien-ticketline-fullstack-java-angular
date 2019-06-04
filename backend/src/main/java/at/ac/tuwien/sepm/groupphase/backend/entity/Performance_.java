@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import javax.persistence.metamodel.SingularAttribute;
 import org.hibernate.boot.model.relational.Namespace.Name;
 
@@ -13,5 +13,5 @@ public class Performance_ {
   public static volatile SingularAttribute<Performance, Long> id;
   public static volatile SingularAttribute<Performance, Event> event;
   public static volatile SingularAttribute<Performance, Name> name;
-  public static volatile SingularAttribute<Performance, LocalDateTime> startAt;
+  public static volatile SingularAttribute<Performance, ZonedDateTime> startAt;
 }

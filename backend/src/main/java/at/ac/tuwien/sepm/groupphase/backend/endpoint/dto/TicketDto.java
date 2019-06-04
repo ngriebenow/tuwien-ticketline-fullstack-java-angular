@@ -3,7 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 import com.google.common.base.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @ApiModel(value = "Ticket", description = "A ticket to a performance")
 public class TicketDto {
@@ -21,7 +21,7 @@ public class TicketDto {
   private String performanceName;
 
   @ApiModelProperty("The start date and time of the performance")
-  private LocalDateTime startAt;
+  private ZonedDateTime startAt;
 
   @ApiModelProperty("The name of the tickets price category")
   private String priceCategoryName;
@@ -90,11 +90,11 @@ public class TicketDto {
     this.performanceName = performanceName;
   }
 
-  public LocalDateTime getStartAt() {
+  public ZonedDateTime getStartAt() {
     return startAt;
   }
 
-  public void setStartAt(LocalDateTime startAt) {
+  public void setStartAt(ZonedDateTime startAt) {
     this.startAt = startAt;
   }
 
@@ -226,7 +226,7 @@ public class TicketDto {
     private String title;
     private String eventName;
     private String performanceName;
-    private LocalDateTime startAt;
+    private ZonedDateTime startAt;
     private String priceCategoryName;
     private int priceInCents;
     private String locationName;
@@ -257,7 +257,7 @@ public class TicketDto {
       return this;
     }
 
-    public Builder startAt(LocalDateTime val) {
+    public Builder startAt(ZonedDateTime val) {
       startAt = val;
       return this;
     }

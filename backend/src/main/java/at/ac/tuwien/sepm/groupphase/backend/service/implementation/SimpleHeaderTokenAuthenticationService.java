@@ -17,8 +17,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -154,11 +154,11 @@ public class SimpleHeaderTokenAuthenticationService
     return AuthenticationTokenInfo.builder()
         .username((String) claims.get(AuthenticationConstants.JWT_CLAIM_PRINCIPAL))
         .roles(roles)
-        .issuedAt(LocalDateTime.ofInstant(claims.getIssuedAt().toInstant(), ZoneId.systemDefault()))
+        .issuedAt(ZonedDateTime.ofInstant(claims.getIssuedAt().toInstant(), ZoneId.systemDefault()))
         .notBefore(
-            LocalDateTime.ofInstant(claims.getNotBefore().toInstant(), ZoneId.systemDefault()))
+            ZonedDateTime.ofInstant(claims.getNotBefore().toInstant(), ZoneId.systemDefault()))
         .expireAt(
-            LocalDateTime.ofInstant(claims.getExpiration().toInstant(), ZoneId.systemDefault()))
+            ZonedDateTime.ofInstant(claims.getExpiration().toInstant(), ZoneId.systemDefault()))
         .validityDuration(validityDuration)
         .overlapDuration(overlapDuration)
         .build();

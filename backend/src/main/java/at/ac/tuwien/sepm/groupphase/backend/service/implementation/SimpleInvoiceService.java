@@ -24,7 +24,7 @@ import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGe
 import at.ac.tuwien.sepm.groupphase.backend.specification.InvoiceSpecification;
 import java.security.SecureRandom;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -125,7 +125,7 @@ public class SimpleInvoiceService implements InvoiceService {
     errorMessage = "Can't find user with name " + userName;
     User soldBy = getOrThrowNotFound(userRepository.findById(userName), errorMessage);
 
-    if (performance.getStartAt().isBefore(LocalDateTime.now())) {
+    if (performance.getStartAt().isBefore(ZonedDateTime.now())) {
       errorMessage = "Can't buy tickets for bygone performance " + performanceId;
       throw invalid(errorMessage);
     }
@@ -156,7 +156,7 @@ public class SimpleInvoiceService implements InvoiceService {
     if (performance
         .getStartAt()
         .minusMinutes(PRE_PERFORMANCE_RESERVATION_CLEAR_MINUTES)
-        .isBefore(LocalDateTime.now())) {
+        .isBefore(ZonedDateTime.now())) {
       errorMessage = "Can't reserve tickets for bygone performance " + performanceId;
       throw invalid(errorMessage);
     }

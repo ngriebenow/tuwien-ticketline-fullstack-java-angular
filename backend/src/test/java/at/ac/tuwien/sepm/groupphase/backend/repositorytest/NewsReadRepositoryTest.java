@@ -10,7 +10,7 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsReadRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class NewsReadRepositoryTest {
 
   private News N1 = new News.Builder().
       id(0L).
-      publishedAt(LocalDateTime.now()).
+      publishedAt(ZonedDateTime.now()).
       title("Test").
       summary("Just one Test").
       text("abcdefghijk test news test news news").build();
