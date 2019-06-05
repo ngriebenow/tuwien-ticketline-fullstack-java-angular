@@ -119,6 +119,16 @@ public class InvoiceEndpoint {
     return invoiceService.payTickets(id, ticketIds, principal.getName());
   }
 
+  @PostMapping("/{id}/cancel")
+  @ResponseStatus(HttpStatus.CREATED)
+  @ApiOperation(
+      value = "Cancel a paid reservation and return the cancelled invoice",
+      authorizations = {@Authorization("apiKey")})
+  public InvoiceDto cancel(@PathVariable Long id, Principal principal) {
+    LOGGER.info("Attempting to cancel invoice {}", id);
+    return invoiceService.cancelPaidInvoice(id, principal.getName());
+  }
+
   @DeleteMapping("/{id}")
   @ApiOperation(
       value = "Delete a reservation",

@@ -53,6 +53,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   private static final String INVOICE_ENDPOINT = "/invoices";
   private static final String RESERVATION_ENDPOINT = INVOICE_ENDPOINT + "/reserve";
+  private static final String CANCEL_ENDPOINT_FMT = INVOICE_ENDPOINT + "/%d/cancel";
 
   private ReservationRequestDto reservationRequestDtoOne;
   private ReservationRequestDto reservationRequestDtoTwo;
@@ -751,8 +752,7 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
 
   @Test
   public void givenOneInvoice_whenDelete_then404() {
-    Long id =
-        postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne).as(InvoiceDto.class).getId();
+    Long id = postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne).as(InvoiceDto.class).getId();
     String uri = INVOICE_ENDPOINT + "/" + id;
 
     Response response = deleteResponse(uri);
@@ -768,6 +768,68 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
     Response response = deleteResponse(uri);
 
     assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+  }
+
+  @Test
+  public void givenNothing_whenCancel_then404() {
+    Long id = 1L;
+    String uri = String.format(CANCEL_ENDPOINT_FMT, id);
+
+    Response response = postResponse(uri);
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+  }
+
+  @Test
+  public void givenOneReservation_whenCancel_then404() {
+    Long id =
+        postResponse(RESERVATION_ENDPOINT, reservationRequestDtoOne).as(InvoiceDto.class).getId();
+    String uri = String.format(CANCEL_ENDPOINT_FMT, id);
+
+    Response response = postResponse(uri);
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+  }
+
+  @Test
+  public void givenOneInvoice_whenCancel_then201() {
+    Long id =
+        postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne).as(InvoiceDto.class).getId();
+    String uri = String.format(CANCEL_ENDPOINT_FMT, id);
+
+    Response response = postResponse(uri);
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+
+    InvoiceDto cancelledInvoice = response.as(InvoiceDto.class);
+    assertThat(cancelledInvoice.getId()).isNotNull();
+    assertThat(cancelledInvoice.getId()).isNotNegative();
+    assertThat(cancelledInvoice.getId()).isNotEqualTo(id);
+  }
+
+  @Test
+  public void givenOneCancelledInvoice_whenCancel_then404() {
+    Long invoiceId =
+        postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne).as(InvoiceDto.class).getId();
+    String uri = String.format(CANCEL_ENDPOINT_FMT, invoiceId);
+    Long cancelledId = postResponse(uri).as(InvoiceDto.class).getId();
+
+    uri = String.format(CANCEL_ENDPOINT_FMT, cancelledId);
+    Response response = postResponse(uri);
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
+  }
+
+  @Test
+  public void givenInvoice_whenCancelTwice_then400() {
+    Long invoiceId =
+        postResponse(INVOICE_ENDPOINT, reservationRequestDtoOne).as(InvoiceDto.class).getId();
+    String uri = String.format(CANCEL_ENDPOINT_FMT, invoiceId);
+
+    postResponse(uri);
+    Response response = postResponse(uri);
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
   }
 
   private Response getResponse(String endpoint, Map<String, String> parameters) {
@@ -788,6 +850,17 @@ public class InvoiceEndpointTest extends BaseIntegrationTest {
         .contentType(ContentType.JSON)
         .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
         .body(body)
+        .when()
+        .post(endpoint)
+        .then()
+        .extract()
+        .response();
+  }
+
+  private Response postResponse(String endpoint) {
+    return RestAssured.given()
+        .contentType(ContentType.JSON)
+        .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
         .when()
         .post(endpoint)
         .then()

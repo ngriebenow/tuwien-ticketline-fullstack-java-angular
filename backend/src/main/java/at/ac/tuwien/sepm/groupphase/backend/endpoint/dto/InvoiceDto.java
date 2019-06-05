@@ -39,6 +39,10 @@ public class InvoiceDto {
       "The invoice number this one was cancelled from. Only present if this invoice is cancelled")
   private Long parentNumber;
 
+  @ApiModelProperty(
+      "The day this cancelled invoices invoice was paid. Only present if this invoice is cancelled")
+  private LocalDate parentPaidAt;
+
   @ApiModelProperty(value = "The tickets reserved and bought by this invoice")
   private List<TicketDto> tickets;
 
@@ -54,6 +58,7 @@ public class InvoiceDto {
     setClient(builder.client);
     setSoldBy(builder.soldBy);
     setParentNumber(builder.parentNumber);
+    setParentPaidAt(builder.parentPaidAt);
     setTickets(builder.tickets);
   }
 
@@ -129,6 +134,14 @@ public class InvoiceDto {
     this.parentNumber = parentNumber;
   }
 
+  public LocalDate getParentPaidAt() {
+    return parentPaidAt;
+  }
+
+  public void setParentPaidAt(LocalDate parentPaidAt) {
+    this.parentPaidAt = parentPaidAt;
+  }
+
   public List<TicketDto> getTickets() {
     return tickets;
   }
@@ -154,13 +167,23 @@ public class InvoiceDto {
         && Objects.equal(paidAt, that.paidAt)
         && Objects.equal(client, that.client)
         && Objects.equal(soldBy, that.soldBy)
-        && Objects.equal(parentNumber, that.parentNumber);
+        && Objects.equal(parentNumber, that.parentNumber)
+        && Objects.equal(parentPaidAt, that.parentPaidAt);
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(
-        id, isPaid, isCancelled, reservationCode, number, paidAt, client, soldBy, parentNumber);
+        id,
+        isPaid,
+        isCancelled,
+        reservationCode,
+        number,
+        paidAt,
+        client,
+        soldBy,
+        parentNumber,
+        parentPaidAt);
   }
 
   @Override
@@ -185,6 +208,8 @@ public class InvoiceDto {
         + soldBy
         + ", parentNumber="
         + parentNumber
+        + ", parentPaidAt="
+        + parentPaidAt
         + '}';
   }
 
@@ -199,6 +224,7 @@ public class InvoiceDto {
     private ClientDto client;
     private UserDto soldBy;
     private Long parentNumber;
+    private LocalDate parentPaidAt;
     private List<TicketDto> tickets;
 
     public Builder() {}
@@ -245,6 +271,11 @@ public class InvoiceDto {
 
     public Builder parentNumber(Long val) {
       parentNumber = val;
+      return this;
+    }
+
+    public Builder parentPaidAt(LocalDate val) {
+      parentPaidAt = val;
       return this;
     }
 

@@ -62,6 +62,15 @@ public interface InvoiceService {
   InvoiceDto payTickets(Long id, @NotEmpty List<@NotNull Long> ticketIds, String userName);
 
   /**
+   * Cancel the invoice with the given id. The invoice has to be paid and its performance must not
+   * lie in the past.
+   *
+   * @param id of the paid invoice.
+   * @return the cancelled invoice.
+   */
+  InvoiceDto cancelPaidInvoice(@NotNull Long id, String username);
+
+  /**
    * Delete invoice with given id as long as it's a reservation (unpaid invoice).
    *
    * @param id the invoices id.

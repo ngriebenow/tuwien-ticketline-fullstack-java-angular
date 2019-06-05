@@ -11,4 +11,8 @@ public interface InvoiceRepository
     extends JpaRepository<Invoice, Long>, JpaSpecificationExecutor<Invoice> {
 
   Optional<Invoice> findByIdAndIsPaid(Long id, boolean isPaid);
+
+  Optional<Invoice> findByIdAndIsPaidAndIsCancelled(Long id, boolean isPaid, boolean isCancelled);
+
+  boolean existsByParentInvoice(Invoice parentInvoice);
 }
