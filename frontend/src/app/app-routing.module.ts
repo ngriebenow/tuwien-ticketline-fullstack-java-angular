@@ -21,7 +21,7 @@ import {UserAddComponent} from './components/user-add/user-add.component';
 import {UserEditComponent} from './components/user-edit/user-edit.component';
 import {ClientAddComponent} from './components/client-add/client-add.component';
 import {ClientEditComponent} from './components/client-edit/client-edit.component';
-
+import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pdf-print.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -43,6 +43,7 @@ const routes: Routes = [
   {path: 'user-edit/:user', canActivate: [AuthGuard], component: UserEditComponent},
   {path: 'client-add', canActivate: [AuthGuard], component: ClientAddComponent},
   {path: 'client-edit/:client', canActivate: [AuthGuard], component: ClientEditComponent},
+  {path: 'ticket-pdf-print', canActivate: [AuthGuard], component: TicketPdfPrintComponent}
 ];
 
 @NgModule({

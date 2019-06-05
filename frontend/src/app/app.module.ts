@@ -36,6 +36,7 @@ import {UserEditComponent} from './components/user-edit/user-edit.component';
 import {ClientAddComponent} from './components/client-add/client-add.component';
 import {ClientEditComponent} from './components/client-edit/client-edit.component';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog/confirmation-dialog.component';
+import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pdf-print.component';
 
 
 @NgModule({
@@ -67,6 +68,7 @@ import {ConfirmationDialogComponent} from './components/confirmation-dialog/conf
     ClientAddComponent,
     ClientEditComponent,
     ConfirmationDialogComponent,
+    TicketPdfPrintComponent,
   ],
   imports: [
     BrowserModule,
