@@ -8,6 +8,7 @@ import {AppComponent} from './app.component';
 import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {HomeComponent} from './components/home/home.component';
+import {LightboxModule} from 'ngx-lightbox';
 import {LoginComponent} from './components/login/login.component';
 import {NewsComponent} from './components/news/news.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -72,6 +73,7 @@ import {ConfirmationDialogComponent} from './components/confirmation-dialog/conf
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    LightboxModule,
     NgbModule,
     FormsModule,
     MyDatePickerModule

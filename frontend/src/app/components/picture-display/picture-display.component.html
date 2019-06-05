@@ -1,8 +1,8 @@
 <div class="pictures">
   <div class="row justify-content-center">
-    <ng-container *ngFor="let picture of getPicturesSortedById()">
+    <ng-container *ngFor="let picture of getAlbums(); let i=index">
       <div class="col-md-2 text-center" style="padding-left: 5px; padding-right: 5px;">
-        <img [src]="picture.data" alt="News Picture">
+        <img [src]="picture.thumb" alt="News Picture" (click)="open(i)">
       </div>
     </ng-container>
   </div>
