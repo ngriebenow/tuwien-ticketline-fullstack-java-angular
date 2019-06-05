@@ -35,6 +35,10 @@ public class InvoiceDto {
   @ApiModelProperty("The user who issued this invoice")
   private UserDto soldBy;
 
+  @ApiModelProperty(
+      "The invoice number this one was cancelled from. Only present if this invoice is cancelled")
+  private Long parentNumber;
+
   @ApiModelProperty(value = "The tickets reserved and bought by this invoice")
   private List<TicketDto> tickets;
 
@@ -49,6 +53,7 @@ public class InvoiceDto {
     setPaidAt(builder.paidAt);
     setClient(builder.client);
     setSoldBy(builder.soldBy);
+    setParentNumber(builder.parentNumber);
     setTickets(builder.tickets);
   }
 
@@ -116,6 +121,14 @@ public class InvoiceDto {
     this.soldBy = soldBy;
   }
 
+  public Long getParentNumber() {
+    return parentNumber;
+  }
+
+  public void setParentNumber(Long parentNumber) {
+    this.parentNumber = parentNumber;
+  }
+
   public List<TicketDto> getTickets() {
     return tickets;
   }
@@ -140,13 +153,14 @@ public class InvoiceDto {
         && Objects.equal(number, that.number)
         && Objects.equal(paidAt, that.paidAt)
         && Objects.equal(client, that.client)
-        && Objects.equal(soldBy, that.soldBy);
+        && Objects.equal(soldBy, that.soldBy)
+        && Objects.equal(parentNumber, that.parentNumber);
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(
-        id, isPaid, isCancelled, reservationCode, number, paidAt, client, soldBy);
+        id, isPaid, isCancelled, reservationCode, number, paidAt, client, soldBy, parentNumber);
   }
 
   @Override
@@ -169,6 +183,8 @@ public class InvoiceDto {
         + client
         + ", soldBy="
         + soldBy
+        + ", parentNumber="
+        + parentNumber
         + '}';
   }
 
@@ -182,6 +198,7 @@ public class InvoiceDto {
     private LocalDate paidAt;
     private ClientDto client;
     private UserDto soldBy;
+    private Long parentNumber;
     private List<TicketDto> tickets;
 
     public Builder() {}
@@ -223,6 +240,11 @@ public class InvoiceDto {
 
     public Builder soldBy(UserDto val) {
       soldBy = val;
+      return this;
+    }
+
+    public Builder parentNumber(Long val) {
+      parentNumber = val;
       return this;
     }
 
