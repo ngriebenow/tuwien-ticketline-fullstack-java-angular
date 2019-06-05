@@ -66,5 +66,5 @@ public interface InvoiceService {
    *
    * @param id the invoices id.
    */
-  void deleteReservation(Long id);
+  void deleteReservation(@NotNull Long id);
 }

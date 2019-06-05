@@ -210,7 +210,7 @@ public class SimpleInvoiceService implements InvoiceService {
 
   @Transactional
   @Override
-  public void deleteReservation(Long id) {
+  public void deleteReservation(@NotNull Long id) {
     LOGGER.info("Deleting reservation {}", id);
     String errorMessage = "Can't find reservation with id " + id;
     Invoice invoice =
