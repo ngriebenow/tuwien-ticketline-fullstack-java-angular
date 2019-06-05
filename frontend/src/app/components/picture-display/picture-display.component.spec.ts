@@ -6,6 +6,7 @@ import {AuthGuard} from '../../guards/auth.guard';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {Globals} from '../../global/globals';
+import {Lightbox, LightboxConfig, LightboxEvent} from 'ngx-lightbox';
 
 describe('PictureDisplayComponent', () => {
   let component: PictureDisplayComponent;
@@ -22,6 +23,9 @@ describe('PictureDisplayComponent', () => {
       ],
       providers: [
         Globals,
+        Lightbox,
+        LightboxConfig,
+        LightboxEvent
       ],
     })
     .compileComponents();

@@ -16,7 +16,7 @@ export class InvoiceFilterComponent implements OnInit {
 
   invoices: Invoice[] = [];
   page = 0;
-  private count = 20;
+  count = 20;
   private queryParams = {};
 
   searchForm = this.formBuilder.group({

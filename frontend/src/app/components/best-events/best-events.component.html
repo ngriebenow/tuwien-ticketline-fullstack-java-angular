@@ -14,7 +14,7 @@
             [style.background]="getColor(fstCategory.selected)"
             [style.color] = "getTextColor(fstCategory.selected)">
       <option #fstCategory value="">(alle)</option>
-      <option *ngFor="let ev of eventCategories" value="{{ev}}">{{ev}}</option>
+      <option *ngFor="let ev of eventCategories" value="{{ev}}">{{ ev }}</option>
     </select>
   </div>
   <div class="col-4"></div>
