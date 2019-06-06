@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {User} from '../../dtos/user';
 import {UserService} from '../../services/user.service';
 import {FormBuilder} from '@angular/forms';
+import {ConfirmationDialogService} from '../../services/confirmation-dialog.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -12,6 +13,7 @@ import {FormBuilder} from '@angular/forms';
 export class UserEditComponent implements OnInit {
 
   public queryParams: User;
+  public admin: String;
 
   public searchForm = this.formBuilder.group({
     username: [''],
@@ -20,7 +22,8 @@ export class UserEditComponent implements OnInit {
     enabled: ['']
   });
 
-  constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder, private route: ActivatedRoute) {
+  constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder,
+              private route: ActivatedRoute, private confirm: ConfirmationDialogService) {
     this.queryParams = new User('', '', 0, '', '');
   }
 
@@ -28,14 +31,27 @@ export class UserEditComponent implements OnInit {
     this.userService.getUserById(this.route.snapshot.paramMap.get('user')).subscribe(
       (user: User) => {
         this.queryParams = user;
+        this.admin = user.admin;
         console.log(user);
       },
       error => {
-        // TODO: error handling
       }
     );
   }
 
+  maybeUpdate() {
+    if (this.admin === 'false' && this.queryParams.admin === 'true') {
+      const onYes = () => {
+        this.updateUser();
+      };
+      const onNo = () => {
+        this.setAdmin('false');
+      };
+      this.confirm.open('User wirklich zu Admin ändern?', onYes, onNo);
+    } else {
+      this.updateUser();
+    }
+  }
 
   /**
    * Sends user creation request
