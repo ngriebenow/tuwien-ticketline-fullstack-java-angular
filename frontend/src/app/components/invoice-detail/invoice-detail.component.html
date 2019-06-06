@@ -78,19 +78,37 @@
     </div>
   </div>
   <div class="col-6">
-    <div class="ticket d-flex justify-content-between mt-4"
+
+    <div class="row mb-4"
          *ngFor="let ticket of invoice.tickets"
-         [ngClass]="{'strike-through': !isSelected(ticket),'clickable': !isCancelled()}"
-         (click)="toggleSelected(ticket)">
-      <span>{{ ticket.priceCategoryName }} </span>
-      <span>{{ ticket.title }} </span>
-      <span>{{ centsToEuros(ticket.priceInCents) | currency:'EUR' }} </span>
+           [ngClass]="{'clickable': !isCancelled() && !isBought()}"
+           (click)="toggleSelected(ticket)">
+      <div class="ticket col-11 d-flex justify-content-between"
+           [ngClass]="{'strike-through': !isSelected(ticket)}">
+        <span>{{ ticket.priceCategoryName }} </span>
+        <span>{{ ticket.title }} </span>
+        <span>{{ centsToEuros(ticket.priceInCents) | currency:'EUR' }} </span>
+      </div>
+      <div class="col-1 d-flex align-items-center"
+           *ngIf="isTransient() || isReserved()">
+        <i class="fas"
+           [ngClass]="{'fa-times': !isSelected(ticket), 'fa-check': isSelected(ticket)}">
+        </i>
+      </div>
     </div>
+
     <hr/>
-    <div class="total mt-4 d-flex justify-content-between">
-      <span>Summe</span>
-      <span>{{ getTotalPriceInEuros() | currency:'EUR' }}</span>
+
+    <div class="row mb-4">
+      <div class="total col-11 d-flex justify-content-between">
+        <span>Summe</span>
+        <span>{{ getTotalPriceInEuros() | currency:'EUR' }}</span>
+      </div>
+      <div class="col-1"
+           *ngIf="isTransient() || isReserved()">
+      </div>
     </div>
+
   </div>
 </div>
 
@@ -100,7 +118,7 @@
           (click)="reserveTickets()">Reservieren</button>
   <button class="btn btn-xl btn-secondary"
           *ngIf="isBought()"
-          (click)="cancelTickets()">Stornieren</button>
+          (click)="cancelInvoice()">Stornieren</button>
   <button class="btn btn-xl btn-secondary"
           *ngIf="isReserved()"
           (click)="cancelReservation()">Stornieren</button>

@@ -49,6 +49,10 @@ public class Invoice {
   @JoinColumn(nullable = false)
   private User soldBy;
 
+  @ManyToOne(fetch = FetchType.LAZY, optional = true)
+  @JoinColumn(nullable = true)
+  private Invoice parentInvoice;
+
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Ticket> tickets;
 
@@ -63,6 +67,7 @@ public class Invoice {
     setPaidAt(builder.paidAt);
     setClient(builder.client);
     setSoldBy(builder.soldBy);
+    setParentInvoice(builder.parentInvoice);
     setTickets(builder.tickets);
   }
 
@@ -164,6 +169,14 @@ public class Invoice {
     this.soldBy = soldBy;
   }
 
+  public Invoice getParentInvoice() {
+    return parentInvoice;
+  }
+
+  public void setParentInvoice(Invoice parentInvoice) {
+    this.parentInvoice = parentInvoice;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) {
@@ -180,13 +193,14 @@ public class Invoice {
         && Objects.equal(number, invoice.number)
         && Objects.equal(paidAt, invoice.paidAt)
         && Objects.equal(client, invoice.client)
-        && Objects.equal(soldBy, invoice.soldBy);
+        && Objects.equal(soldBy, invoice.soldBy)
+        && Objects.equal(parentInvoice, invoice.parentInvoice);
   }
 
   @Override
   public int hashCode() {
     return Objects.hashCode(
-        id, isPaid, isCancelled, reservationCode, number, paidAt, client, soldBy);
+        id, isPaid, isCancelled, reservationCode, number, paidAt, client, soldBy, parentInvoice);
   }
 
   @Override
@@ -209,6 +223,8 @@ public class Invoice {
         + client
         + ", soldBy="
         + soldBy
+        + ", parentInvoice="
+        + parentInvoice
         + '}';
   }
 
@@ -222,6 +238,7 @@ public class Invoice {
     private LocalDate paidAt;
     private Client client;
     private User soldBy;
+    private Invoice parentInvoice;
     private List<Ticket> tickets = new ArrayList<>();
 
     public Builder() {}
@@ -263,6 +280,11 @@ public class Invoice {
 
     public Builder soldBy(User val) {
       soldBy = val;
+      return this;
+    }
+
+    public Builder parentInvoice(Invoice val) {
+      parentInvoice = val;
       return this;
     }
 

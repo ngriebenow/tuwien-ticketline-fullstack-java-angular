@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.InvoiceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
+import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
 import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
 import com.github.javafaker.Faker;
 import java.time.LocalDate;
@@ -36,6 +37,7 @@ public class InvoiceDataGenerator implements DataGenerator<Invoice> {
   private UserRepository userRepository;
   private InvoiceRepository invoiceRepository;
   private InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator;
+  private InvoiceService invoiceService;
 
   /**
    * Construct a new InvoceGenerator.
@@ -45,11 +47,13 @@ public class InvoiceDataGenerator implements DataGenerator<Invoice> {
       ClientRepository clientRepository,
       UserRepository userRepository,
       InvoiceRepository invoiceRepository,
-      InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator) {
+      InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator,
+      InvoiceService invoiceService) {
     this.clientRepository = clientRepository;
     this.userRepository = userRepository;
     this.invoiceRepository = invoiceRepository;
     this.invoiceNumberSequenceGenerator = invoiceNumberSequenceGenerator;
+    this.invoiceService = invoiceService;
   }
 
   @Transactional
@@ -75,12 +79,18 @@ public class InvoiceDataGenerator implements DataGenerator<Invoice> {
           LocalDate paidAt = dateToLocalDate(FAKER.date().past(14, TimeUnit.DAYS, today));
           invoiceBuilder
               .number(invoiceNumberSequenceGenerator.getNext())
-              .isCancelled(FAKER.random().nextBoolean())
               .paidAt(paidAt);
         }
         generatedInvoices.add(invoiceBuilder.build());
       }
       invoiceRepository.saveAll(generatedInvoices);
+    }
+
+    String userName = users.get(0).getUsername();
+    for (Invoice invoice : invoiceRepository.findByIsPaidAndIsCancelled(true, false)) {
+      if (FAKER.random().nextBoolean()) {
+        invoiceService.cancelPaidInvoice(invoice.getId(), userName);
+      }
     }
   }
 

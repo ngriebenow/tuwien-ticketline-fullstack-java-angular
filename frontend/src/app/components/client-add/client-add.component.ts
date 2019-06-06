@@ -34,7 +34,7 @@ export class ClientAddComponent implements OnInit {
   createClient() {
     this.clientService.createClient(this.queryParams).subscribe(
       () => {
-        this.router.navigate(['/client-filter']);
+        history.back();
       }
     );
   }

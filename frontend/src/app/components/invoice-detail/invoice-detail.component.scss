@@ -3,14 +3,14 @@
 .total,
 .ticket {
   padding: .375rem .75rem;
+}
 
-  &.clickable {
-    cursor: pointer;
+.clickable {
+  cursor: pointer;
 
-    &:hover {
-      background-color: $light-gray;
-      border-radius: .8rem;
-    }
+  &:hover {
+    background-color: $light-gray;
+    border-radius: .8rem;
   }
 }
 

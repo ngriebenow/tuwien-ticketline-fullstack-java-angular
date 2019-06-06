@@ -210,7 +210,54 @@ public class SimpleInvoiceService implements InvoiceService {
 
   @Transactional
   @Override
-  public void deleteReservation(Long id) {
+  public InvoiceDto cancelPaidInvoice(@NotNull Long id, String userName) {
+    LOGGER.info("Cancelling invoice {}", id);
+
+    String errorMessage = "Can't find paid and uncancelled invoice " + id;
+    Invoice invoice =
+        getOrThrowNotFound(
+            invoiceRepository.findByIdAndIsPaidAndIsCancelled(id, true, false), errorMessage);
+
+    if (invoiceRepository.existsByParentInvoice(invoice)) {
+      errorMessage = "Invoice " + id + " has already been cancelled";
+      throw invalid(errorMessage);
+    }
+
+    errorMessage = "Can't find user with name " + userName;
+    User cancelledBy = getOrThrowNotFound(userRepository.findById(userName), errorMessage);
+
+    List<Ticket> tickets = invoice.getTickets();
+    tickets.forEach(tic -> tic.setCancelled(true));
+    releaseDefinedUnits(tickets);
+
+    Invoice cancelledInvoice = new Invoice.Builder()
+        .isPaid(invoice.isPaid())
+        .isCancelled(true)
+        .reservationCode(invoice.getReservationCode())
+        .number(invoiceNumberSequenceGenerator.getNext())
+        .paidAt(LocalDate.now())
+        .client(invoice.getClient())
+        .soldBy(cancelledBy)
+        .parentInvoice(invoice)
+        .build();
+
+    tickets.forEach(tic -> cancelledInvoice.addTicket(
+        new Ticket.Builder()
+            .salt(tic.getSalt())
+            .isCancelled(true)
+            .definedUnit(tic.getDefinedUnit())
+            .build()
+    ));
+
+    invoiceRepository.save(invoice);
+    invoiceRepository.save(cancelledInvoice);
+
+    return invoiceMapper.invoiceToInvoiceDto(cancelledInvoice);
+  }
+
+  @Transactional
+  @Override
+  public void deleteReservation(@NotNull Long id) {
     LOGGER.info("Deleting reservation {}", id);
     String errorMessage = "Can't find reservation with id " + id;
     Invoice invoice =
