@@ -150,7 +150,7 @@ public class SimpleAccountService implements AccountService {
     if (updated.getEnabled() != null) {
       old.setEnabled(updated.getEnabled().toLowerCase().equals("true") ? true : false);
     }
-    if (updated.getAdmin() != null) {
+    if (updated.getAdmin() != null && !old.getAuthority().equals("ROLE_ADMIN")) {
       old.setAuthority(
           updated.getAdmin().toLowerCase().equals("true") ? "ROLE_ADMIN" : "ROLE_USER");
     }
