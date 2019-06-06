@@ -80,7 +80,7 @@
   <div class="col-6">
     <div class="ticket d-flex justify-content-between mt-4"
          *ngFor="let ticket of invoice.tickets"
-         [ngClass]="{'strike-through': !isSelected(ticket),'clickable': !isCancelled()}"
+         [ngClass]="{'strike-through': !isSelected(ticket),'clickable': !isCancelled() && !isBought()}"
          (click)="toggleSelected(ticket)">
       <span>{{ ticket.priceCategoryName }} </span>
       <span>{{ ticket.title }} </span>

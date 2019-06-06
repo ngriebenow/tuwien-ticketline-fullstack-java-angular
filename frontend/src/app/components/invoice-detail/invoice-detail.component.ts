@@ -103,7 +103,7 @@ export class InvoiceDetailComponent implements OnInit {
   }
 
   private toggleSelected(ticket: Ticket): void {
-    if (this.state === State.Cancelled) {
+    if (this.isCancelled() || this.isBought()) {
       return;
     }
     if (this.isSelected(ticket)) {
