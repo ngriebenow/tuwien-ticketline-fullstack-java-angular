@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Ticket} from '../../dtos/ticket';
-import * as jsPDF from 'jspdf'; // star import is apparently required here, see https://github.com/MrRio/jsPDF/issues/956
+import {PdfService} from '../../services/pdf.service';
 
 @Component({
   selector: 'app-ticket-pdf-print',
@@ -9,7 +9,7 @@ import * as jsPDF from 'jspdf'; // star import is apparently required here, see 
 })
 export class TicketPdfPrintComponent implements OnInit {
   dummyTicket: Ticket;
-  constructor() {
+  constructor(private pdfService: PdfService) {
     this.dummyTicket = new Ticket(
     0,
     'Title',
@@ -26,7 +26,7 @@ export class TicketPdfPrintComponent implements OnInit {
   ngOnInit() {
   }
   printPDF(ticket: Ticket) {
-    const doc = new jsPDF();
+    const doc = this.pdfService.createPdf();
     doc.text(10, 10, ticket.id.toString());
     doc.text(10, 20, ticket.title);
     doc.text(10, 30, ticket.eventName);
