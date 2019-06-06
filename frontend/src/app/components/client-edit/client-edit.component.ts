@@ -43,7 +43,7 @@ export class ClientEditComponent implements OnInit {
     console.log(this.queryParams);
     this.clientService.updateClient(this.queryParams).subscribe(
       () => {
-        this.router.navigate(['/client-filter']);
+        history.back();
       }
     );
   }

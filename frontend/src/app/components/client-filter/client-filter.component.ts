@@ -3,7 +3,7 @@ import {FormBuilder} from '@angular/forms';
 import {ClientFilter} from '../../dtos/client-filter';
 import {Client} from '../../dtos/client';
 import {ClientService} from '../../services/client.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-user-filter',
@@ -17,6 +17,7 @@ export class ClientFilterComponent implements OnInit {
   public count = 20;
   public queryParams: ClientFilter;
   public customerID: string;
+  public edit: boolean;
 
   public searchForm = this.formBuilder.group({
     clientName: [''],
@@ -25,7 +26,12 @@ export class ClientFilterComponent implements OnInit {
     id: [''],
   });
 
-  constructor(private clientService: ClientService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private clientService: ClientService, private formBuilder: FormBuilder,
+              private router: Router, private route: ActivatedRoute) {
+    this.edit = false;
+    if (this.route.snapshot.paramMap.get('edit') === 'edit') {
+      this.edit = true;
+    }
     this.queryParams = new ClientFilter('', '', '', 0, 10);
   }
 
@@ -79,6 +85,11 @@ export class ClientFilterComponent implements OnInit {
 
   selectUser(client: Client): void {
     localStorage.setItem('client', JSON.stringify(client));
+    if (this.edit) {
+      this.router.navigate(['/client-edit/' + String(client.id)]);
+    } else {
+      this.router.navigate(['/finalize-transaction']);
+    }
   }
 
   anonym(): void {

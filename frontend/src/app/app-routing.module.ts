@@ -38,7 +38,7 @@ const routes: Routes = [
   {path: 'invoices/:id', canActivate: [AuthGuard], component: InvoiceDetailComponent},
   {path: 'finalize-transaction', canActivate: [AuthGuard], component: InvoiceDetailComponent},
   {path: 'user-filter', canActivate: [AuthGuard], component: UserFilterComponent},
-  {path: 'client-filter', canActivate: [AuthGuard], component: ClientFilterComponent},
+  {path: 'client-filter/:edit', canActivate: [AuthGuard], component: ClientFilterComponent},
   {path: 'user-add', canActivate: [AuthGuard], component: UserAddComponent},
   {path: 'user-edit/:user', canActivate: [AuthGuard], component: UserEditComponent},
   {path: 'client-add', canActivate: [AuthGuard], component: ClientAddComponent},
