@@ -19,6 +19,7 @@ enum State {
   Cancelled
 }
 
+// TODO: clickablility verification
 @Component({
   selector: 'app-invoice-detail',
   templateUrl: './invoice-detail.component.html',
@@ -52,7 +53,6 @@ export class InvoiceDetailComponent implements OnInit {
     this.invoiceService.getInvoiceById(id).subscribe(
       invoice => this.reset(invoice),
       error => {
-        // TODO: refine this error handling
         this.alertService.error('Rechnung konnte nicht geladen werden.');
         console.log(error);
       }
@@ -278,12 +278,39 @@ export class InvoiceDetailComponent implements OnInit {
     this.dialogService.open(message, onYes);
   }
 
-  // TODO: next sprint
-  private cancelTickets(): void {
+  private cancelInvoice(): void {
     if (!this.isBought()) {
       return;
     }
-    this.alertService.info('Implementierung dieses Features folg demnächst');
+
+    const message = 'Wollen Sie die Rechnung wirklich stornieren?';
+    const onYes = () => {
+      this.invoiceService.cancelInvoice(this.invoice.id).subscribe(
+        invoice => {
+          this.router.navigateByUrl(`/invoices/${invoice.id}`).then(
+            nav => {
+              this.reset(invoice);
+              this.alertService.success('Rechnung erfolgreich storniert');
+            },
+            error => {
+              console.log(error);
+              this.alertService.success('Rechnung erfolgreich storniert');
+              this.alertService.error('Fehler bei der Navigation. Bitte kehren Sie zum Hauptmenue zurück');
+            }
+          );
+        },
+        error => {
+          console.log(error);
+          let errorMessage = 'Rechnung konnte nicht storniert werden, bitte versuchen sie es später noch ein mal';
+          if (error.status === 400) {
+            errorMessage = 'Rechnung wurde bereits storniert';
+          }
+          this.alertService.error(errorMessage);
+        }
+      );
+    };
+
+    this.dialogService.open(message, onYes);
   }
 
   // TODO: next sprint

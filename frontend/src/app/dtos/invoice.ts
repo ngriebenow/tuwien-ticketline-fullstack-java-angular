@@ -9,6 +9,8 @@ export class Invoice {
     public cancelled: boolean,
     public paid: boolean,
     public paidAt: string,
+    public parentNumber: number,
+    public parentPaidAt: string,
     public client: Client,
     public tickets: Ticket[]
   ) {
