@@ -19,7 +19,6 @@ enum State {
   Cancelled
 }
 
-// TODO: clickablility verification
 @Component({
   selector: 'app-invoice-detail',
   templateUrl: './invoice-detail.component.html',
