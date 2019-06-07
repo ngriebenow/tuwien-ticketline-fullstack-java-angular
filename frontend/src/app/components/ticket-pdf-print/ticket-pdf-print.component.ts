@@ -32,11 +32,11 @@ export class TicketPdfPrintComponent implements OnInit {
   printPDF(ticket: Ticket) {
     // TODO [issue #39241]: style the ticket properly
     const doc = this.pdfService.createPdf();
-    doc.setFont('Roboto-Bold', 'bold');
+    doc.setFont('Roboto-bold', 'bold');
     doc.setFontSize(35);
     doc.text(10, 10, ticket.id.toString());
     doc.text(10, 20, ticket.title);
-    doc.setFont('Roboto-Regular', 'normal');
+    doc.setFont('Roboto-regular', 'normal');
     doc.setFontSize(14);
     doc.text(10, 30, ticket.eventName);
     doc.text(10, 40, ticket.performanceName);
@@ -46,6 +46,7 @@ export class TicketPdfPrintComponent implements OnInit {
     doc.text(10, 80, ticket.locationName);
     doc.text(10, 90, ticket.hallName);
     doc.text(10, 100, ticket.definedUnitId.toString());
+    doc.setFont('Roboto-italic', 'italic');
     doc.text(10, 110, ticket.performanceId.toString());
     doc.save('Ticket-' + ticket.id + '.pdf');
   }
