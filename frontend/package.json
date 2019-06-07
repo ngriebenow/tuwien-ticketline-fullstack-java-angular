@@ -29,6 +29,7 @@
     "@types/jquery": "^3.3.29",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
+    "jspdf": "^1.5.3",
     "jwt-decode": "latest",
     "lodash": "^4.17.11",
     "mydatepicker": "^2.6.6",
