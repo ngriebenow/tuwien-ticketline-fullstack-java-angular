@@ -27,8 +27,10 @@ export class TicketPdfPrintComponent implements OnInit {
   }
   printPDF(ticket: Ticket) {
     const doc = this.pdfService.createPdf();
+    doc.setFont('Roboto-Bold', 'bold');
     doc.text(10, 10, ticket.id.toString());
     doc.text(10, 20, ticket.title);
+    doc.setFont('Roboto-Regular', 'normal');
     doc.text(10, 30, ticket.eventName);
     doc.text(10, 40, ticket.performanceName);
     doc.text(10, 50, ticket.startAt.toLocaleUpperCase());
