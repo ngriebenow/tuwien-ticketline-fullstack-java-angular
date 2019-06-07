@@ -6,6 +6,11 @@ import * as jsPDF from 'jspdf';
 })
 export class PdfService {
   constructor() {}
+  /**
+   * Creates a empty pdf with the possibility to set the font to Roboto after function call.
+   * Further configurations for all our pdfs can be done here.
+   * @return created pdf
+   */
   createPdf() {
     const pdf = new jsPDF();
     /* tslint:disable:max-line-length */

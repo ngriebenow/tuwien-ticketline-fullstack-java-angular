@@ -25,7 +25,12 @@ export class TicketPdfPrintComponent implements OnInit {
   }
   ngOnInit() {
   }
+  /**
+   * Print a ticket as PDF.
+   * @param ticket to print
+   */
   printPDF(ticket: Ticket) {
+    // TODO [issue #39241]: style the ticket properly
     const doc = this.pdfService.createPdf();
     doc.setFont('Roboto-Bold', 'bold');
     doc.setFontSize(35);
