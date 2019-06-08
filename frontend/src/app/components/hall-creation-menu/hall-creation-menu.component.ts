@@ -32,7 +32,7 @@ export class HallCreationMenuComponent implements OnInit {
 
   selectedSector: Unit;
 
-  // todo delete after locations are implemented
+  // todo 39256 delete after locations are implemented
   id = 1;
 
   constructor(private hallCreationService: HallCreationService) {
@@ -131,7 +131,7 @@ export class HallCreationMenuComponent implements OnInit {
     }
   }
 
-  // todo delete after locations are implemented
+  // todo 39256 delete after locations are implemented
   loadHall() {
     console.log(this.id);
     this.hallCreationService.loadExistingHall(this.id);

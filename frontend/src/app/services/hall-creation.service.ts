@@ -217,7 +217,7 @@ export class HallCreationService {
    * else: saves hall to db
    */
   completeEditing(): void {
-    // todo keep highlight on selector buttons
+    // todo 39247 keep highlight on selector buttons
     if (this.sectors.length > 0) {
       this.changeSelectedSector(this.sectors[0]);
       this.edited = true;
@@ -230,7 +230,6 @@ export class HallCreationService {
    * checks and ends sector creation process and calls saveHall()
    */
   completeSectors(): void {
-    // todo scale down / deactivate name and capacity text at small size
     if (this.validateSectors()) {
       this.saveHall();
     }
@@ -317,7 +316,7 @@ export class HallCreationService {
   }
 
   cancelHallCreation(): void {
-    // todo cancel popup and functionality
+    // todo 39256 cancel popup and functionality
     this.createNewHall();
     this.backToMenu();
   }
