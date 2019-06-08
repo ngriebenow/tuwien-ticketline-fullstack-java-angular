@@ -1,3 +1,118 @@
-<p>
-  location-filter works!
-</p>
+<div class="row mt-3">
+  <div class="col-12">
+    <h1>Veranstaltungsorte</h1>
+  </div>
+</div>
+
+
+<!-- text fields -->
+
+<form [formGroup]="searchForm" class="container">
+  <div class="row">
+    <div class="col-2">
+      <h2 class="float-right">Name</h2>
+    </div>
+
+    <div class="col-4">
+      <input class="form-control" type="text" placeholder="Name" formControlName="name">
+    </div>
+
+    <div class="col-2">
+      <h2 class="float-right">Adresse</h2>
+    </div>
+
+    <div class="col-4">
+      <input class="form-control" type="text" placeholder="Straße" formControlName="street">
+    </div>
+  </div>
+
+  <div class="row row-separator"></div>
+
+  <div class="row">
+    <div class="col-2"></div>
+
+    <div class="col-4">
+      <input class="form-control" type="text" placeholder="Ort" formControlName="place">
+    </div>
+
+    <div class="col-2"></div>
+
+    <!-- todo 39254 add place to this field-->
+    <div class="col-2">
+      <input class="form-control" type="text" placeholder="PLZ" formControlName="postalCode">
+    </div>
+
+    <div class="col-2">
+      <select class="select-control" formControlName="country">
+        <option #fstCountry value="">(alle)</option>
+        <option value="Austria">Österreich</option>
+        <option value="Germany">Deutschland</option>
+        <option value="Hungary">Ungarn</option>
+        <option value="Italy">Italien</option>
+        <option value="Liechtenstein">Lichtenstein</option>
+        <option value="Slovakia">Slovakei</option>
+        <option value="Slovenia">Slovenian</option>
+        <option value="Switzerland">Schweiz</option>
+        <option value="Czech">Tschechien</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row row-separator"></div>
+</form>
+
+
+<!-- table -->
+
+<div class="row mt-3">
+  <div class="col-12">
+    <table class="table table-striped table-hover">
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col" width="25%">Name</th>
+        <th scope="col" width="25%">Straße</th>
+        <th scope="col" width="10%">PLZ</th>
+        <th scope="col" width="20%">Ort</th>
+        <th scope="col" width="20%">Land</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let location of locations" routerLink="/locations/{{ location.id }}">
+        <td>{{ location.name }}</td>
+        <td>{{ location.street }}</td>
+        <td>{{ location.postalCode }}</td>
+        <td>{{ location.place }}</td>
+        <td>{{ location.country }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row mt-3 mb-5" *ngIf="locations.length === 0">
+  <div class="col-12 d-flex justify-content-center">
+    <h4>Keine Suchergebnisse!</h4>
+  </div>
+</div>
+
+<div class="row mt-3 mb-5" *ngIf="locations.length >= count || page !== 0">
+  <div class="col-12 d-flex justify-content-between">
+    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i
+      class="fas fa-chevron-left"></i></button>
+    <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="locations.length < count"><i
+      class="fas fa-chevron-right"></i></button>
+  </div>
+</div>
+
+
+<!-- lower right buttons -->
+
+<!-- todo 39259 button that links to location creation screen
+<div class="bottom-right-above-1">
+  <button routerLink="/best-events" type="button" class="btn btn-primary btn-lg">Top 10</button>
+</div>
+-->
+
+<div class="bottom-right">
+  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+</div>

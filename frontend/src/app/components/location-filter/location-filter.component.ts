@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LocationService} from '../../services/location.service';
 import {FormBuilder} from '@angular/forms';
 import {AlertService} from '../../services/alert.service';
+import {Location} from '../../dtos/location';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-location-filter',
@@ -27,9 +30,12 @@ export class LocationFilterComponent implements OnInit {
     private locationService: LocationService,
     private formBuilder: FormBuilder,
     private alertService: AlertService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
+    this.loadLocations();
+    this.activateOnFormChange();
   }
 
   private loadLocations(): void {
@@ -44,4 +50,35 @@ export class LocationFilterComponent implements OnInit {
       }
     );
   }
+
+  private activateOnFormChange(): void {
+    this.searchForm.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+    ).subscribe(values => {
+      this.queryParams = {};
+      Object.entries<any>(values)
+        .filter(entry => entry[1] !== null)
+        .map(entry => [entry[0], entry[1].toString().trim()])
+        .filter(entry => !_.isEmpty(entry[1]))
+        .forEach(entry => {
+          const [key, val] = entry;
+          this.queryParams[key] = val;
+        });
+      this.loadLocations();
+    });
+  }
+
+  private nextPage(): void {
+    this.page++;
+    this.loadLocations();
+  }
+
+  private previousPage(): void {
+    if (this.page > 0) {
+      this.page--;
+      this.loadLocations();
+    }
+  }
+
 }

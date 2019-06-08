@@ -22,7 +22,7 @@ import {UserEditComponent} from './components/user-edit/user-edit.component';
 import {ClientAddComponent} from './components/client-add/client-add.component';
 import {ClientEditComponent} from './components/client-edit/client-edit.component';
 import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pdf-print.component';
-import {LocationFilterComponent} from "./components/location-filter/location-filter.component";
+import {LocationFilterComponent} from './components/location-filter/location-filter.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
