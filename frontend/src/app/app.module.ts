@@ -37,6 +37,7 @@ import {ClientAddComponent} from './components/client-add/client-add.component';
 import {ClientEditComponent} from './components/client-edit/client-edit.component';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog/confirmation-dialog.component';
 import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pdf-print.component';
+import {LocationFilterComponent} from './components/location-filter/location-filter.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pd
     ClientEditComponent,
     ConfirmationDialogComponent,
     TicketPdfPrintComponent,
+    LocationFilterComponent,
   ],
   imports: [
     BrowserModule,

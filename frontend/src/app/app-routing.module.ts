@@ -22,6 +22,7 @@ import {UserEditComponent} from './components/user-edit/user-edit.component';
 import {ClientAddComponent} from './components/client-add/client-add.component';
 import {ClientEditComponent} from './components/client-edit/client-edit.component';
 import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pdf-print.component';
+import {LocationFilterComponent} from "./components/location-filter/location-filter.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -29,7 +30,7 @@ const routes: Routes = [
   {path: 'news', canActivate: [AuthGuard], component: NewsComponent},
   {path: 'news/:id', canActivate: [AuthGuard], component: NewsDetailComponent},
   {path: 'news-add', canActivate: [AuthGuard, AdminAuthGuard], component: NewsAddComponent},
-  {path: 'hall-creation', canActivate: [AuthGuard], component: HallCreationComponent},
+  {path: 'hall-creation', canActivate: [AuthGuard, AdminAuthGuard], component: HallCreationComponent},
   {path: 'events/:id', canActivate: [AuthGuard], component: EventComponent},
   {path: 'event-filter', canActivate: [AuthGuard], component: EventFilterComponent},
   {path: 'best-events', canActivate: [AuthGuard], component: BestEventsComponent},
@@ -43,7 +44,8 @@ const routes: Routes = [
   {path: 'user-edit/:user', canActivate: [AuthGuard], component: UserEditComponent},
   {path: 'client-add', canActivate: [AuthGuard], component: ClientAddComponent},
   {path: 'client-edit/:client', canActivate: [AuthGuard], component: ClientEditComponent},
-  {path: 'ticket-pdf-print', canActivate: [AuthGuard], component: TicketPdfPrintComponent}
+  {path: 'ticket-pdf-print', canActivate: [AuthGuard], component: TicketPdfPrintComponent},
+  {path: 'locations', canActivate: [AuthGuard, AdminAuthGuard], component: LocationFilterComponent},
 ];
 
 @NgModule({
