@@ -36,8 +36,10 @@
     </div>
 
     <div class="col-2">
-      <select class="select-control" formControlName="country">
-        <option #fstCountry value="">(alle)</option>
+      <select class="select-control" formControlName="country"
+              [style.background]="getColor(fstCountry.selected)"
+              [style.color] = "getTextColor(fstCountry.selected)">
+        <option #fstCountry value="">alle Länder</option>
         <option value="Austria">Österreich</option>
         <option value="Germany">Deutschland</option>
         <option value="Hungary">Ungarn</option>

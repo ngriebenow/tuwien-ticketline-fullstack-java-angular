@@ -81,4 +81,27 @@ export class LocationFilterComponent implements OnInit {
     }
   }
 
+  /**
+   * Returns the color for the selctor
+   * @param cat: true if it is the first option
+   */
+  getColor(cat: boolean): string {
+    if (cat) {
+      return '#EAEAEA';
+    } else {
+      return '#8FBEFF';
+    }
+  }
+
+  /**
+   * Returns the text color for the selctor
+   * @param cat: true if it is the first option
+   */
+  getTextColor(cat: boolean): string {
+    if (cat) {
+      return '#CFCFCF';
+    } else {
+      return '#FFFFFF';
+    }
+  }
 }
