@@ -35,20 +35,19 @@ public class LocationSpecification {
         predicates.add(street);
       }
 
-      if (locationFilterDto.getPostalCode() != null) {
-        Predicate postalCode =
-            criteriaBuilder.like(
-                criteriaBuilder.lower(root.get("postalCode")),
-                "%" + locationFilterDto.getPostalCode() + "%");
-        predicates.add(postalCode);
-      }
-
       if (locationFilterDto.getPlace() != null) {
         Predicate place =
             criteriaBuilder.like(
                 criteriaBuilder.lower(root.get("place")),
                 "%" + locationFilterDto.getPlace().toLowerCase() + "%");
-        predicates.add(place);
+        Predicate postalCode =
+            criteriaBuilder.like(
+                criteriaBuilder.lower(root.get("postalCode")),
+                "%" + locationFilterDto.getPlace().toLowerCase() + "%");
+
+        Predicate combinedPlacePostalCode =
+            criteriaBuilder.or(place, postalCode);
+        predicates.add(combinedPlacePostalCode);
       }
 
       if (locationFilterDto.getCountry() != null) {
