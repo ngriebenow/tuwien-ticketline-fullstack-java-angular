@@ -17,6 +17,7 @@ export class NewsService {
   /**
    * Loads all news from the backend
    * @param onlyNew to specifiy if all or just unread news should be loaded
+   * @return Observable of Type News[]
    */
   getNews(onlyNew: boolean): Observable<News[]> {
     let params = new HttpParams();
@@ -30,6 +31,7 @@ export class NewsService {
   /**
    * Loads specific news from the backend
    * @param id of news to load
+   * @return Observable of Type News
    */
   getNewsById(id: number): Observable<News> {
     console.log('Load news details for ' + id);
@@ -39,6 +41,7 @@ export class NewsService {
   /**
    * Persists news to the backend
    * @param news to persist
+   * @return Observable of Type News
    */
   createNews(news: News): Observable<News> {
     console.log('Create news with title ' + news.title);
