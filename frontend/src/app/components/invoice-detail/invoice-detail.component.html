@@ -130,7 +130,8 @@
           (click)="payInvoice()">Kaufen</button>
   <button class="btn btn-xl btn-primary"
           *ngIf="isBought() || isCancelled()"
-          (click)="printInvoice()">Drucken</button>
+          (click)="printInvoice()">Rechnung Drucken</button>
+  <app-ticket-pdf-print [bought]="isBought()" [tickets]="invoice.tickets"></app-ticket-pdf-print>
 </div>
 
 <div class="bottom-right">

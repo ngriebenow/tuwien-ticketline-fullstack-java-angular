@@ -37,6 +37,8 @@ import {ClientAddComponent} from './components/client-add/client-add.component';
 import {ClientEditComponent} from './components/client-edit/client-edit.component';
 import {ConfirmationDialogComponent} from './components/confirmation-dialog/confirmation-dialog.component';
 import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pdf-print.component';
+import {CurrencyPipe} from '@angular/common';
+import {DatePipe} from '@angular/common';
 
 
 @NgModule({
@@ -80,7 +82,7 @@ import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pd
     FormsModule,
     MyDatePickerModule
   ],
-  providers: [httpInterceptorProviders, Globals],
+  providers: [httpInterceptorProviders, Globals, CurrencyPipe, DatePipe],
   bootstrap: [AppComponent],
   entryComponents: [ ConfirmationDialogComponent ]
 })
