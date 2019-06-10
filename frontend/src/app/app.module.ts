@@ -38,7 +38,8 @@ import {ClientEditComponent} from './components/client-edit/client-edit.componen
 import {ConfirmationDialogComponent} from './components/confirmation-dialog/confirmation-dialog.component';
 import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pdf-print.component';
 import {LocationFilterComponent} from './components/location-filter/location-filter.component';
-
+import {CurrencyPipe} from '@angular/common';
+import {DatePipe} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,7 @@ import {LocationFilterComponent} from './components/location-filter/location-fil
     FormsModule,
     MyDatePickerModule
   ],
-  providers: [httpInterceptorProviders, Globals],
+  providers: [httpInterceptorProviders, Globals, CurrencyPipe, DatePipe],
   bootstrap: [AppComponent],
   entryComponents: [ ConfirmationDialogComponent ]
 })

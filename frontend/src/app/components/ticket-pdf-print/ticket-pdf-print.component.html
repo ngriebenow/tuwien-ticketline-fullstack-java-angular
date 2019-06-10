@@ -1,5 +1,1 @@
-<p>
-  ticket-pdf-print works!
-  <button type="button" class="btn btn-lg btn-primary" (click)="printPDF(dummyTicket)">Speichern</button>
-
-</p>
+<button class="btn btn-xl btn-primary" *ngIf="isBought()" (click)="createPDF(tickets)">Tickets Drucken</button>

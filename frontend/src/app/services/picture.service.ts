@@ -16,6 +16,7 @@ export class PictureService {
   /**
    * Get picture with id.
    * @param id of the picture
+   * @return Observable of Type Blob
    */
   getPicture(id: number): Observable<Blob> {
     console.log('Load picture with id ' + id);
@@ -25,6 +26,7 @@ export class PictureService {
   /**
    * Upload picture
    * @param picture to upload
+   * @return Observable of Type any
    */
   uploadPicture(picture: File): Observable<any> {
     console.log('Upload picture');
