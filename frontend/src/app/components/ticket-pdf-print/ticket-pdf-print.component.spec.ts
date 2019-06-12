@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TicketPdfPrintComponent } from './ticket-pdf-print.component';
 import {Globals} from '../../global/globals';
 import {CurrencyPipe, DatePipe} from '@angular/common';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('TicketPdfPrintComponent', () => {
   let component: TicketPdfPrintComponent;
@@ -10,6 +11,7 @@ describe('TicketPdfPrintComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       declarations: [ TicketPdfPrintComponent ],
       providers: [
         Globals,
