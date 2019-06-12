@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.InvoiceDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.ReservationRequestDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.InvoiceFilterDto;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import com.google.zxing.common.BitMatrix;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -76,4 +77,12 @@ public interface InvoiceService {
    * @param id the invoices id.
    */
   void deleteReservation(@NotNull Long id);
+
+  /**
+   * Generate QR-Code for invoice.
+   *
+   * @param id the invoice id
+   * @return qr-code
+   */
+  BitMatrix generateQrCode(long id);
 }

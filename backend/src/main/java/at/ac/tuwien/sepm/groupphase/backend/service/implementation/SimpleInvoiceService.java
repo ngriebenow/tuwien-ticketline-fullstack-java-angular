@@ -11,6 +11,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.invoice.InvoiceMapper;
+import at.ac.tuwien.sepm.groupphase.backend.exception.InternalServerError;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ClientRepository;
@@ -22,6 +23,11 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.InvoiceService;
 import at.ac.tuwien.sepm.groupphase.backend.service.util.InvoiceNumberSequenceGenerator;
 import at.ac.tuwien.sepm.groupphase.backend.specification.InvoiceSpecification;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,6 +41,7 @@ import java.util.stream.IntStream;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -230,24 +237,26 @@ public class SimpleInvoiceService implements InvoiceService {
     tickets.forEach(tic -> tic.setCancelled(true));
     releaseDefinedUnits(tickets);
 
-    Invoice cancelledInvoice = new Invoice.Builder()
-        .isPaid(invoice.isPaid())
-        .isCancelled(true)
-        .reservationCode(invoice.getReservationCode())
-        .number(invoiceNumberSequenceGenerator.getNext())
-        .paidAt(LocalDate.now())
-        .client(invoice.getClient())
-        .soldBy(cancelledBy)
-        .parentInvoice(invoice)
-        .build();
-
-    tickets.forEach(tic -> cancelledInvoice.addTicket(
-        new Ticket.Builder()
-            .salt(tic.getSalt())
+    Invoice cancelledInvoice =
+        new Invoice.Builder()
+            .isPaid(invoice.isPaid())
             .isCancelled(true)
-            .definedUnit(tic.getDefinedUnit())
-            .build()
-    ));
+            .reservationCode(invoice.getReservationCode())
+            .number(invoiceNumberSequenceGenerator.getNext())
+            .paidAt(LocalDate.now())
+            .client(invoice.getClient())
+            .soldBy(cancelledBy)
+            .parentInvoice(invoice)
+            .build();
+
+    tickets.forEach(
+        tic ->
+            cancelledInvoice.addTicket(
+                new Ticket.Builder()
+                    .salt(tic.getSalt())
+                    .isCancelled(true)
+                    .definedUnit(tic.getDefinedUnit())
+                    .build()));
 
     invoiceRepository.save(invoice);
     invoiceRepository.save(cancelledInvoice);
@@ -264,6 +273,34 @@ public class SimpleInvoiceService implements InvoiceService {
         getOrThrowNotFound(invoiceRepository.findByIdAndIsPaid(id, false), errorMessage);
     deleteTickets(invoice.getTickets());
     invoiceRepository.delete(invoice);
+  }
+
+  @Transactional
+  @Override
+  public BitMatrix generateQrCode(long id) {
+    try {
+      Invoice i = invoiceRepository.findById(id).orElseThrow();
+    } catch (Exception e) {
+      throw new NotFoundException("Could not find invoice with id " + id);
+    }
+    QRCodeWriter qrCodeWriter = new QRCodeWriter();
+    byte[] tmp = ArrayUtils.addAll(("" + id).getBytes(), ";".getBytes());
+    tmp = ArrayUtils.addAll(tmp, LocalDateTime.now().toString().getBytes());
+    BitMatrix bitMatrix = null;
+    try {
+      bitMatrix =
+          qrCodeWriter.encode(
+              Base64.getEncoder().encodeToString(tmp), BarcodeFormat.QR_CODE, 350, 350);
+    } catch (WriterException e) {
+      throw new InternalServerError();
+    }
+    return bitMatrix;
+  }
+
+  private byte[] longToBytes(long x) {
+    ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+    buffer.putLong(x);
+    return buffer.array();
   }
 
   /**
@@ -371,15 +408,14 @@ public class SimpleInvoiceService implements InvoiceService {
     ticketRepository.deleteAll(tickets);
   }
 
-  /**
-   * Release the definedUnits referenced by the given tickets by increasing their capacity.
-   */
+  /** Release the definedUnits referenced by the given tickets by increasing their capacity. */
   private void releaseDefinedUnits(List<Ticket> tickets) {
-    tickets.forEach(tic -> {
-      DefinedUnit definedUnit = tic.getDefinedUnit();
-      definedUnit.setCapacityFree(definedUnit.getCapacityFree() + 1);
-      definedUnitRepository.save(definedUnit);
-    });
+    tickets.forEach(
+        tic -> {
+          DefinedUnit definedUnit = tic.getDefinedUnit();
+          definedUnit.setCapacityFree(definedUnit.getCapacityFree() + 1);
+          definedUnitRepository.save(definedUnit);
+        });
   }
 
   /** Return an object of type T or log an error and throw a NotFoundException. */
