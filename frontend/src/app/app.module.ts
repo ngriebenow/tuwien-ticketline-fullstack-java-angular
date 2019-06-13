@@ -40,6 +40,7 @@ import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pd
 import {LocationFilterComponent} from './components/location-filter/location-filter.component';
 import {CurrencyPipe} from '@angular/common';
 import {DatePipe} from '@angular/common';
+import { InvoicePdfPrintComponent } from './components/invoice-pdf-print/invoice-pdf-print.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import {DatePipe} from '@angular/common';
     ConfirmationDialogComponent,
     TicketPdfPrintComponent,
     LocationFilterComponent,
+    InvoicePdfPrintComponent,
   ],
   imports: [
     BrowserModule,

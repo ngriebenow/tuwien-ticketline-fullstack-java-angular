@@ -128,9 +128,7 @@
   <button class="btn btn-xl btn-primary"
           *ngIf="isReserved()"
           (click)="payInvoice()">Kaufen</button>
-  <button class="btn btn-xl btn-primary"
-          *ngIf="isBought() || isCancelled()"
-          (click)="printInvoice()">Rechnung Drucken</button>
+  <app-invoice-pdf-print *ngIf="isBought() || isCancelled()" [invoice]="invoice" [tickets]="invoice.tickets"></app-invoice-pdf-print>
   <app-ticket-pdf-print *ngIf="isBought()" [bought]="isBought()" [tickets]="invoice.tickets"></app-ticket-pdf-print>
 </div>
 
