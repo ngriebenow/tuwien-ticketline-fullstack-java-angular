@@ -31,11 +31,14 @@ import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.validation.Valid;
@@ -46,6 +49,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -73,6 +77,8 @@ public class SimpleInvoiceService implements InvoiceService {
 
   private final InvoiceMapper invoiceMapper;
 
+  private ThreadPoolTaskScheduler threadPoolTaskScheduler;
+
   /** Create a new InvoiceService. */
   @Autowired
   public SimpleInvoiceService(
@@ -83,7 +89,8 @@ public class SimpleInvoiceService implements InvoiceService {
       DefinedUnitRepository definedUnitRepository,
       TicketRepository ticketRepository,
       InvoiceNumberSequenceGenerator invoiceNumberSequenceGenerator,
-      InvoiceMapper invoiceMapper) {
+      InvoiceMapper invoiceMapper,
+      ThreadPoolTaskScheduler threadPoolTaskScheduler) {
     this.invoiceRepository = invoiceRepository;
     this.performanceRepository = performanceRepository;
     this.clientRepository = clientRepository;
@@ -92,6 +99,7 @@ public class SimpleInvoiceService implements InvoiceService {
     this.ticketRepository = ticketRepository;
     this.invoiceNumberSequenceGenerator = invoiceNumberSequenceGenerator;
     this.invoiceMapper = invoiceMapper;
+    this.threadPoolTaskScheduler=threadPoolTaskScheduler;
   }
 
   @Transactional(readOnly = true)
@@ -168,8 +176,23 @@ public class SimpleInvoiceService implements InvoiceService {
       throw invalid(errorMessage);
     }
 
-    return createInvoice(
-        performance, client, soldBy, reservationRequestDto.getTicketRequests(), false);
+    // Setup auto-cancel
+    InvoiceDto tmp =
+        createInvoice(
+            performance, client, soldBy, reservationRequestDto.getTicketRequests(), false);
+    scheduleDeletion(performance, tmp);
+
+    // Return normally
+    return tmp;
+  }
+
+  private void scheduleDeletion(Performance p, InvoiceDto i) {
+    LocalDateTime cancelTime =
+        p.getStartAt().minusMinutes(PRE_PERFORMANCE_RESERVATION_CLEAR_MINUTES);
+    threadPoolTaskScheduler.schedule(
+        new TimedDelete(i.getId()),
+        Date.from(cancelTime.atZone(ZoneId.systemDefault()).toInstant()));
+    LOGGER.info("Scheduled for deletion: "+i.getId());
   }
 
   @Transactional
@@ -273,6 +296,7 @@ public class SimpleInvoiceService implements InvoiceService {
         getOrThrowNotFound(invoiceRepository.findByIdAndIsPaid(id, false), errorMessage);
     deleteTickets(invoice.getTickets());
     invoiceRepository.delete(invoice);
+    LOGGER.info("Deleted reservation {}", id);
   }
 
   @Transactional
@@ -448,5 +472,22 @@ public class SimpleInvoiceService implements InvoiceService {
     byte[] saltBytes = new byte[TICKET_SALT_LENGTH];
     RANDOM.nextBytes(saltBytes);
     return Base64.getEncoder().encodeToString(saltBytes);
+  }
+
+  private class TimedDelete extends TimerTask {
+    private long id;
+
+    public TimedDelete(long id) {
+      this.id = id;
+    }
+
+    public void run() {
+      LOGGER.info("Trying to delete: "+id);
+      try {
+        deleteReservation(id);
+      } catch (Exception e) {
+        // Already paid
+      }
+    }
   }
 }
