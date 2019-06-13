@@ -32,7 +32,7 @@ public class Ticket {
   @JoinColumn(name = "invoice_id", nullable = false)
   private Invoice invoice;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
   @JoinColumn(nullable = false)
   private DefinedUnit definedUnit;
 
