@@ -6,6 +6,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 @Configuration
 public class ThreadpoolConfiguration {
+
+  /**
+   * Java-Doc.
+   */
   @Bean
   public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
     ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();

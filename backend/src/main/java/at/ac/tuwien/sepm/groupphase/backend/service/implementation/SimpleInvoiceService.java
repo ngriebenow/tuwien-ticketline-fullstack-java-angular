@@ -27,7 +27,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,9 +37,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.TimerTask;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -99,7 +98,7 @@ public class SimpleInvoiceService implements InvoiceService {
     this.ticketRepository = ticketRepository;
     this.invoiceNumberSequenceGenerator = invoiceNumberSequenceGenerator;
     this.invoiceMapper = invoiceMapper;
-    this.threadPoolTaskScheduler=threadPoolTaskScheduler;
+    this.threadPoolTaskScheduler = threadPoolTaskScheduler;
   }
 
   @Transactional(readOnly = true)
@@ -180,19 +179,36 @@ public class SimpleInvoiceService implements InvoiceService {
     InvoiceDto tmp =
         createInvoice(
             performance, client, soldBy, reservationRequestDto.getTicketRequests(), false);
-    scheduleDeletion(performance, tmp);
+    scheduleDeletion(performance, tmp.getId());
 
     // Return normally
     return tmp;
   }
 
-  private void scheduleDeletion(Performance p, InvoiceDto i) {
+  private void scheduleDeletion(Performance p, long id) {
     LocalDateTime cancelTime =
         p.getStartAt().minusMinutes(PRE_PERFORMANCE_RESERVATION_CLEAR_MINUTES);
     threadPoolTaskScheduler.schedule(
-        new TimedDelete(i.getId()),
+        () -> deleteReservation(id),
         Date.from(cancelTime.atZone(ZoneId.systemDefault()).toInstant()));
-    LOGGER.info("Scheduled for deletion: "+i.getId());
+    LOGGER.info("Scheduled for deletion: " + id);
+  }
+
+  @PostConstruct
+  private void setupAutodelete() {
+    LOGGER.info("Deleting old reservations and setting up timers");
+    List<Invoice> list = invoiceRepository.findByIsPaidAndIsCancelled(false, false);
+    for (Invoice e : list) {
+      Performance p = e.getTickets().get(0).getDefinedUnit().getPerformance();
+      LocalDateTime cancelTime =
+          p.getStartAt().minusMinutes(PRE_PERFORMANCE_RESERVATION_CLEAR_MINUTES);
+      LocalDateTime now = LocalDateTime.now();
+      if (cancelTime.isBefore(now)) {
+        deleteReservation(e.getId());
+      } else {
+        scheduleDeletion(p, e.getId());
+      }
+    }
   }
 
   @Transactional
@@ -319,12 +335,6 @@ public class SimpleInvoiceService implements InvoiceService {
       throw new InternalServerError();
     }
     return bitMatrix;
-  }
-
-  private byte[] longToBytes(long x) {
-    ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-    buffer.putLong(x);
-    return buffer.array();
   }
 
   /**
@@ -472,22 +482,5 @@ public class SimpleInvoiceService implements InvoiceService {
     byte[] saltBytes = new byte[TICKET_SALT_LENGTH];
     RANDOM.nextBytes(saltBytes);
     return Base64.getEncoder().encodeToString(saltBytes);
-  }
-
-  private class TimedDelete extends TimerTask {
-    private long id;
-
-    public TimedDelete(long id) {
-      this.id = id;
-    }
-
-    public void run() {
-      LOGGER.info("Trying to delete: "+id);
-      try {
-        deleteReservation(id);
-      } catch (Exception e) {
-        // Already paid
-      }
-    }
   }
 }
