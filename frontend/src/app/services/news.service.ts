@@ -15,15 +15,17 @@ export class NewsService {
   }
 
   /**
-   * Loads all news from the backend
+   * Loads all news from the backend.
    * @param onlyNew to specifiy if all or just unread news should be loaded
+   * @param queryParams for page and size
    * @return Observable of Type News[]
    */
-  getNews(onlyNew: boolean): Observable<News[]> {
+  getNews(onlyNew: boolean, queryParams: {} = {}): Observable<News[]> {
     let params = new HttpParams();
     if (onlyNew) {
       params = params.set('onlyNew', onlyNew.toString());
     }
+    Object.keys(queryParams).forEach(key => params = params.set(key, queryParams[key]));
 
     return this.httpClient.get<News[]>(this.newsBaseUri, {params} );
   }
