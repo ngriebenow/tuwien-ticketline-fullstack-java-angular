@@ -55,6 +55,13 @@ export class TicketingService {
     console.log('ticketrequest length: ' + this.ticketRequests.length);
   }
 
+  cleanTicketingStorage() {
+    localStorage.removeItem('definedUnits');
+    localStorage.removeItem('client');
+    localStorage.removeItem('event');
+    localStorage.removeItem('performance');
+  }
+
   getClientName() {
     return this.client.surname + ' ' + this.client.name;
   }

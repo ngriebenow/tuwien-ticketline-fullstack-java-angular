@@ -8,6 +8,7 @@ import {IMyDateModel, IMyDpOptions} from 'mydatepicker';
 import {AlertService} from '../../services/alert.service';
 import {PerformanceSearchResult} from '../../dtos/performance-search-result';
 import {Router} from '@angular/router';
+import {TicketingService} from '../../services/ticketing.service';
 
 @Component({
   selector: 'app-event-filter',
@@ -25,7 +26,8 @@ export class EventFilterComponent implements OnInit {
 
   constructor(private router: Router,
               private eventService: EventService,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              private ticketingService: TicketingService) {
 
   }
 
@@ -46,6 +48,7 @@ export class EventFilterComponent implements OnInit {
 
 
   ngOnInit() {
+    this.ticketingService.cleanTicketingStorage();
     console.log('ngOnInit');
     this.loadEvents();
     this.loadEventCategories();
