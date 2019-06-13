@@ -58,9 +58,7 @@ public class SimpleHeaderTokenAuthenticationService
   private final Duration overlapDuration;
   private UserRepository userRepository;
 
-  /**
-   * TODO: Add JavaDoc.
-   */
+  /** Java-Doc. */
   public SimpleHeaderTokenAuthenticationService(
       @Lazy AuthenticationManager authenticationManager,
       AuthenticationConfigurationProperties authenticationConfigurationProperties,
@@ -103,7 +101,21 @@ public class SimpleHeaderTokenAuthenticationService
             .setExpiration(Date.from(now.plus(validityDuration)))
             .signWith(signatureAlgorithm, signingKey)
             .compact();
-    return AuthenticationToken.builder().currentToken(currentToken).build();
+    String futureToken =
+        Jwts.builder()
+            .claim(AuthenticationConstants.JWT_CLAIM_PRINCIPAL_ID, null)
+            .claim(AuthenticationConstants.JWT_CLAIM_PRINCIPAL, authentication.getName())
+            .claim(AuthenticationConstants.JWT_CLAIM_AUTHORITY, authorities)
+            .setIssuedAt(Date.from(now))
+            .setExpiration(
+                Date.from(now.plus(validityDuration.minus(overlapDuration).plus(validityDuration))))
+            .setNotBefore(Date.from(now.plus(validityDuration.minus(overlapDuration))))
+            .signWith(signatureAlgorithm, signingKey)
+            .compact();
+    return AuthenticationToken.builder()
+        .currentToken(currentToken)
+        .futureToken(futureToken)
+        .build();
   }
 
   @Override
@@ -138,8 +150,7 @@ public class SimpleHeaderTokenAuthenticationService
       authoritiesWrapper =
           objectMapper.readValue(
               claims.get(AuthenticationConstants.JWT_CLAIM_AUTHORITY, String.class),
-              new TypeReference<List<String>>() {
-              });
+              new TypeReference<List<String>>() {});
     } catch (IOException e) {
       LOGGER.error("Failed to unwrap roles", e);
     }

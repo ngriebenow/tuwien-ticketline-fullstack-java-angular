@@ -27,7 +27,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -278,15 +277,16 @@ public class SimpleInvoiceService implements InvoiceService {
   @Transactional
   @Override
   public BitMatrix generateQrCode(long id) {
+    Invoice i;
     try {
-      Invoice i = invoiceRepository.findById(id).orElseThrow();
+      i = invoiceRepository.findById(id).orElseThrow();
     } catch (Exception e) {
       throw new NotFoundException("Could not find invoice with id " + id);
     }
     QRCodeWriter qrCodeWriter = new QRCodeWriter();
     byte[] tmp = ArrayUtils.addAll(("" + id).getBytes(), ";".getBytes());
-    tmp = ArrayUtils.addAll(tmp, LocalDateTime.now().toString().getBytes());
-    BitMatrix bitMatrix = null;
+    tmp = ArrayUtils.addAll(tmp, i.getPaidAt().toString().getBytes());
+    BitMatrix bitMatrix;
     try {
       bitMatrix =
           qrCodeWriter.encode(
@@ -295,12 +295,6 @@ public class SimpleInvoiceService implements InvoiceService {
       throw new InternalServerError();
     }
     return bitMatrix;
-  }
-
-  private byte[] longToBytes(long x) {
-    ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-    buffer.putLong(x);
-    return buffer.array();
   }
 
   /**
