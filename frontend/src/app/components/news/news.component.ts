@@ -25,7 +25,7 @@ export class NewsComponent implements OnInit {
   count = 20;
   private queryParams = {};
 
-  private news: News[];
+  news: News[];
 
   constructor(private newsService: NewsService, private ngbPaginationConfig: NgbPaginationConfig, private formBuilder: FormBuilder,
               private cd: ChangeDetectorRef, private authService: AuthService, private route: ActivatedRoute,
@@ -36,6 +36,7 @@ export class NewsComponent implements OnInit {
       summary: ['', [Validators.required]],
       text: ['', [Validators.required]],
     });
+    this.news = [];
   }
 
   ngOnInit() {
