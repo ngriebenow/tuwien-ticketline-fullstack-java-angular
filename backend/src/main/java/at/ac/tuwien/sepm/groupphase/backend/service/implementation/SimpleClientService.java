@@ -18,6 +18,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.Page;
@@ -32,6 +34,8 @@ public class SimpleClientService implements ClientService {
 
   private ClientRepository clientRepository;
   private ClientMapper clientMapper;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(SimpleInvoiceService.class);
 
   @PersistenceContext private EntityManager entityManager;
 
@@ -77,6 +81,7 @@ public class SimpleClientService implements ClientService {
   @Transactional(readOnly = true)
   @Override
   public List<ClientDto> findAll(ClientFilterDto client) {
+    LOGGER.info("Searching for clients");
     if (client.getCount() == null) {
       client.setCount(10);
     }
@@ -111,6 +116,7 @@ public class SimpleClientService implements ClientService {
   @Transactional(readOnly = true)
   @Override
   public Client findOne(long id) {
+    LOGGER.info("Getting client {}", id);
     Client c = clientRepository.getOne(id);
     if (c == null) {
       throw new NotFoundException("Client " + id + " not found!");
@@ -121,6 +127,7 @@ public class SimpleClientService implements ClientService {
   @Transactional
   @Override
   public ClientDto saveClient(ClientDto client) {
+    LOGGER.info("Storing new client", client.getId());
     client.setId(null);
     Client tmp = clientRepository.saveAndFlush(clientMapper.clientDtoToClient(client));
     return clientMapper.clientToClientDto(tmp);
@@ -145,6 +152,7 @@ public class SimpleClientService implements ClientService {
     if (client.getId() == null) {
       throw new InvalidInputException("Id must be set!");
     }
+    LOGGER.info("Editing client {}", client.getId());
     Client old = findOne(client.getId());
     old = updateUserHelper(old, client);
     clientRepository.saveAndFlush(old);
