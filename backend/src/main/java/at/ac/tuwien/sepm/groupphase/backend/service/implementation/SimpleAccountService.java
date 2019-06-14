@@ -142,6 +142,9 @@ public class SimpleAccountService implements AccountService {
     } catch (NullPointerException e) {
       throw new InvalidInputException("All fields must be set!");
     }
+    if (u.getAuthority().equals("ROLE_ADMIN")) {
+      u.setEnabled(true);
+    }
     userRepository.saveAndFlush(u);
     return userMapper.userToUserDto(findOne(u.getUsername()));
   }
@@ -156,6 +159,9 @@ public class SimpleAccountService implements AccountService {
     }
     if (updated.getEnabled() != null) {
       old.setEnabled(updated.getEnabled().toLowerCase().equals("true"));
+    }
+    if (old.getAuthority().equals("ROLE_ADMIN")) {
+      old.setEnabled(true);
     }
     if (updated.getAdmin() != null && !old.getAuthority().equals("ROLE_ADMIN")) {
       old.setAuthority(
