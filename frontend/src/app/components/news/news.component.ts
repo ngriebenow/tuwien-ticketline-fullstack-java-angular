@@ -40,6 +40,15 @@ export class NewsComponent implements OnInit {
   }
 
   ngOnInit() {
+    const element: HTMLElement = document.getElementsByClassName('news-container')[0] as HTMLElement;
+    element.addEventListener('scroll', function(e) {
+      const visibleHeight = element.clientHeight;
+      const scrollableHeight = element.scrollHeight;
+      const position = element.scrollTop;
+      if (position + visibleHeight === scrollableHeight) {
+        this.nextPage();
+      }
+    }.bind(this));
     this.route
     .queryParams
     .subscribe(params => {
@@ -75,12 +84,6 @@ export class NewsComponent implements OnInit {
   navigateMainMenu() {
     this.router.navigate(['/']);
   }
-  previousPage() {
-    if (this.page > 0) {
-      this.page--;
-      this.loadNews();
-    }
-  }
   nextPage() {
     this.page++;
     this.loadNews();
@@ -89,8 +92,9 @@ export class NewsComponent implements OnInit {
    * Loads the specified page of news from the backend.
    */
   private loadNews() {
-    this.queryParams['page'] = this.page;
-    this.queryParams['count'] = this.count;
+    this.queryParams['page'] = 0;
+    this.queryParams['count'] = (this.page + 1) * this.count;
+
     this.newsService.getNews(this.onlyNew, this.queryParams).subscribe(
       (news: News[]) => {
         this.news = news;
