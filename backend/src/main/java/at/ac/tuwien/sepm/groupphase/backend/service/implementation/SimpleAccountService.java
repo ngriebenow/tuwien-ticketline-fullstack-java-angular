@@ -15,6 +15,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +30,8 @@ public class SimpleAccountService implements AccountService {
 
   private UserRepository userRepository;
   private UserMapper userMapper;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(SimpleInvoiceService.class);
 
   public SimpleAccountService(UserRepository userRepository, UserMapper userMapper) {
     this.userRepository = userRepository;
@@ -80,6 +84,7 @@ public class SimpleAccountService implements AccountService {
   @Transactional(readOnly = true)
   @Override
   public List<UserDto> findAll(UserFilterDto user) {
+    LOGGER.info("Searching for users");
     if (user.getCount() == null) {
       user.setCount(10);
     }
@@ -113,6 +118,7 @@ public class SimpleAccountService implements AccountService {
   @Transactional(readOnly = true)
   @Override
   public User findOne(String id) {
+    LOGGER.info("Searching for user with id {}", id);
     User u = userRepository.findOneByUsername(id);
     if (u == null) {
       throw new NotFoundException("User " + id + " not found!");
@@ -123,6 +129,7 @@ public class SimpleAccountService implements AccountService {
   @Transactional
   @Override
   public UserDto saveUser(UserDto user) {
+    LOGGER.info("Storing user with id {}", user.getUsername());
     try {
       findOne(user.getUsername());
       throw new ValidationException("User " + user.getUsername() + " already in database.");
@@ -134,6 +141,9 @@ public class SimpleAccountService implements AccountService {
       u = userMapper.userDtoToUser(user);
     } catch (NullPointerException e) {
       throw new InvalidInputException("All fields must be set!");
+    }
+    if (u.getAuthority().equals("ROLE_ADMIN")) {
+      u.setEnabled(true);
     }
     userRepository.saveAndFlush(u);
     return userMapper.userToUserDto(findOne(u.getUsername()));
@@ -148,7 +158,10 @@ public class SimpleAccountService implements AccountService {
       old.setFailedLoginCounter(updated.getFailedLoginCounter());
     }
     if (updated.getEnabled() != null) {
-      old.setEnabled(updated.getEnabled().toLowerCase().equals("true") ? true : false);
+      old.setEnabled(updated.getEnabled().toLowerCase().equals("true"));
+    }
+    if (old.getAuthority().equals("ROLE_ADMIN")) {
+      old.setEnabled(true);
     }
     if (updated.getAdmin() != null && !old.getAuthority().equals("ROLE_ADMIN")) {
       old.setAuthority(
@@ -160,6 +173,7 @@ public class SimpleAccountService implements AccountService {
   @Transactional
   @Override
   public UserDto editUser(UserDto user) {
+    LOGGER.info("Editing user with id {}", user.getUsername());
     if (user.getUsername() == null) {
       throw new InvalidInputException("Username must be set!");
     }

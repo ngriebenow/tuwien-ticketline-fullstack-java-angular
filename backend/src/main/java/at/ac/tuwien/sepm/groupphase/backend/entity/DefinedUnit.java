@@ -32,7 +32,7 @@ public class DefinedUnit {
   @JoinColumn(nullable = false)
   private PriceCategory priceCategory;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(nullable = false)
   private Performance performance;
 

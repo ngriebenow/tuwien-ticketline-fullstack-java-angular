@@ -1,5 +1,10 @@
 <h1>News</h1>
 <div class="news-container container">
+  <div class="row mt-3 mb-5" *ngIf="news.length === 0">
+    <div class="col-12 d-flex justify-content-center">
+      <h4>Keine Neuen News!</h4>
+    </div>
+  </div>
     <div class="row justify-content-center" *ngFor="let news of getNews()">
       <div class="col-10">
       <div class="news-entry-panel" style="margin-right: 0px">
@@ -38,9 +43,15 @@
 <div class="bottom-right-above-1">
   <button class="btn-font-size-reduced btn btn-primary btn-lg" (click)="addNews()" *ngIf="isAdmin()" type="button">Neuer Eintrag</button>
 </div>
-<div class="bottom-right">
-  <button class="btn btn-secondary btn-lg" onclick="history.back(-1)"  *ngIf="!onlyNew()" type="button">Zurück</button>
+<div class="row mt-3 mb-5" *ngIf="news.length >= count || page !== 0">
+  <div class="col-12 d-flex justify-content-between">
+    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i class="fas fa-chevron-left"></i></button>
+    <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="news.length < count"><i class="fas fa-chevron-right"></i></button>
+  </div>
 </div>
 <div class="bottom-right">
-  <button class="btn-font-size-reduced btn btn-secondary btn-lg" (click)="navigateMainMenu()"  *ngIf="onlyNew()" type="button">Hauptmenü</button>
+  <button class="btn btn-secondary btn-lg" onclick="history.back(-1)"  *ngIf="!onlyNew" type="button">Zurück</button>
+</div>
+<div class="bottom-right">
+  <button class="btn-font-size-reduced btn btn-secondary btn-lg" (click)="navigateMainMenu()"  *ngIf="onlyNew" type="button">Hauptmenü</button>
 </div>

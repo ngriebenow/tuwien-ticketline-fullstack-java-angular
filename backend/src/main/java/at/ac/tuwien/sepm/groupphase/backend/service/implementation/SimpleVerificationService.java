@@ -16,15 +16,19 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleVerificationService implements VerificationService {
   @Autowired private TicketRepository ticketRepository;
+  private static final Logger LOGGER = LoggerFactory.getLogger(SimpleInvoiceService.class);
 
   @Override
   public void validateTicket(TicketValidationDto ticket) {
+    LOGGER.info("Validating ticket {}", ticket.getId());
     Ticket t = ticketRepository.getOne(ticket.getId());
     if (t == null) {
       throw new NotFoundException("Could not find ticket with id " + ticket.getId());
@@ -37,6 +41,7 @@ public class SimpleVerificationService implements VerificationService {
 
   @Override
   public BitMatrix generateQrCode(long id) {
+    LOGGER.info("Generating QR-Code for ticket {}", id);
     Ticket t = ticketRepository.getOne(id);
     if (t == null) {
       throw new NotFoundException("Could not find ticket with id " + id);

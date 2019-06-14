@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity.mapper.user;
 
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UserDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.exception.ValidationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,9 @@ public class SimpleUserMapper implements UserMapper {
   public User userDtoToUser(UserDto user) {
     User u = new User();
     u.setUsername(user.getUsername());
+    if (user.getPassword().length() < 8) {
+      throw new ValidationException("Password must be at least 8 characters long!");
+    }
     u.setPassword(encoder.encode(user.getPassword()));
     if (user.getAdmin().toLowerCase().equals("true")) {
       u.setAuthority("ROLE_ADMIN");

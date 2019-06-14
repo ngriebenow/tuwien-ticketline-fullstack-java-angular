@@ -8,6 +8,7 @@ import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {Router} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-news',
@@ -19,36 +20,33 @@ export class NewsComponent implements OnInit {
   error = false;
   errorMessage = '';
   newsForm: FormGroup;
+  onlyNew: boolean;
+  page = 0;
+  count = 20;
+  private queryParams = {};
 
-  private news: News[];
+  news: News[];
 
   constructor(private newsService: NewsService, private ngbPaginationConfig: NgbPaginationConfig, private formBuilder: FormBuilder,
               private cd: ChangeDetectorRef, private authService: AuthService, private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private alertService: AlertService) {
     this.newsForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       summary: ['', [Validators.required]],
       text: ['', [Validators.required]],
     });
+    this.news = [];
   }
 
   ngOnInit() {
-    this.loadNews(this.onlyNew());
-  }
-  /**
-   * get if component shows only new news.
-   * @return onlyNew.
-   */
-  onlyNew(): boolean {
-    let onlyNew: boolean;
     this.route
     .queryParams
     .subscribe(params => {
-      onlyNew = params['onlyNew'];
+      this.onlyNew = params['onlyNew'];
+      this.loadNews();
     });
-    return onlyNew;
   }
-
   /**
    * Returns true if the authenticated user is an admin
    */
@@ -77,39 +75,29 @@ export class NewsComponent implements OnInit {
   navigateMainMenu() {
     this.router.navigate(['/']);
   }
-
-  /**
-   * Error flag will be deactivated, which clears the error news
-   */
-  vanishError() {
-    this.error = false;
+  previousPage() {
+    if (this.page > 0) {
+      this.page--;
+      this.loadNews();
+    }
   }
-
+  nextPage() {
+    this.page++;
+    this.loadNews();
+  }
   /**
    * Loads the specified page of news from the backend.
-   * @param onlyNew to specify if all news are only unread should be loaded.
    */
-  private loadNews(onlyNew: boolean) {
-    // Backend pagination starts at page 0, therefore page must be reduced by 1
-    this.newsService.getNews(onlyNew).subscribe(
+  private loadNews() {
+    this.queryParams['page'] = this.page;
+    this.queryParams['count'] = this.count;
+    this.newsService.getNews(this.onlyNew, this.queryParams).subscribe(
       (news: News[]) => {
         this.news = news;
       },
       error => {
-        this.defaultServiceErrorHandling(error);
+        this.alertService.error('Ladefehler, bitte versuchen Sie es etwas später noch ein mal');
       }
     );
-  }
-  /**
-   * Set the error message
-   */
-  private defaultServiceErrorHandling(error: any) {
-    console.log(error);
-    this.error = true;
-    if (error.error.message !== 'No news available') {
-      this.errorMessage = error.error.message;
-    } else {
-      this.errorMessage = error.error.error;
-    }
   }
 }
