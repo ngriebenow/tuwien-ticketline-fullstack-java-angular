@@ -14,10 +14,13 @@ export class InvoicePdfPrintComponent implements OnInit {
 
   @Input() tickets: Ticket[];
   @Input() invoice: Invoice;
-  companyName: String = 'AustrianTicket';
+  companyName: String = 'INSO AustriaTicket GmbH';
   street: String = 'Wiedner Hauptstraße 76/2/2';
   city: String = '1040 Wien';
-  telefon: String = '01 5872197';
+  telefon: String = '+43 1 5872197';
+  uid: String = 'ATU12345678';
+  bic: String = 'BKAUATWW';
+  iban: String = 'AT121234501234567891';
   constructor(private pdfService: PdfService,
               private currencyPipe: CurrencyPipe,
               private datePipe: DatePipe,
@@ -49,22 +52,93 @@ export class InvoicePdfPrintComponent implements OnInit {
       }
     }
     doc.text(t, this.calcCenterXOffset(doc, t, 18), 60);
-    var yOffset = 67;
+    var yOffset = 70;
     doc.setFontSize(8);
     doc.text('Rechnungsnummer: ' + this.invoice.id, 25, yOffset);
+    yOffset += 4;
+    doc.text('Rechnungsdatum: ' + this.datePipe.transform(this.invoice.paidAt, 'dd.MM.yyyy - HH:mm'), 25, yOffset);
     if (this.invoice.cancelled) {
-      yOffset += 2;
+      yOffset += 8;
       doc.text('Original Rechnungsnummer: ' + this.invoice.parentNumber, 25, yOffset);
+      yOffset += 4;
+      doc.text('Original Rechnungsdatum: ' + this.datePipe.transform(this.invoice.parentPaidAt, 'dd.MM.yyyy - HH:mm'), 25, yOffset);
     }
-
+    yOffset += 10;
+    doc.text('Menge', 25, yOffset);
+    doc.text('Beschreibung', 50, yOffset);
+    doc.text('Umsatzsteuer', 145, yOffset);
+    doc.text('Preis', 170, yOffset);
+    yOffset += 2;
+    doc.setLineWidth(0.1);
+    doc.line(25, yOffset, 185, yOffset);
+    yOffset += 6;
     for (const ticket of this.tickets) {
-
+      doc.text('1', 28, yOffset);
+      doc.text(ticket.eventName + ': ' + ticket.performanceName + ' (' + ticket.title + ')', 50, yOffset);
+      doc.text('20.0%', 145, yOffset);
+      doc.text(this.currencyPipe.transform(ticket.priceInCents / 100, 'EUR'), 170, yOffset);
+      yOffset += 4;
     }
+    const sum = this.calcSum(this.tickets);
+    const nettoSum = this.calcNetto(sum);
+    const ust = this.calcUst(sum, nettoSum);
+    doc.line(25, yOffset, 185, yOffset);
+    yOffset += 4;
+    doc.text('Gesamt netto', 25, yOffset);
+    doc.text(this.currencyPipe.transform(nettoSum / 100, 'EUR'), 46, yOffset);
+
+    doc.text('+20,0% Ust.', 85, yOffset);
+    doc.text(this.currencyPipe.transform(ust / 100, 'EUR'), 102, yOffset);
+
+    if (this.invoice.cancelled) {
+      doc.text('Gesamtpreis', 145, yOffset);
+      doc.text('-' + this.currencyPipe.transform(sum / 100, 'EUR'), 170, yOffset);
+      yOffset += 8;
+      doc.text('Bar gegeben', 145, yOffset);
+      doc.text('-' + this.currencyPipe.transform(sum / 100, 'EUR'), 170, yOffset);
+    } else {
+      doc.text('Gesamtpreis', 145, yOffset);
+      doc.text(this.currencyPipe.transform(sum / 100, 'EUR'), 170, yOffset);
+      yOffset += 8;
+      doc.text('Bar gegeben', 145, yOffset);
+      doc.text(this.currencyPipe.transform(sum / 100, 'EUR'), 170, yOffset);
+    }
+    yOffset += 4;
+    doc.text('Rückgeld', 145, yOffset);
+    doc.text('€0.00', 170, yOffset);
+
+    yOffset += 30;
+    doc.line(25, yOffset, 185, yOffset);
+    yOffset += 4;
+    doc.text(this.companyName, 30, yOffset);
+    doc.text('Anschrift: ' + this.street + ', ' + this.city, 75, yOffset);
+    doc.text('Tel.:' + this.telefon, 155, yOffset);
+    yOffset += 4;
+    doc.text('UID: ' + this.uid,50, yOffset);
+    doc.text('IBAN: ' + this.iban, 85, yOffset);
+    doc.text('BIC: ' + this.bic, 135, yOffset);
+
     doc.save('Rechnung-' + this.invoice.id);
   }
 
   calcCenterXOffset(doc, text: String, fontSize: number): number {
     const textWidth = doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor;
     return (doc.internal.pageSize.width - textWidth) / 2;
+  }
+
+  calcSum(tickets: Ticket[]): number {
+    var sum = 0;
+    for (const ticket of tickets) {
+      sum += ticket.priceInCents;
+    }
+    return sum;
+  }
+
+  calcNetto(sum: number): number {
+    return sum / 120 * 100;
+  }
+
+  calcUst(sum: number, netto: number): number {
+    return sum - netto;
   }
 }
