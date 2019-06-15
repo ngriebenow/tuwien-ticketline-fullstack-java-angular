@@ -96,8 +96,8 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
               generatedUnits.add(
                   new Unit.Builder()
                       .name("Sektor " + FAKER.commerce().productName())
-                      .lowerBoundary(new Point(i + 1, j + 1))
-                      .upperBoundary(new Point(i + sectorSizeX, j + sectorSizeY))
+                      .lowerBoundary(new Point(i + sectorSizeX, j + sectorSizeY))
+                      .upperBoundary(new Point(i + 1, j + 1))
                       .capacity(FAKER.random().nextInt(SECTOR_CAPACITY_MIN, SECTOR_CAPACITY_MAX))
                       .hall(hall)
                       .build());
@@ -107,7 +107,7 @@ public class UnitDataGenerator implements DataGenerator<Unit> {
 
               generatedUnits.add(
                   new Unit.Builder()
-                      .name(String.format("Reihe %d Sitz %d", i + 1, j + 1))
+                      .name(String.format("Reihe %d Sitz %d", j + 1, i + 1))
                       .lowerBoundary(new Point(i + 1, j + 1))
                       .upperBoundary(new Point(i + 1, j + 1))
                       .capacity(1)

@@ -261,8 +261,8 @@ export class HallCreationService {
     const hallToSave: HallRequest = this.prepareHallRequest();
     if (this.loadedExisting) {
       this.hallService.putHall(hallToSave).subscribe(
-        () => {
-          console.log('Updated hall successfully!');
+        savedHall => {
+          console.log('Updated hall successfully with id: ' + savedHall.id + ' as version: ' + savedHall.version);
           this.alertService.success('Der Saal wurde erfolgreich gepeichert.');
           this.backToMenu();
         },

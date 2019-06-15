@@ -74,12 +74,12 @@
           <div *ngIf="dunit.capacity == 1">
             <div *ngIf="dunit.free > 0">
               <button type="button" (click)="clickSeat(dunit)" [style.background-color]="getBackColor(dunit)"
-                      [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
+                      [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.upperBoundary),'top':calcPositionTop(dunit.upperBoundary)}"
                       class="btn btn-seat"></button>
             </div>
             <div *ngIf="dunit.free == 0">
               <button type="button"
-                      [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary), 'font-size':calcFontSize(), 'line-height': calcLineHeight()}"
+                      [ngStyle]="{'width':calcSeatSize(),'height':calcSeatSize(),'position':'absolute','left':calcPositionLeft(dunit.upperBoundary),'top':calcPositionTop(dunit.upperBoundary), 'font-size':calcFontSize(), 'line-height': calcLineHeight()}"
                       class="btn btn-reserved disabled">X
               </button>
             </div>
@@ -87,19 +87,19 @@
           <div *ngIf="dunit.capacity > 1">
             <div *ngIf="dunit.free > 0 && sectorIsSelected(dunit) == false">
               <button (click)="sectorSelected(dunit)"
-                      [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
+                      [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.upperBoundary),'top':calcPositionTop(dunit.upperBoundary)}"
                       class="btn btn-sector text-truncate align-middle"><h4 *ngIf="showName(dunit) > 50" class="text">
                {{ dunit.name }}</h4><h4 class="text">{{ dunit.free }}</h4></button>
             </div>
             <div *ngIf="dunit.free == 0 && sectorIsSelected(dunit) == false">
               <button
-                [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
+                [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.upperBoundary),'top':calcPositionTop(dunit.upperBoundary)}"
                 class="btn btn-sector-zero text-truncate"><h4 class="zero" *ngIf="showName(dunit) > 50" class="text">
                {{ dunit.name }}</h4><h4 class="zero text">{{ dunit.free }}</h4></button>
             </div>
             <div *ngIf="sectorIsSelected(dunit) == true">
               <button (click)="sectorSelected(dunit)"
-                      [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.lowerBoundary),'top':calcPositionTop(dunit.lowerBoundary)}"
+                      [ngStyle]="{'width':calcSectorSizeX(dunit),'height':calcSectorSizeY(dunit),'position':'absolute','left':calcPositionLeft(dunit.upperBoundary),'top':calcPositionTop(dunit.upperBoundary)}"
                       class="btn btn-sector-zero-selected text-truncate"><h4 *ngIf="showName(dunit) > 50" class="text">
                {{ dunit.name }}</h4><h4 class="text">{{ getChosenNum(dunit) }}/{{ dunit.free }}</h4></button>
             </div>
