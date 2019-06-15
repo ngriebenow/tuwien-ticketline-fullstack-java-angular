@@ -80,6 +80,7 @@ public class SimpleHallService implements HallService {
     // todo remove this when locations are implemented
     Location location = locationRepository.findById(1L).orElseThrow(NotFoundException::new);
     hall.setLocation(location);
+    hall.setNewVersion(null);
 
     // validate units
     try {
@@ -106,7 +107,59 @@ public class SimpleHallService implements HallService {
   @Override
   public HallDto update(HallRequestDto hallRequestDto) {
     LOGGER.info("Update hall with id " + hallRequestDto.getId());
-    return null; // todo implement
+    // convert dtos to entitys
+    Hall hall = hallMapper.hallRequestDtoToHall(hallRequestDto);
+    List<Unit> units = new ArrayList<>();
+    for (UnitDto unitDto : hallRequestDto.getUnits()) {
+      units.add(unitMapper.unitDtoToUnit(unitDto));
+    }
+
+    // todo remove this when locations are implemented
+    Location location = locationRepository.findById(1L).orElseThrow(NotFoundException::new);
+    hall.setLocation(location);
+
+    // get old version
+    Hall oldHall = hallRepository.findById(hall.getId()).orElseThrow(
+        () -> {
+          String msg = "Can't find hall with id " + hall.getId();
+          LOGGER.error(msg);
+          return new NotFoundException(msg);
+        }
+    );
+    while (oldHall.getNewVersion() != null) {
+      oldHall = oldHall.getNewVersion();
+    }
+
+    // set version
+    hall.setVersion(oldHall.getVersion() + 1);
+    hall.setId(null);
+
+    // validate units
+    try {
+      validUnits(units);
+    } catch (ValidationException e) {
+      LOGGER.error(e.getMessage());
+      throw e;
+    }
+    // calculate seat names
+    calculateSeatNames(units);
+
+    // save hall
+    Hall savedHall = hallRepository.save(hall);
+    LOGGER.info("Saved hall. Id: " + hall.getId() + " as update of hall " + oldHall.getId());
+
+    // update old hall
+    oldHall.setNewVersion(savedHall);
+    hallRepository.saveAndFlush(oldHall);
+
+    // save units
+    for (Unit unit : units) {
+      unit.setHall(savedHall);
+      unit.setId(null);
+      unitRepository.save(unit);
+    }
+    LOGGER.info("Saved units for hall with id " + hall.getId());
+    return hallMapper.hallToHallDto(savedHall);
   }
 
   @Transactional

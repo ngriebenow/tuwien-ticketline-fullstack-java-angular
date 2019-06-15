@@ -53,6 +53,7 @@ public class HallDataGenerator implements DataGenerator<Hall> {
         generatedHalls.add(
             new Hall.Builder()
                 .version(1)
+                .newVersion(null)
                 .name(FAKER.pokemon().name() + " Saal")
                 .boundaryPoint(boundary)
                 .location(location)

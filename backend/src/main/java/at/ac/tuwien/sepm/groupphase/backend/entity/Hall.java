@@ -23,6 +23,9 @@ public class Hall {
   @Column(nullable = false)
   private int version;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Hall newVersion;
+
   @Column(nullable = false)
   private String name;
 
@@ -42,6 +45,7 @@ public class Hall {
   private Hall(Builder builder) {
     setId(builder.id);
     setVersion(builder.version);
+    setNewVersion(builder.newVersion);
     setName(builder.name);
     setBoundaryPoint(builder.boundaryPoint);
     setLocation(builder.location);
@@ -58,6 +62,7 @@ public class Hall {
     Hall hall = (Hall) o;
     return version == hall.version
         && Objects.equals(id, hall.id)
+        && Objects.equals(newVersion, hall.newVersion)
         && Objects.equals(name, hall.name)
         && Objects.equals(boundaryPoint, hall.boundaryPoint)
         && Objects.equals(location, hall.location);
@@ -65,7 +70,7 @@ public class Hall {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, version, name, boundaryPoint, location);
+    return Objects.hash(id, version, newVersion, name, boundaryPoint, location);
   }
 
   public Long getId() {
@@ -82,6 +87,14 @@ public class Hall {
 
   public void setVersion(int version) {
     this.version = version;
+  }
+
+  public Hall getNewVersion() {
+    return newVersion;
+  }
+
+  public void setNewVersion(Hall newVersion) {
+    this.newVersion = newVersion;
   }
 
   public String getName() {
@@ -112,6 +125,7 @@ public class Hall {
 
     private Long id;
     private int version;
+    private Hall newVersion;
     private String name;
     private Point boundaryPoint;
     private Location location;
@@ -126,6 +140,11 @@ public class Hall {
 
     public Builder version(int val) {
       version = val;
+      return this;
+    }
+
+    public Builder newVersion(Hall val) {
+      newVersion = val;
       return this;
     }
 
