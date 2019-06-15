@@ -9,17 +9,17 @@ import { Lightbox } from 'ngx-lightbox';
   styleUrls: ['./picture-display.component.scss']
 })
 export class PictureDisplayComponent implements OnInit {
-  @Input() ids: number[] = new Array();
+  @Input() ids: number[] = [];
   pictures: Picture[];
   private albums: any[];
   private promisesLoaded: any[];
   private promisesConverted: any[];
   constructor(private pictureService: PictureService,
               private lightbox: Lightbox) {
-    this.pictures = new Array();
-    this.albums = new Array();
-    this.promisesLoaded = new Array();
-    this.promisesConverted = new Array();
+    this.pictures = [];
+    this.albums = [];
+    this.promisesLoaded = [];
+    this.promisesConverted = [];
   }
   ngOnInit() {
     this.loadAllPictures();

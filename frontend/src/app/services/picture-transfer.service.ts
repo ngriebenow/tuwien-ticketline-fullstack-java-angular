@@ -9,8 +9,8 @@ export class PictureTransferService {
   private uploadedPictureIds: number[];
   private pictures: Picture[];
   constructor(private pictureService: PictureService) {
-    this.uploadedPictureIds = new Array();
-    this.pictures = new Array();
+    this.uploadedPictureIds = [];
+    this.pictures = [];
   }
 
   /**
@@ -27,7 +27,7 @@ export class PictureTransferService {
    */
   uploadData() {
     let promises: any[];
-    promises = new Array();
+    promises = [];
     for (const picture of this.pictures) {
       const myData = this.pictureService.uploadPicture(picture.file).toPromise();
       myData.then(function (result) {
@@ -48,8 +48,8 @@ export class PictureTransferService {
    * Clears the pictureIds array.
    */
   clearData() {
-    this.uploadedPictureIds = new Array();
-    this.pictures = new Array();
+    this.uploadedPictureIds = [];
+    this.pictures = [];
   }
   /**
    * Get the current picture array of pictures (for rendering as thumbnail)

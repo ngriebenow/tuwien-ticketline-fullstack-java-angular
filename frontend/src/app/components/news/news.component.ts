@@ -18,7 +18,6 @@ import {AlertService} from '../../services/alert.service';
 export class NewsComponent implements OnInit {
 
   error = false;
-  errorMessage = '';
   newsForm: FormGroup;
   onlyNew: boolean;
   page = 0;
@@ -68,6 +67,10 @@ export class NewsComponent implements OnInit {
   addNews() {
     this.router.navigate(['/news-add']);
   }
+  /**
+   * Get the loaded news.
+   * @return news
+   */
   getNews(): News[] {
     return this.news;
   }
@@ -84,6 +87,9 @@ export class NewsComponent implements OnInit {
   navigateMainMenu() {
     this.router.navigate(['/']);
   }
+  /**
+   * Increase page and load further entries.
+   */
   nextPage() {
     this.page++;
     this.loadNews();
