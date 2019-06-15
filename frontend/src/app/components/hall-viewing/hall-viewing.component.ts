@@ -361,7 +361,7 @@ export class HallViewingComponent implements OnInit {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   calcSectorSizeX(sector: DefinedUnit) {
-    return ((sector.upperBoundary.coordinateX - sector.lowerBoundary.coordinateX + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
+    return ((sector.lowerBoundary.coordinateX - sector.upperBoundary.coordinateX + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
   }
 
   /**
@@ -369,7 +369,7 @@ export class HallViewingComponent implements OnInit {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   calcSectorSizeY(sector: DefinedUnit) {
-    return ((sector.upperBoundary.coordinateY - sector.lowerBoundary.coordinateY + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
+    return ((sector.lowerBoundary.coordinateY - sector.upperBoundary.coordinateY + 1) * this.getUnitSize() - this.getSeatDistance()) + 'px';
   }
 
 }
