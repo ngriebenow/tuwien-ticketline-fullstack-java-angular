@@ -47,6 +47,21 @@ public class SimpleLocationService implements LocationService {
     this.hallMapper = hallMapper;
   }
 
+  @Transactional
+  @Override
+  public LocationDto getOneById(Long id) throws NotFoundException {
+    LOGGER.info("Get location with id " + id);
+    return locationMapper.locationToLocationDto(
+        locationRepository.findById(id).orElseThrow(
+            () -> {
+              String msg = "Can't find location with id " + id;
+              LOGGER.error(msg);
+              return new NotFoundException(msg);
+            }
+        )
+    );
+  }
+
   @Transactional(readOnly = true)
   @Override
   public List<LocationDto> getFiltered(LocationFilterDto locationFilterDto, Pageable pageable) {
@@ -59,7 +74,7 @@ public class SimpleLocationService implements LocationService {
 
   @Transactional
   @Override
-  public List<HallDto> getHallsByLocationId(Long id) {
+  public List<HallDto> getHallsByLocationId(Long id) throws NotFoundException {
     LOGGER.info("Get halls of location with id " + id);
     Location location = new Location();
     location.setId(id);

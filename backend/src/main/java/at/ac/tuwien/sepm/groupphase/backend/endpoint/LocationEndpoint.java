@@ -37,6 +37,16 @@ public class LocationEndpoint {
     this.locationService = locationService;
   }
 
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @PreAuthorize("hasRole('ADMIN')")
+  @ApiOperation(
+      value = "Get location by id",
+      authorizations = {@Authorization("apiKey")})
+  public LocationDto get(@PathVariable Long id) {
+    LOGGER.info("Get location with id " + id);
+    return locationService.getOneById(id);
+  }
+
   /**
    * Get locations filtered.
    *
@@ -83,7 +93,7 @@ public class LocationEndpoint {
   @ApiOperation(
       value = "Get halls of location by id",
       authorizations = {@Authorization("apiKey")})
-  public List<HallDto> get(@PathVariable Long id) {
+  public List<HallDto> getHalls(@PathVariable Long id) {
     LOGGER.info("Get halls of location with id " + id);
     return locationService.getHallsByLocationId(id);
   }
