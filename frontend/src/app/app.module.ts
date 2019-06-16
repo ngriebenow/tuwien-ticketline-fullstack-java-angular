@@ -41,6 +41,7 @@ import {LocationFilterComponent} from './components/location-filter/location-fil
 import {CurrencyPipe} from '@angular/common';
 import {DatePipe} from '@angular/common';
 import { InvoicePdfPrintComponent } from './components/invoice-pdf-print/invoice-pdf-print.component';
+import { LocationDetailComponent } from './components/location-detail/location-detail.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { InvoicePdfPrintComponent } from './components/invoice-pdf-print/invoice
     TicketPdfPrintComponent,
     LocationFilterComponent,
     InvoicePdfPrintComponent,
+    LocationDetailComponent,
   ],
   imports: [
     BrowserModule,

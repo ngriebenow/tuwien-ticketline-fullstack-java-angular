@@ -23,6 +23,7 @@ import {ClientAddComponent} from './components/client-add/client-add.component';
 import {ClientEditComponent} from './components/client-edit/client-edit.component';
 import { TicketPdfPrintComponent } from './components/ticket-pdf-print/ticket-pdf-print.component';
 import {LocationFilterComponent} from './components/location-filter/location-filter.component';
+import {LocationDetailComponent} from './components/location-detail/location-detail.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -46,6 +47,7 @@ const routes: Routes = [
   {path: 'client-edit/:client', canActivate: [AuthGuard], component: ClientEditComponent},
   {path: 'ticket-pdf-print', canActivate: [AuthGuard], component: TicketPdfPrintComponent},
   {path: 'locations', canActivate: [AuthGuard, AdminAuthGuard], component: LocationFilterComponent},
+  {path: 'locations/:id', canActivate: [AuthGuard, AdminAuthGuard], component: LocationDetailComponent},
 ];
 
 @NgModule({

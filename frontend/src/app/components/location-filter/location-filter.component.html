@@ -92,10 +92,12 @@
 
 <div class="row mt-3 mb-5" *ngIf="locations.length >= count || page !== 0">
   <div class="col-12 d-flex justify-content-between">
-    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i
-      class="fas fa-chevron-left"></i></button>
-    <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="locations.length < count"><i
-      class="fas fa-chevron-right"></i></button>
+    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="locations.length < count">
+      <i class="fas fa-chevron-right"></i>
+    </button>
   </div>
 </div>
 

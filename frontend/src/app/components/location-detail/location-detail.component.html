@@ -1,0 +1,60 @@
+<div class="row mt-3">
+  <div class="col-12">
+    <h1>Ort / Säle</h1>
+  </div>
+</div>
+
+
+<!-- table -->
+
+<div class="row mt-3">
+  <div class="col-12">
+    <table class="table table-striped table-hover">
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col" width="50%">Name</th>
+        <th scope="col" width="25%">Breite</th>
+        <th scope="col" width="25%">Tiefe</th>
+        <th scope="col" width="25%">Version</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let hall of halls" routerLink="/hall-creation">
+        <td>{{ hall.name }}</td>
+        <td>{{ hall.boundaryPoint.coordinateX }}</td>
+        <td>{{ hall.boundaryPoint.coordinateY }}</td>
+        <td>{{ hall.version }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row mt-3 mb-5" *ngIf="halls.length === 0">
+  <div class="col-12 d-flex justify-content-center">
+    <h4>Keine Suchergebnisse!</h4>
+  </div>
+</div>
+
+<div class="row mt-3 mb-5" *ngIf="halls.length >= count || page !== 0">
+  <div class="col-12 d-flex justify-content-between">
+    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="halls.length < count">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</div>
+
+
+<!-- lower right buttons -->
+
+<div class="bottom-right-above-1">
+  <button routerLink="/hall-creation" type="button" class="btn btn-primary btn-lg btn-font-size-reduced">Erstellen</button>
+</div>
+
+<div class="bottom-right">
+  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+</div>
+
