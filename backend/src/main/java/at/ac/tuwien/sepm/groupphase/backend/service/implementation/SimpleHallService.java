@@ -34,7 +34,7 @@ public class SimpleHallService implements HallService {
   private UnitMapper unitMapper;
 
   /**
-   * javadoc.
+   * Constructor.
    */
   @Autowired
   public SimpleHallService(
@@ -132,6 +132,7 @@ public class SimpleHallService implements HallService {
 
     // set version
     hall.setVersion(oldHall.getVersion() + 1);
+    hall.setNewVersion(null);
     hall.setId(null);
 
     // validate units

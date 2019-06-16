@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.LocationDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.LocationFilterDto;
 import java.util.List;
@@ -15,5 +16,7 @@ public interface LocationService {
    * @return a page of locations.
    */
   List<LocationDto> getFiltered(LocationFilterDto locationFilterDto, Pageable pageable);
+
+  List<HallDto> getHallsByLocationId(Long id);
 
 }

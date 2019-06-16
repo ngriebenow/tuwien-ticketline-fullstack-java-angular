@@ -1,7 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.endpoint;
 
+import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.LocationDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.filter.LocationFilterDto;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
 import at.ac.tuwien.sepm.groupphase.backend.service.LocationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +18,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -72,5 +76,15 @@ public class LocationEndpoint {
             .build();
 
     return locationService.getFiltered(locationFilterDto, pageable);
+  }
+
+  @RequestMapping(value = "/{id}/halls", method = RequestMethod.GET)
+  @PreAuthorize("hasRole('ADMIN')")
+  @ApiOperation(
+      value = "Get halls of location by id",
+      authorizations = {@Authorization("apiKey")})
+  public List<HallDto> get(@PathVariable Long id) {
+    LOGGER.info("Get halls of location with id " + id);
+    return locationService.getHallsByLocationId(id);
   }
 }
