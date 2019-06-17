@@ -9,7 +9,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-2">
+    <div class="col-1">
       <h2 class="float-right">Name</h2>
     </div>
 
@@ -21,7 +21,7 @@
       <h2 class="float-right">Adresse</h2>
     </div>
 
-    <div class="col-4">
+    <div class="col-5">
       <input type="text" class="form-control" [(ngModel)]="location.street" readonly>
     </div>
   </div>
@@ -29,14 +29,10 @@
   <div class="row row-separator"></div>
 
   <div class="row">
-    <div class="col-8"></div>
+    <div class="col-7"></div>
 
-    <div class="col-1">
-      <input type="text" class="form-control" [(ngModel)]="location.place" readonly>
-    </div>
-
-    <div class="col-1">
-      <input type="text" class="form-control" [(ngModel)]="location.postalCode" readonly>
+    <div class="col-3">
+      <input type="text" class="form-control" [(ngModel)]="combinedPostalCodeAndPlace" readonly>
     </div>
 
     <div class="col-2">
