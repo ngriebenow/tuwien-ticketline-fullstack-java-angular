@@ -25,6 +25,7 @@ export class LocationDetailComponent implements OnInit {
     private alertService: AlertService,
     private router: Router
   ) {
+    this.location = new Location(null, null, null, null, null, null);
   }
 
   ngOnInit() {
