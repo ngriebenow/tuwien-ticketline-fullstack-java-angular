@@ -19,7 +19,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let hall of halls" routerLink="/hall-creation">
+      <tr *ngFor="let hall of halls" (click)="openHall(hall)">
         <td>{{ hall.name }}</td>
         <td>{{ hall.boundaryPoint.coordinateX }}</td>
         <td>{{ hall.boundaryPoint.coordinateY }}</td>
@@ -51,7 +51,7 @@
 <!-- lower right buttons -->
 
 <div class="bottom-right-above-1">
-  <button routerLink="/hall-creation" type="button" class="btn btn-primary btn-lg btn-font-size-reduced">Erstellen</button>
+  <button routerLink="/hall-creation" type="button" (click)="createHall()" class="btn btn-primary btn-lg btn-font-size-reduced">Erstellen</button>
 </div>
 
 <div class="bottom-right">

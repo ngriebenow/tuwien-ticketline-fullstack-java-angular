@@ -6,17 +6,19 @@ import {Direction} from '../enums/direction';
 import {Hall} from '../dtos/hall';
 import {HallService} from './hall.service';
 import {HallRequest} from '../dtos/hall-request';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService} from './alert.service';
+import {Location} from '../dtos/location';
+import {HallCreationState} from '../enums/hall-creation-state';
+import {ConfirmationDialogService} from './confirmation-dialog.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HallCreationService {
 
+  private state: HallCreationState;
   private loadedExisting: boolean;
-  private initialized: boolean;
-  private edited: boolean;
 
   private readonly hall: Hall;
   private readonly hallSize: Point;
@@ -32,7 +34,13 @@ export class HallCreationService {
 
   @Output() changeSector: EventEmitter<Unit> = new EventEmitter();
 
-  constructor(private hallService: HallService, private router: Router, private alertService: AlertService) {
+  constructor(
+    private hallService: HallService,
+    private router: Router,
+    private alertService: AlertService,
+    private confirmationDialogService: ConfirmationDialogService,
+    private route: ActivatedRoute
+  ) {
     console.log('constructor');
     this.maxHallSize = new Point(27, 27); // set max hall size here
     this.hallSize = new Point(null, null);
@@ -40,7 +48,7 @@ export class HallCreationService {
     this.seats = [];
     this.sectors = [];
     this.aisles = [];
-    this.createNewHall();
+    this.state = HallCreationState.Unstable;
   }
 
   /**
@@ -88,21 +96,26 @@ export class HallCreationService {
     );
   }
 
+  openedPage() {
+    if (this.state === HallCreationState.Unstable) {
+      this.router.navigateByUrl('/locations');
+    }
+  }
+
   /**
    * Call this or loadExistingHall at start of hall creation process
    * creates new hall
    */
-  createNewHall(): void {
+  createNewHall(location: Location): void {
     console.log('create new hall');
     this.loadedExisting = false;
-    this.initialized = false;
-    this.edited = false;
+    this.state = HallCreationState.Initialization;
     this.hallSize.coordinateX = 10;
     this.hallSize.coordinateY = 10;
     this.hall.id = null;
     this.hall.version = null;
     this.hall.name = null;
-    this.hall.location = null;
+    this.hall.location = location;
     this.hall.boundaryPoint = this.hallSize;
     this.seats.length = 0;
     this.sectors.length = 0;
@@ -115,6 +128,7 @@ export class HallCreationService {
    * loads hall from backend and sets initialized to true
    */
   loadExistingHall(id: number): void {
+    this.state = HallCreationState.Loading;
     this.hallService.getHallById(id).then(
       result => result.subscribe(
         (loadedHall: Hall) => {
@@ -130,7 +144,6 @@ export class HallCreationService {
         error => {
           console.log(error);
           this.alertService.error('Der Saal konnte nicht geladen werden.');
-          this.createNewHall();
         }
       )
     );
@@ -155,8 +168,7 @@ export class HallCreationService {
         }
         this.createAisles();
         this.loadedExisting = true;
-        this.initialized = true;
-        this.edited = false;
+        this.state = HallCreationState.Editing;
       },
       error => {
         console.log(error);
@@ -203,7 +215,7 @@ export class HallCreationService {
       if (!this.hall.name || !this.hall.name.trim()) {
         this.alertService.warning('Bitte Saalnamen angeben.');
       } else {
-        this.initialized = true;
+        this.state = HallCreationState.Editing;
       }
     } else {
       this.alertService.warning('Der Saal muss zwischen 1x1 und ' + this.maxHallSize.coordinateX + 'x' +
@@ -217,10 +229,9 @@ export class HallCreationService {
    * else: saves hall to db
    */
   completeEditing(): void {
-    // todo 39247 keep highlight on selector buttons
     if (this.sectors.length > 0) {
       this.changeSelectedSector(this.sectors[0]);
-      this.edited = true;
+      this.state = HallCreationState.Sectors;
     } else if (this.seats.length > 0) {
       this.saveHall();
     }
@@ -258,13 +269,14 @@ export class HallCreationService {
    * saves hall and all units to db
    */
   saveHall(): void {
+    this.state = HallCreationState.Saving;
     const hallToSave: HallRequest = this.prepareHallRequest();
     if (this.loadedExisting) {
       this.hallService.putHall(hallToSave).subscribe(
         savedHall => {
           console.log('Updated hall successfully with id: ' + savedHall.id + ' as version: ' + savedHall.version);
           this.alertService.success('Der Saal wurde erfolgreich gepeichert.');
-          this.backToMenu();
+          this.backToLocation();
         },
         error => {
           console.log(error);
@@ -276,7 +288,7 @@ export class HallCreationService {
         savedHall => {
           console.log('Saved hall successfully with id: ' + savedHall.id);
           this.alertService.success('Der Saal wurde erfolgreich gepeichert.');
-          this.backToMenu();
+          this.backToLocation();
         },
         error => {
           console.log(error);
@@ -308,17 +320,44 @@ export class HallCreationService {
   }
 
   /**
-   * returns back to home menu
+   * returns back to location
    */
-  backToMenu(): void {
-    this.createNewHall();
-    this.router.navigateByUrl('');
+  backToLocation(): void {
+    this.state = HallCreationState.Unstable;
+    this.router.navigateByUrl('/locations/' + this.hall.location.id);
   }
 
+  /**
+   * opens popup
+   * returns back to location or stays on page
+   */
   cancelHallCreation(): void {
-    // todo 39256 cancel popup and functionality
-    this.createNewHall();
-    this.backToMenu();
+    const message = 'Wollen Sie die Saal Erstellung wirklich Abbrechen?';
+    const onYes = () => {
+      this.state = HallCreationState.Unstable;
+      this.backToLocation();
+    };
+    this.confirmationDialogService.open(message, onYes);
+  }
+
+  /**
+   * opens popup if hall is being initialized or edited
+   */
+  leavePage(): void {
+    if (
+      this.state === HallCreationState.Initialization ||
+      this.state === HallCreationState.Editing ||
+      this.state === HallCreationState.Sectors
+    ) {
+      const message = 'Wollen Sie die Saal Erstellung wirklich Abbrechen?';
+      const onYes = () => {
+        this.state = HallCreationState.Unstable;
+      };
+      const onNo = () => {
+        this.router.navigateByUrl('/hall-creation');
+      };
+      this.confirmationDialogService.open(message, onYes, onNo);
+    }
   }
 
   /**
@@ -505,7 +544,7 @@ export class HallCreationService {
    * @param seat != null
    */
   clickSeat(seat: Point): void {
-    if (this.initialized && !this.edited) {
+    if (this.state === HallCreationState.Editing) {
       if (this.selectedUnitType === UnitType.aisle) {
         this.createAisle(seat);
         this.deleteSeat(seat);
@@ -520,7 +559,7 @@ export class HallCreationService {
    * @param aisle != null
    */
   clickAisle(aisle: Point): void {
-    if (this.initialized && !this.edited) {
+    if (this.state === HallCreationState.Editing) {
       if (this.selectedUnitType === UnitType.seat) {
         this.createSeat(aisle);
         this.deleteAisle(aisle);
@@ -535,13 +574,13 @@ export class HallCreationService {
    * @param sector != null && lowerBoundary != null && upperBoundary != null
    */
   clickSector(sector: Unit): void {
-    if (this.initialized && !this.edited) {
+    if (this.state === HallCreationState.Editing) {
       if (this.selectedUnitType === UnitType.seat) {
         this.deleteSector(sector);
       } else if (this.selectedUnitType === UnitType.aisle) {
         this.deleteSector(sector);
       }
-    } else if (this.initialized && this.edited) {
+    } else if (this.state === HallCreationState.Sectors) {
       this.changeSelectedSector(sector);
     }
   }
@@ -638,14 +677,6 @@ export class HallCreationService {
     this.changeSector.emit(this.selectedSector);
   }
 
-  getInitialized(): boolean {
-    return this.initialized;
-  }
-
-  getEdited(): boolean {
-    return this.edited;
-  }
-
   getHallSize(): Point {
     return this.hallSize;
   }
@@ -673,5 +704,9 @@ export class HallCreationService {
 
   getSectors(): Unit[] {
     return this.sectors;
+  }
+
+  getState(): HallCreationState {
+    return this.state;
   }
 }

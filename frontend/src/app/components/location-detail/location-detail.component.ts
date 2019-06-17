@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '../../dtos/location';
 import {AlertService} from '../../services/alert.service';
 import {LocationService} from '../../services/location.service';
 import {Hall} from '../../dtos/hall';
+import {HallCreationService} from '../../services/hall-creation.service';
 
 @Component({
   selector: 'app-location-detail',
@@ -20,7 +21,9 @@ export class LocationDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private locationService: LocationService,
-    private alertService: AlertService
+    private hallCreationService: HallCreationService,
+    private alertService: AlertService,
+    private router: Router
   ) {
   }
 
@@ -66,5 +69,13 @@ export class LocationDetailComponent implements OnInit {
     }
   }
 
+  private openHall(hall: Hall) {
+    this.hallCreationService.loadExistingHall(hall.id);
+    this.router.navigateByUrl('/hall-creation');
+  }
 
+  private createHall() {
+    this.hallCreationService.createNewHall(this.location);
+    this.router.navigateByUrl('/hall-creation');
+  }
 }

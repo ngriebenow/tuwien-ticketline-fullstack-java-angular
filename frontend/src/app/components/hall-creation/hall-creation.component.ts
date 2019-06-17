@@ -1,9 +1,10 @@
-import {Component, NgModule, OnInit} from '@angular/core';
+import {Component, NgModule, OnInit, OnDestroy} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
+import {ActivatedRoute, RouterModule} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HallCreationPlanComponent} from '../hall-creation-plan/hall-creation-plan.component';
 import {HallCreationMenuComponent} from '../hall-creation-menu/hall-creation-menu.component';
+import {HallCreationService} from '../../services/hall-creation.service';
 
 @Component({
   selector: 'app-hall-creation',
@@ -20,11 +21,16 @@ import {HallCreationMenuComponent} from '../hall-creation-menu/hall-creation-men
     HallCreationMenuComponent
   ],
 })
-export class HallCreationComponent implements OnInit {
+export class HallCreationComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  constructor(private hallCreationService: HallCreationService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.hallCreationService.openedPage();
+  }
+
+  ngOnDestroy() {
+    this.hallCreationService.leavePage();
   }
 
 }

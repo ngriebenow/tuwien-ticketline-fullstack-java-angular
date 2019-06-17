@@ -5,6 +5,7 @@ import {Unit} from '../../dtos/unit';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
+import {HallCreationState} from '../../enums/hall-creation-state';
 
 @Component({
   selector: 'app-hall-creation-plan',
@@ -157,13 +158,37 @@ export class HallCreationPlanComponent implements OnInit {
   }
 
   /**
-   * @return true if hallSize is valid
+   * @return true if hallSize is valid and hall should be shown
    */
-  legalHallSize(): boolean {
-    return (this.hallSize.coordinateX <= this.maxHallSize.coordinateX &&
+  showLegalHall(): boolean {
+    return (
+      this.hallSize.coordinateX <= this.maxHallSize.coordinateX &&
       this.hallSize.coordinateY <= this.maxHallSize.coordinateY &&
       this.hallSize.coordinateX > 0 &&
-      this.hallSize.coordinateY > 0
+      this.hallSize.coordinateY > 0 &&
+      !this.isSaving() &&
+      !this.isLoading()
     );
+  }
+
+  /**
+   * @return true if hallSize is invalid and wrong size should be shown
+   */
+  showIllegalSize(): boolean {
+    return !this.showLegalHall() && !this.isLoading() && !this.isSaving();
+  }
+
+  /**
+   * @return true if hall is loading
+   */
+  isLoading(): boolean {
+    return this.hallCreationService.getState() === HallCreationState.Loading;
+  }
+
+  /**
+   * @return true if hall is being saved
+   */
+  isSaving(): boolean {
+    return this.hallCreationService.getState() === HallCreationState.Saving;
   }
 }

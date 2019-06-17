@@ -34,16 +34,6 @@
       <button type="button" (click)="completeInitializing()" class="btn btn-secondary float-left btn-lg">Weiter</button>
     </div>
   </div>
-
-  <!-- todo 39256 delete after locations are implemented -->
-  <div class="row row-padding">
-    <div class="col-6 align-self-center">
-      <input type="number" min="1" step="1" [(ngModel)]="id" class="form-control" required>
-    </div>
-    <div class="col-6">
-      <button type="button" (click)="loadHall()" class="btn btn-secondary float-left btn-lg btn-font-size-reduced">Lade Saal</button>
-    </div>
-  </div>
 </div>
 
 <div *ngIf="editingMode() || sectorMode()" class="container">

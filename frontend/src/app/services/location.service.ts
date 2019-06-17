@@ -16,7 +16,7 @@ export class LocationService {
   }
 
   getLocationById(id: Number): Observable<Location> {
-    console.log('Load hall with id ' + id);
+    console.log('Load location with id ' + id);
     return this.httpClient.get<Location>(this.locationBaseUri + '/' + id);
   }
 

@@ -8,6 +8,7 @@ import {Unit} from '../../dtos/unit';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
+import {HallCreationState} from '../../enums/hall-creation-state';
 
 @Component({
   selector: 'app-hall-creation-menu',
@@ -32,9 +33,6 @@ export class HallCreationMenuComponent implements OnInit {
 
   selectedSector: Unit;
 
-  // todo 39256 delete after locations are implemented
-  id = 1;
-
   constructor(private hallCreationService: HallCreationService) {
   }
 
@@ -48,15 +46,15 @@ export class HallCreationMenuComponent implements OnInit {
   }
 
   initializationMode(): boolean {
-    return (this.hallCreationService.getInitialized() === false && this.hallCreationService.getEdited() === false);
+    return this.hallCreationService.getState() === HallCreationState.Initialization;
   }
 
   editingMode(): boolean {
-    return (this.hallCreationService.getInitialized() === true && this.hallCreationService.getEdited() === false);
+    return this.hallCreationService.getState() === HallCreationState.Editing;
   }
 
   sectorMode(): boolean {
-    return (this.hallCreationService.getInitialized() === true && this.hallCreationService.getEdited() === true);
+    return this.hallCreationService.getState() === HallCreationState.Sectors;
   }
 
   /**
@@ -129,12 +127,5 @@ export class HallCreationMenuComponent implements OnInit {
     } else if (this.selectedSector.capacity > Number.MAX_SAFE_INTEGER) {
       this.selectedSector.capacity = Number.MAX_SAFE_INTEGER;
     }
-  }
-
-  // todo 39256 delete after locations are implemented
-  loadHall() {
-    console.log(this.id);
-    this.hallCreationService.loadExistingHall(this.id);
-    // this.router.navigateByUrl('/hall-creation', {skipLocationChange: true});
   }
 }
