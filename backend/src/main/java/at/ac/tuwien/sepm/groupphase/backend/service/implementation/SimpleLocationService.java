@@ -78,7 +78,8 @@ public class SimpleLocationService implements LocationService {
     LOGGER.info("Get halls of location with id " + id);
     Location location = new Location();
     location.setId(id);
-    List<Hall> halls = hallRepository.findAllByLocationIsLikeAndNewVersionIsNull(location)
+    List<Hall> halls = hallRepository
+        .findAllByLocationIsLikeAndNewVersionIsNullOrderByName(location)
         .orElseThrow(NotFoundException::new);
     List<HallDto> hallDtos = new ArrayList<>();
     for (Hall h : halls) {

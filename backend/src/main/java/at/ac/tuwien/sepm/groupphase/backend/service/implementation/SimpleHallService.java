@@ -4,7 +4,6 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallRequestDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UnitDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Unit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.hall.HallMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.unit.UnitMapper;
@@ -77,9 +76,7 @@ public class SimpleHallService implements HallService {
       units.add(unitMapper.unitDtoToUnit(unitDto));
     }
 
-    // todo remove this when locations are implemented
-    Location location = locationRepository.findById(1L).orElseThrow(NotFoundException::new);
-    hall.setLocation(location);
+    hall.setVersion(1);
     hall.setNewVersion(null);
 
     // validate units
@@ -113,10 +110,6 @@ public class SimpleHallService implements HallService {
     for (UnitDto unitDto : hallRequestDto.getUnits()) {
       units.add(unitMapper.unitDtoToUnit(unitDto));
     }
-
-    // todo remove this when locations are implemented
-    Location location = locationRepository.findById(1L).orElseThrow(NotFoundException::new);
-    hall.setLocation(location);
 
     // get old version
     Hall oldHall = hallRepository.findById(hall.getId()).orElseThrow(
