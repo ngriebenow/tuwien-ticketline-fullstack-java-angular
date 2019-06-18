@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder} from '@angular/forms';
 import {Client} from '../../dtos/client';
 import {ClientService} from '../../services/client.service';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-client-edit',
@@ -20,8 +21,11 @@ export class ClientEditComponent implements OnInit {
     email: ['']
   });
 
-  constructor(private router: Router, private clientService: ClientService,
-              private formBuilder: FormBuilder, private route: ActivatedRoute) {
+  constructor(private router: Router,
+              private clientService: ClientService,
+              private formBuilder: FormBuilder,
+              private route: ActivatedRoute,
+              private alertService: AlertService) {
     this.queryParams = new Client(0, '', '', '');
   }
 
@@ -31,6 +35,7 @@ export class ClientEditComponent implements OnInit {
         this.queryParams = client;
       },
       error => {
+        this.alertService.error('Kunde konnte nicht geladen werden!');
       }
     );
   }
@@ -41,11 +46,19 @@ export class ClientEditComponent implements OnInit {
    */
   updateClient() {
     console.log(this.queryParams);
-    this.clientService.updateClient(this.queryParams).subscribe(
-      () => {
-        history.back();
-      }
-    );
+    if (this.queryParams.name === '') {
+      this.alertService.warning('Kunden müssen einen Vornamen haben!');
+    } else if (this.queryParams.surname === '') {
+      this.alertService.warning('Kunden müssen einen Nachnamen haben!');
+    } else if (this.queryParams.email === '') {
+      this.alertService.warning('Kunden müssen eine Email haben!');
+    } else {
+      this.clientService.updateClient(this.queryParams).subscribe(
+        () => {
+          history.back();
+        }
+      );
+    }
   }
 
 }
