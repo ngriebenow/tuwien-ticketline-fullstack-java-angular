@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {HallCreationState} from '../../enums/hall-creation-state';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 @Component({
   selector: 'app-hall-creation-plan',
@@ -18,6 +19,7 @@ import {HallCreationState} from '../../enums/hall-creation-state';
     ReactiveFormsModule,
     RouterModule,
     RouterTestingModule,
+    HttpClientTestingModule,
   ],
 })
 export class HallCreationPlanComponent implements OnInit {

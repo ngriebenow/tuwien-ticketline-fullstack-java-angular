@@ -1,16 +1,27 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgModule, OnInit} from '@angular/core';
 import {LocationService} from '../../services/location.service';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AlertService} from '../../services/alert.service';
 import {Location} from '../../dtos/location';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import * as _ from 'lodash';
-import {Router} from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 @Component({
   selector: 'app-location-filter',
   templateUrl: './location-filter.component.html',
   styleUrls: ['./location-filter.component.scss']
+})
+@NgModule({
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    RouterTestingModule,
+    HttpClientTestingModule,
+  ],
 })
 export class LocationFilterComponent implements OnInit {
 
