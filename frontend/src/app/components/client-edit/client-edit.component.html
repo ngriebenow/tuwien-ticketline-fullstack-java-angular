@@ -1,49 +1,52 @@
-<h1>Benutzer bearbeiten</h1>
-<form class="form" [formGroup]="searchForm" (ngSubmit)="updateClient()">
-
-  <div class="form-group row">
-    <h2 for="inputUsername" class="col-sm-2 col-form-label text-right">ID</h2>
-    <div class="col-sm-9">
-      <div class="md-form mt-0">
-        <input type="input" class="form-control" name="id" id="inputId" placeholder="ID"
-               [(ngModel)]="queryParams.id" formControlName="id" readonly>
+<div class="container-fluid">
+  <h1>Kunden bearbeiten</h1>
+  <form class="form" style="margin-top: 40px" [formGroup]="searchForm" (ngSubmit)="updateClient()">
+    <div class="form-group form-control-lg row justify-content-center align-items-center">
+      <h2 for="inputUsername" style="font-size: 24px !important;" class="col-sm-2 col-form-label text-right">Kunden-ID</h2>
+      <div class="col-md-6">
+        <div class="md-form mt-0">
+          <input type="input" class="form-control" style="border-radius: 10px !important;" name="id" id="inputId"
+                 placeholder="ID" [(ngModel)]="queryParams.id" formControlName="id" readonly>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="form-group row">
-    <h2 for="inputPassword" class="col-sm-2 col-form-label text-right">Vorname</h2>
-    <div class="col-sm-9">
-      <div class="md-form mt-0">
-        <input type="input" class="form-control" name="name" id="inputName" placeholder="Vorname"
-               [(ngModel)]="queryParams.name" formControlName="name">
+    <div class="form-group form-control-lg row justify-content-center align-items-center" style="margin-top: 25px;">
+      <h2 for="inputPassword" style="font-size: 24px !important;" class="col-sm-2 col-form-label text-right">Vorname</h2>
+      <div class="col-md-6">
+        <div class="md-form mt-0">
+          <input type="input" class="form-control" name="name" id="inputName" placeholder="Vorname"
+                 [(ngModel)]="queryParams.name" formControlName="name">
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="form-group row">
-    <h2 for="inputPassword" class="col-sm-2 col-form-label text-right">Nachname</h2>
-    <div class="col-sm-9">
-      <div class="md-form mt-0">
-        <input type="input" class="form-control" name="surname" id="inputSurname" placeholder="Nachname"
-               [(ngModel)]="queryParams.surname" formControlName="surname">
+    <div class="form-group form-control-lg row justify-content-center align-items-center" style="margin-top: 25px;">
+      <h2 for="inputPassword" style="font-size: 24px !important;" class="col-sm-2 col-form-label text-right">Nachname</h2>
+      <div class="col-md-6">
+        <div class="md-form mt-0">
+          <input type="input" class="form-control" name="surname" id="inputSurname" placeholder="Nachname"
+                 [(ngModel)]="queryParams.surname" formControlName="surname">
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="form-group row">
-    <h2 for="inputPassword" class="col-sm-2 col-form-label text-right">E-Mail</h2>
-    <div class="col-sm-9">
-      <div class="md-form mt-0">
-        <input type="input" class="form-control" name="email" id="inputEmail" placeholder="E-Mail"
-               [(ngModel)]="queryParams.email" formControlName="email">
+    <div class="form-group form-control-lg row justify-content-center align-items-center" style="margin-top: 25px;">
+      <h2 for="inputPassword" style="font-size: 24px !important;" class="col-sm-2 col-form-label text-right">E-Mail</h2>
+      <div class="col-md-6">
+        <div class="md-form mt-0">
+          <input type="input" class="form-control" name="email" id="inputEmail" placeholder="E-Mail"
+                 [(ngModel)]="queryParams.email" formControlName="email">
+        </div>
       </div>
     </div>
-  </div>
-</form>
-<div class="bottom-right-above-1">
-  <button type="button" class="btn-font-size-reduced btn-lg btn-primary" (click)="updateClient()">Speichern</button>
+  </form>
 </div>
+<div class="bottom-right-above-1">
+  <button type="button" class="btn btn-font-size-reduced btn-lg btn-primary" (click)="updateClient()">Speichern
+  </button>
+</div>
+
 <div class="bottom-right">
   <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
 </div>

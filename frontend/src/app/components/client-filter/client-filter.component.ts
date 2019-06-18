@@ -33,6 +33,7 @@ export class ClientFilterComponent implements OnInit {
       this.edit = true;
     }
     this.queryParams = new ClientFilter('', '', '', 0, 10);
+    this.customerID = '';
   }
 
   ngOnInit() {
