@@ -5,6 +5,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {HallCreationPlanComponent} from '../hall-creation-plan/hall-creation-plan.component';
 import {HallCreationMenuComponent} from '../hall-creation-menu/hall-creation-menu.component';
 import {HallCreationService} from '../../services/hall-creation.service';
+import {LocationFilterComponent} from '../location-filter/location-filter.component';
 
 @Component({
   selector: 'app-hall-creation',
@@ -18,7 +19,8 @@ import {HallCreationService} from '../../services/hall-creation.service';
     RouterModule,
     RouterTestingModule,
     HallCreationPlanComponent,
-    HallCreationMenuComponent
+    HallCreationMenuComponent,
+    LocationFilterComponent,
   ],
 })
 export class HallCreationComponent implements OnInit, OnDestroy {

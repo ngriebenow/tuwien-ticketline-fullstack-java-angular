@@ -36,4 +36,11 @@ public interface LocationService {
    */
   List<HallDto> getHallsByLocationId(Long id);
 
+  /**
+   * Save the location.
+   *
+   * @param locationDto the location to be saved
+   * @return the location that has been saved
+   */
+  LocationDto create(LocationDto locationDto);
 }

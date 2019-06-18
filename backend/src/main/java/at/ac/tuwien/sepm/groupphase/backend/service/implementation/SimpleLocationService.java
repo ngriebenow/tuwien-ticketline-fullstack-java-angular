@@ -87,4 +87,12 @@ public class SimpleLocationService implements LocationService {
     }
     return hallDtos;
   }
+
+  @Transactional
+  @Override
+  public LocationDto create(LocationDto locationDto) {
+    LOGGER.info("Save location");
+    Location location = locationMapper.locationDtoToLocation(locationDto);
+    return locationMapper.locationToLocationDto(locationRepository.save(location));
+  }
 }

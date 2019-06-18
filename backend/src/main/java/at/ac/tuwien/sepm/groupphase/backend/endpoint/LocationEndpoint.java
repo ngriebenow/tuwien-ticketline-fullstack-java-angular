@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +38,12 @@ public class LocationEndpoint {
     this.locationService = locationService;
   }
 
+  /**
+   * Get the location by id.
+   *
+   * @param id the id of the location
+   * @return the location
+   */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   @PreAuthorize("hasRole('ADMIN')")
   @ApiOperation(
@@ -88,6 +95,12 @@ public class LocationEndpoint {
     return locationService.getFiltered(locationFilterDto, pageable);
   }
 
+  /**
+   * Get all halls of location by location id.
+   *
+   * @param id the id of the location
+   * @return the list of halls
+   */
   @RequestMapping(value = "/{id}/halls", method = RequestMethod.GET)
   @PreAuthorize("hasRole('ADMIN')")
   @ApiOperation(
@@ -96,5 +109,20 @@ public class LocationEndpoint {
   public List<HallDto> getHalls(@PathVariable Long id) {
     LOGGER.info("Get halls of location with id " + id);
     return locationService.getHallsByLocationId(id);
+  }
+
+  /**
+   * Save the location.
+   *
+   * @return the location that has been saved
+   */
+  @RequestMapping(method = RequestMethod.POST)
+  @PreAuthorize("hasRole('ADMIN')")
+  @ApiOperation(
+      value = "Post location",
+      authorizations = {@Authorization(value = "apiKey")})
+  public LocationDto post(@RequestBody LocationDto locationDto) {
+    LOGGER.info("Save location");
+    return locationService.create(locationDto);
   }
 }

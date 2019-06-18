@@ -1,15 +1,27 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgModule, OnInit} from '@angular/core';
 import {LocationService} from '../../services/location.service';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AlertService} from '../../services/alert.service';
 import {Location} from '../../dtos/location';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import * as _ from 'lodash';
+import {Router, RouterModule} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 @Component({
   selector: 'app-location-filter',
   templateUrl: './location-filter.component.html',
   styleUrls: ['./location-filter.component.scss']
+})
+@NgModule({
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    RouterTestingModule,
+    HttpClientTestingModule,
+  ],
 })
 export class LocationFilterComponent implements OnInit {
 
@@ -29,7 +41,8 @@ export class LocationFilterComponent implements OnInit {
   constructor(
     private locationService: LocationService,
     private formBuilder: FormBuilder,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private router: Router
   ) {
   }
 
@@ -103,5 +116,27 @@ export class LocationFilterComponent implements OnInit {
     } else {
       return '#FFFFFF';
     }
+  }
+
+  addLocation() {
+    const locationToSave: Location = new Location(
+      null,
+      this.queryParams['name'],
+      this.queryParams['street'],
+      null,
+      null,
+      this.queryParams['country']
+    );
+    if (isNaN(this.queryParams['place'])) {
+      locationToSave.place = this.queryParams['place'];
+      locationToSave.postalCode = '';
+    } else {
+      locationToSave.place = '';
+      locationToSave.postalCode = this.queryParams['place'];
+    }
+    console.log(this.queryParams);
+    console.log(this.queryParams['street']);
+    this.locationService.setLocationToAdd(locationToSave);
+    this.router.navigateByUrl('/locations-add');
   }
 }
