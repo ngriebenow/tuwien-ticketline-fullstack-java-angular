@@ -83,6 +83,6 @@ export class UserEditComponent implements OnInit {
   }
 
   public isAdmin() {
-    return this.queryParams.admin === 'true';
+    return this.admin === 'true';
   }
 }

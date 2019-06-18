@@ -7,7 +7,7 @@ label:not(.btn) {
 .btn-group-toggle {
   .active {
     color: #fff;
-    background-color: $main-blue;
+    background-color: $main-blue !important;
   }
 }
 
