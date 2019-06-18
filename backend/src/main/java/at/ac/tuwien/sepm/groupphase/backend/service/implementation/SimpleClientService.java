@@ -134,13 +134,13 @@ public class SimpleClientService implements ClientService {
   }
 
   private Client updateUserHelper(Client old, ClientDto updated) {
-    if (updated.getName() != null) {
+    if (updated.getName() != null && !updated.getName().isEmpty()) {
       old.setName(updated.getName());
     }
-    if (updated.getSurname() != null) {
+    if (updated.getSurname() != null && !updated.getSurname().isEmpty()) {
       old.setSurname(updated.getSurname());
     }
-    if (updated.getEmail() != null) {
+    if (updated.getEmail() != null && !updated.getEmail().isEmpty()) {
       old.setEmail(updated.getEmail());
     }
     return old;
@@ -165,9 +165,7 @@ public class SimpleClientService implements ClientService {
     return clientMapper.clientToClientDto(findOne(id));
   }
 
-  /**
-   * Javadoc.
-   */
+  /** Javadoc. */
   @EventListener(ApplicationReadyEvent.class)
   @Transactional
   public void createAnonymousClient() {
