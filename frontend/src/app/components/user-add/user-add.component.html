@@ -1,58 +1,70 @@
 <h1>Nutzer anlegen</h1>
-<form class="form" [formGroup]="searchForm" (ngSubmit)="createUser()">
 
-  <div class="form-group row">
-    <h2 for="inputUsername" class="col-sm-2 col-form-label text-right">Benutzername</h2>
-    <div class="col-sm-9">
+<form class="form" style="margin-top: 40px" [formGroup]="searchForm" (ngSubmit)="maybeUpdate()">
+
+
+  <div class="form-group form-control-lg row justify-content-center align-items-center">
+    <h2 for="inputUsername" style="font-size: 24px !important;" class="col-sm-2 col-form-label text-right">
+      Nutzername</h2>
+    <div class="col-md-6">
       <div class="md-form mt-0">
-        <input type="input" class="form-control" name="username" id="inputUsername" placeholder="Benutzername"
+        <input type="input" class="form-control" style="border-radius: 10px !important;" name="username"
+               id="inputUsername" placeholder="Nutzername"
                [(ngModel)]="queryParams.username" formControlName="username">
       </div>
     </div>
+    <div class="col-md-1"></div>
   </div>
 
-  <div class="form-group row">
-    <h2 for="inputPassword" class="col-sm-2 col-form-label text-right">Passwort</h2>
-    <div class="col-sm-9">
+
+  <div class="form-group form-control-lg row justify-content-center align-items-center" style="margin-top: 25px;">
+    <h2 for="inputPassword" style="font-size: 24px !important;" class="col-sm-2 col-form-label text-right">Passwort</h2>
+    <div class="col-md-6">
       <div class="md-form mt-0">
         <input type="input" class="form-control" name="password" id="inputPassword" placeholder="Passwort"
                [(ngModel)]="queryParams.password" formControlName="password">
       </div>
     </div>
+    <div class="col-md-1"></div>
   </div>
 
-  <div class="row">
-    <div class="form-group">
-      <label>Administrator</label>
-      <br/>
-      <div class="btn-group btn-group-toggle">
-        <label class="btn btn-light">
-          <input type="radio" value=true
-                 (click)="setAdmin('true')" formControlName="admin">
-          <i class="fas fa-check"></i>
-        </label>
-        <label class="btn btn-light">
-          <input type="radio" value=false
-                 (click)="setAdmin('false')" formControlName="admin">
-          <i class="fas fa-times"></i>
-        </label>
+
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-3" >
+      <div class="form-group form-control-lg row justify-content-center align-items-center"
+           style="margin-bottom: 30px">
+        <h2 style="font-size: 24px !important;" class="col-sm-8 col-form-label text-right">Administrator</h2>
+        <div class="btn-group btn-group-toggle">
+          <label class="btn btn-light" [ngClass]="{active: queryParams.admin === 'true'}">
+            <input type="radio" value=true
+                   (click)="setAdmin('true')" formControlName="admin">
+            <i class="fas fa-check"></i>
+          </label>
+          <label class="btn btn-light" [ngClass]="{active: queryParams.admin === 'false'}">
+            <input type="radio" value=false
+                   (click)="setAdmin('false')" formControlName="admin">
+            <i class="fas fa-times"></i>
+          </label>
+        </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <label>Aktiviert</label>
-      <br/>
-      <div class="btn-group btn-group-toggle">
-        <label class="btn btn-light">
-          <input type="radio" value=false
-                 (click)="setLocked('true')" formControlName="enabled">
-          <i class="fas fa-check"></i>
-        </label>
-        <label class="btn btn-light">
-          <input type="radio" value=true
-                 (click)="setLocked('false')" formControlName="enabled">
-          <i class="fas fa-times"></i>
-        </label>
+    <div class="col-md-3">
+      <div class="form-group form-control-lg row justify-content-center align-items-center"
+           style="margin-bottom: 30px">
+        <h2 style="font-size: 24px !important;" class="col-sm-6 col-form-label text-right">Aktiviert</h2>
+        <div class="btn-group btn-group-toggle">
+          <label class="btn btn-light" [ngClass]="{active: queryParams.enabled === 'true'}">
+            <input type="radio" value=false
+                   (click)="setLocked('true')" formControlName="enabled">
+            <i class="fas fa-check"></i>
+          </label>
+          <label class="btn btn-light" [ngClass]="{active: queryParams.enabled === 'false'}">
+            <input type="radio" value=true
+                   (click)="setLocked('false')" formControlName="enabled">
+            <i class="fas fa-times"></i>
+          </label>
+        </div>
       </div>
     </div>
   </div>

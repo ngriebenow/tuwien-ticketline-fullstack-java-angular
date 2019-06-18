@@ -53,7 +53,7 @@ export class UserEditComponent implements OnInit {
       const onNo = () => {
         this.setAdmin('false');
       };
-      this.confirm.open('User wirklich zu Admin ändern?', onYes, onNo);
+      this.confirm.open('Nutzer wirklich zu Admin ändern?', onYes, onNo);
     } else {
       this.updateUser();
     }
