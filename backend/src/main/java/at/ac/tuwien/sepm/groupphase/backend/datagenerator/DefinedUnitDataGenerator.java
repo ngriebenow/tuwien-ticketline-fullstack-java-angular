@@ -104,16 +104,16 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
         units.sort(
             (x, y) ->
                 Integer.compare(
-                    x.getLowerBoundary().getCoordinateY(), y.getLowerBoundary().getCoordinateY()));
+                    x.getUpperBoundary().getCoordinateY(), y.getUpperBoundary().getCoordinateY()));
 
         for (Unit unit : units) {
-          if (unit.getLowerBoundary().getCoordinateY()
-              != unit.getUpperBoundary().getCoordinateY()) {
+          if (unit.getUpperBoundary().getCoordinateY()
+              != unit.getLowerBoundary().getCoordinateY()) {
 
-            for (int o = unit.getLowerBoundary().getCoordinateY();
-                o <= unit.getUpperBoundary().getCoordinateY();
+            for (int o = unit.getUpperBoundary().getCoordinateY();
+                o <= unit.getLowerBoundary().getCoordinateY();
                 o++) {
-              adherings[o - 1] = adherings[unit.getLowerBoundary().getCoordinateY() - 1];
+              adherings[o - 1] = adherings[unit.getUpperBoundary().getCoordinateY() - 1];
             }
           }
         }
@@ -138,7 +138,7 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
           LOGGER.info(Integer.toString(adherings[w]));
         }
         for (Unit unit : units) {
-          int categoryIdx = adherings[unit.getLowerBoundary().getCoordinateY() - 1];
+          int categoryIdx = adherings[unit.getUpperBoundary().getCoordinateY() - 1];
           PriceCategory category = priceCategories.get(categoryIdx);
 
           generatedDefinedUnits.add(
