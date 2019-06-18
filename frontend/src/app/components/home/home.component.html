@@ -4,7 +4,9 @@
     <h1 class="display-4">Willkommen bei TicketLine!</h1>
     <hr class="my-4">
   </div>
-    <a *ngIf="!authService.isLoggedIn()" class="btn btn-primary btn-lg" role="button" routerLink="/login">Login</a>
+    <div class="d-flex justify-content-around my-4">
+      <a *ngIf="!authService.isLoggedIn()" class="btn btn-primary btn-lg" style="font-size: 20px !important;" role="button" routerLink="/login">Login</a>
+    </div>
   </div>
 
   <div *ngIf="authService.isLoggedIn()">

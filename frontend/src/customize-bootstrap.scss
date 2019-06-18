@@ -77,7 +77,11 @@ $theme-colors: (
   size can be changed accordingly
 */
 .btn-primary {
-  color: whitesmoke !important;
+  color: white !important;
+  font-style: normal;
+  font-size: 14px !important;
+  display: table-cell !important;
+  vertical-align: middle !important;
 }
 
 /*
@@ -85,7 +89,11 @@ $theme-colors: (
   size can be changed accordingly
 */
 .btn-secondary {
-  color: whitesmoke !important;
+  color: white !important;
+  font-style: normal;
+  font-size: 14px !important;
+  display: table-cell !important;
+  vertical-align: middle !important;
 }
 
 /*
