@@ -4,6 +4,7 @@ import {User} from '../../dtos/user';
 import {UserService} from '../../services/user.service';
 import {FormBuilder} from '@angular/forms';
 import {ConfirmationDialogService} from '../../services/confirmation-dialog.service';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -22,8 +23,12 @@ export class UserEditComponent implements OnInit {
     enabled: ['']
   });
 
-  constructor(private router: Router, private userService: UserService, private formBuilder: FormBuilder,
-              private route: ActivatedRoute, private confirm: ConfirmationDialogService) {
+  constructor(private router: Router,
+              private userService: UserService,
+              private formBuilder: FormBuilder,
+              private route: ActivatedRoute,
+              private confirm: ConfirmationDialogService,
+              private alertService: AlertService) {
     this.queryParams = new User('', '', 0, '', '');
   }
 
@@ -35,6 +40,7 @@ export class UserEditComponent implements OnInit {
         console.log(user);
       },
       error => {
+        this.alertService.warning('Nutzer konnte nicht geladen werden!');
       }
     );
   }
@@ -76,4 +82,7 @@ export class UserEditComponent implements OnInit {
     this.queryParams.admin = inp;
   }
 
+  public isAdmin() {
+    return this.queryParams.admin === 'true';
+  }
 }

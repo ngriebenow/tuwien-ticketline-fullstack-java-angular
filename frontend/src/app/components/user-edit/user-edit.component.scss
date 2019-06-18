@@ -1,0 +1,27 @@
+@import '../../../colors';
+
+label:not(.btn) {
+  color: $main-blue;
+}
+
+.btn-group-toggle {
+  .active {
+    color: #fff;
+    background-color: $main-blue;
+  }
+}
+
+.btn-light {
+  background-color: $light-gray !important;
+  border-radius: 10px;
+  color: $medium-gray;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+.form-control {
+  height: 47px !important;
+}
+

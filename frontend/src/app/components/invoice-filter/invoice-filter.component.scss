@@ -7,8 +7,14 @@ label:not(.btn) {
 .btn-group-toggle {
   .active {
     color: #fff;
-    background-color: $main-blue;
+    background-color: $main-blue !important;
   }
+}
+
+.btn-light {
+  background-color: $light-gray !important;
+  border-radius: 10px;
+  color: $medium-gray;
 }
 
 tbody tr {

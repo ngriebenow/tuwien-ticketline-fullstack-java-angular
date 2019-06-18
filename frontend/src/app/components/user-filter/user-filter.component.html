@@ -1,6 +1,6 @@
 <div class="row mt-3">
   <div class="col-12">
-    <h1>Benutzerverwaltung</h1>
+    <h1>Nutzerverwaltung</h1>
   </div>
 </div>
 
@@ -8,63 +8,74 @@
   <div class="col-12">
     <form [formGroup]="searchForm">
       <div class="row">
-        <div class="col-4">
-          <div class="form-group">
-            <label>Benutzername</label>
-            <input class="form-control" type="text" placeholder="Benutzername" formControlName="userName"
-                   (change)="loadUsers()" [(ngModel)]="queryParams.username">
-          </div>
-          <div class="form-group">
-            <label>Administrator</label>
-            <br/>
-            <div class="btn-group btn-group-toggle">
-              <label class="btn btn-light"
-                     (click)="setAdmin('admin')">
-                <input type="radio" formControlName="isAdmin" value="admin" (change)="loadUsers()"
-                       [(ngModel)]="queryParams.role" [ngClass]="{active: admin === 'admin'}">
-                <i class="fas fa-check"></i>
-              </label>
-              <label class="btn btn-light"
-                     (click)="setAdmin('user')">
-                <input type="radio" formControlName="isAdmin" value="user" (change)="loadUsers()"
-                       [(ngModel)]="queryParams.role" [ngClass]="{active: admin === 'user'}">
-                <i class="fas fa-times"></i>
-              </label>
-              <label class="btn btn-light"
-                     (click)="setAdmin('')">
-                <input type="radio" formControlName="isAdmin" value="" (change)="loadUsers()"
-                       [(ngModel)]="queryParams.role" [ngClass]="{active: admin === ''}">
-                <i class="fas fa-question"></i>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="row">
-            <div class="form-group">
-              <label>Aktiviert</label>
-              <br/>
-              <div class="btn-group btn-group-toggle">
-                <label class="btn btn-light"
-                       (click)="setIsLocked('false')">
-                  <input type="radio" formControlName="isEnabled" value="false" (change)="loadUsers()"
-                         [(ngModel)]="queryParams.locked" [ngClass]="{active: queryParams.locked === 'false'}">
-                  <i class="fas fa-check"></i>
-                </label>
-                <label class="btn btn-light"
-                       (click)="setIsLocked('true')">
-                  <input type="radio" formControlName="isEnabled" value="true" (change)="loadUsers()"
-                         [(ngModel)]="queryParams.locked" [ngClass]="{active: queryParams.locked === 'true'}">
-                  <i class="fas fa-times"></i>
-                </label>
-                <label class="btn btn-light"
-                       (click)="setIsLocked('')">
-                  <input type="radio" formControlName="isEnabled" value="" (change)="loadUsers()"
-                         [(ngModel)]="queryParams.locked" [ngClass]="{active: queryParams.locked === ''}">
-                  <i class="fas fa-question"></i>
-                </label>
+        <div class="col">
+
+          <div class="form-group form-control-lg row justify-content-center align-items-center"
+               style="margin-top: 10px;">
+            <h2 style="font-size: 24px !important;" class="col-sm-2 col-form-label text-right">Nutzername</h2>
+            <div class="col-md-4">
+              <div class="md-form mt-0">
+                <input class="form-control" type="text" placeholder="Benutzername" formControlName="userName"
+                       (change)="loadUsers()" [(ngModel)]="queryParams.username">
               </div>
             </div>
+          </div>
+
+          <div class="row justify-content-center align-items-center">
+            <div class="col-md-3">
+              <div class="form-group form-control-lg row justify-content-center align-items-center"
+                   style="margin-bottom: 30px">
+                <h2 style="font-size: 24px !important;" class="col-sm-6 col-form-label text-right">Administrator</h2>
+                <div class="btn-group btn-group-toggle col-md-1">
+                  <label class="btn btn-light"
+                         (click)="setAdmin('admin')" [ngClass]="{active: admin === 'admin'}">
+                    <input type="radio" formControlName="isAdmin" value="admin" (change)="loadUsers()"
+                           [(ngModel)]="queryParams.role">
+                    <i class="fas fa-check"></i>
+                  </label>
+                  <label class="btn btn-light"
+                         (click)="setAdmin('user')" [ngClass]="{active: admin === 'user'}">
+                    <input type="radio" formControlName="isAdmin" value="user" (change)="loadUsers()"
+                           [(ngModel)]="queryParams.role">
+                    <i class="fas fa-times"></i>
+                  </label>
+                  <label class="btn btn-light"
+                         (click)="setAdmin('')" [ngClass]="{active: admin === ''}">
+                    <input type="radio" formControlName="isAdmin" value="" (change)="loadUsers()"
+                           [(ngModel)]="queryParams.role">
+                    <i class="fas fa-question"></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group form-control-lg row justify-content-center align-items-center"
+                   style="margin-bottom: 30px">
+                <h2 style="font-size: 24px !important;" class="col-sm-6 col-form-label text-right">Aktiviert</h2>
+                <div class="btn-group btn-group-toggle col-md-1">
+                  <label class="btn btn-light"
+                         (click)="setIsLocked('false')" [ngClass]="{active: queryParams.locked === 'false'}">
+                    <input type="radio" formControlName="isEnabled" value="false" (change)="loadUsers()"
+                           [(ngModel)]="queryParams.locked">
+                    <i class="fas fa-check"></i>
+                  </label>
+                  <label class="btn btn-light"
+                         (click)="setIsLocked('true')" [ngClass]="{active: queryParams.locked === 'true'}">
+                    <input type="radio" formControlName="isEnabled" value="true" (change)="loadUsers()"
+                           [(ngModel)]="queryParams.locked">
+                    <i class="fas fa-times"></i>
+                  </label>
+                  <label class="btn btn-light"
+                         (click)="setIsLocked('')" [ngClass]="{active: queryParams.locked === ''}">
+                    <input type="radio" formControlName="isEnabled" value="" (change)="loadUsers()"
+                           [(ngModel)]="queryParams.locked">
+                    <i class="fas fa-question"></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-1"></div>
           </div>
         </div>
       </div>
@@ -103,14 +114,16 @@
 
 <div class="row mt-3 mb-5" *ngIf="users.length >= count || page !== 0">
   <div class="col-12 d-flex justify-content-between">
-    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i class="fas fa-chevron-left"></i>
+    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i
+      class="fas fa-chevron-left"></i>
     </button>
-    <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="users.length < count"><i class="fas fa-chevron-right"></i></button>
+    <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="users.length < count"><i
+      class="fas fa-chevron-right"></i></button>
   </div>
 </div>
 
 <div class="bottom-right-above-1">
-  <button class="btn btn-secondary btn-lg " (click)="addUser()" type="button">Neu</button>
+  <button class="btn btn-primary btn-lg " (click)="addUser()" type="button">Neu</button>
 </div>
 <div class="bottom-right">
   <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
