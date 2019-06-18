@@ -1,40 +1,45 @@
-<h1>Kunden anlegen</h1>
-<form class="form" [formGroup]="searchForm" (ngSubmit)="createClient()">
+<div class="container-fluid">
+  <h1>Kunden anlegen</h1>
+  <form class="form" style="margin-top: 30px" [formGroup]="searchForm" (ngSubmit)="createClient()">
 
-  <div class="form-group row">
-    <h2 for="inputName" class="col-sm-2 col-form-label text-right">Vorname</h2>
-    <div class="col-sm-9">
-      <div class="md-form mt-0">
-        <input type="input" class="form-control" name="name" id="inputName" placeholder="Vorname"
-               [(ngModel)]="queryParams.name" formControlName="name">
+    <div class="form-group form-control-lg row justify-content-center align-items-center" style="margin-top: 25px;">
+      <h2 for="inputName" style="font-size: 24px !important;" class="col-sm-2 col-form-label text-right">Vorname</h2>
+      <div class="col-md-6">
+        <div class="md-form mt-0">
+          <input type="input" class="form-control" name="name" id="inputName" placeholder="Vorname"
+                 [(ngModel)]="queryParams.name" formControlName="name">
+        </div>
       </div>
+      <div class="col-md-1"></div>
     </div>
-  </div>
 
-  <div class="form-group row">
-    <h2 for="inputSurname" class="col-sm-2 col-form-label text-right">Nachname</h2>
-    <div class="col-sm-9">
-      <div class="md-form mt-0">
-        <input type="input" class="form-control" name="surname" id="inputSurname" placeholder="Nachname"
-               [(ngModel)]="queryParams.surname" formControlName="surname">
+    <div class="form-group form-control-lg row justify-content-center align-items-center" style="margin-top: 25px;">
+      <h2 for="inputSurname" style="font-size: 24px !important;" class="col-sm-2 col-form-label text-right">Nachname</h2>
+      <div class="col-md-6">
+        <div class="md-form mt-0">
+          <input type="input" class="form-control" name="surname" id="inputSurname" placeholder="Nachname"
+                 [(ngModel)]="queryParams.surname" formControlName="surname">
+        </div>
       </div>
+      <div class="col-md-1"></div>
     </div>
-  </div>
 
-  <div class="form-group row">
-    <h2 for="inputEmail" class="col-sm-2 col-form-label text-right">E-Mail</h2>
-    <div class="col-sm-9">
-      <div class="md-form mt-0">
-        <input type="input" class="form-control" name="email" id="inputEmail" placeholder="E-Mail"
-               [(ngModel)]="queryParams.email" formControlName="email">
+    <div class="form-group form-control-lg row justify-content-center align-items-center" style="margin-top: 25px;">
+      <h2 for="inputEmail" style="font-size: 24px !important;" class="col-sm-2 col-form-label text-right">E-Mail</h2>
+      <div class="col-md-6">
+        <div class="md-form mt-0">
+          <input type="input" class="form-control" name="email" id="inputEmail" placeholder="E-Mail"
+                 [(ngModel)]="queryParams.email" formControlName="email">
+        </div>
       </div>
+      <div class="col-md-1"></div>
     </div>
-  </div>
 
 
-</form>
+  </form>
+</div>
 <div class="bottom-right-above-1">
-  <button type="button" class="btn-font-size-reduced btn-lg btn-primary" (click)="createClient()">Speichern</button>
+  <button type="button" class="btn btn-font-size-reduced btn-lg btn-primary" (click)="createClient()">Speichern</button>
 </div>
 <div class="bottom-right">
   <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>

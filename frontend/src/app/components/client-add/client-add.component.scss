@@ -1,0 +1,13 @@
+@import '../../../colors';
+
+.add-on {
+  background-color: $main-blue !important;
+}
+
+.add-on::placeholder {
+  color: white !important;
+}
+
+.form-control {
+  height: 47px !important;
+}
