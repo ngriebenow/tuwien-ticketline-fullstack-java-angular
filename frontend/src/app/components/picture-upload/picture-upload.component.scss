@@ -4,16 +4,18 @@
   width: inherit;
   height: 100px;
   border-style: solid;
-  border-width: 0.5px;
+  border-width: 1.5px;
   text-align: center;
+  border-radius: 5px;
+  color: $light-gray;
 }
 
 .droppable.dragover {
   background-color: $main-blue;
-
 }
 
 .droppable.mouseover {
+  color: white;
   background-color: $light-gray;
 }
 
@@ -23,4 +25,9 @@
 
 .fa-medium{
   font-size: 30px;
+}
+
+.picture-text {
+  font-size: 14px;
+  color: $medium-gray;
 }
