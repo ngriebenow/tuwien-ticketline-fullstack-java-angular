@@ -138,7 +138,7 @@ public class DefinedUnitDataGenerator implements DataGenerator<DefinedUnit> {
           LOGGER.info(Integer.toString(adherings[w]));
         }
         for (Unit unit : units) {
-          int categoryIdx = adherings[unit.getUpperBoundary().getCoordinateY() - 1];
+          int categoryIdx = adherings[unit.getLowerBoundary().getCoordinateY() - 1];
           PriceCategory category = priceCategories.get(categoryIdx);
 
           generatedDefinedUnits.add(
