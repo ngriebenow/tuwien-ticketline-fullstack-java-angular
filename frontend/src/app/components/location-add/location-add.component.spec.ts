@@ -1,25 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LocationFilterComponent } from './location-filter.component';
+import { LocationAddComponent } from './location-add.component';
 import {RouterTestingModule} from '@angular/router/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Globals} from '../../global/globals';
 import {RouterModule} from '@angular/router';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {Globals} from '../../global/globals';
+import {FormsModule} from '@angular/forms';
 
-describe('LocationFilterComponent', () => {
-  let component: LocationFilterComponent;
-  let fixture: ComponentFixture<LocationFilterComponent>;
+describe('LocationAddComponent', () => {
+  let component: LocationAddComponent;
+  let fixture: ComponentFixture<LocationAddComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LocationFilterComponent ],
+      declarations: [ LocationAddComponent ],
       imports: [
         RouterTestingModule,
         RouterModule,
         HttpClientTestingModule,
         FormsModule,
-        ReactiveFormsModule,
       ],
       providers: [
         Globals,
@@ -29,7 +28,7 @@ describe('LocationFilterComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LocationFilterComponent);
+    fixture = TestBed.createComponent(LocationAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

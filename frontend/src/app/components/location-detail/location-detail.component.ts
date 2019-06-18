@@ -45,7 +45,6 @@ export class LocationDetailComponent implements OnInit {
       },
       error => {
         this.alertService.error('Ort konnte nicht vollständig geladen werden.');
-        console.log(error);
       }
     );
   }
@@ -56,7 +55,7 @@ export class LocationDetailComponent implements OnInit {
         this.halls = halls;
       },
       error => {
-        this.alertService.error('Ort konnte nicht vollständig geladen werden.');
+        this.alertService.error('Säle konnten nicht geladen werden.');
       }
     );
   }
