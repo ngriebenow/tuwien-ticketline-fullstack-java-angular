@@ -8,9 +8,10 @@
   <div class="row justify-content-center align-items-center">
     <div class="col-md-6">
       <div class="row justify-content-center align-items-center" style="margin-bottom: 10px">
-        <h2 class="col-md-3 float-right">Veranstaltung</h2>
+        <h2 class="col-md-3 text-right">Veranstaltung</h2>
         <div class="col-md-4">
-          <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.name" type="text"/>
+          <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.name"
+                 type="text"/>
         </div>
         <div class="col-md-4">
           <select class="select-control" (change)="loadEvents()"
@@ -26,7 +27,8 @@
       <div class="row justify-content-center align-items-center" style="margin-bottom: 25px">
         <div class="col-md-3"></div>
         <div class="col-md-4">
-          <input class="form-control" placeholder="Künstler" (change)="loadEvents()" [(ngModel)]="eventFilter.artistName"
+          <input class="form-control" placeholder="Künstler" (change)="loadEvents()"
+                 [(ngModel)]="eventFilter.artistName"
                  type="text"/>
         </div>
         <div class="col-md-4">
@@ -34,13 +36,46 @@
                  type="text"/>
         </div>
       </div>
-    </div>
 
+
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 10px">
+        <h2 class="col-md-3 text-right">Adresse</h2>
+        <div class="col-md-8">
+          <input class="form-control" placeholder="Straße" (change)="loadEvents()"
+                 [(ngModel)]="eventFilter.locationStreet"
+                 type="text"/>
+        </div>
+      </div>
+
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 25px">
+        <div class="col-md-3"></div>
+        <div class="col-md-4">
+          <input class="form-control" placeholder="Ortsname, PLZ" (change)="loadEvents()"
+                 [(ngModel)]="eventFilter.locationPlace" type="text"/>
+        </div>
+        <div class="col-md-4">
+          <select class="select-control" (change)="loadEvents()" [(ngModel)]="eventFilter.locationCountry"
+                  [style.background]="getColor(fstCountry.selected)"
+                  [style.color]="getTextColor(fstCountry.selected)">
+            <option #fstCountry value="">(alle)</option>
+            <option value="Austria">Österreich</option>
+            <option value="Germany">Deutschland</option>
+            <option value="Hungary">Ungarn</option>
+            <option value="Italy">Italien</option>
+            <option value="Liechtenstein">Lichtenstein</option>
+            <option value="Slovakia">Slovakei</option>
+            <option value="Slovenia">Slovenian</option>
+            <option value="Switzerland">Schweiz</option>
+            <option value="Czech">Tschechien</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
 
     <div class="col-md-6">
       <div class="row justify-content-center align-items-center" style="margin-bottom: 5px">
-        <h2 class="col-md-3 float-right" style="margin-right: -15px !important;">Datum/Preis</h2>
+        <h2 class="col-md-3 text-right">Datum/Preis</h2>
         <div class="col-md-4">
           <form class="date-control">
             <my-date-picker placeholder="tt.mm.jjjj" name="mydate" (dateChanged)="onDateChanged($event)"
@@ -49,7 +84,8 @@
           </form>
         </div>
         <div class="col-md-4">
-          <input style="margin-top: -8px !important;" class="form-control" id="durationInput" placeholder="Dauer" (change)="CheckNumberField('durationInput')"
+          <input style="margin-top: -8px !important;" class="form-control" id="durationInput" placeholder="Dauer"
+                 (change)="CheckNumberField('durationInput')"
                  [(ngModel)]="eventFilter.duration" type="text" value="">
         </div>
         <div class="col-sm-1" style="padding-left: 0">
@@ -60,7 +96,7 @@
       </div>
 
       <div class="row justify-content-center align-items-center" style="margin-bottom: 25px">
-        <div class="col-md-3" style="margin-right: -15px !important;"></div>
+        <div class="col-md-3"></div>
         <div class="col-md-4">
           <select class="select-control" (change)="loadEvents()"
                   [style.background]="getColor(fstTime.selected)"
@@ -82,82 +118,35 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
 
-
-
-
-
-<div class="row">
-  <div class="col-2">
-    <h2 class="float-right">Adresse</h2>
-  </div>
-
-  <div class="col-4">
-    <input class="form-control" placeholder="Straße" (change)="loadEvents()" [(ngModel)]="eventFilter.locationStreet"
-           type="text"/>
-  </div>
-
-
-  <div class="col-2">
-    <h2 class="float-right">Standort</h2>
-  </div>
-
-
-  <div class="col-4">
-    <div class="row">
-      <div class="col-11">
-        <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.locationName"
-               type="text"/>
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 10px">
+        <h2 class="col-md-3 text-right">Standort</h2>
+        <div class="col-md-8">
+          <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.locationName"
+                 type="text"/>
+        </div>
+        <div class="col-sm-1" style="padding-left: 0">
+          <div class="align-content-end">
+            <label style="vertical-align: center; padding: 0; margin-top: 5px"></label>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 25px">
+        <div class="col-md-3"></div>
+        <div class="col-md-8">
+          <input class="form-control" placeholder="Saalname" (change)="loadEvents()" [(ngModel)]="eventFilter.hallName"
+                 type="text"/>
+        </div>
+        <div class="col-sm-1" style="padding-left: 0">
+          <div class="align-content-end">
+            <label style="vertical-align: center; padding: 0; margin-top: 5px"></label>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-
-<div class="row">
-  <div class="col-2"></div>
-
-  <div class="col-2">
-    <input class="form-control" placeholder="Ortsname, PLZ" (change)="loadEvents()"
-           [(ngModel)]="eventFilter.locationPlace" type="text"/>
-  </div>
-  <div class="col-2">
-    <select class="select-control" (change)="loadEvents()" [(ngModel)]="eventFilter.locationCountry"
-            [style.background]="getColor(fstCountry.selected)"
-            [style.color]="getTextColor(fstCountry.selected)">
-      <option #fstCountry value="">(alle)</option>
-      <option value="Austria">Österreich</option>
-      <option value="Germany">Deutschland</option>
-      <option value="Hungary">Ungarn</option>
-      <option value="Italy">Italien</option>
-      <option value="Liechtenstein">Lichtenstein</option>
-      <option value="Slovakia">Slovakei</option>
-      <option value="Slovenia">Slovenian</option>
-      <option value="Switzerland">Schweiz</option>
-      <option value="Czech">Tschechien</option>
-    </select>
-  </div>
-
-
-  <div class="col-2"></div>
-
-
-  <div class="col-4">
-    <div class="row">
-      <div class="col-11">
-        <input class="form-control" placeholder="Saalname" (change)="loadEvents()" [(ngModel)]="eventFilter.hallName"
-               type="text"/>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-
 
 
 <div class="row mt-4" *ngFor="let event of eventSearchResults">
