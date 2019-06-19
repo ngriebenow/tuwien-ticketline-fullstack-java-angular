@@ -36,6 +36,7 @@ public class HallEndpoint {
    * @return the hall
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @PreAuthorize("hasRole('ADMIN')")
   @ApiOperation(
       value = "Get hall by id",
       authorizations = {@Authorization(value = "apiKey")})
