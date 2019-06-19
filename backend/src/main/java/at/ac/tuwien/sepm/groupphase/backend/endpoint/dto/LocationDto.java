@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.NotBlank;
 
 @ApiModel(value = "LocationDto", description = "A DTO for a location via rest")
 public class LocationDto {
@@ -9,18 +10,23 @@ public class LocationDto {
   @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
   private Long id;
 
+  @NotBlank(message = "name must not be empty")
   @ApiModelProperty(required = true, name = "The name of the location")
   private String name;
 
+  @NotBlank(message = "street must not be empty")
   @ApiModelProperty(required = true, name = "The street of the location")
   private String street;
 
+  @NotBlank(message = "postalCode must not be empty")
   @ApiModelProperty(required = true, name = "The postal code of the location")
   private String postalCode;
 
+  @NotBlank(message = "place must not be empty")
   @ApiModelProperty(required = true, name = "The place of the location")
   private String place;
 
+  @NotBlank(message = "country must not be empty")
   @ApiModelProperty(required = true, name = "The country of the location")
   private String country;
 
