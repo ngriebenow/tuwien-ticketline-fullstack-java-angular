@@ -16,7 +16,6 @@ public class ReservationRequestDto {
   @ApiModelProperty(
       value = "A list of units ids with the amount to buy or reserve for each",
       required = true)
-  // TODO: require valid ticketRequests
   public List<@Valid TicketRequestDto> ticketRequests;
 
   @NotNull(message = "performanceId must be set")

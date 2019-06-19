@@ -33,9 +33,7 @@ public class SwaggerConfiguration {
     acp = applicationConfigurationProperties;
   }
 
-  /**
-   * TODO: Add JavaDoc.
-   */
+  /** Configure what swagger should show on the interactive web api. */
   @Bean
   public Docket backendApiDocket() {
     return new Docket(DocumentationType.SWAGGER_2)

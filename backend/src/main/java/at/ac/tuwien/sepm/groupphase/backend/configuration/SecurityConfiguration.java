@@ -50,7 +50,7 @@ public class SecurityConfiguration {
     return new BCryptPasswordEncoder(10);
   }
 
-  /** TODO: Add JavaDoc. */
+  /** Define attributes of an error response. */
   @Bean
   public ErrorAttributes errorAttributes() {
     return new DefaultErrorAttributes() {
@@ -64,7 +64,10 @@ public class SecurityConfiguration {
     };
   }
 
-  /** TODO: Add JavaDoc. */
+  /**
+   * This is a deprecated security configuration to enable authentication before
+   * the user model was implemented.
+   */
   @Autowired
   public void configureGlobal(
       AuthenticationManagerBuilder auth, List<AuthenticationProvider> providerList)
@@ -83,7 +86,7 @@ public class SecurityConfiguration {
     providerList.forEach(auth::authenticationProvider);
   }
 
-  /** TODO: Add JavaDoc. */
+  /** Configure Cross-Origin Resource Sharing. */
   @Bean
   public WebMvcConfigurer corsConfigurer() {
     return new WebMvcConfigurerAdapter() {
