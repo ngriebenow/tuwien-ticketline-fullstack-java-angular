@@ -4,132 +4,175 @@
   </div>
 </div>
 
-<div class="row mt-3" *ngIf="invoice">
-  <div class="col-6">
-    <div class="row">
-      <div class="col-6">
-        <div class="form-group" *ngIf="invoice.reservationCode">
-          <label>Reservierungsnummer</label>
-          <input readonly class="form-control" type="text" disabled value="{{ invoice.reservationCode }}">
+<div class="container">
+  <div class="row mt-3" *ngIf="invoice">
+    <div class="col-6">
+      <div class="row" style="margin-bottom: 10px">
+        <div class="col-12 justify-content-center align-items-center">
+          <div class="form-group form-control-lg row justify-content-center align-items-center"
+               *ngIf="invoice.reservationCode">
+            <h2 style="font-size: 18px !important;" class="col-md-3 col-form-label text-right">Reservierungsnr.</h2>
+            <div class="col-md-8">
+              <div class="md-form mt-0">
+                <input readonly class="form-control" type="text" disabled value="{{ invoice.reservationCode }}">
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-6">
-        <div class="form-group" *ngIf="invoice.number">
-          <label>Rechnungsnummer</label>
-          <input readonly class="form-control" type="text" disabled value="{{ invoice.number }}">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <div class="form-group">
-          <label>Kundenname</label>
-          <input readonly class="form-control" type="text" disabled value="{{ getClientFullName() }}">
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-group">
-          <label>Kundenemail</label>
-          <input readonly class="form-control" type="text" disabled value="{{ invoice.client.email }}">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <div class="form-group">
-          <label>Veranstaltung</label>
-          <input readonly class="form-control" type="text" disabled value="{{ getEventName() }}">
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-group">
-          <label>Aufführung</label>
-          <input readonly class="form-control" type="text" disabled value="{{ getPerformanceName() }}">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <div class="form-group">
-          <label>Veranstaltungsort</label>
-          <input readonly class="form-control" type="text" disabled value="{{ getLocationName() }}">
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-group">
-          <label>Saal</label>
-          <input readonly class="form-control" type="text" disabled value="{{ getHallName() }}">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <div class="form-group">
-          <label>Datum</label>
-          <input readonly class="form-control" type="text" disabled value="{{ getPeformanceStart() | date:'dd.MM.yyyy' }}">
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-group">
-          <label>Uhrzeit</label>
-          <input readonly class="form-control" type="text" disabled value="{{ getPeformanceStart() | date:'HH:mm' }}">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-6">
 
-    <div class="row mb-4"
-         *ngFor="let ticket of invoice.tickets"
+      <div class="row" style="margin-bottom: 10px">
+        <div class="col-12 justify-content-center align-items-center">
+          <div class="form-group form-control-lg row justify-content-center align-items-center"
+               *ngIf="invoice.number">
+            <h2 style="font-size: 18px !important;" class="col-md-3 col-form-label text-right">Rechnungsnr.</h2>
+            <div class="col-md-8">
+              <div class="md-form mt-0">
+                <input readonly class="form-control" type="text" disabled value="{{ invoice.number }}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row" style="margin-bottom: 10px">
+        <div class="col-12 justify-content-center align-items-center">
+          <div class="form-group form-control-lg row justify-content-center align-items-center">
+            <h2 style="font-size: 18px !important;" class="col-md-3 col-form-label text-right">Veranstaltung</h2>
+            <div class="col-md-4">
+              <div class="md-form mt-0">
+                <input readonly class="form-control" type="text" disabled value="{{ getEventName() }}">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="md-form mt-0">
+                <input readonly class="form-control" type="text" disabled value="{{ getPerformanceName() }}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row" style="margin-bottom: 10px">
+        <div class="col-12 justify-content-center align-items-center">
+          <div class="form-group form-control-lg row justify-content-center align-items-center">
+            <h2 style="font-size: 18px !important;" class="col-md-3 col-form-label text-right">Datum/Uhrzeit</h2>
+            <div class="col-md-4">
+              <div class="md-form mt-0">
+                <input readonly class="form-control" type="text" disabled
+                       value="{{ getPeformanceStart() | date:'dd.MM.yyyy' }}">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="md-form mt-0">
+                <input readonly class="form-control" type="text" disabled
+                       value="{{ getPeformanceStart() | date:'HH:mm' }}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row" style="margin-bottom: 10px">
+        <div class="col-12 justify-content-center align-items-center">
+          <div class="form-group form-control-lg row justify-content-center align-items-center">
+            <h2 style="font-size: 18px !important;" class="col-md-3 col-form-label text-right">Veranstaltungsort</h2>
+            <div class="col-md-4">
+              <div class="md-form mt-0">
+                <input readonly class="form-control" type="text" disabled value="{{ getLocationName() }}">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="md-form mt-0">
+                <input readonly class="form-control" type="text" disabled value="{{ getHallName() }}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-12 justify-content-center align-items-center">
+          <div class="form-group form-control-lg row justify-content-center align-items-center">
+            <h2 style="font-size: 18px !important;" class="col-md-3 col-form-label text-right">Kundendaten</h2>
+            <div class="col-md-4">
+              <div class="md-form mt-0">
+                <input readonly class="form-control" type="text" disabled value="{{ getClientFullName() }}">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="md-form mt-0">
+                <input readonly class="form-control" type="text" disabled value="{{ invoice.client.email }}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="row mb-4"
+           *ngFor="let ticket of invoice.tickets"
            [ngClass]="{'clickable': !isCancelled() && !isBought()}"
            (click)="toggleSelected(ticket)">
-      <div class="ticket col-11 d-flex justify-content-between"
-           [ngClass]="{'strike-through': !isSelected(ticket)}">
-        <span>{{ ticket.priceCategoryName }} </span>
-        <span>{{ ticket.title }} </span>
-        <span>{{ centsToEuros(ticket.priceInCents) | currency:'EUR' }} </span>
+        <div class="ticket col-11 d-flex justify-content-between"
+             [ngClass]="{'strike-through': !isSelected(ticket)}">
+          <span>{{ ticket.priceCategoryName }} </span>
+          <span>{{ ticket.title }} </span>
+          <span>{{ centsToEuros(ticket.priceInCents) | currency:'EUR' }} </span>
+        </div>
+        <div class="col-1 d-flex align-items-center"
+             *ngIf="isTransient() || isReserved()">
+          <i class="fas"
+             [ngClass]="{'fa-times': !isSelected(ticket), 'fa-check': isSelected(ticket)}">
+          </i>
+        </div>
       </div>
-      <div class="col-1 d-flex align-items-center"
-           *ngIf="isTransient() || isReserved()">
-        <i class="fas"
-           [ngClass]="{'fa-times': !isSelected(ticket), 'fa-check': isSelected(ticket)}">
-        </i>
+
+      <hr/>
+
+      <div class="row mb-4">
+        <div class="total col-11 d-flex justify-content-between">
+          <span>Summe</span>
+          <span>{{ getTotalPriceInEuros() | currency:'EUR' }}</span>
+        </div>
+        <div class="col-1"
+             *ngIf="isTransient() || isReserved()">
+        </div>
       </div>
+
     </div>
-
-    <hr/>
-
-    <div class="row mb-4">
-      <div class="total col-11 d-flex justify-content-between">
-        <span>Summe</span>
-        <span>{{ getTotalPriceInEuros() | currency:'EUR' }}</span>
-      </div>
-      <div class="col-1"
-           *ngIf="isTransient() || isReserved()">
-      </div>
-    </div>
-
   </div>
-</div>
 
-<div class="d-flex justify-content-around my-5">
-  <button class="btn btn-xl btn-secondary"
-          *ngIf="isTransient()"
-          (click)="reserveTickets()">Reservieren</button>
-  <button class="btn btn-xl btn-secondary"
-          *ngIf="isBought()"
-          (click)="cancelInvoice()">Stornieren</button>
-  <button class="btn btn-xl btn-secondary"
-          *ngIf="isReserved()"
-          (click)="cancelReservation()">Stornieren</button>
-  <button class="btn btn-xl btn-primary"
-          *ngIf="isTransient()"
-          (click)="buyTickets()">Kaufen</button>
-  <button class="btn btn-xl btn-primary"
-          *ngIf="isReserved()"
-          (click)="payInvoice()">Kaufen</button>
-  <app-invoice-pdf-print *ngIf="isBought() || isCancelled()" [invoice]="invoice" [tickets]="invoice.tickets"></app-invoice-pdf-print>
-  <app-ticket-pdf-print *ngIf="isBought()" [bought]="isBought()" [tickets]="invoice.tickets"></app-ticket-pdf-print>
+  <div class="d-flex flex-row justify-content-center my-2">
+    <button style="margin: 50px" class="btn btn-xl btn-secondary"
+            *ngIf="isTransient()"
+            (click)="reserveTickets()">Reservieren
+    </button>
+    <button style="margin: 50px" class="btn btn-xl btn-secondary"
+            *ngIf="isBought()"
+            (click)="cancelInvoice()">Stornieren
+    </button>
+    <button style="margin: 50px" class="btn btn-xl btn-secondary"
+            *ngIf="isReserved()"
+            (click)="cancelReservation()">Stornieren
+    </button>
+    <button style="margin: 50px" class="btn btn-xl btn-primary"
+            *ngIf="isTransient()"
+            (click)="buyTickets()">Kaufen
+    </button>
+    <button style="margin: 50px" class="btn btn-xl btn-primary"
+            *ngIf="isReserved()"
+            (click)="payInvoice()">Kaufen
+    </button>
+    <app-invoice-pdf-print *ngIf="isBought() || isCancelled()" [invoice]="invoice"
+                           [tickets]="invoice.tickets"></app-invoice-pdf-print>
+    <app-ticket-pdf-print *ngIf="isBought()" [bought]="isBought()" [tickets]="invoice.tickets"></app-ticket-pdf-print>
+  </div>
 </div>
 
 <div class="bottom-right">

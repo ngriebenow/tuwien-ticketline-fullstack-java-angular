@@ -141,10 +141,12 @@ $theme-colors: (
 }
 
 .btn-xl {
-  padding: .75rem 1.25rem !important;
-  font-size: 1.75rem !important;
-  line-height: 1.75 !important;
-  border-radius: .6rem !important;
+  width: 200px !important;
+  height: 80px !important;
+  font-size: 20px !important;
+  display: table-cell !important;
+  vertical-align: middle !important;
+  border-radius: 10px !important;
 }
 
 /*
