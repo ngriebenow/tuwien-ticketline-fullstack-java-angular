@@ -6,89 +6,139 @@
 
 <div class="row mt-3">
   <div class="col-12">
-    <form [formGroup]="searchForm">
-      <div class="row">
-        <div class="col-6">
-          <div class="form-group">
-            <label>Aufführung</label>
-            <input class="form-control" type="text" placeholder="Aufführung" formControlName="performanceName">
-          </div>
-          <div class="form-group">
-            <label>Reservierungsnummer</label>
-            <input class="form-control" type="text" placeholder="Reservierungsnummer" formControlName="reservationCode">
-          </div>
-          <div class="form-group">
-            <label>Rechnungsnummer</label>
-            <input class="form-control" type="text" placeholder="Rechnungnummer" formControlName="invoiceNumber">
+    <form [formGroup]="searchForm" class="justify-content-center align-items-center">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-5 form-group form-control-lg justify-content-center align-items-center">
+          <div class="row">
+            <h2 for="inputUsername" style="font-size: 24px !important;" class="col-sm-4 col-form-label text-right">
+              Reservierungsnr.</h2>
+            <div class="col-md-7">
+              <div class="md-form mt-0">
+                <input class="form-control" type="text" placeholder="Reservierungsnummer"
+                       formControlName="reservationCode">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col-6">
-          <div class="form-group">
-            <label>Kundenname</label>
-            <input class="form-control" type="text" placeholder="Kunde" formControlName="clientName">
-          </div>
-          <div class="form-group">
-            <label>Kundenemail</label>
-            <input class="form-control" type="text" placeholder="Email" formControlName="clientEmail">
-          </div>
+        <div class="col-md-5 form-group form-control-lg">
           <div class="row">
-            <div class="col-4">
-              <div class="form-group">
-                <label>Storniert</label>
-                <br/>
-                <div class="btn-group btn-group-toggle">
-                  <label class="btn btn-light"
-                         [ngClass]="{active: activeIsCancelled === 'true'}"
-                         (click)="setActiveIsCancelled($event)">
-                    <input type="radio" formControlName="isCancelled" value="true">
-                    <i class="fas fa-check"></i>
-                  </label>
-                  <label class="btn btn-light"
-                         [ngClass]="{active: activeIsCancelled === 'false'}"
-                         (click)="setActiveIsCancelled($event)">
-                    <input type="radio" formControlName="isCancelled" value="false">
-                    <i class="fas fa-times"></i>
-                  </label>
-                  <label class="btn btn-light"
-                         [ngClass]="{active: activeIsCancelled === ''}"
-                         (click)="setActiveIsCancelled($event)">
-                    <input type="radio" formControlName="isCancelled" value="">
-                    <i class="fas fa-question"></i>
-                  </label>
+            <h2 for="inputUsername" style="font-size: 24px !important;" class="col-sm-4 col-form-label text-right">
+              Kundenname</h2>
+            <div class="col-md-7">
+              <div class="md-form mt-0">
+                <input class="form-control" type="text" placeholder="Kunde" formControlName="clientName">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-5 form-group form-control-lg justify-content-center align-items-center">
+          <div class="row">
+            <h2 for="inputUsername" style="font-size: 24px !important;" class="col-sm-4 col-form-label text-right">
+              Rechnungsnr.</h2>
+            <div class="col-md-7">
+              <div class="md-form mt-0">
+                <input class="form-control" type="text" placeholder="Rechnungnummer" formControlName="invoiceNumber">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 form-group form-control-lg">
+          <div class="row">
+            <h2 for="inputUsername" style="font-size: 24px !important;" class="col-sm-4 col-form-label text-right">
+              Kundenemail</h2>
+            <div class="col-md-7">
+              <div class="md-form mt-0">
+                <input class="form-control" type="text" placeholder="Email" formControlName="clientEmail">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-5 form-group form-control-lg justify-content-center align-items-center">
+          <div class="row">
+            <h2 for="inputUsername" style="font-size: 24px !important;" class="col-sm-4 col-form-label text-right">
+              Aufführung</h2>
+            <div class="col-md-7">
+              <div class="md-form mt-0">
+                <input class="form-control" type="text" placeholder="Aufführung" formControlName="performanceName">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-5 justify-content-center align-items-center">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-md-4">
+              <div class="form-group form-control-lg row justify-content-center align-items-center"
+                   style="margin-bottom: 30px">
+                <h2 style="font-size: 16px !important;" class="col-md-5 col-form-label text-right">Storniert</h2>
+                <div class="btn-group btn-group-toggle col-md-5">
+                  <div class="btn-group btn-group-toggle">
+                    <label class="btn btn-light"
+                           [ngClass]="{active: activeIsCancelled === 'true'}"
+                           (click)="setActiveIsCancelled($event)">
+                      <input type="radio" formControlName="isCancelled" value="true">
+                      <i class="fas fa-check"></i>
+                    </label>
+                    <label class="btn btn-light"
+                           [ngClass]="{active: activeIsCancelled === 'false'}"
+                           (click)="setActiveIsCancelled($event)">
+                      <input type="radio" formControlName="isCancelled" value="false">
+                      <i class="fas fa-times"></i>
+                    </label>
+                    <label class="btn btn-light"
+                           [ngClass]="{active: activeIsCancelled === ''}"
+                           (click)="setActiveIsCancelled($event)">
+                      <input type="radio" formControlName="isCancelled" value="">
+                      <i class="fas fa-question"></i>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-4">
-              <div class="form-group">
-                <label>Bezahlt</label>
-                <br/>
-                <div class="btn-group btn-group-toggle">
-                  <label class="btn btn-light"
-                         [ngClass]="{active: activeIsPaid === 'true'}"
-                         (click)="setActiveIsPaid($event)">
-                    <input type="radio" formControlName="isPaid" value="true">
-                    <i class="fas fa-check"></i>
-                  </label>
-                  <label class="btn btn-light"
-                         [ngClass]="{active: activeIsPaid === 'false'}"
-                         (click)="setActiveIsPaid($event)">
-                    <input type="radio" formControlName="isPaid" value="false">
-                    <i class="fas fa-times"></i>
-                  </label>
-                  <label class="btn btn-light"
-                         [ngClass]="{active: activeIsPaid === ''}"
-                         (click)="setActiveIsPaid($event)">
-                    <input type="radio" formControlName="isPaid" value="">
-                    <i class="fas fa-question"></i>
-                  </label>
+
+
+            <div class="col-md-4">
+              <div class="form-group form-control-lg row justify-content-center align-items-center"
+                   style="margin-bottom: 30px">
+                <h2 style="font-size: 16px !important;" class="col-md-4 col-form-label text-right">Bezahlt</h2>
+                <div class="btn-group btn-group-toggle col-md-6">
+                  <div class="btn-group btn-group-toggle">
+                    <label class="btn btn-light"
+                           [ngClass]="{active: activeIsPaid === 'true'}"
+                           (click)="setActiveIsPaid($event)">
+                      <input type="radio" formControlName="isPaid" value="true">
+                      <i class="fas fa-check"></i>
+                    </label>
+                    <label class="btn btn-light"
+                           [ngClass]="{active: activeIsPaid === 'false'}"
+                           (click)="setActiveIsPaid($event)">
+                      <input type="radio" formControlName="isPaid" value="false">
+                      <i class="fas fa-times"></i>
+                    </label>
+                    <label class="btn btn-light"
+                           [ngClass]="{active: activeIsPaid === ''}"
+                           (click)="setActiveIsPaid($event)">
+                      <input type="radio" formControlName="isPaid" value="">
+                      <i class="fas fa-question"></i>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-4">
-              <div class="form-group">
-                <label>Zurücksetzen</label>
-                <br/>
-                <button class="btn btn-light" (click)="resetSearchForm()">
+
+            <div class="col-md-4">
+              <div class="form-group form-control-lg row justify-content-center align-items-center"
+                   style="margin-bottom: 30px">
+                <h2 style="font-size: 16px !important;" class="col-md-8 col-form-label text-right">Zurücksetzen</h2>
+                <button class="btn btn-light col-md-3" (click)="resetSearchForm()">
                   <i class="fas fa-undo-alt"></i>
                 </button>
               </div>
@@ -97,51 +147,52 @@
         </div>
       </div>
     </form>
-  </div>
-</div>
 
-<div class="row mt-3">
-  <div class="col-12">
-    <table class="table table-striped table-hover">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col" width="20%">Aufführung</th>
-          <th scope="col" width="15%">Reservierungsnr.</th>
-          <th scope="col" width="15%">Rechnungsnr.</th>
-          <th scope="col" width="15%">Kundenname</th>
-          <th scope="col" width="15%">Email</th>
-          <th scope="col" width="10%">Storniert</th>
-          <th scope="col" width="10%">Bezahlt</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let invoice of invoices" routerLink="/invoices/{{ invoice.id }}">
-          <td>{{ getPerformanceTitle(invoice) }}</td>
-          <td>{{ invoice.reservationCode }}</td>
-          <td>{{ invoice.number }}</td>
-          <td>{{ getClientFullName(invoice) }}</td>
-          <td>{{ invoice.client.email }}</td>
-          <td><i class="fas fa-check" *ngIf="invoice.cancelled"></i> </td>
-          <td><i class="fas fa-check" *ngIf="invoice.paid"></i> </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
 
-<div class="row mt-3 mb-5" *ngIf="invoices.length === 0">
-  <div class="col-12 d-flex justify-content-center">
-    <h4>Keine Suchergebnisse!</h4>
-  </div>
-</div>
+    <div class="row mt-3">
+      <div class="col-12">
+        <table class="table table-striped table-hover">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col" width="20%">Aufführung</th>
+            <th scope="col" width="15%">Reservierungsnr.</th>
+            <th scope="col" width="15%">Rechnungsnr.</th>
+            <th scope="col" width="15%">Kundenname</th>
+            <th scope="col" width="15%">Email</th>
+            <th scope="col" width="10%">Storniert</th>
+            <th scope="col" width="10%">Bezahlt</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let invoice of invoices" routerLink="/invoices/{{ invoice.id }}">
+            <td>{{ getPerformanceTitle(invoice) }}</td>
+            <td>{{ invoice.reservationCode }}</td>
+            <td>{{ invoice.number }}</td>
+            <td>{{ getClientFullName(invoice) }}</td>
+            <td>{{ invoice.client.email }}</td>
+            <td><i class="fas fa-check" *ngIf="invoice.cancelled"></i></td>
+            <td><i class="fas fa-check" *ngIf="invoice.paid"></i></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-<div class="row mt-3 mb-5" *ngIf="invoices.length >= count || page !== 0">
-  <div class="col-12 d-flex justify-content-between">
-    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i class="fas fa-chevron-left"></i></button>
-    <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="invoices.length < count"><i class="fas fa-chevron-right"></i></button>
-  </div>
-</div>
+    <div class="row mt-3 mb-5" *ngIf="invoices.length === 0">
+      <div class="col-12 d-flex justify-content-center">
+        <h4>Keine Suchergebnisse!</h4>
+      </div>
+    </div>
 
-<div class="bottom-right">
-  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
-</div>
+    <div class="row mt-3 mb-5" *ngIf="invoices.length >= count || page !== 0">
+      <div class="col-12 d-flex justify-content-between">
+        <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i
+          class="fas fa-chevron-left"></i></button>
+        <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="invoices.length < count"><i
+          class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+    <div class="bottom-right">
+      <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+    </div>
