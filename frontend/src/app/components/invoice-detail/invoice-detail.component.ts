@@ -120,7 +120,11 @@ export class InvoiceDetailComponent implements OnInit {
   }
 
   private getClientFullName(): string {
-    return `${this.invoice.client.name} ${this.invoice.client.surname}`;
+    return this.invoice.client.id === 0 ? 'Anonym' : `${this.invoice.client.name} ${this.invoice.client.surname}`;
+  }
+
+  private getClientEmail(): string {
+    return this.invoice.client.id === 0 ? '' : this.invoice.client.email;
   }
 
   private getPerformanceName(): string {
