@@ -9,7 +9,7 @@
 
 <form [formGroup]="searchForm" class="container">
   <div class="row">
-    <div class="col-2">
+    <div class="col-1">
       <h2 class="float-right">Name</h2>
     </div>
 
@@ -21,7 +21,7 @@
       <h2 class="float-right">Adresse</h2>
     </div>
 
-    <div class="col-4">
+    <div class="col-5">
       <input class="form-control" type="text" placeholder="Straße" formControlName="street">
     </div>
   </div>
@@ -29,9 +29,9 @@
   <div class="row row-separator"></div>
 
   <div class="row">
-    <div class="col-8"></div>
+    <div class="col-7"></div>
 
-    <div class="col-2">
+    <div class="col-3">
       <input class="form-control" type="text" placeholder="PLZ / Ort" formControlName="place">
     </div>
 
@@ -104,11 +104,9 @@
 
 <!-- lower right buttons -->
 
-<!-- todo 39259 button that links to location creation screen
 <div class="bottom-right-above-1">
-  <button routerLink="/best-events" type="button" class="btn btn-primary btn-lg">Top 10</button>
+  <button type="button" (click)="addLocation()" class="btn btn-primary btn-lg btn-font-size-reduced">Erstellen</button>
 </div>
--->
 
 <div class="bottom-right">
   <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>

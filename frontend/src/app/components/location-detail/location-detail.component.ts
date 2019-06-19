@@ -14,6 +14,7 @@ import {HallCreationService} from '../../services/hall-creation.service';
 export class LocationDetailComponent implements OnInit {
 
   location: Location;
+  combinedPostalCodeAndPlace: String;
   halls: Hall[] = [];
   page = 0;
   count = 20;
@@ -25,6 +26,8 @@ export class LocationDetailComponent implements OnInit {
     private alertService: AlertService,
     private router: Router
   ) {
+    this.location = new Location(null, null, null, null, null, null);
+    this.combinedPostalCodeAndPlace = null;
   }
 
   ngOnInit() {
@@ -36,12 +39,12 @@ export class LocationDetailComponent implements OnInit {
     this.locationService.getLocationById(id).subscribe(
       (location: Location) => {
         this.location = location;
+        this.combinedPostalCodeAndPlace = this.location.postalCode + ' ' + this.location.place;
         this.loadHalls();
         console.log('loaded location with name: ' + this.location.name);
       },
       error => {
         this.alertService.error('Ort konnte nicht vollständig geladen werden.');
-        console.log(error);
       }
     );
   }
@@ -52,7 +55,7 @@ export class LocationDetailComponent implements OnInit {
         this.halls = halls;
       },
       error => {
-        this.alertService.error('Ort konnte nicht vollständig geladen werden.');
+        this.alertService.error('Säle konnten nicht geladen werden.');
       }
     );
   }

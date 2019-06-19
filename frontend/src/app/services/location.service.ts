@@ -11,6 +11,7 @@ import {Hall} from '../dtos/hall';
 export class LocationService {
 
   private locationBaseUri: string = this.globals.backendUri + '/locations';
+  private locationToAdd: Location = null; // stores a location for filter / add communication
 
   constructor(private httpClient: HttpClient, private globals: Globals) {
   }
@@ -30,5 +31,18 @@ export class LocationService {
   getHallsByLocationId(id: number): Observable<Hall[]> {
     console.log('Load halls of location with id ' + id);
     return this.httpClient.get<Hall[]>(this.locationBaseUri + '/' + id + '/halls');
+  }
+
+  createLocation(location: Location): Observable<Location> {
+    console.log('Save Location ' + location.name);
+    return this.httpClient.post<Location>(this.locationBaseUri, location);
+  }
+
+  getLocationToAdd(): Location {
+    return this.locationToAdd;
+  }
+
+  setLocationToAdd(locationToAdd: Location): void {
+    this.locationToAdd = locationToAdd;
   }
 }
