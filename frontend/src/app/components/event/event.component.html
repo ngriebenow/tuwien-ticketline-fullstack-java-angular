@@ -5,76 +5,77 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 2px">
+        <h2 class="col-md-2 text-right">Ort</h2>
+        <div class="col-md-4 small-padding">
+          <input readonly class="form-control" type="text" value="{{event.hall.location.name}}">
+        </div>
+        <div class="col-md-4 small-padding">
+          <input readonly class="form-control" type="text" value="{{event.hall.location.street}}">
+        </div>
+        <div class="col-sm-1 small-padding">
+          <input readonly class="form-control" type="text" style="padding: 0px; padding-left: 5px"
+                 value="{{event.hall.location.postalCode}}">
+        </div>
+      </div>
+
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 20px">
+        <div class="col-md-2"></div>
+        <div class="col-md-4 small-padding">
+          <input readonly class="form-control" type="text" value="{{event.hall.location.place}}">
+        </div>
+        <div class="col-md-4 small-padding">
+          <input readonly class="form-control" type="text" value="{{event.hall.location.country}}">
+        </div>
+        <div class="col-md-1 small-padding"></div>
+      </div>
+
+
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 20px">
+        <h2 class="col-md-2 text-right">Dauer/€</h2>
+        <div class="col-md-4 small-padding">
+          <input readonly class="form-control" type="text" value="{{event.duration / 3600 | number:'1.0-2' }}h">
+        </div>
+        <div class="col-md-4 small-padding">
+          <input readonly class="form-control" type="text"
+                 value="{{event.priceCategories[0].priceInCents/100 | currency:'EUR'}} - {{event.priceCategories[event.priceCategories.length-1].priceInCents/100 | currency:'EUR'}}">
+        </div>
+        <div class="col-md-1 small-padding"></div>
+      </div>
+
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 20px">
+        <h2 class="col-md-2 text-right">Künstler</h2>
+        <div class="col-md-4 small-padding">
+          <input readonly class="form-control" type="text" value="{{event.artists[0].name}}">
+        </div>
+        <div class="col-md-4 small-padding">
+          <input readonly class="form-control" type="text" value="{{event.artists[0].surname}}">
+        </div>
+        <div class="col-md-1 small-padding">
+          <button class="btn btn-primary" data-toggle="modal"
+                  [attr.data-target]="'.artist-modal'">Mehr
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-2">
+          <h2 class="float-right">Inhalt</h2>
+        </div>
+        <div class="col-md-9">
+          <textarea readonly class="form-control">{{ event.content }}</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <div class="row">
     <div class="col-6">
       <div class="row">
-        <div class="col-3">
-          <h2 class="float-right">Ort</h2>
-        </div>
-        <div class="col-4">
-          <input readonly class="form-control" type="text" value="{{event.hall.location.name}}" >
-        </div>
-        <div class="col-4">
-          <input readonly class="form-control" type="text" value="{{event.hall.location.street}}" >
-        </div>
-        <div class="col-1">
-          <input readonly class="form-control" type="text" style="padding: 0px; padding-left: 5px" value="{{event.hall.location.postalCode}}" >
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-3">
-
-        </div>
-        <div class="col-4">
-          <input readonly class="form-control" type="text" value="{{event.hall.location.place}}" >
-        </div>
-        <div class="col-4">
-          <input readonly class="form-control" type="text" value="{{event.hall.location.country}}" >
-        </div>
-        <div class="col-1">
-
-        </div>
-      </div>
-
-      <div class="row row-separator"></div>
-
-      <div class="row">
-        <div class="col-3">
-          <h2 class="float-right">Dauer/€</h2>
-        </div>
-        <div class="col-4">
-          <input readonly class="form-control" type="text" value="{{event.duration / 3600 | number:'1.0-2' }}h" >
-        </div>
-        <div class="col-4">
-          <input readonly class="form-control" type="text"
-                 value="{{event.priceCategories[0].priceInCents/100 | currency:'EUR'}} - {{event.priceCategories[event.priceCategories.length-1].priceInCents/100 | currency:'EUR'}}" >
-        </div>
-        <div class="col-1">
-        </div>
-      </div>
-
-      <div class="row row-separator"></div>
-
-      <div class="row">
-        <div class="col-3">
-          <h2 class="float-right">Künstler</h2>
-        </div>
-        <div class="col-4">
-          <input readonly class="form-control" type="text" value="{{event.artists[0].name}}" >
-        </div>
-        <div class="col-4">
-          <input readonly class="form-control" type="text" value="{{event.artists[0].surname}}" >
-        </div>
-        <div class="col-1">
-          <button class="btn btn-primary" data-toggle="modal"
-                  [attr.data-target]="'.artist-modal'" >Mehr</button>
-        </div>
-
-
-
-
         <div [ngClass]="['modal', 'fade', 'artist-modal']" tabindex="-1" role="dialog"
              aria-labelledby="Message details modal"
              aria-hidden="true">
@@ -112,15 +113,8 @@
 
       </div>
     </div>
-    <div class="col-1">
-      <h2 class="float-right">Inhalt</h2>
-    </div>
-    <div class="col-5">
-      <textarea readonly class="form-control">{{ event.content }}</textarea>
-    </div>
+
   </div>
-
-
 
 
   <div class="row mt-3"></div>
@@ -135,7 +129,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let x of performances" (click)="savePerformance(x.id)" [routerLink]="['/events', event.id ,'performances', x.id, 'hall-viewing']">
+    <tr *ngFor="let x of performances" (click)="savePerformance(x.id)"
+        [routerLink]="['/events', event.id ,'performances', x.id, 'hall-viewing']">
       <td>{{ x.name }}</td>
       <td>{{ x.startAt | date:'dd.MM.yyyy' }}</td>
       <td>{{ x.startAt | date:'HH:mm' }}</td>
@@ -152,8 +147,10 @@
 
 <div class="row mt-3 mb-5" *ngIf="performances.length >= count || page !== 0">
   <div class="col-12 d-flex justify-content-between">
-    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i class="fas fa-chevron-left"></i></button>
-    <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="performances.length < count"><i class="fas fa-chevron-right"></i></button>
+    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i
+      class="fas fa-chevron-left"></i></button>
+    <button class="btn btn-primary page-button" (click)="nextPage()" [disabled]="performances.length < count"><i
+      class="fas fa-chevron-right"></i></button>
   </div>
 </div>
 

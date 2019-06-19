@@ -1,19 +1,12 @@
 @import "../../../colors";
 
-$theme-colors:(
-  "primary": $main-blue,
-  "secondary":$main-orange,
-  "danger": $custom-red,
-  "success": $custom-green,
+h2 {
+  font-size: 24px !important;
+}
 
-  "lightgray": $light-gray,
-  "mediumGray": $medium-gray,
-  "darkGray": $dark-gray,
-  "lightOrange": $light-orange,
-  "mediumBlue": $medium-blue,
-  "darkBlue": $dark-blue
-);
-
+.small-padding {
+  padding: 5px !important;
+}
 
 .form-control {
   width: 100% !important;
@@ -38,7 +31,7 @@ textarea{
   color: $dark-gray !important;
   overflow: hidden !important;
   resize: none;
-  height: 100%;
+  height: 230px;
 }
 
 textarea.form-control {
