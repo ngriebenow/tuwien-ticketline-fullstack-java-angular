@@ -1,91 +1,82 @@
-  <div class="row" xmlns="http://www.w3.org/1999/html">
-    <div class="col-12">
-      <h1>Veranstaltungen</h1>
-    </div>
+<div class="row" xmlns="http://www.w3.org/1999/html">
+  <div class="col-12">
+    <h1>Veranstaltungen</h1>
   </div>
+</div>
 
-
-
-
-  <div class="row">
-    <div class="col-2">
-      <h2 class="float-right">Veranstaltung</h2>
-    </div>
-    <div class="col-2">
-      <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.name" type="text"/>
-    </div>
-    <div class="col-2">
-      <select class="select-control" (change)="loadEvents()"
-              [(ngModel)]="eventFilter.eventCategory"
-              [style.background]="getColor(fstCategory.selected)"
-              [style.color] = "getTextColor(fstCategory.selected)">
-        <option #fstCategory value="">(alle)</option>
-        <option *ngFor="let ev of eventCategories" value="{{ev}}">{{ ev }}</option>
-      </select>
-    </div>
-
-
-    <div class="col-2">
-      <h2 class="float-right">Datum/Preis</h2>
-    </div>
-    <div class="col-2">
-      <form class="date-control">
-        <my-date-picker placeholder="tt.mm.jjjj" name="mydate"  (dateChanged)="onDateChanged($event)"  [options]="myDatePickerOptions"
-                        required></my-date-picker>
-      </form>
-    </div>
-    <div class="col-2">
-
-
-
-      <div style="margin: 0" class="row">
-        <div class="col-10">
-          <input class="form-control" id="durationInput" placeholder="Dauer" (change)="CheckNumberField('durationInput')" [(ngModel)]="eventFilter.duration" type="text" value="">
+<div class="container">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-6">
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 10px">
+        <h2 class="col-md-3 float-right">Veranstaltung</h2>
+        <div class="col-md-4">
+          <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.name" type="text"/>
         </div>
-        <div class="col-2" style="padding-left: 0">
+        <div class="col-md-4">
+          <select class="select-control" (change)="loadEvents()"
+                  [(ngModel)]="eventFilter.eventCategory"
+                  [style.background]="getColor(fstCategory.selected)"
+                  [style.color]="getTextColor(fstCategory.selected)">
+            <option #fstCategory value="">(alle)</option>
+            <option *ngFor="let ev of eventCategories" value="{{ev}}">{{ ev }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 25px">
+        <div class="col-md-3"></div>
+        <div class="col-md-4">
+          <input class="form-control" placeholder="Künstler" (change)="loadEvents()" [(ngModel)]="eventFilter.artistName"
+                 type="text"/>
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" placeholder="Inhalt" (change)="loadEvents()" [(ngModel)]="eventFilter.content"
+                 type="text"/>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="col-md-6">
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 5px">
+        <h2 class="col-md-3 float-right" style="margin-right: -15px !important;">Datum/Preis</h2>
+        <div class="col-md-4">
+          <form class="date-control">
+            <my-date-picker placeholder="tt.mm.jjjj" name="mydate" (dateChanged)="onDateChanged($event)"
+                            [options]="myDatePickerOptions"
+                            required></my-date-picker>
+          </form>
+        </div>
+        <div class="col-md-4">
+          <input style="margin-top: -8px !important;" class="form-control" id="durationInput" placeholder="Dauer" (change)="CheckNumberField('durationInput')"
+                 [(ngModel)]="eventFilter.duration" type="text" value="">
+        </div>
+        <div class="col-sm-1" style="padding-left: 0">
           <div class="align-content-end">
             <label style="vertical-align: center; padding: 0; margin-top: 5px">min</label>
           </div>
         </div>
       </div>
 
-    </div>
-
-  </div>
-
-
-
-  <div class="row">
-    <div class="col-2">
-    </div>
-    <div class="col-2">
-      <input class="form-control" placeholder="Künstler" (change)="loadEvents()" [(ngModel)]="eventFilter.artistName" type="text"/>
-    </div>
-    <div class="col-2">
-      <input class="form-control" placeholder="Inhalt" (change)="loadEvents()" [(ngModel)]="eventFilter.content" type="text"/>
-    </div>
-
-    <div class="col-2"></div>
-
-    <div class="col-2">
-
-      <select class="select-control" (change)="loadEvents()"
-              [style.background]="getColor(fstTime.selected)"
-              [style.color] = "getTextColor(fstTime.selected)"
-              [(ngModel)]="eventFilter.startAtTime" >
-        <option #fstTime value="" >(alle)</option>
-        <option *ngFor = "let item of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]"
-                value="{{item}}-00">{{ item }}:00</option>
-      </select>
-
-
-    </div>
-    <div class="col-2">
-      <div style="margin: 0" class="row">
-        <div class="col-10">
-          <input class="form-control" id="priceInput" placeholder="Preis" (change)="CheckNumberField('priceInput');" type="text" [(ngModel)]="eventFilter.priceInEuro" value=""/>
+      <div class="row justify-content-center align-items-center" style="margin-bottom: 25px">
+        <div class="col-md-3" style="margin-right: -15px !important;"></div>
+        <div class="col-md-4">
+          <select class="select-control" (change)="loadEvents()"
+                  [style.background]="getColor(fstTime.selected)"
+                  [style.color]="getTextColor(fstTime.selected)"
+                  [(ngModel)]="eventFilter.startAtTime">
+            <option #fstTime value="">(alle)</option>
+            <option *ngFor="let item of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]"
+                    value="{{item}}-00">{{ item }}:00
+            </option>
+          </select>
         </div>
-        <div class="col-2" style="padding-left: 0">
+        <div class="col-md-4">
+          <input class="form-control" id="priceInput" placeholder="Preis" (change)="CheckNumberField('priceInput');"
+                 type="text" [(ngModel)]="eventFilter.priceInEuro" value=""/>
+        </div>
+        <div class="col-sm-1" style="padding-left: 0">
           <div class="align-content-end">
             <label style="vertical-align: center; padding: 0; margin-top: 5px">€</label>
           </div>
@@ -93,94 +84,92 @@
       </div>
     </div>
   </div>
+</div>
 
 
 
-  <div class="row row-separator"></div>
 
 
 
-  <div class="row">
-    <div class="col-2">
-      <h2 class="float-right">Adresse</h2>
-    </div>
+<div class="row">
+  <div class="col-2">
+    <h2 class="float-right">Adresse</h2>
+  </div>
 
-    <div class="col-4">
-      <input class="form-control" placeholder="Straße" (change)="loadEvents()" [(ngModel)]="eventFilter.locationStreet"  type="text"/>
-    </div>
-
-
-    <div class="col-2">
-      <h2 class="float-right">Standort</h2>
-    </div>
-
-
-    <div class="col-4">
-      <div class="row">
-        <div class="col-11">
-      <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.locationName" type="text"/>
-
-        </div>
-      </div>
-    </div>
-
-
+  <div class="col-4">
+    <input class="form-control" placeholder="Straße" (change)="loadEvents()" [(ngModel)]="eventFilter.locationStreet"
+           type="text"/>
   </div>
 
 
-  <div class="row">
-    <div class="col-2"></div>
-
-    <div class="col-2">
-      <input class="form-control" placeholder="Ortsname, PLZ" (change)="loadEvents()" [(ngModel)]="eventFilter.locationPlace" type="text"/>
-    </div>
-    <div class="col-2">
-      <select class="select-control" (change)="loadEvents()" [(ngModel)]="eventFilter.locationCountry"
-              [style.background]="getColor(fstCountry.selected)"
-              [style.color] = "getTextColor(fstCountry.selected)">
-        <option #fstCountry value="">(alle)</option>
-        <option value="Austria">Österreich</option>
-        <option value="Germany">Deutschland</option>
-        <option value="Hungary">Ungarn</option>
-        <option value="Italy">Italien</option>
-        <option value="Liechtenstein">Lichtenstein</option>
-        <option value="Slovakia">Slovakei</option>
-        <option value="Slovenia">Slovenian</option>
-        <option value="Switzerland">Schweiz</option>
-        <option value="Czech">Tschechien</option>
-      </select>
-    </div>
-
-
-    <div class="col-2"></div>
-
-
-    <div class="col-4">
-      <div class="row">
-        <div class="col-11">
-          <input class="form-control" placeholder="Saalname" (change)="loadEvents()" [(ngModel)]="eventFilter.hallName"  type="text"/>
-        </div>
-      </div>
-       </div>
-
+  <div class="col-2">
+    <h2 class="float-right">Standort</h2>
   </div>
 
 
+  <div class="col-4">
+    <div class="row">
+      <div class="col-11">
+        <input class="form-control" placeholder="Name" (change)="loadEvents()" [(ngModel)]="eventFilter.locationName"
+               type="text"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-2"></div>
+
+  <div class="col-2">
+    <input class="form-control" placeholder="Ortsname, PLZ" (change)="loadEvents()"
+           [(ngModel)]="eventFilter.locationPlace" type="text"/>
+  </div>
+  <div class="col-2">
+    <select class="select-control" (change)="loadEvents()" [(ngModel)]="eventFilter.locationCountry"
+            [style.background]="getColor(fstCountry.selected)"
+            [style.color]="getTextColor(fstCountry.selected)">
+      <option #fstCountry value="">(alle)</option>
+      <option value="Austria">Österreich</option>
+      <option value="Germany">Deutschland</option>
+      <option value="Hungary">Ungarn</option>
+      <option value="Italy">Italien</option>
+      <option value="Liechtenstein">Lichtenstein</option>
+      <option value="Slovakia">Slovakei</option>
+      <option value="Slovenia">Slovenian</option>
+      <option value="Switzerland">Schweiz</option>
+      <option value="Czech">Tschechien</option>
+    </select>
+  </div>
+
+
+  <div class="col-2"></div>
+
+
+  <div class="col-4">
+    <div class="row">
+      <div class="col-11">
+        <input class="form-control" placeholder="Saalname" (change)="loadEvents()" [(ngModel)]="eventFilter.hallName"
+               type="text"/>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 
 
 
-  <div class="row mt-3"></div>
-
-<div class="row" *ngFor="let event of eventSearchResults">
+<div class="row mt-4" *ngFor="let event of eventSearchResults">
   <div routerLink="/events/{{event.id}}" class="card">
-    <div  class="card-body">
+    <div class="card-body">
       <div class="row">
         <div class="col-3">
           <h5 class="card-title">{{ event.name }}</h5>
         </div>
         <div class="col-2 align-bottom">
-            <h6 class="card-subtitle mb-2 text-muted card-event-info"><i class="far fa-calendar-alt"></i> {{ event.category | titlecase }}, {{ event.duration / 60 | number:'1.0-0' }} min</h6>
+          <h6 class="card-subtitle mb-2 text-muted card-event-info"><i class="far fa-calendar-alt"></i> {{
+            event.category | titlecase }}, {{ event.duration / 60 | number:'1.0-0' }} min</h6>
         </div>
         <div class="col-4">
           <h6 class="card-subtitle mb-2 text-muted card-event-info">
@@ -189,13 +178,13 @@
         </div>
         <div class="col-2">
           <div class="row">
-            <h6 class="card-subtitle mb-2 text-muted card-event-info" >
+            <h6 class="card-subtitle mb-2 text-muted card-event-info">
               <i class="fas fa-map-marker-alt"></i> {{ event.locationPlace }}</h6>
           </div>
         </div>
         <div class="col-1">
           <div class="row">
-            <h6 class="card-subtitle mb-2 text-muted card-event-info" >
+            <h6 class="card-subtitle mb-2 text-muted card-event-info">
               <i class="far fa-money-bill-alt"></i> {{ event.priceRange }}</h6>
           </div>
         </div>
@@ -203,36 +192,39 @@
       <div>
 
         <div class="row event-body">
-        <div class="col-2" *ngFor="let p of event.performances">
-          <div class="card card-performance" (click)="$event.stopPropagation();showHall(event,p)">
-            <div class="card-performance-body">
-              <div class="col-12">
-                <h6 class="card-performance-title float-none">{{ p.startAt | date:'HH:mm, dd.MM.yyyy' }}</h6>
+          <div class="col-2" *ngFor="let p of event.performances">
+            <div class="card card-performance" (click)="$event.stopPropagation();showHall(event,p)">
+              <div class="card-performance-body">
+                <div class="col-12">
+                  <h6 class="card-performance-title float-none">{{ p.startAt | date:'HH:mm, dd.MM.yyyy' }}</h6>
+                </div>
+                <!--<h6 class="card-performance-subtitle">{{ p.name }}</h6>-->
               </div>
-              <!--<h6 class="card-performance-subtitle">{{ p.name }}</h6>-->
             </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-  <div class="row mt-3 mb-5" *ngIf="eventSearchResults.length === 0">
-    <div class="col-12 d-flex justify-content-center">
-      <h4>Keine Suchergebnisse!</h4>
-    </div>
+<div class="row mt-3 mb-5" *ngIf="eventSearchResults.length === 0">
+  <div class="col-12 d-flex justify-content-center">
+    <h4>Keine Suchergebnisse!</h4>
   </div>
-  <div class="row mt-3 mb-5" *ngIf="eventSearchResults.length >= count || page !== 0">
-      <div class="col-12 d-flex justify-content-between">
-        <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i class="fas fa-chevron-left"></i></button>
-        <button class="btn btn-primary page-button"  [disabled]="eventSearchResults.length < count" (click)="nextPage()"><i class="fas fa-chevron-right"></i></button>
-      </div>
+</div>
+<div class="row mt-3 mb-5" *ngIf="eventSearchResults.length >= count || page !== 0">
+  <div class="col-12 d-flex justify-content-between">
+    <button class="btn btn-primary page-button" (click)="previousPage()" [disabled]="page === 0"><i
+      class="fas fa-chevron-left"></i></button>
+    <button class="btn btn-primary page-button" [disabled]="eventSearchResults.length < count" (click)="nextPage()"><i
+      class="fas fa-chevron-right"></i></button>
   </div>
-  <div class="bottom-right-above-1">
-    <button routerLink="/best-events" type="button" class="btn btn-primary btn-lg">Top 10</button>
-  </div>
-  <div class="bottom-right">
-    <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
-  </div>
+</div>
+
+<div class="bottom-right-above-1">
+  <button routerLink="/best-events" type="button" class="btn btn-primary btn-lg">Top 10</button>
+</div>
+<div class="bottom-right">
+  <button onclick="history.back(-1)" type="button" class="btn btn-secondary btn-lg">Zurück</button>
+</div>
 
