@@ -316,7 +316,6 @@ export class InvoiceDetailComponent implements OnInit {
     this.dialogService.open(message, onYes);
   }
 
-  // TODO: next sprint
   private printInvoice(): void {
     if (!this.isBought() && !this.isCancelled()) {
       return;
