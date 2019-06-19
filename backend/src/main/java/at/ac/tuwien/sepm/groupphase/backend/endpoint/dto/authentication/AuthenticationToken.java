@@ -81,7 +81,8 @@ public class AuthenticationToken {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Build new AuthenticationToken and return it.
+     * @return AuthenticationToken
      */
     public AuthenticationToken build() {
       AuthenticationToken authenticationToken = new AuthenticationToken();

@@ -176,7 +176,8 @@ public class AuthenticationTokenInfo {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Build object with information about the current token.
+     * @return AuthenticationTokenInfo - Information about current token
      */
     public AuthenticationTokenInfo build() {
       AuthenticationTokenInfo authenticationTokenInfo = new AuthenticationTokenInfo();

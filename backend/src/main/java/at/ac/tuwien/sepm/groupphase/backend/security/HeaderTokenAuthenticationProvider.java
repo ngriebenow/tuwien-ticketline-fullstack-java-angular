@@ -13,7 +13,8 @@ public class HeaderTokenAuthenticationProvider implements AuthenticationProvider
   private final HeaderTokenAuthenticationService headerTokenAuthenticationService;
 
   /**
-   * TODO: Add JavaDoc.
+   * Constructor for HeaderTokenAuthenticationProvider.
+   * Assures that the HeaderTokenAuthenticationService is not null before saving it.
    */
   public HeaderTokenAuthenticationProvider(
       HeaderTokenAuthenticationService headerTokenAuthenticationService) {

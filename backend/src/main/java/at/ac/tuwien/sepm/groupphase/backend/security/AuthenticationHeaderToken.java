@@ -12,7 +12,7 @@ public class AuthenticationHeaderToken extends AbstractAuthenticationToken {
   private final Object principal;
 
   /**
-   * TODO: Add JavaDoc.
+   * Constructor for AuthenticationHeaderToken.
    */
   public AuthenticationHeaderToken(String token) {
     super(null);
@@ -22,7 +22,7 @@ public class AuthenticationHeaderToken extends AbstractAuthenticationToken {
   }
 
   /**
-   * TODO: Add JavaDoc.
+   * Constructor for AuthenticationHeaderToken.
    */
   public AuthenticationHeaderToken(
       Object principal, String token, Collection<? extends GrantedAuthority> authorities) {

@@ -80,7 +80,8 @@ public class AuthenticationRequest {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Build AuthenticationRequest and return it.
+     * @return AuthenticationRequest
      */
     public AuthenticationRequest build() {
       AuthenticationRequest authenticationRequest = new AuthenticationRequest();
