@@ -45,7 +45,7 @@ export class UserEditComponent implements OnInit {
     );
   }
 
-  maybeUpdate() {
+  public maybeUpdate() {
     if (this.admin === 'false' && this.queryParams.admin === 'true') {
       const onYes = () => {
         this.updateUser();

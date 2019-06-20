@@ -11,7 +11,7 @@ import {AlertService} from '../../services/alert.service';
 })
 export class LocationAddComponent implements OnInit, OnDestroy {
 
-  private location: Location;
+  public location: Location;
 
   constructor(private locationService: LocationService, private router: Router, private alertService: AlertService) { }
 
