@@ -35,6 +35,19 @@ public class UnitDto {
   @ApiModelProperty(required = true, name = "The capacity of the unit")
   private int capacity;
 
+  public UnitDto() {
+
+  }
+
+  private UnitDto(Builder builder) {
+    setId(builder.id);
+    setHallId(builder.hallId);
+    setName(builder.name);
+    setLowerBoundary(builder.lowerBoundary);
+    setUpperBoundary(builder.upperBoundary);
+    setCapacity(builder.capacity);
+  }
+
   public Long getId() {
     return id;
   }
@@ -81,5 +94,52 @@ public class UnitDto {
 
   public void setCapacity(int capacity) {
     this.capacity = capacity;
+  }
+
+  public static final class Builder {
+
+    private Long id;
+    private Long hallId;
+    private String name;
+    private PointDto lowerBoundary;
+    private PointDto upperBoundary;
+    private int capacity;
+
+    public Builder() {
+    }
+
+    public Builder id(Long val) {
+      id = val;
+      return this;
+    }
+
+    public Builder hallId(Long val) {
+      hallId = val;
+      return this;
+    }
+
+    public Builder name(String val) {
+      name = val;
+      return this;
+    }
+
+    public Builder lowerBoundary(PointDto val) {
+      lowerBoundary = val;
+      return this;
+    }
+
+    public Builder upperBoundary(PointDto val) {
+      upperBoundary = val;
+      return this;
+    }
+
+    public Builder capacity(int val) {
+      capacity = val;
+      return this;
+    }
+
+    public UnitDto build() {
+      return new UnitDto(this);
+    }
   }
 }
