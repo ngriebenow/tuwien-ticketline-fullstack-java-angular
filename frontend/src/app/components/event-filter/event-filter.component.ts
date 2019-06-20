@@ -126,6 +126,12 @@ export class EventFilterComponent implements OnInit {
       this.loadEvents();
     } else {
       (<HTMLInputElement>document.getElementById(elid)).value = '';
+      if (elid === 'durationInput') {
+        this.eventFilter.duration = null;
+      } else {
+        this.eventFilter.priceInEuro = null;
+      }
+
       this.alertService.warning('Es sind nur Zahlen für dieses Feld erlaubt.');
     }
 
