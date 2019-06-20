@@ -5,6 +5,8 @@ import at.ac.tuwien.sepm.groupphase.backend.security.HeaderTokenAuthenticationFi
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
@@ -38,8 +40,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class SecurityConfiguration {
 
   private final PasswordEncoder passwordEncoder;
-  @Autowired
-  private Environment env;
+  @Autowired private Environment env;
 
   public SecurityConfiguration(PasswordEncoder passwordEncoder) {
     this.passwordEncoder = passwordEncoder;
@@ -65,24 +66,33 @@ public class SecurityConfiguration {
   }
 
   /**
-   * This is a deprecated security configuration to enable authentication before
-   * the user model was implemented.
+   * Creates new h2 datasource with properties read from db.properties Creates new h2 datasource
+   * with properties read from the current profile.
+   *
+   * @return DataSource
+   */
+  public DataSource getDataSource() {
+    BasicDataSource dataSource = new BasicDataSource();
+    dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
+    dataSource.setUrl(env.getProperty("spring.datasource.url"));
+    dataSource.setUsername(env.getProperty("spring.datasource.username"));
+    dataSource.setPassword(env.getProperty("spring.datasource.password"));
+    return dataSource;
+  }
+
+  /**
+   * This is a deprecated security configuration to enable authentication before the user model was
+   * implemented.
    */
   @Autowired
   public void configureGlobal(
       AuthenticationManagerBuilder auth, List<AuthenticationProvider> providerList)
       throws Exception {
-    new InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder>()
-        .withUser("user")
-        .password(passwordEncoder.encode("password"))
-        .authorities("USER")
-        .and()
-        .withUser("admin")
-        .password(passwordEncoder.encode("password"))
-        .authorities("ADMIN", "USER")
-        .and()
-        .passwordEncoder(passwordEncoder)
-        .configure(auth);
+    auth.jdbcAuthentication()
+        .dataSource(getDataSource())
+        .usersByUsernameQuery("select username, password, enabled" + " from user where username=?")
+        .authoritiesByUsernameQuery("select username, authority " + "from user where username=?")
+        .passwordEncoder(new BCryptPasswordEncoder());
     providerList.forEach(auth::authenticationProvider);
   }
 
