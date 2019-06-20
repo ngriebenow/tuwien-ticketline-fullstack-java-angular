@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.Objects;
 import javax.validation.constraints.NotBlank;
 
 @ApiModel(value = "LocationDto", description = "A DTO for a location via rest")
@@ -89,5 +90,22 @@ public class LocationDto {
     locationDto.setStreet(street);
     locationDto.setPostalCode(postalCode);
     return locationDto;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    LocationDto locationDto = (LocationDto) o;
+    return Objects.equals(id, locationDto.id)
+        && Objects.equals(name, locationDto.name)
+        && Objects.equals(street, locationDto.street)
+        && Objects.equals(postalCode, locationDto.postalCode)
+        && Objects.equals(place, locationDto.place)
+        && Objects.equals(country, locationDto.country);
   }
 }

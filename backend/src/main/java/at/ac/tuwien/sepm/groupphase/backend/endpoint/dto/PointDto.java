@@ -47,6 +47,15 @@ public class PointDto {
     return pointDto;
   }
 
+  public PointDto() {
+
+  }
+
+  private PointDto(Builder builder) {
+    setCoordinateX(builder.coordinateX);
+    setCoordinateY(builder.coordinateY);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -58,5 +67,28 @@ public class PointDto {
     PointDto pointDto = (PointDto) o;
     return coordinateX == pointDto.coordinateX
         && coordinateY == pointDto.coordinateY;
+  }
+
+  public static final class Builder {
+
+    private int coordinateX;
+    private int coordinateY;
+
+    public Builder() {
+    }
+
+    public Builder coordinateX(int val) {
+      coordinateX = val;
+      return this;
+    }
+
+    public Builder coordinateY(int val) {
+      coordinateY = val;
+      return this;
+    }
+
+    public PointDto build() {
+      return new PointDto(this);
+    }
   }
 }

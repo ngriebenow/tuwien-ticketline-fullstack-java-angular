@@ -99,4 +99,64 @@ public class HallRequestDto {
     hallRequestDto.setUnits(units);
     return hallRequestDto;
   }
+
+  public HallRequestDto() {
+
+  }
+
+  private HallRequestDto(Builder builder) {
+    setId(builder.id);
+    setVersion(builder.version);
+    setName(builder.name);
+    setBoundaryPoint(builder.boundaryPoint);
+    setLocation(builder.location);
+    setUnits(builder.units);
+  }
+
+  public static final class Builder {
+
+    private Long id;
+    private int version;
+    private String name;
+    private PointDto boundaryPoint;
+    private LocationDto location;
+    private List<UnitDto> units;
+
+    public Builder() {
+    }
+
+    public Builder id(Long val) {
+      id = val;
+      return this;
+    }
+
+    public Builder version(int val) {
+      version = val;
+      return this;
+    }
+
+    public Builder name(String val) {
+      name = val;
+      return this;
+    }
+
+    public Builder boundaryPoint(PointDto val) {
+      boundaryPoint = val;
+      return this;
+    }
+
+    public Builder location(LocationDto val) {
+      location = val;
+      return this;
+    }
+
+    public Builder units(List<UnitDto> val) {
+      units = val;
+      return this;
+    }
+
+    public HallRequestDto build() {
+      return new HallRequestDto(this);
+    }
+  }
 }

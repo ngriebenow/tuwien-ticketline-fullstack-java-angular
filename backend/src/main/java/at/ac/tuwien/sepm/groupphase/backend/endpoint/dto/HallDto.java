@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.endpoint.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.Objects;
 
 @ApiModel(value = "HallDto", description = "A DTO for a hall via rest")
 public class HallDto {
@@ -75,5 +76,21 @@ public class HallDto {
     hallDto.setName(name);
     hallDto.setVersion(version);
     return hallDto;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    HallDto hallDto = (HallDto) o;
+    return version == hallDto.version
+        && Objects.equals(id, hallDto.id)
+        && Objects.equals(name, hallDto.name)
+        && Objects.equals(boundaryPoint, hallDto.boundaryPoint)
+        && Objects.equals(location, hallDto.location);
   }
 }

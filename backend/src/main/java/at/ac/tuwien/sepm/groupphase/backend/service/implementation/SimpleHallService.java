@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.HallRequestDto;
 import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UnitDto;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Hall;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Point;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Unit;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.hall.HallMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.mapper.unit.UnitMapper;
@@ -81,7 +82,7 @@ public class SimpleHallService implements HallService {
 
     // validate units
     try {
-      validUnits(units);
+      validUnits(units, hall.getBoundaryPoint());
     } catch (ValidationException e) {
       LOGGER.error(e.getMessage());
       throw e;
@@ -130,7 +131,7 @@ public class SimpleHallService implements HallService {
 
     // validate units
     try {
-      validUnits(units);
+      validUnits(units, hall.getBoundaryPoint());
     } catch (ValidationException e) {
       LOGGER.error(e.getMessage());
       throw e;
@@ -174,7 +175,7 @@ public class SimpleHallService implements HallService {
    * @param units != null
    * @throws ValidationException if validation goes wrong
    */
-  private void validUnits(List<Unit> units) throws ValidationException {
+  private void validUnits(List<Unit> units, Point hallSize) throws ValidationException {
     // separate units into seats and sectors
     List<Unit> seats = new ArrayList<>();
     List<Unit> sectors = new ArrayList<>();
@@ -215,6 +216,14 @@ public class SimpleHallService implements HallService {
               + " / " + units.get(j).getName() + units.get(j).getUpperBoundary().getCoordinateX()
               + "/" + units.get(j).getUpperBoundary().getCoordinateY());
         }
+      }
+      if (unit1.getUpperBoundary().getCoordinateX() < 1
+          || unit1.getUpperBoundary().getCoordinateY() < 1
+          || unit1.getLowerBoundary().getCoordinateX() > hallSize.getCoordinateX()
+          || unit1.getLowerBoundary().getCoordinateY() > hallSize.getCoordinateY()
+      ) {
+        throw new ValidationException(
+            "Unit must be inside hall " + unit1.getName());
       }
     }
   }
