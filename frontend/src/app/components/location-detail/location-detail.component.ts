@@ -77,7 +77,7 @@ export class LocationDetailComponent implements OnInit {
     this.router.navigateByUrl('/hall-creation');
   }
 
-  private createHall() {
+  public createHall() {
     this.hallCreationService.createNewHall(this.location);
     this.router.navigateByUrl('/hall-creation');
   }
