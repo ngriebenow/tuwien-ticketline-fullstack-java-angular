@@ -167,6 +167,9 @@ public class SimpleAccountService implements AccountService {
       old.setAuthority(
           updated.getAdmin().toLowerCase().equals("true") ? "ROLE_ADMIN" : "ROLE_USER");
     }
+    if (old.getAuthority().equals("ROLE_ADMIN")) {
+      old.setEnabled(true);
+    }
     return old;
   }
 
