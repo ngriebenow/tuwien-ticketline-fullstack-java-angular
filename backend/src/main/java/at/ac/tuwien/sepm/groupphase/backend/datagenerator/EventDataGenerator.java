@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -35,9 +37,7 @@ public class EventDataGenerator implements DataGenerator<Event> {
   private ArtistRepository artistRepository;
   private HallRepository hallRepository;
 
-  /**
-   * Create a new EventDataGenerator.
-   */
+  /** Create a new EventDataGenerator. */
   @Autowired
   public EventDataGenerator(
       EventRepository eventRepository,
@@ -67,13 +67,17 @@ public class EventDataGenerator implements DataGenerator<Event> {
         }
       }
 
+      String content =
+          IntStream.range(0, 5)
+              .mapToObj(j -> FAKER.harryPotter().quote())
+              .collect(Collectors.joining(" "));
       generatedEvents.add(
           new Event.Builder()
               .name(FAKER.rockBand().name())
               .category(categories.get(FAKER.random().nextInt(categories.size())))
               .duration(
                   Duration.ofHours(FAKER.random().nextInt(MIN_EVENT_DURATION, MAX_EVENT_DURATION)))
-              .content(FAKER.lorem().characters(20, 255))
+              .content(content)
               .artists(participatingArtists)
               .hall(halls.get(FAKER.random().nextInt(halls.size())))
               .build());
