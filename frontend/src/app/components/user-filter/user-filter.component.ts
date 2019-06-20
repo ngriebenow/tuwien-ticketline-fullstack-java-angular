@@ -4,6 +4,7 @@ import {UserService} from '../../services/user.service';
 import {User} from '../../dtos/user';
 import {UserFilter} from '../../dtos/user-filter';
 import {Router} from '@angular/router';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-user-filter',
@@ -26,7 +27,8 @@ export class UserFilterComponent implements OnInit {
     isAdmin: ['']
   });
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private userService: UserService, private formBuilder: FormBuilder,
+              private router: Router, private alertService: AlertService) {
     this.queryParams = new UserFilter('', '', '', 0, 20);
     this.isLocked = '';
     this.admin = '';
@@ -47,7 +49,7 @@ export class UserFilterComponent implements OnInit {
         });
       },
       error => {
-        // TODO: error handling
+        this.alertService.warning('Loading users failed!');
       }
     );
   }
